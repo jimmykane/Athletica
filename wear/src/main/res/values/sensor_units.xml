@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="units_android.sensor.pressure">hPa;</string>
+    <string name="units_android.sensor.pressure">hPa</string>
     <string name="units_android.sensor.pressure_altitude">m</string>
     <string name="units_android.sensor.heart_rate">bmp</string>
     <string name="units_android.sensor.ambient_temperature">c</string>
