@@ -53,7 +53,6 @@ public class WatchFace {
     // All the rows together
     private final static Row[] rows = {firstRow, secondRow, thirdRow, forthRow, fifthRow};
 
-    private final Float verticalMargin;
     private final Float horizontalMargin;
 
     private Typeface defaultTypeface;
@@ -75,7 +74,7 @@ public class WatchFace {
         resources = context.getApplicationContext().getResources();
 
         // Define the margin of the rows for vertical
-        verticalMargin = TypedValue.applyDimension(
+        Float verticalMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 resources.getDimension(R.dimen.row_vertical_margin),
                 resources.getDisplayMetrics());
@@ -304,6 +303,10 @@ public class WatchFace {
         forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
         Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), getDefaultColor());
+        sensorColumn.setHorizontalMargin(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                resources.getDimension(R.dimen.units_margin),
+                resources.getDisplayMetrics()));
         forthRow.addColumn(sensorType.toString(), sensorColumn);
 
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), getDefaultColor());

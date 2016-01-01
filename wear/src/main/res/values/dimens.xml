@@ -6,6 +6,7 @@
   <dimen name="text_size">14dp</dimen>
   <dimen name="icon_size">12dp</dimen>
   <dimen name="units_size">12dp</dimen>
+  <dimen name="units_margin">1dp</dimen>
   <dimen name="battery_text_size">12dp</dimen>
   <dimen name="row_vertical_margin">5.5dp</dimen>
   <dimen name="row_horizontal_margin">2dp</dimen>
