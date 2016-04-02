@@ -137,11 +137,11 @@ public class SimpleWatchFace {
     }
 
     public void updateSunrise(String time) {
-        sunriseText = "The sun rises at " + time;
+        sunriseText =  "Sunrise at " + time;
     }
 
     public void updateSunset(String time) {
-        sunsetText = "and sets at " + time;
+        sunsetText = "Sunset at " + time;
     }
 
     public void restoreBackgroundColour() {

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ActivityFace</string>
+    <string name="sunrise_text">Sunrise at:</string>
+    <string name="sunset_text">Sunset at:</string>
 </resources>
