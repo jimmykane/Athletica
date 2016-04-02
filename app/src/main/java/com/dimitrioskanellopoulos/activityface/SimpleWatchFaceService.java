@@ -112,6 +112,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             invalidate();
         }
 
+
         @Override
         public void onAmbientModeChanged(boolean inAmbientMode) {
             super.onAmbientModeChanged(inAmbientMode);

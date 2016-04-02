@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.text.format.Time;
 
 public class SimpleWatchFace {
@@ -37,6 +38,7 @@ public class SimpleWatchFace {
         sunrisePaint.setAntiAlias(true);
 
         Paint timePaint = new Paint();
+        timePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(context.getResources().getDimension(R.dimen.time_size));
         timePaint.setAntiAlias(true);
@@ -91,12 +93,12 @@ public class SimpleWatchFace {
 
     private float computeXOffset(String text, Paint paint, Rect watchBounds) {
         float centerX = watchBounds.exactCenterX();
-        float timeLength = paint.measureText(text);
-        return centerX - (timeLength / 2.0f);
+        float textLength = paint.measureText(text);
+        return centerX - (textLength / 2.0f);
     }
 
     private float computeTimeYOffset(String timeText, Paint timePaint, Rect watchBounds) {
-        float centerY = watchBounds.exactCenterY();
+        float centerY = watchBounds.exactCenterY() - 17.0f;
         Rect textBounds = new Rect();
         timePaint.getTextBounds(timeText, 0, timeText.length(), textBounds);
         int textHeight = textBounds.height();
@@ -106,7 +108,7 @@ public class SimpleWatchFace {
     private float computeDateYOffset(String dateText, Paint datePaint) {
         Rect textBounds = new Rect();
         datePaint.getTextBounds(dateText, 0, dateText.length(), textBounds);
-        return textBounds.height() + 10.0f;
+        return textBounds.height() + 17.0f;
     }
 
     public void setAntiAlias(boolean antiAlias) {
@@ -135,11 +137,11 @@ public class SimpleWatchFace {
     }
 
     public void updateSunrise(String time) {
-        sunriseText = "The sun will greet you at " + time;
+        sunriseText = "The sun rises at " + time;
     }
 
     public void updateSunset(String time) {
-        sunsetText = "...and the moon at " + time;
+        sunsetText = "and sets at " + time;
     }
 
     public void restoreBackgroundColour() {
