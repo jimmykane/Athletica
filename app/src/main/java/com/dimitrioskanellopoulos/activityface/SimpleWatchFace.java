@@ -88,13 +88,24 @@ public class SimpleWatchFace {
         datePaint.setAntiAlias(antiAlias);
     }
 
-    public void setColor(int colour) {
+    public void updateDateAndTimeColourTo(int colour) {
+        dateAndTimeColour = colour;
         timePaint.setColor(colour);
         datePaint.setColor(colour);
     }
 
+    public void updateTimeZoneWith(String timeZone) {
+        time.clear(timeZone);
+        time.setToNow();
+    }
+
     public void setShowSeconds(boolean showSeconds) {
         shouldShowSeconds = showSeconds;
+    }
+
+    public void updateBackgroundColourTo(int colour) {
+        backgroundColour = colour;
+        backgroundPaint.setColor(colour);
     }
 
     public void restoreBackgroundColour() {
