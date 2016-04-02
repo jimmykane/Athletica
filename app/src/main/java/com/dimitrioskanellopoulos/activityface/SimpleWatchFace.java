@@ -13,10 +13,12 @@ public class SimpleWatchFace {
     private static final String TIME_FORMAT_WITH_SECONDS = TIME_FORMAT_WITHOUT_SECONDS + ".%02d";
     private static final String DATE_FORMAT = "%02d.%02d.%d";
     private static final int DATE_AND_TIME_DEFAULT_COLOUR = Color.WHITE;
+    private static final int TEXT_DEFAULT_COLOUR = Color.WHITE;
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
 
     private final Paint timePaint;
     private final Paint datePaint;
+    private final Paint textPaint;
     private final Paint backgroundPaint;
     private final Time time;
 
@@ -25,6 +27,12 @@ public class SimpleWatchFace {
     private int dateAndTimeColour = DATE_AND_TIME_DEFAULT_COLOUR;
 
     public static SimpleWatchFace newInstance(Context context) {
+
+        Paint textPaint = new Paint();
+        textPaint.setColor(TEXT_DEFAULT_COLOUR);
+        textPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
+        textPaint.setAntiAlias(true);
+
         Paint timePaint = new Paint();
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(context.getResources().getDimension(R.dimen.time_size));
@@ -38,12 +46,13 @@ public class SimpleWatchFace {
         Paint backgroundPaint = new Paint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
 
-        return new SimpleWatchFace(timePaint, datePaint, backgroundPaint, new Time());
+        return new SimpleWatchFace(timePaint, datePaint, textPaint,backgroundPaint, new Time());
     }
 
-    SimpleWatchFace(Paint timePaint, Paint datePaint, Paint backgroundPaint, Time time) {
+    SimpleWatchFace(Paint timePaint, Paint datePaint, Paint textPaint, Paint backgroundPaint, Time time) {
         this.timePaint = timePaint;
         this.datePaint = datePaint;
+        this.textPaint = textPaint;
         this.backgroundPaint = backgroundPaint;
         this.time = time;
     }
@@ -61,6 +70,11 @@ public class SimpleWatchFace {
         float dateXOffset = computeXOffset(dateText, datePaint, bounds);
         float dateYOffset = computeDateYOffset(dateText, datePaint);
         canvas.drawText(dateText, dateXOffset, timeYOffset + dateYOffset, datePaint);
+
+        String simpleText = "A test";
+        float simpleTextXOffset = computeXOffset(simpleText, textPaint, bounds);
+        float simpleTextYOffset = computeTimeYOffset(simpleText, textPaint, bounds);
+        canvas.drawText(simpleText, simpleTextXOffset, simpleTextYOffset + dateYOffset + dateYOffset, textPaint);
     }
 
     private float computeXOffset(String text, Paint paint, Rect watchBounds) {
