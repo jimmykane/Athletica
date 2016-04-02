@@ -23,6 +23,7 @@ public class SimpleWatchFace {
     private final Time time;
 
     private boolean shouldShowSeconds = true;
+    private String textMessage = "hello world";
     private int backgroundColour = BACKGROUND_DEFAULT_COLOUR;
     private int dateAndTimeColour = DATE_AND_TIME_DEFAULT_COLOUR;
 
@@ -71,10 +72,9 @@ public class SimpleWatchFace {
         float dateYOffset = computeDateYOffset(dateText, datePaint);
         canvas.drawText(dateText, dateXOffset, timeYOffset + dateYOffset, datePaint);
 
-        String simpleText = "A test";
-        float simpleTextXOffset = computeXOffset(simpleText, textPaint, bounds);
-        float simpleTextYOffset = computeTimeYOffset(simpleText, textPaint, bounds);
-        canvas.drawText(simpleText, simpleTextXOffset, simpleTextYOffset + dateYOffset + dateYOffset, textPaint);
+        float simpleTextXOffset = computeXOffset(textMessage, textPaint, bounds);
+        float simpleTextYOffset = computeTimeYOffset(textMessage, textPaint, bounds);
+        canvas.drawText(textMessage, simpleTextXOffset, simpleTextYOffset + dateYOffset + dateYOffset, textPaint);
     }
 
     private float computeXOffset(String text, Paint paint, Rect watchBounds) {
@@ -120,6 +120,10 @@ public class SimpleWatchFace {
     public void updateBackgroundColourTo(int colour) {
         backgroundColour = colour;
         backgroundPaint.setColor(colour);
+    }
+
+    public void updateText(String text) {
+        textMessage = text;
     }
 
     public void restoreBackgroundColour() {
