@@ -8,6 +8,13 @@ import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.view.SurfaceHolder;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
+
+import android.location.Location;
+import android.location.LocationManager;
+
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class SimpleWatchFaceService extends CanvasWatchFaceService {
@@ -26,6 +33,12 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         private SimpleWatchFace watchFace;
         private Handler timeTick;
 
+        private GoogleApiClient googleApiClient;
+
+        private Location mLastLocation;
+
+        public LocationManager mLocationManager;
+
         @Override
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
@@ -41,6 +54,8 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             startTimerIfNecessary();
 
             watchFace = SimpleWatchFace.newInstance(SimpleWatchFaceService.this);
+
+            mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         }
 
         private void startTimerIfNecessary() {
@@ -69,6 +84,14 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             if (isVisible() && !isInAmbientMode()) {
                 invalidate();
             }
+        }
+
+        private void getSunriseAndSunset(com.luckycatlabs.sunrisesunset.dto.Location location) {
+            SunriseSunsetCalculator calculator = new SunriseSunsetCalculator(location, "Europe/Paris");
+            String officialSunrise = calculator.getOfficialSunriseForDate(Calendar.getInstance());
+            String officialSunset = calculator.getOfficialSunsetForDate(Calendar.getInstance());
+            watchFace.updateSunrise(officialSunrise);
+            watchFace.updateSunset(officialSunset);
         }
 
         @Override
@@ -106,8 +129,11 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             invalidate();
 
             startTimerIfNecessary();
-        }
 
+            //Location location = mLocationManager.getLastKnownLocation(ACCESS_COARSE_LOCATION);
+            com.luckycatlabs.sunrisesunset.dto.Location location = new com.luckycatlabs.sunrisesunset.dto.Location(Double.parseDouble("42.919532"), Double.parseDouble("1.035006"));
+            getSunriseAndSunset(location);
+        }
 
         @Override
         public void onDestroy() {

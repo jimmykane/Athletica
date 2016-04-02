@@ -18,21 +18,23 @@ public class SimpleWatchFace {
 
     private final Paint timePaint;
     private final Paint datePaint;
-    private final Paint textPaint;
+    private final Paint sunrisePaint;
+    private final Paint sunsetPaint;
     private final Paint backgroundPaint;
     private final Time time;
 
     private boolean shouldShowSeconds = true;
-    private String textMessage = "hello world";
+    private String sunriseText = "";
+    private String sunsetText = "";
     private int backgroundColour = BACKGROUND_DEFAULT_COLOUR;
     private int dateAndTimeColour = DATE_AND_TIME_DEFAULT_COLOUR;
 
     public static SimpleWatchFace newInstance(Context context) {
 
-        Paint textPaint = new Paint();
-        textPaint.setColor(TEXT_DEFAULT_COLOUR);
-        textPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
-        textPaint.setAntiAlias(true);
+        Paint sunrisePaint = new Paint();
+        sunrisePaint.setColor(TEXT_DEFAULT_COLOUR);
+        sunrisePaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
+        sunrisePaint.setAntiAlias(true);
 
         Paint timePaint = new Paint();
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
@@ -44,16 +46,22 @@ public class SimpleWatchFace {
         datePaint.setTextSize(context.getResources().getDimension(R.dimen.date_size));
         datePaint.setAntiAlias(true);
 
+        Paint sunsetPaint = new Paint();
+        sunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
+        sunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
+        sunsetPaint.setAntiAlias(true);
+
         Paint backgroundPaint = new Paint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
 
-        return new SimpleWatchFace(timePaint, datePaint, textPaint,backgroundPaint, new Time());
+        return new SimpleWatchFace(timePaint, datePaint, sunrisePaint, sunsetPaint ,backgroundPaint, new Time());
     }
 
-    SimpleWatchFace(Paint timePaint, Paint datePaint, Paint textPaint, Paint backgroundPaint, Time time) {
+    SimpleWatchFace(Paint timePaint, Paint datePaint, Paint sunrisePaint, Paint sunsetPaint, Paint backgroundPaint, Time time) {
         this.timePaint = timePaint;
         this.datePaint = datePaint;
-        this.textPaint = textPaint;
+        this.sunrisePaint = sunrisePaint;
+        this.sunsetPaint = sunsetPaint;
         this.backgroundPaint = backgroundPaint;
         this.time = time;
     }
@@ -72,9 +80,13 @@ public class SimpleWatchFace {
         float dateYOffset = computeDateYOffset(dateText, datePaint);
         canvas.drawText(dateText, dateXOffset, timeYOffset + dateYOffset, datePaint);
 
-        float simpleTextXOffset = computeXOffset(textMessage, textPaint, bounds);
-        float simpleTextYOffset = computeTimeYOffset(textMessage, textPaint, bounds);
-        canvas.drawText(textMessage, simpleTextXOffset, simpleTextYOffset + dateYOffset + dateYOffset, textPaint);
+        float sunriseTextXOffset = computeXOffset(sunsetText, sunsetPaint, bounds);
+        float sunriseTextYOffset = computeTimeYOffset(sunsetText, sunsetPaint, bounds);
+        canvas.drawText(sunriseText, sunriseTextXOffset, sunriseTextYOffset - dateYOffset, sunrisePaint);
+
+        float sunsetTextXOffset = computeXOffset(sunsetText, sunsetPaint, bounds);
+        float simpleTextYOffset = computeTimeYOffset(sunsetText, sunsetPaint, bounds);
+        canvas.drawText(sunsetText, sunsetTextXOffset, simpleTextYOffset + 2*dateYOffset, sunsetPaint);
     }
 
     private float computeXOffset(String text, Paint paint, Rect watchBounds) {
@@ -122,8 +134,12 @@ public class SimpleWatchFace {
         backgroundPaint.setColor(colour);
     }
 
-    public void updateText(String text) {
-        textMessage = text;
+    public void updateSunrise(String time) {
+        sunriseText = "The sun will greet you at " + time;
+    }
+
+    public void updateSunset(String time) {
+        sunsetText = "...and the moon at " + time;
     }
 
     public void restoreBackgroundColour() {

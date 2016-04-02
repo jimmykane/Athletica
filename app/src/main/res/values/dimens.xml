@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="time_size">25dp</dimen>
+  <dimen name="time_size">35dp</dimen>
   <dimen name="date_size">20dp</dimen>
-  <dimen name="text_size">20dp</dimen>
+  <dimen name="text_size">12dp</dimen>
 </resources>
