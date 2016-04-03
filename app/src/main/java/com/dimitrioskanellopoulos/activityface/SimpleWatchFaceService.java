@@ -1,28 +1,22 @@
 package com.dimitrioskanellopoulos.activityface;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.app.ActivityCompat;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.SurfaceHolder;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.wearable.Wearable;
-import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
 
 import android.location.Location;
-import android.location.LocationManager;
 
-import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class SimpleWatchFaceService extends CanvasWatchFaceService {
@@ -98,12 +92,10 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        private void getSunriseAndSunset(com.luckycatlabs.sunrisesunset.dto.Location location) {
-            SunriseSunsetCalculator calculator = new SunriseSunsetCalculator(location, "Europe/Paris");
-            String officialSunrise = calculator.getOfficialSunriseForDate(Calendar.getInstance());
-            String officialSunset = calculator.getOfficialSunsetForDate(Calendar.getInstance());
-            watchFace.updateSunrise(officialSunrise);
-            watchFace.updateSunset(officialSunset);
+        private void updateSunriseAndSunset() {
+            Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset();
+            watchFace.updateSunrise(sunriseSunset.first);
+            watchFace.updateSunset(sunriseSunset.second);
         }
 
         @Override
@@ -154,16 +146,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
             startTimerIfNecessary();
 
-            String latitude = "42.919532";
-            String longitude = "1.035006";
-
-            if (lastKnownLocation != null) {
-                latitude = String.valueOf(lastKnownLocation.getLatitude());
-                longitude = String.valueOf(lastKnownLocation.getLongitude());
-            }
-
-            com.luckycatlabs.sunrisesunset.dto.Location location = new com.luckycatlabs.sunrisesunset.dto.Location(Double.parseDouble(latitude), Double.parseDouble(longitude));
-            getSunriseAndSunset(location);
+            updateSunriseAndSunset();
         }
 
         @Override
