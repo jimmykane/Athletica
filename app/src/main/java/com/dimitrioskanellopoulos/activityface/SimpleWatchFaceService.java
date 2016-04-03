@@ -4,13 +4,16 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.wearable.Wearable;
@@ -31,7 +34,9 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         return new SimpleEngine();
     }
 
-    private class SimpleEngine extends Engine {
+    private class SimpleEngine extends CanvasWatchFaceService.Engine implements
+            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
 
         private static final String TAG = "SimpleEngine";
 
@@ -40,9 +45,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
         private GoogleApiClient googleApiClient;
 
-        private Location mLastLocation;
-
-        public LocationManager mLocationManager;
+        private Location lastKnownLocation;
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -60,10 +63,10 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
             watchFace = SimpleWatchFace.newInstance(SimpleWatchFaceService.this);
 
-            mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
             googleApiClient = new GoogleApiClient.Builder(SimpleWatchFaceService.this)
-                    .addApi(Wearable.API)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
                     .build();
         }
 
@@ -106,7 +109,18 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
+            if (visible) {
+                googleApiClient.connect();
+            } else {
+                releaseGoogleApiClient();
+            }
             startTimerIfNecessary();
+        }
+
+        private void releaseGoogleApiClient() {
+            if (googleApiClient != null && googleApiClient.isConnected()) {
+                googleApiClient.disconnect();
+            }
         }
 
         @Override
@@ -140,7 +154,15 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
             startTimerIfNecessary();
 
-            com.luckycatlabs.sunrisesunset.dto.Location location = new com.luckycatlabs.sunrisesunset.dto.Location(Double.parseDouble("42.919532"), Double.parseDouble("1.035006"));
+            String latitude = "42.919532";
+            String longitude = "1.035006";
+
+            if (lastKnownLocation != null) {
+                latitude = String.valueOf(lastKnownLocation.getLatitude());
+                longitude = String.valueOf(lastKnownLocation.getLongitude());
+            }
+
+            com.luckycatlabs.sunrisesunset.dto.Location location = new com.luckycatlabs.sunrisesunset.dto.Location(Double.parseDouble(latitude), Double.parseDouble(longitude));
             getSunriseAndSunset(location);
         }
 
@@ -148,6 +170,21 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             timeTick.removeCallbacks(timeRunnable);
             super.onDestroy();
+        }
+
+        @Override
+        public void onConnected(Bundle connectionHint) {
+            lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        }
+
+        @Override
+        public void onConnectionSuspended(int i) {
+            Log.e(TAG, "suspended GoogleAPI");
+        }
+
+        @Override
+        public void onConnectionFailed(ConnectionResult connectionResult) {
+            Log.e(TAG, "connectionFailed GoogleAPI");
         }
     }
 }
