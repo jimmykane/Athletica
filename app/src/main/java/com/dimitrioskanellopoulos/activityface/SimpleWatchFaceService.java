@@ -1,14 +1,19 @@
 package com.dimitrioskanellopoulos.activityface;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.ActivityCompat;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.view.SurfaceHolder;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.wearable.Wearable;
 import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
 
 import android.location.Location;
@@ -56,6 +61,10 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             watchFace = SimpleWatchFace.newInstance(SimpleWatchFaceService.this);
 
             mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+            googleApiClient = new GoogleApiClient.Builder(SimpleWatchFaceService.this)
+                    .addApi(Wearable.API)
+                    .build();
         }
 
         private void startTimerIfNecessary() {
@@ -131,7 +140,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
             startTimerIfNecessary();
 
-            //Location location = mLocationManager.getLastKnownLocation(ACCESS_COARSE_LOCATION);
             com.luckycatlabs.sunrisesunset.dto.Location location = new com.luckycatlabs.sunrisesunset.dto.Location(Double.parseDouble("42.919532"), Double.parseDouble("1.035006"));
             getSunriseAndSunset(location);
         }
