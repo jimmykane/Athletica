@@ -1,4 +1,5 @@
 <resources>
+    <string name="google_app_id">default-demo-app-b2533</string>
     <string name="app_name">ActivityFace</string>
     <string name="sunrise_text">Sunrise at:</string>
     <string name="sunset_text">Sunset at:</string>

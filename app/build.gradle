@@ -25,6 +25,7 @@ dependencies {
     compile 'com.google.android.support:wearable:1.4.0'
     compile 'com.android.support:support-v4:23.0.0'
     compile 'com.google.android.gms:play-services:8.+'
+    compile 'com.google.android.gms:play-services-location:8.4.0'
     compile 'com.google.android.gms:play-services-wearable:8.+'
     compile 'com.luckycatlabs:SunriseSunsetCalculator:1.2'
 

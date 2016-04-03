@@ -1,31 +1,56 @@
 package com.dimitrioskanellopoulos.activityface;
 
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 
-public class SensorService implements SensorEventListener {
+public class SensorService extends Service implements SensorEventListener {
 
-    private SensorManager mSensorManager;
-    private Sensor mSensor;
+    private static final String DEBUG_TAG = "SensorService";
 
+    private SensorManager sensorManager;
+    private Sensor sensor;
+    private float value;
+
+    @Override public void onCreate() {
+        super.onCreate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
+        sensorManager.registerListener(this, sensor,
+                SensorManager.SENSOR_DELAY_NORMAL);
+
+        return START_STICKY;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        // do nothing
+    }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        // If sensor is unreliable, then just return
-        if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE)
-        {
-            return;
-        }
-
-        if(event.sensor.getType() == Sensor.TYPE_PRESSURE) {
-            String pressureText = Float.toString(event.values[0]);
-            String altitudeText = Float.toString(SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, event.values[0]));
-        }
+        value = event.values[0];
+        stopSelf();
     }
 
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+    public Float getValue(){
+        return value;
     }
+
 }

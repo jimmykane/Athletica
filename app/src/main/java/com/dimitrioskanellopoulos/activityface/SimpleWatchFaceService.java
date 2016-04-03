@@ -69,6 +69,8 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                     .build();
 
             registerBatteryInfoReceiver();
+
+            startSensorService();
         }
 
         private void startTimerIfNecessary() {
@@ -82,7 +84,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             @Override
             public void run() {
                 onSecondTick();
-
                 if (isVisible() && !isInAmbientMode()) {
                     timeTick.postDelayed(this, TICK_PERIOD_MILLIS);
                 }
@@ -103,6 +104,11 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset();
             watchFace.updateSunrise(sunriseSunset.first);
             watchFace.updateSunset(sunriseSunset.second);
+        }
+
+        private void startSensorService(){
+            Intent intent = new Intent(getApplicationContext(), SensorService.class );
+            startService(intent);
         }
 
         private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
@@ -153,7 +159,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             super.onTimeTick();
             invalidate();
         }
-
 
         @Override
         public void onAmbientModeChanged(boolean inAmbientMode) {
