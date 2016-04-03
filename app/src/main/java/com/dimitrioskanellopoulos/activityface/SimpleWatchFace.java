@@ -22,12 +22,14 @@ public class SimpleWatchFace {
 
     private final Paint timePaint;
     private final Paint datePaint;
+    private final Paint batteryLevelPaint;
     private final Paint sunrisePaint;
     private final Paint sunsetPaint;
     private final Paint backgroundPaint;
     private final Time time;
 
     private boolean shouldShowSeconds = true;
+    private String batteryLevelText = "Battery";
     private String sunriseText = "";
     private String sunsetText = "";
     private int backgroundColour = BACKGROUND_DEFAULT_COLOUR;
@@ -39,6 +41,11 @@ public class SimpleWatchFace {
         sunrisePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunrisePaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
         sunrisePaint.setAntiAlias(true);
+
+        Paint batteryLevelPaint = new Paint();
+        batteryLevelPaint.setColor(TEXT_DEFAULT_COLOUR);
+        batteryLevelPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
+        batteryLevelPaint.setAntiAlias(true);
 
         Paint timePaint = new Paint();
         timePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
@@ -59,12 +66,13 @@ public class SimpleWatchFace {
         Paint backgroundPaint = new Paint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
 
-        return new SimpleWatchFace(timePaint, datePaint, sunrisePaint, sunsetPaint ,backgroundPaint, new Time());
+        return new SimpleWatchFace(timePaint, datePaint, batteryLevelPaint, sunrisePaint, sunsetPaint ,backgroundPaint, new Time());
     }
 
-    SimpleWatchFace(Paint timePaint, Paint datePaint, Paint sunrisePaint, Paint sunsetPaint, Paint backgroundPaint, Time time) {
+    SimpleWatchFace(Paint timePaint, Paint datePaint, Paint batteryLevelPaint, Paint sunrisePaint, Paint sunsetPaint, Paint backgroundPaint, Time time) {
         this.timePaint = timePaint;
         this.datePaint = datePaint;
+        this.batteryLevelPaint = batteryLevelPaint;
         this.sunrisePaint = sunrisePaint;
         this.sunsetPaint = sunsetPaint;
         this.backgroundPaint = backgroundPaint;
@@ -88,6 +96,10 @@ public class SimpleWatchFace {
         float sunriseTextXOffset = computeXOffset(sunsetText, sunsetPaint, bounds);
         float sunriseTextYOffset = computeTimeYOffset(sunsetText, sunsetPaint, bounds);
         canvas.drawText(sunriseText, sunriseTextXOffset, sunriseTextYOffset - dateYOffset, sunrisePaint);
+
+        float batteryLevelTextXOffset = computeXOffset(batteryLevelText, batteryLevelPaint, bounds);
+        float batteryLevelYOffset = computeTimeYOffset(batteryLevelText, batteryLevelPaint, bounds);
+        canvas.drawText(batteryLevelText, batteryLevelTextXOffset, batteryLevelYOffset + sunriseTextYOffset - dateYOffset, batteryLevelPaint);
 
         float sunsetTextXOffset = computeXOffset(sunsetText, sunsetPaint, bounds);
         float simpleTextYOffset = computeTimeYOffset(sunsetText, sunsetPaint, bounds);
@@ -137,6 +149,10 @@ public class SimpleWatchFace {
     public void updateBackgroundColourTo(int colour) {
         backgroundColour = colour;
         backgroundPaint.setColor(colour);
+    }
+
+    public void updateBatteryLevel(String batteryLevel){
+        batteryLevelText = batteryLevel + "%";
     }
 
     public void updateSunrise(String time) {

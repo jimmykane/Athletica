@@ -1,7 +1,12 @@
 package com.dimitrioskanellopoulos.activityface;
 
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.Context;
+import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -62,6 +67,8 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .build();
+
+            registerBatteryInfoReceiver();
         }
 
         private void startTimerIfNecessary() {
@@ -98,6 +105,18 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             watchFace.updateSunset(sunriseSunset.second);
         }
 
+        private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+                Intent batteryStatus = context.registerReceiver(null, ifilter);
+                int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+                int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+                float batteryPct = level / (float)scale; // Used just in case
+                watchFace.updateBatteryLevel(Integer.toString(level));
+            }
+        };
+
         @Override
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
@@ -113,6 +132,14 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             if (googleApiClient != null && googleApiClient.isConnected()) {
                 googleApiClient.disconnect();
             }
+        }
+
+        private void unregisterBatteryInfoReceiver() {
+            unregisterReceiver(batteryInfoReceiver);
+        }
+
+        private void registerBatteryInfoReceiver() {
+            registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         }
 
         @Override
@@ -152,6 +179,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onDestroy() {
             timeTick.removeCallbacks(timeRunnable);
+            unregisterBatteryInfoReceiver();
             super.onDestroy();
         }
 
