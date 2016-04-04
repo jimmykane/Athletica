@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,6 +48,8 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
         private Location lastKnownLocation;
 
+        private SensorManager sensorManager;
+
         @Override
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
@@ -70,7 +74,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
             registerBatteryInfoReceiver();
 
-            startSensorService();
         }
 
         private void startTimerIfNecessary() {
@@ -79,6 +82,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                 timeTick.post(timeRunnable);
             }
         }
+
 
         private final Runnable timeRunnable = new Runnable() {
             @Override
@@ -104,11 +108,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset();
             watchFace.updateSunrise(sunriseSunset.first);
             watchFace.updateSunset(sunriseSunset.second);
-        }
-
-        private void startSensorService(){
-            Intent intent = new Intent(getApplicationContext(), SensorService.class );
-            startService(intent);
         }
 
         private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
@@ -190,7 +189,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
         @Override
         public void onConnected(Bundle connectionHint) {
-            lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            //lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
         }
 
         @Override
