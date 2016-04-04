@@ -54,9 +54,9 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         public void onPressureChanged(Float pressureValue) {
             if (pressureValue != null) {
                 Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
-                watchFace.updatePressureAltitude(Integer.toString((int) Math.ceil(altitude)));
+                watchFace.updatePressureAltitude(String.format("%.02f", altitude));
+                Log.e(TAG, "Updated pressure");
             }
-            closePressureSensor();
         }
 
         @Override
@@ -75,13 +75,15 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
             watchFace = SimpleWatchFace.newInstance(SimpleWatchFaceService.this);
 
-            googleApiClient = new GoogleApiClient.Builder(SimpleWatchFaceService.this)
-                    .addApi(LocationServices.API)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build();
+//            googleApiClient = new GoogleApiClient.Builder(SimpleWatchFaceService.this)
+//                    .addApi(LocationServices.API)
+//                    .addConnectionCallbacks(this)
+//                    .addOnConnectionFailedListener(this)
+//                    .build();
 
             registerBatteryInfoReceiver();
+            updateAltitude();
+            updateSunriseAndSunset();
         }
 
         private void startTimerIfNecessary() {
@@ -116,6 +118,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset();
             watchFace.updateSunrise(sunriseSunset.first);
             watchFace.updateSunset(sunriseSunset.second);
+            Log.e(TAG, "Updated sunrise");
         }
 
         private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
@@ -134,9 +137,9 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
             if (visible) {
-                googleApiClient.connect();
+                //googleApiClient.connect();
             } else {
-                releaseGoogleApiClient();
+                //releaseGoogleApiClient();
             }
             startTimerIfNecessary();
         }
@@ -164,8 +167,28 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onTimeTick() {
             super.onTimeTick();
-            pressureSensor = new PressureSensor(getApplicationContext(), this);
+            checkActions();
             invalidate();
+        }
+
+        private void checkActions(){
+            long totalMilliSeconds=System.currentTimeMillis();
+            long totalSeconds=totalMilliSeconds/1000;
+            int second=(int)(totalSeconds%60);
+            long totalMinutes=totalSeconds/60;
+            int minute=(int)(totalMinutes%60);
+            long totalHours=totalMinutes/60;
+            int hour=(int)(totalHours%24);
+            if ((minute%5) == 0) {
+                updateAltitude();
+            }
+            if ((hour%2) == 0 && minute == 0){
+                updateSunriseAndSunset();
+            }
+        }
+
+        private void updateAltitude(){
+            pressureSensor = new PressureSensor(getApplicationContext(), this);
         }
 
         @Override
@@ -178,15 +201,12 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                 watchFace.updateBackgroundColourToDefault();
                 watchFace.updateDateAndTimeColourToDefault();
             } else {
+                updateAltitude();
                 watchFace.restoreBackgroundColour();
                 watchFace.restoreDateAndTimeColour();
             }
-
             invalidate();
-
             startTimerIfNecessary();
-
-            updateSunriseAndSunset();
         }
 
         private void closePressureSensor(){
@@ -199,7 +219,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             timeTick.removeCallbacks(timeRunnable);
             unregisterBatteryInfoReceiver();
-            pressureSensor.close();
+            closePressureSensor();
             super.onDestroy();
         }
 

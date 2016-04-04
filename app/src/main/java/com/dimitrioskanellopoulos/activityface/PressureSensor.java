@@ -33,9 +33,10 @@ public class PressureSensor {
         void onPressureChanged(Float pressureValue);
     }
 
-    private SensorEventListener listener=new SensorEventListener() {
+    private SensorEventListener listener = new SensorEventListener() {
         public void onSensorChanged(SensorEvent event) {
                 pressureChanged(event.values[0]);
+                sensorManager.unregisterListener(listener);
         }
 
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
