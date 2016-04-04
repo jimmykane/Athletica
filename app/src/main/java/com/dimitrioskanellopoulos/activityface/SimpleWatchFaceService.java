@@ -12,6 +12,7 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.service.carrier.CarrierMessagingService;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
@@ -20,10 +21,13 @@ import android.view.SurfaceHolder;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import android.location.Location;
 
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class SimpleWatchFaceService extends CanvasWatchFaceService {
@@ -36,12 +40,12 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
     }
 
     private class SimpleEngine extends CanvasWatchFaceService.Engine implements
-            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, PressureSensor.Callback {
-
+            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, PressureSensor.Callback {
 
         private static final String TAG = "SimpleEngine";
 
         private SimpleWatchFace watchFace;
+
         private Handler timeTick;
 
         private GoogleApiClient googleApiClient;
@@ -56,6 +60,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                 Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
                 watchFace.updatePressureAltitude(String.format("%.02f", altitude));
                 Log.e(TAG, "Updated pressure");
+                // Invalidate to redraw
                 invalidate();
             }
         }
@@ -72,15 +77,16 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                     .build());
 
             timeTick = new Handler(Looper.myLooper());
+
             startTimerIfNecessary();
 
             watchFace = SimpleWatchFace.newInstance(SimpleWatchFaceService.this);
 
-//            googleApiClient = new GoogleApiClient.Builder(SimpleWatchFaceService.this)
-//                    .addApi(LocationServices.API)
-//                    .addConnectionCallbacks(this)
-//                    .addOnConnectionFailedListener(this)
-//                    .build();
+            googleApiClient = new GoogleApiClient.Builder(SimpleWatchFaceService.this)
+                    .addApi(LocationServices.API)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
 
             registerBatteryInfoReceiver();
             updateAltitude();
@@ -93,7 +99,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                 timeTick.post(timeRunnable);
             }
         }
-
 
         private final Runnable timeRunnable = new Runnable() {
             @Override
@@ -116,7 +121,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         }
 
         private void updateSunriseAndSunset() {
-            Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset();
+            Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(lastKnownLocation, TimeZone.getDefault().getID());
             watchFace.updateSunrise(sunriseSunset.first);
             watchFace.updateSunset(sunriseSunset.second);
             Log.e(TAG, "Updated sunrise");
@@ -138,9 +143,9 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
             if (visible) {
-                //googleApiClient.connect();
+                googleApiClient.connect();
             } else {
-                //releaseGoogleApiClient();
+                releaseGoogleApiClient();
             }
             startTimerIfNecessary();
         }
@@ -226,8 +231,31 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
         @Override
         public void onConnected(Bundle connectionHint) {
-            //lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            // Provides a simple way of getting a device's location and is well suited for
+            // applications that do not require a fine-grained location and that do not need location
+            // updates. Gets the best and most recent location currently available, which may be null
+            // in rare cases when a location is not available.
+            lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            if (lastKnownLocation != null) {
+                Log.e(TAG, "Location found");
+                updateSunriseAndSunset();
+                return;
+            }
+
+            // Create the LocationRequest object
+            // LocationRequest locationRequest = LocationRequest.create();
+            // Use high accuracy
+            // locationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+            // Set the update interval to 2 seconds
+            // locationRequest.setInterval(TimeUnit.SECONDS.toMillis(2));
+            // Set the fastest update interval to 2 seconds
+            // locationRequest.setFastestInterval(TimeUnit.SECONDS.toMillis(2));
+            // Set the minimum displacement
+            // locationRequest.setSmallestDisplacement(2);
+            // Register listener using the LocationRequest object
+            // LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         }
+
 
         @Override
         public void onConnectionSuspended(int i) {
@@ -239,5 +267,9 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             Log.e(TAG, "connectionFailed GoogleAPI");
         }
 
+        @Override
+        public void onLocationChanged(Location location) {
+            Log.e(TAG, "Location changed");
+        }
     }
 }
