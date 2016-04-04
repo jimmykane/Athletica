@@ -36,7 +36,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
     }
 
     private class SimpleEngine extends CanvasWatchFaceService.Engine implements
-            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, PressureSensor.Callback {
 
 
         private static final String TAG = "SimpleEngine";
@@ -48,7 +48,13 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
         private Location lastKnownLocation;
 
-        private SensorManager sensorManager;
+        private PressureSensor pressureSensor;
+
+
+        public void onPressureChanged(Float pressureValue) {
+            Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
+            watchFace.updatePressureAltitude(Float.toString(altitude));
+        }
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -73,7 +79,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                     .build();
 
             registerBatteryInfoReceiver();
-
         }
 
         private void startTimerIfNecessary() {
@@ -168,7 +173,11 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             if (inAmbientMode) {
                 watchFace.updateBackgroundColourToDefault();
                 watchFace.updateDateAndTimeColourToDefault();
+                if (pressureSensor != null){
+                    pressureSensor.close();
+                }
             } else {
+                pressureSensor = new PressureSensor(getApplicationContext(), this);
                 watchFace.restoreBackgroundColour();
                 watchFace.restoreDateAndTimeColour();
             }
@@ -184,6 +193,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             timeTick.removeCallbacks(timeRunnable);
             unregisterBatteryInfoReceiver();
+            pressureSensor.close();
             super.onDestroy();
         }
 
@@ -201,5 +211,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         public void onConnectionFailed(ConnectionResult connectionResult) {
             Log.e(TAG, "connectionFailed GoogleAPI");
         }
+
     }
 }

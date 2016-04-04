@@ -155,6 +155,10 @@ public class SimpleWatchFace {
         batteryLevelText = batteryLevel + "%";
     }
 
+    public void updatePressureAltitude(String altitude){
+        batteryLevelText = batteryLevelText + " " + altitude + "m";
+    }
+
     public void updateSunrise(String time) {
         sunriseText =  "Sunrise at " + time;
     }

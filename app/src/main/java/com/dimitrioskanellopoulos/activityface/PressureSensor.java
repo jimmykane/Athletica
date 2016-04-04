@@ -8,80 +8,34 @@ import android.hardware.SensorManager;
 import android.os.SystemClock;
 
 public class PressureSensor {
-    private SensorManager mgr=null;
-    private long lastShakeTimestamp=0;
-    private double threshold=1.0d;
-    private long gap=0;
+    private SensorManager sensorManager=null;
     private PressureSensor.Callback cb=null;
 
-    public PressureSensor(Context ctxt, double threshold, long gap,
-                          PressureSensor.Callback cb) {
-        this.threshold=threshold*threshold;
-        this.threshold=this.threshold
-                *SensorManager.GRAVITY_EARTH
-                *SensorManager.GRAVITY_EARTH;
-        this.gap=gap;
+    public PressureSensor(Context context, PressureSensor.Callback cb) {
         this.cb=cb;
-
-        mgr=(SensorManager)ctxt.getSystemService(Context.SENSOR_SERVICE);
-        mgr.registerListener(listener,
-                mgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+        sensorManager=(SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
+        sensorManager.registerListener(listener,
+                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_UI);
     }
 
     public void close() {
-        mgr.unregisterListener(listener);
+        sensorManager.unregisterListener(listener);
     }
 
-    private void isShaking() {
-        long now= SystemClock.uptimeMillis();
-
-        if (lastShakeTimestamp==0) {
-            lastShakeTimestamp=now;
-
-            if (cb!=null) {
-                cb.shakingStarted();
-            }
-        }
-        else {
-            lastShakeTimestamp=now;
-        }
-    }
-
-    private void isNotShaking() {
-        long now=SystemClock.uptimeMillis();
-
-        if (lastShakeTimestamp>0) {
-            if (now-lastShakeTimestamp>gap) {
-                lastShakeTimestamp=0;
-
-                if (cb!=null) {
-                    cb.shakingStopped();
-                }
-            }
+    private void pressureChanged(Float pressureValue) {
+        if (cb!=null) {
+            cb.onPressureChanged(pressureValue);
         }
     }
 
     public interface Callback {
-        void shakingStarted();
-        void shakingStopped();
+        void onPressureChanged(Float pressureValue);
     }
 
     private SensorEventListener listener=new SensorEventListener() {
-        public void onSensorChanged(SensorEvent e) {
-            if (e.sensor.getType()==Sensor.TYPE_ACCELEROMETER) {
-                double netForce=e.values[0]*e.values[0];
-
-                netForce+=e.values[1]*e.values[1];
-                netForce+=e.values[2]*e.values[2];
-
-                if (threshold<netForce) {
-                    isShaking();
-                }
-                else {
-                    isNotShaking();
-                }
-            }
+        public void onSensorChanged(SensorEvent event) {
+                pressureChanged(event.values[0]);
         }
 
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
