@@ -10,6 +10,7 @@ import android.os.SystemClock;
 public class PressureSensor {
     private SensorManager sensorManager=null;
     private PressureSensor.Callback cb=null;
+    private Float lastReading;
 
     public PressureSensor(Context context, PressureSensor.Callback cb) {
         this.cb=cb;
@@ -36,6 +37,7 @@ public class PressureSensor {
     private SensorEventListener listener = new SensorEventListener() {
         public void onSensorChanged(SensorEvent event) {
                 pressureChanged(event.values[0]);
+                lastReading = event.values[0];
                 sensorManager.unregisterListener(listener);
         }
 

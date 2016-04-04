@@ -6,13 +6,11 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.service.carrier.CarrierMessagingService;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
@@ -121,6 +119,10 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         }
 
         private void updateSunriseAndSunset() {
+            // Try once more to get the loc
+            if (googleApiClient != null && googleApiClient.isConnected()){
+                lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            }
             Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(lastKnownLocation, TimeZone.getDefault().getID());
             watchFace.updateSunrise(sunriseSunset.first);
             watchFace.updateSunset(sunriseSunset.second);
@@ -224,6 +226,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onDestroy() {
             timeTick.removeCallbacks(timeRunnable);
+            releaseGoogleApiClient();
             unregisterBatteryInfoReceiver();
             closePressureSensor();
             super.onDestroy();
