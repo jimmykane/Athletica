@@ -52,8 +52,11 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
 
         public void onPressureChanged(Float pressureValue) {
-            Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
-            watchFace.updatePressureAltitude(Float.toString(altitude));
+            if (pressureValue != null) {
+                Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
+                watchFace.updatePressureAltitude(Integer.toString((int) Math.ceil(altitude)));
+            }
+            closePressureSensor();
         }
 
         @Override
@@ -161,6 +164,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onTimeTick() {
             super.onTimeTick();
+            pressureSensor = new PressureSensor(getApplicationContext(), this);
             invalidate();
         }
 
@@ -173,11 +177,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             if (inAmbientMode) {
                 watchFace.updateBackgroundColourToDefault();
                 watchFace.updateDateAndTimeColourToDefault();
-                if (pressureSensor != null){
-                    pressureSensor.close();
-                }
             } else {
-                pressureSensor = new PressureSensor(getApplicationContext(), this);
                 watchFace.restoreBackgroundColour();
                 watchFace.restoreDateAndTimeColour();
             }
@@ -187,6 +187,12 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             startTimerIfNecessary();
 
             updateSunriseAndSunset();
+        }
+
+        private void closePressureSensor(){
+            if (pressureSensor != null){
+                pressureSensor.close();
+            }
         }
 
         @Override

@@ -15,7 +15,7 @@ public class PressureSensor {
         this.cb=cb;
         sensorManager=(SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
         sensorManager.registerListener(listener,
-                sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE),
                 SensorManager.SENSOR_DELAY_UI);
     }
 

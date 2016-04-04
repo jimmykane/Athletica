@@ -29,7 +29,8 @@ public class SimpleWatchFace {
     private final Time time;
 
     private boolean shouldShowSeconds = true;
-    private String batteryLevelText = "Battery";
+    private String batteryLevelText = "";
+    private String altitudeText = "";
     private String sunriseText = "";
     private String sunsetText = "";
     private int backgroundColour = BACKGROUND_DEFAULT_COLOUR;
@@ -97,9 +98,10 @@ public class SimpleWatchFace {
         float sunriseTextYOffset = computeTimeYOffset(sunsetText, sunsetPaint, bounds);
         canvas.drawText(sunriseText, sunriseTextXOffset, sunriseTextYOffset - dateYOffset, sunrisePaint);
 
-        float batteryLevelTextXOffset = computeXOffset(batteryLevelText, batteryLevelPaint, bounds);
-        float batteryLevelYOffset = computeTimeYOffset(batteryLevelText, batteryLevelPaint, bounds);
-        canvas.drawText(batteryLevelText, batteryLevelTextXOffset, batteryLevelYOffset + sunriseTextYOffset - dateYOffset, batteryLevelPaint);
+        String bottomRowText = batteryLevelText + " " +altitudeText;
+        float bottomRowTextXOffset = computeXOffset(bottomRowText, batteryLevelPaint, bounds);
+        float bottomRowTextYOffset = computeTimeYOffset(bottomRowText, batteryLevelPaint, bounds);
+        canvas.drawText(bottomRowText, bottomRowTextXOffset, bottomRowTextYOffset + sunriseTextYOffset - dateYOffset, batteryLevelPaint);
 
         float sunsetTextXOffset = computeXOffset(sunsetText, sunsetPaint, bounds);
         float simpleTextYOffset = computeTimeYOffset(sunsetText, sunsetPaint, bounds);
@@ -156,7 +158,7 @@ public class SimpleWatchFace {
     }
 
     public void updatePressureAltitude(String altitude){
-        batteryLevelText = batteryLevelText + " " + altitude + "m";
+        altitudeText = altitude + "m";
     }
 
     public void updateSunrise(String time) {
