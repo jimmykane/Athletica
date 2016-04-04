@@ -56,6 +56,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                 Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
                 watchFace.updatePressureAltitude(String.format("%.02f", altitude));
                 Log.e(TAG, "Updated pressure");
+                invalidate();
             }
         }
 
