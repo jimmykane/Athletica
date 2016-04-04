@@ -51,21 +51,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
         private PressureSensor pressureSensor;
 
-        /**
-         * When pressure changes
-         * @param pressureValue
-         */
-        public void pressureValueChanged(Float pressureValue) {
-            // Get the alti from pressure
-            Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
-            watchFace.updatePressureAltitude(String.format("%.02f", altitude));
-            Log.e(TAG, "Updated pressure");
-            // Stop the listening
-            pressureSensor.stopListening();
-            // Invalidate to redraw
-            invalidate();
-        }
-
         @Override
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
@@ -93,6 +78,72 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
             registerBatteryInfoReceiver();
             updateSunriseAndSunset();
+        }
+
+        @Override
+        public void onVisibilityChanged(boolean visible) {
+            super.onVisibilityChanged(visible);
+            if (visible) {
+                googleApiClient.connect();
+            } else {
+                releaseGoogleApiClient();
+            }
+            startTimerIfNecessary();
+        }
+
+        @Override
+        public void onDraw(Canvas canvas, Rect bounds) {
+            super.onDraw(canvas, bounds);
+            watchFace.draw(canvas, bounds);
+        }
+
+        @Override
+        public void onTimeTick() {
+            super.onTimeTick();
+            checkActions();
+            invalidate();
+        }
+
+        @Override
+        public void onAmbientModeChanged(boolean inAmbientMode) {
+            super.onAmbientModeChanged(inAmbientMode);
+            watchFace.setAntiAlias(!inAmbientMode);
+            watchFace.setShowSeconds(!isInAmbientMode());
+
+            if (inAmbientMode) {
+                watchFace.updateBackgroundColourToDefault();
+                watchFace.updateDateAndTimeColourToDefault();
+            } else {
+                updateAltitude();
+                watchFace.restoreBackgroundColour();
+                watchFace.restoreDateAndTimeColour();
+            }
+            invalidate();
+            startTimerIfNecessary();
+        }
+
+        @Override
+        public void onDestroy() {
+            timeTick.removeCallbacks(timeRunnable);
+            releaseGoogleApiClient();
+            unregisterBatteryInfoReceiver();
+            super.onDestroy();
+        }
+
+
+        /**
+         * When pressure changes
+         * @param pressureValue
+         */
+        public void pressureValueChanged(Float pressureValue) {
+            // Get the alti from pressure
+            Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
+            watchFace.updatePressureAltitude(String.format("%.02f", altitude));
+            Log.e(TAG, "Updated pressure");
+            // Stop the listening
+            pressureSensor.stopListening();
+            // Invalidate to redraw
+            invalidate();
         }
 
         private void startTimerIfNecessary() {
@@ -149,17 +200,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             }
         };
 
-        @Override
-        public void onVisibilityChanged(boolean visible) {
-            super.onVisibilityChanged(visible);
-            if (visible) {
-                googleApiClient.connect();
-            } else {
-                releaseGoogleApiClient();
-            }
-            startTimerIfNecessary();
-        }
-
         private void releaseGoogleApiClient() {
             if (googleApiClient != null && googleApiClient.isConnected()) {
                 googleApiClient.disconnect();
@@ -172,19 +212,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
         private void registerBatteryInfoReceiver() {
             registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-        }
-
-        @Override
-        public void onDraw(Canvas canvas, Rect bounds) {
-            super.onDraw(canvas, bounds);
-            watchFace.draw(canvas, bounds);
-        }
-
-        @Override
-        public void onTimeTick() {
-            super.onTimeTick();
-            checkActions();
-            invalidate();
         }
 
         private void checkActions(){
@@ -201,32 +228,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             if ((hour%2) == 0 && minute == 0){
                 updateSunriseAndSunset();
             }
-        }
-
-        @Override
-        public void onAmbientModeChanged(boolean inAmbientMode) {
-            super.onAmbientModeChanged(inAmbientMode);
-            watchFace.setAntiAlias(!inAmbientMode);
-            watchFace.setShowSeconds(!isInAmbientMode());
-
-            if (inAmbientMode) {
-                watchFace.updateBackgroundColourToDefault();
-                watchFace.updateDateAndTimeColourToDefault();
-            } else {
-                updateAltitude();
-                watchFace.restoreBackgroundColour();
-                watchFace.restoreDateAndTimeColour();
-            }
-            invalidate();
-            startTimerIfNecessary();
-        }
-
-        @Override
-        public void onDestroy() {
-            timeTick.removeCallbacks(timeRunnable);
-            releaseGoogleApiClient();
-            unregisterBatteryInfoReceiver();
-            super.onDestroy();
         }
 
         @Override
@@ -255,7 +256,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             // Register listener using the LocationRequest object
             // LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
         }
-
 
         @Override
         public void onConnectionSuspended(int i) {
