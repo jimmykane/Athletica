@@ -7,42 +7,44 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.SystemClock;
 
-public class PressureSensor {
-    private SensorManager sensorManager=null;
-    private PressureSensor.Callback cb=null;
+public class PressureSensor implements SensorEventListener{
+    private SensorManager sensorManager;
     private Float lastReading;
+    private PressureChangeCallback pressureChangeCallback;
 
-    public PressureSensor(Context context, PressureSensor.Callback cb) {
-        this.cb=cb;
-        sensorManager=(SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
-        sensorManager.registerListener(listener,
-                sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE),
-                SensorManager.SENSOR_DELAY_UI);
+    public interface PressureChangeCallback {
+        void pressureValueChanged(Float pressureValue);
     }
 
-    public void close() {
-        sensorManager.unregisterListener(listener);
+    public PressureSensor(Context context, PressureSensor.PressureChangeCallback pressureChangeCallback) {
+        this.pressureChangeCallback = pressureChangeCallback;
+        sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     }
 
-    private void pressureChanged(Float pressureValue) {
-        if (cb!=null) {
-            cb.onPressureChanged(pressureValue);
+    public void startListening(){
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE), SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    public void stopListening(){
+        sensorManager.unregisterListener(this);
+    }
+
+    public Float getLastReading(){
+        return lastReading;
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        // Pass the value to the callback
+        if (pressureChangeCallback !=null) {
+            pressureChangeCallback.pressureValueChanged(event.values[0]);
         }
+        // Update last reading
+        lastReading = event.values[0];
     }
 
-    public interface Callback {
-        void onPressureChanged(Float pressureValue);
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
-
-    private SensorEventListener listener = new SensorEventListener() {
-        public void onSensorChanged(SensorEvent event) {
-                pressureChanged(event.values[0]);
-                lastReading = event.values[0];
-                sensorManager.unregisterListener(listener);
-        }
-
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            // unused
-        }
-    };
 }

@@ -20,7 +20,6 @@ import android.view.SurfaceHolder;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import android.location.Location;
@@ -38,7 +37,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
     }
 
     private class SimpleEngine extends CanvasWatchFaceService.Engine implements
-            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, PressureSensor.Callback {
+            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, PressureSensor.PressureChangeCallback {
 
         private static final String TAG = "SimpleEngine";
 
@@ -52,15 +51,19 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
         private PressureSensor pressureSensor;
 
-
-        public void onPressureChanged(Float pressureValue) {
-            if (pressureValue != null) {
-                Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
-                watchFace.updatePressureAltitude(String.format("%.02f", altitude));
-                Log.e(TAG, "Updated pressure");
-                // Invalidate to redraw
-                invalidate();
-            }
+        /**
+         * When pressure changes
+         * @param pressureValue
+         */
+        public void pressureValueChanged(Float pressureValue) {
+            // Get the alti from pressure
+            Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
+            watchFace.updatePressureAltitude(String.format("%.02f", altitude));
+            Log.e(TAG, "Updated pressure");
+            // Stop the listening
+            pressureSensor.stopListening();
+            // Invalidate to redraw
+            invalidate();
         }
 
         @Override
@@ -86,8 +89,9 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                     .addOnConnectionFailedListener(this)
                     .build();
 
+            pressureSensor = new PressureSensor(getApplicationContext(), this);
+
             registerBatteryInfoReceiver();
-            updateAltitude();
             updateSunriseAndSunset();
         }
 
@@ -116,6 +120,10 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             if (isVisible() && !isInAmbientMode()) {
                 invalidate();
             }
+        }
+
+        private void updateAltitude(){
+            pressureSensor.startListening();
         }
 
         private void updateSunriseAndSunset() {
@@ -195,10 +203,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        private void updateAltitude(){
-            pressureSensor = new PressureSensor(getApplicationContext(), this);
-        }
-
         @Override
         public void onAmbientModeChanged(boolean inAmbientMode) {
             super.onAmbientModeChanged(inAmbientMode);
@@ -217,18 +221,11 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             startTimerIfNecessary();
         }
 
-        private void closePressureSensor(){
-            if (pressureSensor != null){
-                pressureSensor.close();
-            }
-        }
-
         @Override
         public void onDestroy() {
             timeTick.removeCallbacks(timeRunnable);
             releaseGoogleApiClient();
             unregisterBatteryInfoReceiver();
-            closePressureSensor();
             super.onDestroy();
         }
 
