@@ -8,9 +8,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.format.Time;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class SimpleWatchFace {
 
     private static final String TIME_FORMAT_WITHOUT_SECONDS = "%02d:%02d";
@@ -19,8 +16,6 @@ public class SimpleWatchFace {
     private static final int DATE_AND_TIME_DEFAULT_COLOUR = Color.WHITE;
     private static final int TEXT_DEFAULT_COLOUR = Color.WHITE;
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
-
-    private final List<Paint> paintList = new ArrayList<Paint>();
 
     private final Paint timePaint;
     private final Paint datePaint;
@@ -38,7 +33,7 @@ public class SimpleWatchFace {
     private int backgroundColour = BACKGROUND_DEFAULT_COLOUR;
     private int dateAndTimeColour = DATE_AND_TIME_DEFAULT_COLOUR;
 
-    public static SimpleWatchFace newInstance(Context context) {
+    public SimpleWatchFace(Context context) {
 
         Paint sunrisePaint = new Paint();
         sunrisePaint.setColor(TEXT_DEFAULT_COLOUR);
@@ -69,18 +64,15 @@ public class SimpleWatchFace {
         Paint backgroundPaint = new Paint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
 
-        return new SimpleWatchFace(timePaint, datePaint, batteryLevelPaint, sunrisePaint, sunsetPaint ,backgroundPaint, new Time());
-    }
-
-    SimpleWatchFace(Paint timePaint, Paint datePaint, Paint batteryLevelPaint, Paint sunrisePaint, Paint sunsetPaint, Paint backgroundPaint, Time time) {
         this.timePaint = timePaint;
         this.datePaint = datePaint;
         this.batteryLevelPaint = batteryLevelPaint;
         this.sunrisePaint = sunrisePaint;
         this.sunsetPaint = sunsetPaint;
         this.backgroundPaint = backgroundPaint;
-        this.time = time;
+        this.time = new Time();
     }
+
 
     public void draw(Canvas canvas, Rect bounds) {
         time.setToNow();

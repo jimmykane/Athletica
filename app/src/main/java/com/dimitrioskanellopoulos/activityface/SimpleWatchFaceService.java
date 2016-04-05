@@ -66,7 +66,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
             startTimerIfNecessary();
 
-            watchFace = SimpleWatchFace.newInstance(SimpleWatchFaceService.this);
+            watchFace = new SimpleWatchFace(SimpleWatchFaceService.this);
 
             googleApiClient = new GoogleApiClient.Builder(SimpleWatchFaceService.this)
                     .addApi(LocationServices.API)
