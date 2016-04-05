@@ -130,7 +130,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             super.onDestroy();
         }
 
-
         /**
          * When pressure changes
          * @param pressureValue

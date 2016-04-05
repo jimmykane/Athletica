@@ -25,6 +25,6 @@ public class SunriseSunsetTimesService {
         );
         String officialSunrise = calculator.getOfficialSunriseForDate(Calendar.getInstance());
         String officialSunset = calculator.getOfficialSunsetForDate(Calendar.getInstance());
-        return new Pair<String, String>(officialSunrise, officialSunset);
+        return new Pair<>(officialSunrise, officialSunset);
     }
 }
