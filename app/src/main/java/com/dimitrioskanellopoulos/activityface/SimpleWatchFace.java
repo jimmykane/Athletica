@@ -10,6 +10,9 @@ import android.text.format.Time;
 
 public class SimpleWatchFace {
 
+    private static final Typeface NORMAL_TYPEFACE =
+            Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
+
     private static final String TIME_FORMAT_WITHOUT_SECONDS = "%02d:%02d";
     private static final String TIME_FORMAT_WITH_SECONDS = TIME_FORMAT_WITHOUT_SECONDS + ":%02d";
     private static final String DATE_FORMAT = "%02d.%02d.%d";

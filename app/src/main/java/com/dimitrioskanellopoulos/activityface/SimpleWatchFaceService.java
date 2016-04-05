@@ -10,9 +10,10 @@ import android.hardware.SensorManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
+import android.os.Message;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
+import android.text.format.Time;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
@@ -24,32 +25,69 @@ import com.google.android.gms.location.LocationServices;
 
 import android.location.Location;
 
+import java.lang.ref.WeakReference;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
-    private static final long TICK_PERIOD_MILLIS = TimeUnit.SECONDS.toMillis(1);
+    /**
+     * Update rate in milliseconds for interactive mode. We update once a second since seconds are
+     * displayed in interactive mode.
+     */
+    private static final long INTERACTIVE_UPDATE_RATE_MS = TimeUnit.SECONDS.toMillis(1);
+
+    /**
+     * Handler message id for updating the time periodically in interactive mode.
+     */
+    private static final int MSG_UPDATE_TIME = 0;
 
     @Override
-    public Engine onCreateEngine() {
-        return new SimpleEngine();
+    public CanvasWatchFaceService.Engine onCreateEngine() {
+        return new Engine();
     }
 
-    private class SimpleEngine extends CanvasWatchFaceService.Engine implements
+    private class Engine extends CanvasWatchFaceService.Engine implements
             GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, PressureSensor.PressureChangeCallback {
 
-        private static final String TAG = "SimpleEngine";
+        private static final String TAG = "Engine";
+
+        final Handler mUpdateTimeHandler = new EngineHandler(this);
+
+        final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                watchFace.updateTimeZoneWith(intent.getStringExtra("time-zone"));
+            }
+        };
+
+        final BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+                Intent batteryStatus = context.registerReceiver(null, ifilter);
+                int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+                int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+                float batteryPct = level / (float)scale; // Used just in case
+                watchFace.updateBatteryLevel(Integer.toString(level));
+            }
+        };
+
+        boolean mRegisteredTimeZoneReceiver = false;
 
         private SimpleWatchFace watchFace;
-
-        private Handler timeTick;
 
         private GoogleApiClient googleApiClient;
 
         private Location lastKnownLocation;
 
         private PressureSensor pressureSensor;
+
+        /**
+         * Whether the display supports fewer bits for each color in ambient mode. When true, we
+         * disable anti-aliasing in ambient mode.
+         */
+        boolean mLowBitAmbient;
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -61,10 +99,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                     .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
                     .setShowSystemUiTime(false)
                     .build());
-
-            timeTick = new Handler(Looper.myLooper());
-
-            startTimerIfNecessary();
 
             watchFace = new SimpleWatchFace(SimpleWatchFaceService.this);
 
@@ -81,14 +115,52 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         }
 
         @Override
+        public void onDestroy() {
+            mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
+            releaseGoogleApiClient();
+            unregisterBatteryInfoReceiver();
+            super.onDestroy();
+        }
+
+        @Override
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
             if (visible) {
                 googleApiClient.connect();
+                registerTimeZoneReceiver();
+
+                // Update time zone in case it changed while we weren't visible.
+                watchFace.updateTimeZoneWith(TimeZone.getDefault().getID());
             } else {
                 releaseGoogleApiClient();
+                unregisterTimeZoneReceiver();
             }
-            startTimerIfNecessary();
+            // Whether the timer should be running depends on whether we're visible (as well as
+            // whether we're in ambient mode), so we may need to start or stop the timer.
+            updateTimer();
+        }
+
+        private void registerTimeZoneReceiver() {
+            if (mRegisteredTimeZoneReceiver) {
+                return;
+            }
+            mRegisteredTimeZoneReceiver = true;
+            IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
+            SimpleWatchFaceService.this.registerReceiver(mTimeZoneReceiver, filter);
+        }
+
+        private void unregisterTimeZoneReceiver() {
+            if (!mRegisteredTimeZoneReceiver) {
+                return;
+            }
+            mRegisteredTimeZoneReceiver = false;
+            SimpleWatchFaceService.this.unregisterReceiver(mTimeZoneReceiver);
+        }
+
+        @Override
+        public void onPropertiesChanged(Bundle properties) {
+            super.onPropertiesChanged(properties);
+            mLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
         }
 
         @Override
@@ -107,6 +179,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onAmbientModeChanged(boolean inAmbientMode) {
             super.onAmbientModeChanged(inAmbientMode);
+
             watchFace.setAntiAlias(!inAmbientMode);
             watchFace.setShowSeconds(!isInAmbientMode());
 
@@ -118,16 +191,9 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                 watchFace.restoreBackgroundColour();
                 watchFace.restoreDateAndTimeColour();
             }
-            invalidate();
-            startTimerIfNecessary();
-        }
-
-        @Override
-        public void onDestroy() {
-            timeTick.removeCallbacks(timeRunnable);
-            releaseGoogleApiClient();
-            unregisterBatteryInfoReceiver();
-            super.onDestroy();
+            // Whether the timer should be running depends on whether we're visible (as well as
+            // whether we're in ambient mode), so we may need to start or stop the timer.
+            updateTimer();
         }
 
         /**
@@ -145,30 +211,35 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             invalidate();
         }
 
-        private void startTimerIfNecessary() {
-            timeTick.removeCallbacks(timeRunnable);
-            if (isVisible() && !isInAmbientMode()) {
-                timeTick.post(timeRunnable);
+        /**
+         * Starts the {@link #mUpdateTimeHandler} timer if it should be running and isn't currently
+         * or stops it if it shouldn't be running but currently is.
+         */
+        private void updateTimer() {
+            mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
+            if (shouldTimerBeRunning()) {
+                mUpdateTimeHandler.sendEmptyMessage(MSG_UPDATE_TIME);
             }
         }
 
-        private final Runnable timeRunnable = new Runnable() {
-            @Override
-            public void run() {
-                onSecondTick();
-                if (isVisible() && !isInAmbientMode()) {
-                    timeTick.postDelayed(this, TICK_PERIOD_MILLIS);
-                }
-            }
-        };
-
-        private void onSecondTick() {
-            invalidateIfNecessary();
+        /**
+         * Returns whether the {@link #mUpdateTimeHandler} timer should be running. The timer should
+         * only run when we're visible and in interactive mode.
+         */
+        private boolean shouldTimerBeRunning() {
+            return isVisible() && !isInAmbientMode();
         }
 
-        private void invalidateIfNecessary() {
-            if (isVisible() && !isInAmbientMode()) {
-                invalidate();
+        /**
+         * Handle updating the time periodically in interactive mode.
+         */
+        private void handleUpdateTimeMessage() {
+            invalidate();
+            if (shouldTimerBeRunning()) {
+                long timeMs = System.currentTimeMillis();
+                long delayMs = INTERACTIVE_UPDATE_RATE_MS
+                        - (timeMs % INTERACTIVE_UPDATE_RATE_MS);
+                mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs);
             }
         }
 
@@ -186,18 +257,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             watchFace.updateSunset(sunriseSunset.second);
             Log.e(TAG, "Updated sunrise");
         }
-
-        private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-                Intent batteryStatus = context.registerReceiver(null, ifilter);
-                int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-                int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-                float batteryPct = level / (float)scale; // Used just in case
-                watchFace.updateBatteryLevel(Integer.toString(level));
-            }
-        };
 
         private void releaseGoogleApiClient() {
             if (googleApiClient != null && googleApiClient.isConnected()) {
@@ -269,6 +328,26 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onLocationChanged(Location location) {
             Log.e(TAG, "Location changed");
+        }
+    }
+
+    private static class EngineHandler extends Handler {
+        private final WeakReference<SimpleWatchFaceService.Engine> mWeakReference;
+
+        public EngineHandler(SimpleWatchFaceService.Engine reference) {
+            mWeakReference = new WeakReference<>(reference);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            SimpleWatchFaceService.Engine engine = mWeakReference.get();
+            if (engine != null) {
+                switch (msg.what) {
+                    case MSG_UPDATE_TIME:
+                        engine.handleUpdateTimeMessage();
+                        break;
+                }
+            }
         }
     }
 }
