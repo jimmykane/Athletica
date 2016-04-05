@@ -8,6 +8,9 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.format.Time;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimpleWatchFace {
 
     private static final String TIME_FORMAT_WITHOUT_SECONDS = "%02d:%02d";
@@ -16,6 +19,8 @@ public class SimpleWatchFace {
     private static final int DATE_AND_TIME_DEFAULT_COLOUR = Color.WHITE;
     private static final int TEXT_DEFAULT_COLOUR = Color.WHITE;
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
+
+    private final List<Paint> paintList = new ArrayList<Paint>();
 
     private final Paint timePaint;
     private final Paint datePaint;
@@ -128,6 +133,9 @@ public class SimpleWatchFace {
     public void setAntiAlias(boolean antiAlias) {
         timePaint.setAntiAlias(antiAlias);
         datePaint.setAntiAlias(antiAlias);
+        sunrisePaint.setAntiAlias(antiAlias);
+        sunsetPaint.setAntiAlias(antiAlias);
+        batteryLevelPaint.setAntiAlias(antiAlias);
     }
 
     public void updateDateAndTimeColourTo(int colour) {
