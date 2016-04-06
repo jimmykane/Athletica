@@ -13,9 +13,6 @@ import java.util.List;
 
 public class SimpleWatchFace {
 
-    private static final Typeface NORMAL_TYPEFACE =
-            Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
-
     private static final String TIME_FORMAT_WITHOUT_SECONDS = "%02d:%02d";
     private static final String TIME_FORMAT_WITH_SECONDS = TIME_FORMAT_WITHOUT_SECONDS + ":%02d";
     private static final String DATE_FORMAT = "%02d.%02d.%d";
@@ -64,11 +61,12 @@ public class SimpleWatchFace {
         timePaint.setAntiAlias(true);
         paints.add(timePaint);
 
-        // Add paint for data
+        // Add paint for date
         Paint datePaint = new Paint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTextSize(context.getResources().getDimension(R.dimen.date_size));
         datePaint.setAntiAlias(true);
+        datePaint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL));
         paints.add(datePaint);
 
         // Add paint for sunset
@@ -95,6 +93,7 @@ public class SimpleWatchFace {
 
     public void draw(Canvas canvas, Rect bounds) {
         time.setToNow();
+        // Should calc in foreach
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
 
         String timeText = String.format(shouldShowSeconds ? TIME_FORMAT_WITH_SECONDS : TIME_FORMAT_WITHOUT_SECONDS, time.hour, time.minute, time.second);
@@ -173,7 +172,7 @@ public class SimpleWatchFace {
     }
 
     public void restoreBackgroundColour() {
-        backgroundPaint.setColor(backgroundColour);
+        this.backgroundPaint.setColor(backgroundColour);
     }
 
     public void updateBackgroundColourToDefault() {

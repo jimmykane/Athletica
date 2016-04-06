@@ -273,8 +273,8 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         }
 
         private void checkActions(){
-            long totalMilliSeconds=System.currentTimeMillis();
-            long totalSeconds=totalMilliSeconds/1000;
+            long timeMillis=System.currentTimeMillis();
+            long totalSeconds=timeMillis/1000;
             int second=(int)(totalSeconds%60);
             long totalMinutes=totalSeconds/60;
             int minute=(int)(totalMinutes%60);
