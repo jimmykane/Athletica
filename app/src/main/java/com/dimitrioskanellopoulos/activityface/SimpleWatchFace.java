@@ -8,6 +8,9 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.format.Time;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SimpleWatchFace {
 
     private static final Typeface NORMAL_TYPEFACE =
@@ -20,6 +23,7 @@ public class SimpleWatchFace {
     private static final int TEXT_DEFAULT_COLOUR = Color.WHITE;
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
 
+    private final List<Paint> paints = new ArrayList<Paint>();
     private final Paint timePaint;
     private final Paint datePaint;
     private final Paint batteryLevelPaint;
@@ -38,34 +42,47 @@ public class SimpleWatchFace {
 
     public SimpleWatchFace(Context context) {
 
+        // Add paint for sunrise
         Paint sunrisePaint = new Paint();
         sunrisePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunrisePaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
         sunrisePaint.setAntiAlias(true);
+        paints.add(sunrisePaint);
 
+        // Add paint for battery level
         Paint batteryLevelPaint = new Paint();
         batteryLevelPaint.setColor(TEXT_DEFAULT_COLOUR);
         batteryLevelPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
         batteryLevelPaint.setAntiAlias(true);
+        paints.add(batteryLevelPaint);
 
+        // Add paint for time
         Paint timePaint = new Paint();
         timePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(context.getResources().getDimension(R.dimen.time_size));
         timePaint.setAntiAlias(true);
+        paints.add(timePaint);
 
+        // Add paint for data
         Paint datePaint = new Paint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTextSize(context.getResources().getDimension(R.dimen.date_size));
         datePaint.setAntiAlias(true);
+        paints.add(datePaint);
 
+        // Add paint for sunset
         Paint sunsetPaint = new Paint();
         sunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
         sunsetPaint.setAntiAlias(true);
+        paints.add(sunsetPaint);
 
+
+        // Add paint for background
         Paint backgroundPaint = new Paint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
+        paints.add(backgroundPaint);
 
         this.timePaint = timePaint;
         this.datePaint = datePaint;
@@ -75,7 +92,6 @@ public class SimpleWatchFace {
         this.backgroundPaint = backgroundPaint;
         this.time = new Time();
     }
-
 
     public void draw(Canvas canvas, Rect bounds) {
         time.setToNow();
@@ -126,17 +142,9 @@ public class SimpleWatchFace {
     }
 
     public void setAntiAlias(boolean antiAlias) {
-        timePaint.setAntiAlias(antiAlias);
-        datePaint.setAntiAlias(antiAlias);
-        sunrisePaint.setAntiAlias(antiAlias);
-        sunsetPaint.setAntiAlias(antiAlias);
-        batteryLevelPaint.setAntiAlias(antiAlias);
-    }
-
-    public void updateDateAndTimeColourTo(int colour) {
-        dateAndTimeColour = colour;
-        timePaint.setColor(colour);
-        datePaint.setColor(colour);
+        for (Paint paint: this.paints) {
+            paint.setAntiAlias(antiAlias);
+        }
     }
 
     public void updateTimeZoneWith(String timeZone) {
@@ -146,11 +154,6 @@ public class SimpleWatchFace {
 
     public void setShowSeconds(boolean showSeconds) {
         shouldShowSeconds = showSeconds;
-    }
-
-    public void updateBackgroundColourTo(int colour) {
-        backgroundColour = colour;
-        backgroundPaint.setColor(colour);
     }
 
     public void updateBatteryLevel(String batteryLevel){
