@@ -1,5 +1,6 @@
 package com.dimitrioskanellopoulos.activityface;
 
+import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,8 +18,12 @@ public class LocationEngine implements GoogleApiClient.ConnectionCallbacks, Goog
 
     private Location lastKnownLocation;
 
-    public LocationEngine(GoogleApiClient googleApiClient){
-        this.googleApiClient = googleApiClient;
+    public LocationEngine(Context context) {
+        googleApiClient = new GoogleApiClient.Builder(context)
+                .addApi(LocationServices.API)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .build();;
     }
 
 
