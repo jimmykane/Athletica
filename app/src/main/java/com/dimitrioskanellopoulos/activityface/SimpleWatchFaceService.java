@@ -243,6 +243,8 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             }
         }
 
+
+
         private void updateAltitude(){
             pressureSensor.startListening();
         }
@@ -330,6 +332,8 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             Log.e(TAG, "Location changed");
         }
     }
+
+
 
     private static class EngineHandler extends Handler {
         private final WeakReference<SimpleWatchFaceService.Engine> mWeakReference;
