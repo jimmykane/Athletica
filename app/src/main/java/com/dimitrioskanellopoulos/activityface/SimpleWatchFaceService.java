@@ -48,7 +48,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
     }
 
     private class Engine extends CanvasWatchFaceService.Engine implements
-            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, PressureSensor.PressureChangeCallback {
+             PressureSensor.PressureChangeCallback {
 
         private static final String TAG = "Engine";
 
@@ -77,9 +77,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
         private SimpleWatchFace watchFace;
 
-        private GoogleApiClient googleApiClient;
-
-        private Location lastKnownLocation;
+        private LocationEngine locationEngine;
 
         private PressureSensor pressureSensor;
 
@@ -102,13 +100,10 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
             watchFace = new SimpleWatchFace(SimpleWatchFaceService.this);
 
-            googleApiClient = new GoogleApiClient.Builder(SimpleWatchFaceService.this)
-                    .addApi(LocationServices.API)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .build();
+            locationEngine = new LocationEngine(SimpleWatchFaceService.this);
 
             pressureSensor = new PressureSensor(getApplicationContext(), this);
+
 
             registerBatteryInfoReceiver();
             updateSunriseAndSunset();
@@ -117,7 +112,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
-            releaseGoogleApiClient();
             unregisterBatteryInfoReceiver();
             super.onDestroy();
         }
@@ -126,13 +120,10 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
             if (visible) {
-                googleApiClient.connect();
                 registerTimeZoneReceiver();
-
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault().getID());
             } else {
-                releaseGoogleApiClient();
                 unregisterTimeZoneReceiver();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
@@ -251,19 +242,10 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
         private void updateSunriseAndSunset() {
             // Try once more to get the loc
-            if (googleApiClient != null && googleApiClient.isConnected()){
-                lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            }
-            Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(lastKnownLocation, TimeZone.getDefault().getID());
+            Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(locationEngine.get(), TimeZone.getDefault().getID());
             watchFace.updateSunrise(sunriseSunset.first);
             watchFace.updateSunset(sunriseSunset.second);
             Log.e(TAG, "Updated sunrise");
-        }
-
-        private void releaseGoogleApiClient() {
-            if (googleApiClient != null && googleApiClient.isConnected()) {
-                googleApiClient.disconnect();
-            }
         }
 
         private void unregisterBatteryInfoReceiver() {
@@ -290,18 +272,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        @Override
-        public void onConnected(Bundle connectionHint) {
-            // Provides a simple way of getting a device's location and is well suited for
-            // applications that do not require a fine-grained location and that do not need location
-            // updates. Gets the best and most recent location currently available, which may be null
-            // in rare cases when a location is not available.
-            lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            if (lastKnownLocation != null) {
-                Log.e(TAG, "Location found");
-                updateSunriseAndSunset();
-                return;
-            }
 
             // Create the LocationRequest object
             // LocationRequest locationRequest = LocationRequest.create();
@@ -315,22 +285,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             // locationRequest.setSmallestDisplacement(2);
             // Register listener using the LocationRequest object
             // LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
-        }
-
-        @Override
-        public void onConnectionSuspended(int i) {
-            Log.e(TAG, "suspended GoogleAPI");
-        }
-
-        @Override
-        public void onConnectionFailed(ConnectionResult connectionResult) {
-            Log.e(TAG, "connectionFailed GoogleAPI");
-        }
-
-        @Override
-        public void onLocationChanged(Location location) {
-            Log.e(TAG, "Location changed");
-        }
     }
 
 
