@@ -110,6 +110,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
             unregisterBatteryInfoReceiver();
+            googleApiHelper.disconnect();
             super.onDestroy();
         }
 
@@ -167,7 +168,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onAmbientModeChanged(boolean inAmbientMode) {
             super.onAmbientModeChanged(inAmbientMode);
-            updateSunriseAndSunset();
+
             watchFace.setAntiAlias(!inAmbientMode);
             watchFace.setShowSeconds(!isInAmbientMode());
 
@@ -192,7 +193,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             // Get the alti from pressure
             Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
             watchFace.updatePressureAltitude(String.format("%.02f", altitude));
-            Log.e(TAG, "Updated pressure");
+            Log.d(TAG, "Updated pressure");
             // Stop the listening
             pressureSensor.stopListening();
             // Invalidate to redraw
@@ -246,7 +247,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(location, TimeZone.getDefault().getID());
             watchFace.updateSunrise(sunriseSunset.first);
             watchFace.updateSunset(sunriseSunset.second);
-            Log.e(TAG, "Successfully updated sunrise");
+            Log.d(TAG, "Successfully updated sunrise");
         }
 
         private void unregisterBatteryInfoReceiver() {

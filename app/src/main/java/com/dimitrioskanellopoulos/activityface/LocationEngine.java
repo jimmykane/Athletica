@@ -30,6 +30,6 @@ public class LocationEngine implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.e(TAG, "Location changed");
+        Log.d(TAG, "Location changed");
     }
 }
