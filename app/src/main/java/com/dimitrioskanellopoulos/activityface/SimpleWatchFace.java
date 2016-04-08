@@ -20,6 +20,11 @@ public class SimpleWatchFace {
     private static final int TEXT_DEFAULT_COLOUR = Color.WHITE;
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
 
+    // Texts
+    private final String sunriseTextTemplate;
+    private final String sunsetTextTemplate;
+
+    // Paints
     private final List<Paint> paints = new ArrayList<Paint>();
     private final Paint timePaint;
     private final Paint datePaint;
@@ -88,6 +93,11 @@ public class SimpleWatchFace {
         this.sunrisePaint = sunrisePaint;
         this.sunsetPaint = sunsetPaint;
         this.backgroundPaint = backgroundPaint;
+
+        // Get the texts
+        sunriseTextTemplate = context.getResources().getString(R.string.sunrise_text);
+        sunsetTextTemplate = context.getResources().getString(R.string.sunset_text);
+
         this.time = new Time();
     }
 
@@ -163,12 +173,12 @@ public class SimpleWatchFace {
         altitudeText = "@" + altitude + "m";
     }
 
-    public void updateSunrise(String time) {
-        sunriseText =  "Sunrise at " + time;
+    public void updateSunrise(String sunriseTime) {
+        sunriseText =  String.format(sunriseTextTemplate, sunriseTime);
     }
 
-    public void updateSunset(String time) {
-        sunsetText = "Sunset at " + time;
+    public void updateSunset(String sunsetTime) {
+        sunsetText =  String.format(sunsetTextTemplate, sunsetTime);
     }
 
     public void restoreBackgroundColour() {
