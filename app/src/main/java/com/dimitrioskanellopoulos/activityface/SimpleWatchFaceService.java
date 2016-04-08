@@ -227,7 +227,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         private void updateSunriseAndSunset() {
             Location location = locationEngine.getLastKnownLocation();
             if (location == null){
-                Log.e(TAG, "Could not update sunrise/sunset bacause no location was found");
+                Log.e(TAG, "Could not update sunrise/sunset because no location was found");
                 return;
             }
             Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(location, TimeZone.getDefault().getID());
