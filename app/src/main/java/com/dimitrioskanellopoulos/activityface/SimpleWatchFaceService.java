@@ -255,7 +255,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             if ((minute%5) == 0) {
                 pressureSensor.startListening();
             }
-            if ((hour%2) == 0 && minute == 0){
+            if (minute == 0){
                 updateSunriseAndSunset();
             }
         }
