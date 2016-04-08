@@ -104,6 +104,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
             registerBatteryInfoReceiver();
             updateSunriseAndSunset();
+            pressureSensor.startListening();
         }
 
         @Override
@@ -176,28 +177,12 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                 watchFace.updateBackgroundColourToDefault();
                 watchFace.updateDateAndTimeColourToDefault();
             } else {
-                updateAltitude();
                 watchFace.restoreBackgroundColour();
                 watchFace.restoreDateAndTimeColour();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
             updateTimer();
-        }
-
-        /**
-         * When pressure changes
-         * @param pressureValue
-         */
-        public void pressureValueChanged(Float pressureValue) {
-            // Get the alti from pressure
-            Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
-            watchFace.updatePressureAltitude(String.format("%.02f", altitude));
-            Log.d(TAG, "Updated pressure");
-            // Stop the listening
-            pressureSensor.stopListening();
-            // Invalidate to redraw
-            invalidate();
         }
 
         /**
@@ -232,10 +217,11 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-
-
-        private void updateAltitude(){
-            pressureSensor.startListening();
+        public void handlePressureValueChanged(Float pressureValue) {
+            Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
+            watchFace.updatePressureAltitude(String.format("%.02f", altitude));
+            pressureSensor.stopListening();
+            Log.d(TAG, "Updated pressure");
         }
 
         private void updateSunriseAndSunset() {
@@ -267,7 +253,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             long totalHours=totalMinutes/60;
             int hour=(int)(totalHours%24);
             if ((minute%5) == 0) {
-                updateAltitude();
+                pressureSensor.startListening();
             }
             if ((hour%2) == 0 && minute == 0){
                 updateSunriseAndSunset();

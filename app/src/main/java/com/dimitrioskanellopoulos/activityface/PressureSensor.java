@@ -5,14 +5,17 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 
 public class PressureSensor implements SensorEventListener{
+    private static final String TAG = "PressureSensor";
+
     private SensorManager sensorManager;
     private Float lastReading;
     private PressureChangeCallback pressureChangeCallback;
 
     public interface PressureChangeCallback {
-        void pressureValueChanged(Float pressureValue);
+        void handlePressureValueChanged(Float pressureValue);
     }
 
     public PressureSensor(Context context, PressureSensor.PressureChangeCallback pressureChangeCallback) {
@@ -21,10 +24,12 @@ public class PressureSensor implements SensorEventListener{
     }
 
     public void startListening(){
+        Log.d(TAG, "Started listening");
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE), SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void stopListening(){
+        Log.d(TAG, "Stopped listening");
         sensorManager.unregisterListener(this);
     }
 
@@ -36,7 +41,7 @@ public class PressureSensor implements SensorEventListener{
     public void onSensorChanged(SensorEvent event) {
         // Pass the value to the callback
         if (pressureChangeCallback !=null) {
-            pressureChangeCallback.pressureValueChanged(event.values[0]);
+            pressureChangeCallback.handlePressureValueChanged(event.values[0]);
         }
         // Update last reading
         lastReading = event.values[0];
@@ -44,6 +49,6 @@ public class PressureSensor implements SensorEventListener{
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
+        Log.d(TAG, "Accuracy changed");
     }
 }
