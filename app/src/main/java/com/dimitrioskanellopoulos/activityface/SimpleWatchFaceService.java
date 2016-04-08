@@ -13,15 +13,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
-import android.text.format.Time;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationServices;
 
 import android.location.Location;
 
@@ -81,6 +75,8 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
         private PressureSensor pressureSensor;
 
+        private GoogleApiHelper googleApiHelper;
+
         /**
          * Whether the display supports fewer bits for each color in ambient mode. When true, we
          * disable anti-aliasing in ambient mode.
@@ -100,10 +96,11 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
             watchFace = new SimpleWatchFace(SimpleWatchFaceService.this);
 
-            locationEngine = new LocationEngine(SimpleWatchFaceService.this);
+            googleApiHelper = new GoogleApiHelper(SimpleWatchFaceService.this);
+
+            locationEngine = new LocationEngine(googleApiHelper);
 
             pressureSensor = new PressureSensor(getApplicationContext(), this);
-
 
             registerBatteryInfoReceiver();
             updateSunriseAndSunset();
@@ -170,7 +167,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onAmbientModeChanged(boolean inAmbientMode) {
             super.onAmbientModeChanged(inAmbientMode);
-
+            updateSunriseAndSunset();
             watchFace.setAntiAlias(!inAmbientMode);
             watchFace.setShowSeconds(!isInAmbientMode());
 
@@ -241,11 +238,15 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         }
 
         private void updateSunriseAndSunset() {
-            // Try once more to get the loc
-            Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(locationEngine.get(), TimeZone.getDefault().getID());
+            Location location = locationEngine.getLastKnownLocation();
+            if (location == null){
+                Log.e(TAG, "Could not update sunrise/sunset bacause no location was found");
+                return;
+            }
+            Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(location, TimeZone.getDefault().getID());
             watchFace.updateSunrise(sunriseSunset.first);
             watchFace.updateSunset(sunriseSunset.second);
-            Log.e(TAG, "Updated sunrise");
+            Log.e(TAG, "Successfully updated sunrise");
         }
 
         private void unregisterBatteryInfoReceiver() {
