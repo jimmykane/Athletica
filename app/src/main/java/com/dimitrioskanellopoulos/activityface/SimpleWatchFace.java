@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.format.Time;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +40,15 @@ public class SimpleWatchFace {
     private String altitudeText = "";
     private String sunriseText = "";
     private String sunsetText = "";
-    private int backgroundColour = BACKGROUND_DEFAULT_COLOUR;
-    private int dateAndTimeColour = DATE_AND_TIME_DEFAULT_COLOUR;
 
     public SimpleWatchFace(Context context) {
 
+        // Create fontAwesome typeface
+        Typeface fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
+
         // Add paint for sunrise
         Paint sunrisePaint = new Paint();
+        sunrisePaint.setTypeface(fontAwesome);
         sunrisePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunrisePaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
         sunrisePaint.setAntiAlias(true);
@@ -76,6 +79,7 @@ public class SimpleWatchFace {
 
         // Add paint for sunset
         Paint sunsetPaint = new Paint();
+        sunsetPaint.setTypeface(fontAwesome);
         sunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
         sunsetPaint.setAntiAlias(true);
@@ -182,6 +186,7 @@ public class SimpleWatchFace {
     }
 
     public void restoreBackgroundColour() {
+        int backgroundColour = BACKGROUND_DEFAULT_COLOUR;
         this.backgroundPaint.setColor(backgroundColour);
     }
 
@@ -195,6 +200,7 @@ public class SimpleWatchFace {
     }
 
     public void restoreDateAndTimeColour() {
+        int dateAndTimeColour = DATE_AND_TIME_DEFAULT_COLOUR;
         timePaint.setColor(dateAndTimeColour);
         datePaint.setColor(dateAndTimeColour);
     }
