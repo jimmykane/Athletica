@@ -10,17 +10,8 @@ import java.util.Calendar;
 public class SunriseSunsetTimesService {
 
     public static Pair<String, String> getSunriseAndSunset(Location location, String timezone) {
-
-        Double latitude = 42.919532;
-        Double longitude = 1.035006;
-
-        if (location != null){
-            latitude = location.getLatitude();
-            longitude = location.getLongitude();
-        }
-
         SunriseSunsetCalculator calculator = new SunriseSunsetCalculator(
-                new com.luckycatlabs.sunrisesunset.dto.Location(latitude, longitude),
+                new com.luckycatlabs.sunrisesunset.dto.Location(location.getLatitude(), location.getLongitude()),
                 timezone
         );
         String officialSunrise = calculator.getOfficialSunriseForDate(Calendar.getInstance());
