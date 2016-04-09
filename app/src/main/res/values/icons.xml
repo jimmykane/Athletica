@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sun">&#xf185;</string>
+    <string name="moon">&#xf186;</string>
+    <string name="area_chart">&#xf1fe;</string>
+    <string name="battery_empty">&#xf244;</string>
+    <string name="battery_quarter">&#xf243;</string>
+    <string name="battery_half">&#xf242;</string>
+    <string name="battery_three_quarters">&#xf241;</string>
+    <string name="battery_full">&#xf240;</string>
+</resources>
