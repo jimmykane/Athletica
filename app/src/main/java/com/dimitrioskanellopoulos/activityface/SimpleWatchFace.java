@@ -125,7 +125,7 @@ public class SimpleWatchFace {
         float firstRowYOffset = computeTimeYOffset(firstRowText, firstRowPaint, bounds);
         canvas.drawText(firstRowText, firstRowTextXOffset, firstRowYOffset - dateYOffset, firstRowPaint);
 
-        String bottomRowText = batteryLevelText +  altitudeText;
+        String bottomRowText = batteryLevelText + "    " +  altitudeText;
         float bottomRowTextXOffset = computeXOffset(bottomRowText, batteryLevelPaint, bounds);
         float bottomRowTextYOffset = computeTimeYOffset(bottomRowText, batteryLevelPaint, bounds);
         canvas.drawText(bottomRowText, bottomRowTextXOffset, bottomRowTextYOffset*2 - dateYOffset, batteryLevelPaint);
@@ -166,16 +166,17 @@ public class SimpleWatchFace {
         shouldShowSeconds = showSeconds;
     }
 
-    public void updateBatteryLevel(String batteryLevel){
-        batteryLevelText = batteryFullIcon + " " + batteryLevel + "%";
+    public void updateBatteryLevel(Float batteryPercentage){
+        String icon;
+        batteryLevelText = batteryFullIcon + " " + String.format("%.0f", batteryPercentage*100) + "%";
     }
 
     public void updatePressureAltitude(String altitude){
-        altitudeText = areaChartIcon + " " + altitude;
+        altitudeText = areaChartIcon + " " + altitude + "m";
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
-        firstRowText = sunIcon + " " + sunriseSunset.first + moonIcon + " " + sunriseSunset.second;
+        firstRowText = sunIcon + " " + sunriseSunset.first + "    " +moonIcon + " " + sunriseSunset.second;
     }
 
     public void restoreBackgroundColour() {

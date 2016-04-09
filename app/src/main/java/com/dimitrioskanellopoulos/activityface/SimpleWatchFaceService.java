@@ -64,7 +64,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                 int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
                 int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
                 float batteryPct = level / (float)scale; // Used just in case
-                watchFace.updateBatteryLevel(Integer.toString(level));
+                watchFace.updateBatteryLevel(batteryPct);
             }
         };
 
@@ -260,7 +260,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             int minute=(int)(totalMinutes%60);
             long totalHours=totalMinutes/60;
             int hour=(int)(totalHours%24);
-            if ((minute%5) == 0) {
+            if ((minute%1) == 0) {
                 pressureSensor.startListening();
             }
             if ((minute%30) == 0){
