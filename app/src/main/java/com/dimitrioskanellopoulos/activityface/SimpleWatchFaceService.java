@@ -221,7 +221,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
         public void handlePressureValueChanged(Float pressureValue) {
             Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
-            watchFace.updatePressureAltitude(String.format("%.02f", altitude));
+            watchFace.updatePressureAltitude(String.format("%.01f", altitude));
             pressureSensor.stopListening();
             Log.d(TAG, "Updated pressure");
         }
@@ -263,7 +263,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             if ((minute%5) == 0) {
                 pressureSensor.startListening();
             }
-            if ((minute%5) == 0){
+            if ((minute%30) == 0){
                 updateSunriseAndSunset();
             }
         }

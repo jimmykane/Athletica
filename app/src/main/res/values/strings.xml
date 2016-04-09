@@ -1,5 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="google_app_id">default-demo-app-b2533</string>
     <string name="app_name">ActivityFace</string>
-    <string name="sunrise_sunset_text" >&#xf185; %1$s &#xf186; %2$s</string>
+    <string name="white_space">&#160;</string>
+    <string name="sun_icon">&#xf185;</string>
+    <string name="moon_icon">&#xf186;</string>
+    <string name="area_chart_icon">&#xf1fe;</string>
+    <string name="battery_empty_icon">&#xf244;</string>
+    <string name="battery_quarter_icon">&#xf243;</string>
+    <string name="battery_half_icon">&#xf242;</string>
+    <string name="battery_three_quarters_icon">&#xf241;</string>
+    <string name="battery_full_icon">&#xf240;</string>
 </resources>
