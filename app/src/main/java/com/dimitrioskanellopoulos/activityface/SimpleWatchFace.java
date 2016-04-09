@@ -118,12 +118,12 @@ public class SimpleWatchFace {
 
         String dateText = String.format(DATE_FORMAT, time.monthDay, (time.month + 1), time.year);
         float dateXOffset = computeXOffset(dateText, datePaint, bounds);
-        float dateYOffset = computeDateYOffset(dateText, datePaint);
+        float dateYOffset = computeRowYOffset(dateText, datePaint);
         canvas.drawText(dateText, dateXOffset, timeYOffset + dateYOffset, datePaint);
 
         float firstRowTextXOffset = computeXOffset(firstRowText, firstRowPaint, bounds);
-        float firstRowYOffset = computeTimeYOffset(firstRowText, firstRowPaint, bounds);
-        canvas.drawText(firstRowText, firstRowTextXOffset, firstRowYOffset - dateYOffset, firstRowPaint);
+        float firstRowYOffset = computeRowYOffset(firstRowText, firstRowPaint);
+        canvas.drawText(firstRowText, firstRowTextXOffset, timeYOffset + dateYOffset + firstRowYOffset, firstRowPaint);
 
         String bottomRowText = batteryLevelText + "    " +  altitudeText;
         float bottomRowTextXOffset = computeXOffset(bottomRowText, batteryLevelPaint, bounds);
@@ -145,9 +145,9 @@ public class SimpleWatchFace {
         return centerY + (textHeight / 2.0f);
     }
 
-    private float computeDateYOffset(String dateText, Paint datePaint) {
+    private float computeRowYOffset(String text, Paint paint) {
         Rect textBounds = new Rect();
-        datePaint.getTextBounds(dateText, 0, dateText.length(), textBounds);
+        paint.getTextBounds(text, 0, text.length(), textBounds);
         return textBounds.height() + 17.0f;
     }
 
