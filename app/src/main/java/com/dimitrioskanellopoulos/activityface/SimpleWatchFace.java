@@ -166,9 +166,22 @@ public class SimpleWatchFace {
         shouldShowSeconds = showSeconds;
     }
 
-    public void updateBatteryLevel(Float batteryPercentage){
-        String icon;
-        batteryLevelText = batteryFullIcon + " " + String.format("%.0f", batteryPercentage*100) + "%";
+
+
+    public void updateBatteryLevel(Integer batteryPercentage){
+        String icon = "";
+        if (batteryPercentage > 80 && batteryPercentage <= 100){
+            icon = batteryFullIcon;
+        }else if (batteryPercentage > 60 && batteryPercentage <= 80){
+            icon = batteryThreeQuartersIcon;
+        }else if (batteryPercentage > 40 && batteryPercentage <= 60){
+            icon = batteryHalfIcon;
+        }else if (batteryPercentage > 20 && batteryPercentage <= 40){
+            icon = batteryQuarterIcon;
+        }else if (batteryPercentage > 0 && batteryPercentage <= 20){
+            icon = batteryEmptyIcon;
+        }
+        batteryLevelText = icon + " " + batteryPercentage + "%";
     }
 
     public void updatePressureAltitude(String altitude){
