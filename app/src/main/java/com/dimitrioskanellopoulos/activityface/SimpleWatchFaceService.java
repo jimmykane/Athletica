@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.hardware.SensorManager;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -125,6 +126,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             } else {
                 unregisterTimeZoneReceiver();
             }
+            updateSunriseAndSunset();
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
             updateTimer();
@@ -227,12 +229,18 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         private void updateSunriseAndSunset() {
             Location location = locationEngine.getLastKnownLocation();
             if (location == null){
-                Log.e(TAG, "Could not update sunrise/sunset because no location was found");
-                return;
+                // If its a real device continue to run
+                // @todo solve this with timezone
+                if (!isEmulator()) {
+                    Log.e(TAG, "Could not update sunrise/sunset because no location was found");
+                    return;
+                }
+                location = new Location("dummyprovider");
+                location.setLatitude(20.3);
+                location.setLongitude(52.6);
             }
             Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(location, TimeZone.getDefault().getID());
-            watchFace.updateSunrise(sunriseSunset.first);
-            watchFace.updateSunset(sunriseSunset.second);
+            watchFace.updateSunriseSunset(sunriseSunset);
             Log.d(TAG, "Successfully updated sunrise");
         }
 
@@ -255,7 +263,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             if ((minute%5) == 0) {
                 pressureSensor.startListening();
             }
-            if (minute == 0){
+            if ((minute%5) == 0){
                 updateSunriseAndSunset();
             }
         }
@@ -295,5 +303,16 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                 }
             }
         }
+    }
+
+    public static boolean isEmulator() {
+        return Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || "google_sdk".equals(Build.PRODUCT);
     }
 }

@@ -1,6 +1,5 @@
 <resources>
     <string name="google_app_id">default-demo-app-b2533</string>
     <string name="app_name">ActivityFace</string>
-    <string name="sunrise_text">&#xf185; Sunrise at %s</string>
-    <string name="sunset_text">&#xf186; Sunset at %s</string>
+    <string name="sunrise_sunset_text" >&#xf185; %1$s &#xf186; %2$s</string>
 </resources>

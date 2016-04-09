@@ -7,8 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.format.Time;
+import android.util.Pair;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,24 +22,21 @@ public class SimpleWatchFace {
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
 
     // Texts
-    private final String sunriseTextTemplate;
-    private final String sunsetTextTemplate;
+    private final String sunriseSunsetTextTemplate;
 
     // Paints
     private final List<Paint> paints = new ArrayList<Paint>();
     private final Paint timePaint;
     private final Paint datePaint;
     private final Paint batteryLevelPaint;
-    private final Paint sunrisePaint;
-    private final Paint sunsetPaint;
+    private final Paint sunriseSunsetPaint;
     private final Paint backgroundPaint;
     private final Time time;
 
     private boolean shouldShowSeconds = true;
     private String batteryLevelText = "";
     private String altitudeText = "";
-    private String sunriseText = "";
-    private String sunsetText = "";
+    private String sunriseSunsetText = "";
 
     public SimpleWatchFace(Context context) {
 
@@ -47,12 +44,12 @@ public class SimpleWatchFace {
         Typeface fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
 
         // Add paint for sunrise
-        Paint sunrisePaint = new Paint();
-        sunrisePaint.setTypeface(fontAwesome);
-        sunrisePaint.setColor(TEXT_DEFAULT_COLOUR);
-        sunrisePaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
-        sunrisePaint.setAntiAlias(true);
-        paints.add(sunrisePaint);
+        sunriseSunsetPaint = new Paint();
+        sunriseSunsetPaint.setTypeface(fontAwesome);
+        sunriseSunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
+        sunriseSunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
+        sunriseSunsetPaint.setAntiAlias(true);
+        paints.add(sunriseSunsetPaint);
 
         // Add paint for battery level
         Paint batteryLevelPaint = new Paint();
@@ -77,15 +74,6 @@ public class SimpleWatchFace {
         datePaint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL));
         paints.add(datePaint);
 
-        // Add paint for sunset
-        Paint sunsetPaint = new Paint();
-        sunsetPaint.setTypeface(fontAwesome);
-        sunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
-        sunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
-        sunsetPaint.setAntiAlias(true);
-        paints.add(sunsetPaint);
-
-
         // Add paint for background
         Paint backgroundPaint = new Paint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
@@ -94,13 +82,10 @@ public class SimpleWatchFace {
         this.timePaint = timePaint;
         this.datePaint = datePaint;
         this.batteryLevelPaint = batteryLevelPaint;
-        this.sunrisePaint = sunrisePaint;
-        this.sunsetPaint = sunsetPaint;
         this.backgroundPaint = backgroundPaint;
 
         // Get the texts
-        sunriseTextTemplate = context.getResources().getString(R.string.sunrise_text);
-        sunsetTextTemplate = context.getResources().getString(R.string.sunset_text);
+        sunriseSunsetTextTemplate = context.getResources().getString(R.string.sunrise_sunset_text);
 
         this.time = new Time();
     }
@@ -120,18 +105,14 @@ public class SimpleWatchFace {
         float dateYOffset = computeDateYOffset(dateText, datePaint);
         canvas.drawText(dateText, dateXOffset, timeYOffset + dateYOffset, datePaint);
 
-        float sunriseTextXOffset = computeXOffset(sunsetText, sunsetPaint, bounds);
-        float sunriseTextYOffset = computeTimeYOffset(sunsetText, sunsetPaint, bounds);
-        canvas.drawText(sunriseText, sunriseTextXOffset, sunriseTextYOffset - dateYOffset, sunrisePaint);
+        float sunriseSunsetTextXOffset = computeXOffset(sunriseSunsetText, sunriseSunsetPaint, bounds);
+        float sunriseSunsetYOffset = computeTimeYOffset(sunriseSunsetText, sunriseSunsetPaint, bounds);
+        canvas.drawText(sunriseSunsetText, sunriseSunsetTextXOffset, sunriseSunsetYOffset - dateYOffset, sunriseSunsetPaint);
 
         String bottomRowText = batteryLevelText + " " + altitudeText;
         float bottomRowTextXOffset = computeXOffset(bottomRowText, batteryLevelPaint, bounds);
         float bottomRowTextYOffset = computeTimeYOffset(bottomRowText, batteryLevelPaint, bounds);
-        canvas.drawText(bottomRowText, bottomRowTextXOffset, bottomRowTextYOffset + sunriseTextYOffset - dateYOffset, batteryLevelPaint);
-
-        float sunsetTextXOffset = computeXOffset(sunsetText, sunsetPaint, bounds);
-        float simpleTextYOffset = computeTimeYOffset(sunsetText, sunsetPaint, bounds);
-        canvas.drawText(sunsetText, sunsetTextXOffset, simpleTextYOffset + 2*dateYOffset, sunsetPaint);
+        canvas.drawText(bottomRowText, bottomRowTextXOffset, bottomRowTextYOffset + sunriseSunsetYOffset - dateYOffset, batteryLevelPaint);
     }
 
     private float computeXOffset(String text, Paint paint, Rect watchBounds) {
@@ -177,12 +158,8 @@ public class SimpleWatchFace {
         altitudeText = "@" + altitude + "m";
     }
 
-    public void updateSunrise(String sunriseTime) {
-        sunriseText =  String.format(sunriseTextTemplate, sunriseTime);
-    }
-
-    public void updateSunset(String sunsetTime) {
-        sunsetText =  String.format(sunsetTextTemplate, sunsetTime);
+    public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
+        sunriseSunsetText =  String.format(sunriseSunsetTextTemplate, sunriseSunset.first, sunriseSunset.second);
     }
 
     public void restoreBackgroundColour() {
