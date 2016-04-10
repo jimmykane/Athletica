@@ -46,7 +46,7 @@ public class LocationEngine implements LocationListener {
         Log.d(TAG, pressureAltitude.toString());
         Log.d(TAG, gpsAltitude.toString());
         Log.d(TAG, lastKnownLocation.toString());
-        return (pressureAltitude + gpsAltitude)/2;
+        return (6*pressureAltitude + 2*gpsAltitude)/8;
     }
 
     @Override
