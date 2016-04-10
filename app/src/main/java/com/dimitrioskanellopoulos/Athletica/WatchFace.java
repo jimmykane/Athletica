@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.activityface;
+package com.dimitrioskanellopoulos.athletica;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,16 +6,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.text.format.Time;
 import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-public class SimpleWatchFace {
+public class WatchFace {
 
     private static final String TIME_FORMAT_WITHOUT_SECONDS = "%02d:%02d";
     private static final String TIME_FORMAT_WITH_SECONDS = TIME_FORMAT_WITHOUT_SECONDS + ":%02d";
@@ -49,7 +47,7 @@ public class SimpleWatchFace {
     private String altitudeText = "";
     private String firstRowText = "";
 
-    public SimpleWatchFace(Context context) {
+    public WatchFace(Context context) {
 
         // Create fontAwesome typeface
         Typeface fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");

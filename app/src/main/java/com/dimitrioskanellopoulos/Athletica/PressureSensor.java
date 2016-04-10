@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.activityface;
+package com.dimitrioskanellopoulos.athletica;
 
 import android.content.Context;
 import android.hardware.Sensor;

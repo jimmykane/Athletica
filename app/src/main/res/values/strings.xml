@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="google_app_id">default-demo-app-b2533</string>
-    <string name="app_name">ActivityFace</string>
+    <string name="app_name">Athletica</string>
     <string name="white_space">&#160;</string>
     <string name="sun_icon">&#xf185;</string>
     <string name="moon_icon">&#xf186;</string>

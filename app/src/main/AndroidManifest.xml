@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.dimitrioskanellopoulos.activityface">
+  package="com.dimitrioskanellopoulos.athletica">
 
   <uses-feature android:name="android.hardware.type.watch" />
 
@@ -14,7 +14,7 @@
     android:theme="@android:style/Theme.DeviceDefault">
 
     <service
-      android:name=".SimpleWatchFaceService"
+      android:name="com.dimitrioskanellopoulos.athletica.WatchFaceService"
       android:label="@string/app_name"
       android:permission="android.permission.BIND_WALLPAPER">
 

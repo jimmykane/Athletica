@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.activityface;
+package com.dimitrioskanellopoulos.athletica;
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
-public class SimpleWatchFaceService extends CanvasWatchFaceService {
+public class WatchFaceService extends CanvasWatchFaceService {
 
     /**
      * Update rate in milliseconds for interactive mode. We update once a second since seconds are
@@ -70,7 +70,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
         boolean mRegisteredTimeZoneReceiver = false;
 
-        private SimpleWatchFace watchFace;
+        private WatchFace watchFace;
 
         private LocationEngine locationEngine;
 
@@ -88,16 +88,16 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
 
-            setWatchFaceStyle(new WatchFaceStyle.Builder(SimpleWatchFaceService.this)
+            setWatchFaceStyle(new WatchFaceStyle.Builder(WatchFaceService.this)
                     .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
                     .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
                     .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
                     .setShowSystemUiTime(false)
                     .build());
 
-            watchFace = new SimpleWatchFace(SimpleWatchFaceService.this);
+            watchFace = new WatchFace(WatchFaceService.this);
 
-            googleApiHelper = new GoogleApiHelper(SimpleWatchFaceService.this);
+            googleApiHelper = new GoogleApiHelper(WatchFaceService.this);
 
             locationEngine = new LocationEngine(googleApiHelper);
 
@@ -137,7 +137,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             }
             mRegisteredTimeZoneReceiver = true;
             IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
-            SimpleWatchFaceService.this.registerReceiver(mTimeZoneReceiver, filter);
+            WatchFaceService.this.registerReceiver(mTimeZoneReceiver, filter);
         }
 
         private void unregisterTimeZoneReceiver() {
@@ -145,7 +145,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                 return;
             }
             mRegisteredTimeZoneReceiver = false;
-            SimpleWatchFaceService.this.unregisterReceiver(mTimeZoneReceiver);
+            WatchFaceService.this.unregisterReceiver(mTimeZoneReceiver);
         }
 
         @Override
@@ -292,15 +292,15 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
 
     private static class EngineHandler extends Handler {
-        private final WeakReference<SimpleWatchFaceService.Engine> mWeakReference;
+        private final WeakReference<WatchFaceService.Engine> mWeakReference;
 
-        public EngineHandler(SimpleWatchFaceService.Engine reference) {
+        public EngineHandler(WatchFaceService.Engine reference) {
             mWeakReference = new WeakReference<>(reference);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            SimpleWatchFaceService.Engine engine = mWeakReference.get();
+            WatchFaceService.Engine engine = mWeakReference.get();
             if (engine != null) {
                 switch (msg.what) {
                     case MSG_UPDATE_TIME:
