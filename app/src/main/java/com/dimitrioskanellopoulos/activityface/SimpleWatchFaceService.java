@@ -52,7 +52,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                watchFace.updateTimeZoneWith(intent.getStringExtra("time-zone"));
+                watchFace.updateTimeZoneWith(TimeZone.getTimeZone(intent.getStringExtra("time-zone")));
             }
         };
 
@@ -122,9 +122,10 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             if (visible) {
                 registerTimeZoneReceiver();
                 // Update time zone in case it changed while we weren't visible.
-                watchFace.updateTimeZoneWith(TimeZone.getDefault().getID());
+                watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
                 unregisterTimeZoneReceiver();
+                unregisterBatteryInfoReceiver();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.

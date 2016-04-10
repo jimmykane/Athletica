@@ -11,7 +11,9 @@ import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class SimpleWatchFace {
 
@@ -40,8 +42,7 @@ public class SimpleWatchFace {
     private final String batteryThreeQuartersIcon;
     private final String batteryFullIcon;
 
-    // @todo convert to calendar
-    private final Time time;
+    private final Calendar calendar;
 
     private boolean shouldShowSeconds = true;
     private String batteryLevelText = "";
@@ -100,20 +101,30 @@ public class SimpleWatchFace {
         batteryThreeQuartersIcon = context.getResources().getString(R.string.battery_three_quarters_icon);
         batteryFullIcon = context.getResources().getString(R.string.battery_full_icon);
 
-        time = new Time();
+        calendar = Calendar.getInstance();
     }
 
     public void draw(Canvas canvas, Rect bounds) {
-        time.setToNow();
+
+        // Update time
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
         // Should calc in foreach
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
 
-        String timeText = String.format(shouldShowSeconds ? TIME_FORMAT_WITH_SECONDS : TIME_FORMAT_WITHOUT_SECONDS, time.hour, time.minute, time.second);
+        String timeText = String.format(
+                shouldShowSeconds ?
+                        TIME_FORMAT_WITH_SECONDS :
+                        TIME_FORMAT_WITHOUT_SECONDS,
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(calendar.MINUTE),
+                calendar.get(calendar.SECOND));
+
         float timeXOffset = computeXOffset(timeText, timePaint, bounds);
         float timeYOffset = computeTimeYOffset(timeText, timePaint, bounds);
         canvas.drawText(timeText, timeXOffset, timeYOffset, timePaint);
 
-        String dateText = String.format(DATE_FORMAT, time.monthDay, (time.month + 1), time.year);
+        String dateText = String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH),  calendar.get(calendar.MONTH), calendar.get(calendar.YEAR));
         float dateXOffset = computeXOffset(dateText, datePaint, bounds);
         float dateYOffset = computeRowYOffset(dateText, datePaint);
         canvas.drawText(dateText, dateXOffset, timeYOffset + dateYOffset, datePaint);
@@ -154,9 +165,8 @@ public class SimpleWatchFace {
         }
     }
 
-    public void updateTimeZoneWith(String timeZone) {
-        time.clear(timeZone);
-        time.setToNow();
+    public void updateTimeZoneWith(TimeZone timeZone) {
+        calendar.setTimeZone(timeZone);
     }
 
     public void setShowSeconds(boolean showSeconds) {
