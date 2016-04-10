@@ -103,15 +103,11 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
 
             pressureSensor = new PressureSensor(getApplicationContext(), this);
 
-            registerBatteryInfoReceiver();
-            updateSunriseAndSunset();
-            pressureSensor.startListening();
         }
 
         @Override
         public void onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
-            unregisterBatteryInfoReceiver();
             googleApiHelper.disconnect();
             super.onDestroy();
         }
@@ -121,11 +117,15 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             super.onVisibilityChanged(visible);
             if (visible) {
                 registerTimeZoneReceiver();
+                registerBatteryInfoReceiver();
+                updateSunriseAndSunset();
+                pressureSensor.startListening();
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
                 unregisterTimeZoneReceiver();
                 unregisterBatteryInfoReceiver();
+                pressureSensor.stopListening();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
