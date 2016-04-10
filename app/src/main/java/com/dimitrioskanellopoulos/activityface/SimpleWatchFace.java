@@ -160,7 +160,7 @@ public class SimpleWatchFace {
     }
 
     public void setAntiAlias(boolean antiAlias) {
-        for (Paint paint : this.paints) {
+        for (Paint paint : paints) {
             paint.setAntiAlias(antiAlias);
         }
     }
@@ -200,7 +200,7 @@ public class SimpleWatchFace {
 
     public void restoreBackgroundColour() {
         int backgroundColour = BACKGROUND_DEFAULT_COLOUR;
-        this.backgroundPaint.setColor(backgroundColour);
+        backgroundPaint.setColor(backgroundColour);
     }
 
     public void updateBackgroundColourToDefault() {
