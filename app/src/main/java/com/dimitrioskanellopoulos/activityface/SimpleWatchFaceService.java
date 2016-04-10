@@ -102,7 +102,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             locationEngine = new LocationEngine(googleApiHelper);
 
             pressureSensor = new PressureSensor(getApplicationContext(), this);
-
         }
 
         @Override
@@ -238,6 +237,9 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
                 location = new Location("dummyprovider");
                 location.setLatitude(20.3);
                 location.setLongitude(52.6);
+                location.setAltitude(650.0);
+                location.setTime(System.currentTimeMillis());
+                location.setAccuracy(40.0f);
             }
             Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(location, TimeZone.getDefault().getID());
             watchFace.updateSunriseSunset(sunriseSunset);
@@ -262,7 +264,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             }
             if ((minute%5) == 0) {
                 if (isEmulator()) {
-                    handlePressureValueChanged(930.0f);
+                    handlePressureValueChanged(950.0f);
                     return;
                 }
                 pressureSensor.startListening();
