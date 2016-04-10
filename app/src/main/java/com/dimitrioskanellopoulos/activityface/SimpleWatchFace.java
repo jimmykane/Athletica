@@ -10,6 +10,7 @@ import android.text.format.Time;
 import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class SimpleWatchFace {
@@ -39,6 +40,7 @@ public class SimpleWatchFace {
     private final String batteryThreeQuartersIcon;
     private final String batteryFullIcon;
 
+    // @todo convert to calendar
     private final Time time;
 
     private boolean shouldShowSeconds = true;
