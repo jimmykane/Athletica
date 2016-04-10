@@ -10,6 +10,7 @@ import com.google.android.gms.location.LocationServices;
 public class LocationEngine implements LocationListener {
 
     private static final String TAG = "LocationEngine";
+    private static final Float MAX_ACCEPTED_ACCURACY = 50.0f;
 
     private GoogleApiHelper googleApiHelper;
 
@@ -26,24 +27,21 @@ public class LocationEngine implements LocationListener {
         return lastKnownLocation;
     }
 
-    public Double calculatePressureCombinedAltitude(Float pressure){
+    public Double getAltitude(Float pressure){
         Log.d(TAG, "Calculating Combined Pressure Altitude");
         // Get the pressure altitude from the pressure
         Float pressureAltitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressure);
-        // Get the latest location or return the altitude from pressure if no location
-        lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiHelper.getGoogleApiClient());
-        if (lastKnownLocation == null || !lastKnownLocation.hasAltitude()){
-            Log.d(TAG, "Returned altitude from pressure");
-            return (double)pressureAltitude;
-        }
-        // We have a location
-        Double gpsAltitude = lastKnownLocation.getAltitude();
-        // If the location is back in the past return the pressure one
-        if (System.currentTimeMillis() - lastKnownLocation.getTime() > 600000) { // 10 minutes
+
+        if (lastKnownLocation == null
+                || !lastKnownLocation.hasAltitude()
+                || lastKnownLocation.getAccuracy() > MAX_ACCEPTED_ACCURACY
+                || System.currentTimeMillis() - lastKnownLocation.getTime() > 600000){
             Log.d(TAG, "Returned altitude from pressure");
             return (double)pressureAltitude;
         }
 
+        // We have a location with altitude
+        Double gpsAltitude = lastKnownLocation.getAltitude();
         Log.d(TAG, "Returned combined altitude");
         Log.d(TAG, pressureAltitude.toString());
         Log.d(TAG, gpsAltitude.toString());

@@ -220,7 +220,7 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         }
 
         public void handlePressureValueChanged(Float pressureValue) {
-            Double altitude = locationEngine.calculatePressureCombinedAltitude(pressureValue);
+            Double altitude = locationEngine.getAltitude(pressureValue);
             watchFace.updateAltitude(String.format("%.01f", altitude));
             pressureSensor.stopListening();
             Log.d(TAG, "Updated pressure");
