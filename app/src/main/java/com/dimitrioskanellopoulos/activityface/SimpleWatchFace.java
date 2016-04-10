@@ -127,10 +127,10 @@ public class SimpleWatchFace {
         float firstRowYOffset = computeRowYOffset(firstRowText, firstRowPaint);
         canvas.drawText(firstRowText, firstRowTextXOffset, timeYOffset + dateYOffset + firstRowYOffset, firstRowPaint);
 
-        String bottomRowText = batteryLevelText + "    " +  altitudeText;
+        String bottomRowText = batteryLevelText + "    " + altitudeText;
         float bottomRowTextXOffset = computeXOffset(bottomRowText, batteryLevelPaint, bounds);
         float bottomRowTextYOffset = computeTimeYOffset(bottomRowText, batteryLevelPaint, bounds);
-        canvas.drawText(bottomRowText, bottomRowTextXOffset, bottomRowTextYOffset*2 - dateYOffset, batteryLevelPaint);
+        canvas.drawText(bottomRowText, bottomRowTextXOffset, bottomRowTextYOffset * 2 - dateYOffset, batteryLevelPaint);
     }
 
     private float computeXOffset(String text, Paint paint, Rect watchBounds) {
@@ -154,7 +154,7 @@ public class SimpleWatchFace {
     }
 
     public void setAntiAlias(boolean antiAlias) {
-        for (Paint paint: this.paints) {
+        for (Paint paint : this.paints) {
             paint.setAntiAlias(antiAlias);
         }
     }
@@ -169,29 +169,28 @@ public class SimpleWatchFace {
     }
 
 
-
-    public void updateBatteryLevel(Integer batteryPercentage){
+    public void updateBatteryLevel(Integer batteryPercentage) {
         String icon = "";
-        if (batteryPercentage > 80 && batteryPercentage <= 100){
+        if (batteryPercentage > 80 && batteryPercentage <= 100) {
             icon = batteryFullIcon;
-        }else if (batteryPercentage > 60 && batteryPercentage <= 80){
+        } else if (batteryPercentage > 60 && batteryPercentage <= 80) {
             icon = batteryThreeQuartersIcon;
-        }else if (batteryPercentage > 40 && batteryPercentage <= 60){
+        } else if (batteryPercentage > 40 && batteryPercentage <= 60) {
             icon = batteryHalfIcon;
-        }else if (batteryPercentage > 20 && batteryPercentage <= 40){
+        } else if (batteryPercentage >= 20 && batteryPercentage <= 40) {
             icon = batteryQuarterIcon;
-        }else if (batteryPercentage > 0 && batteryPercentage <= 20){
+        } else {
             icon = batteryEmptyIcon;
         }
         batteryLevelText = icon + " " + batteryPercentage + "%";
     }
 
-    public void updateAltitude(String altitude){
+    public void updateAltitude(String altitude) {
         altitudeText = areaChartIcon + " " + altitude + "m";
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
-        firstRowText = sunIcon + " " + sunriseSunset.first + "    " +moonIcon + " " + sunriseSunset.second;
+        firstRowText = sunIcon + " " + sunriseSunset.first + "    " + moonIcon + " " + sunriseSunset.second;
     }
 
     public void restoreBackgroundColour() {
