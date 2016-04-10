@@ -43,7 +43,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
     }
 
     private class Engine extends CanvasWatchFaceService.Engine implements
-             PressureSensor.PressureChangeCallback {
+            PressureSensor.changeCallback {
 
         private static final String TAG = "Engine";
 

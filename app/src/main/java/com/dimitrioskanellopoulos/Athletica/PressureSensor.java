@@ -14,23 +14,26 @@ public class PressureSensor implements SensorEventListener{
     private static final String TAG = "PressureSensor";
 
     private SensorManager sensorManager;
+    private final Sensor sensor;
+
     private Float lastReading;
-    private PressureChangeCallback pressureChangeCallback;
+    private changeCallback changeCallback;
 
     private HashMap pressureReadings = new HashMap();
 
-    public interface PressureChangeCallback {
+    public interface changeCallback {
         void handlePressureValueChanged(Float pressureValue);
     }
 
-    public PressureSensor(Context context, PressureSensor.PressureChangeCallback pressureChangeCallback) {
-        this.pressureChangeCallback = pressureChangeCallback;
+    public PressureSensor(Context context, changeCallback changeCallback) {
+        this.changeCallback = changeCallback;
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
     }
 
     public void startListening(){
         Log.d(TAG, "Started listening");
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE), SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void stopListening(){
@@ -70,8 +73,8 @@ public class PressureSensor implements SensorEventListener{
     @Override
     public void onSensorChanged(SensorEvent event) {
         // Pass the value to the callback
-        if (pressureChangeCallback !=null) {
-            pressureChangeCallback.handlePressureValueChanged(event.values[0]);
+        if (changeCallback !=null) {
+            changeCallback.handlePressureValueChanged(event.values[0]);
         }
         // Update last reading
         lastReading = event.values[0];
