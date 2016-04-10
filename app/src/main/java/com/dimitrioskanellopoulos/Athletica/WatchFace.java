@@ -70,7 +70,7 @@ public class WatchFace {
 
         // Add paint for time
         timePaint = new Paint();
-        timePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        timePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(context.getResources().getDimension(R.dimen.time_size));
         timePaint.setAntiAlias(true);

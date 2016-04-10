@@ -218,8 +218,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        public void handlePressureValueChanged(Float pressureValue) {
-            Double altitude = locationEngine.getAltitude(pressureValue);
+        public void handleSensorValueChanged(Float value) {
+            Double altitude = locationEngine.getAltitude(value);
             watchFace.updateAltitude(String.format("%.01f", altitude));
             pressureSensor.stopListening();
             Log.d(TAG, "Updated pressure");
@@ -264,7 +264,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             if ((minute%5) == 0) {
                 if (isEmulator()) {
-                    handlePressureValueChanged(950.0f);
+                    handleSensorValueChanged(950.0f);
                     return;
                 }
                 pressureSensor.startListening();
