@@ -255,6 +255,10 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             Calendar rightNow = Calendar.getInstance();
             int hour = rightNow.get(Calendar.HOUR_OF_DAY);
             int minute = rightNow.get(Calendar.MINUTE);
+            int second = rightNow.get(Calendar.SECOND);
+            if (second != 0){
+                return;
+            }
             if ((minute%5) == 0) {
                 if (isEmulator()) {
                     handlePressureValueChanged(930.0f);
