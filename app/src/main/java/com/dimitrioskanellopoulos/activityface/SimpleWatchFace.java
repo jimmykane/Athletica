@@ -184,7 +184,7 @@ public class SimpleWatchFace {
         batteryLevelText = icon + " " + batteryPercentage + "%";
     }
 
-    public void updatePressureAltitude(String altitude){
+    public void updateAltitude(String altitude){
         altitudeText = areaChartIcon + " " + altitude + "m";
     }
 

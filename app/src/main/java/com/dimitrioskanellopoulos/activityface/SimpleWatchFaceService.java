@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.hardware.SensorManager;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +20,7 @@ import android.view.SurfaceHolder;
 import android.location.Location;
 
 import java.lang.ref.WeakReference;
+import java.util.Calendar;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -126,7 +126,6 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
             } else {
                 unregisterTimeZoneReceiver();
             }
-            updateSunriseAndSunset();
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
             updateTimer();
@@ -220,8 +219,8 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         }
 
         public void handlePressureValueChanged(Float pressureValue) {
-            Float altitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressureValue);
-            watchFace.updatePressureAltitude(String.format("%.01f", altitude));
+            Double altitude = locationEngine.calculatePressureCombinedAltitude(pressureValue);
+            watchFace.updateAltitude(String.format("%.01f", altitude));
             pressureSensor.stopListening();
             Log.d(TAG, "Updated pressure");
         }
@@ -253,14 +252,14 @@ public class SimpleWatchFaceService extends CanvasWatchFaceService {
         }
 
         private void checkActions(){
-            long timeMillis=System.currentTimeMillis();
-            long totalSeconds=timeMillis/1000;
-            int second=(int)(totalSeconds%60);
-            long totalMinutes=totalSeconds/60;
-            int minute=(int)(totalMinutes%60);
-            long totalHours=totalMinutes/60;
-            int hour=(int)(totalHours%24);
-            if ((minute%1) == 0) {
+            Calendar rightNow = Calendar.getInstance();
+            int hour = rightNow.get(Calendar.HOUR_OF_DAY);
+            int minute = rightNow.get(Calendar.MINUTE);
+            if ((minute%5) == 0) {
+                if (isEmulator()) {
+                    handlePressureValueChanged(930.0f);
+                    return;
+                }
                 pressureSensor.startListening();
             }
             if ((minute%30) == 0){
