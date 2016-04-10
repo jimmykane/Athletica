@@ -62,7 +62,7 @@ public class SimpleWatchFace {
         paints.add(firstRowPaint);
 
         // Add paint for battery level
-        Paint batteryLevelPaint = new Paint();
+        batteryLevelPaint = new Paint();
         batteryLevelPaint.setTypeface(fontAwesome);
         batteryLevelPaint.setColor(TEXT_DEFAULT_COLOUR);
         batteryLevelPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
@@ -70,7 +70,7 @@ public class SimpleWatchFace {
         paints.add(batteryLevelPaint);
 
         // Add paint for time
-        Paint timePaint = new Paint();
+        timePaint = new Paint();
         timePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(context.getResources().getDimension(R.dimen.time_size));
@@ -78,7 +78,7 @@ public class SimpleWatchFace {
         paints.add(timePaint);
 
         // Add paint for date
-        Paint datePaint = new Paint();
+        datePaint = new Paint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTextSize(context.getResources().getDimension(R.dimen.date_size));
         datePaint.setAntiAlias(true);
@@ -86,7 +86,7 @@ public class SimpleWatchFace {
         paints.add(datePaint);
 
         // Add paint for background
-        Paint backgroundPaint = new Paint();
+        backgroundPaint = new Paint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
         paints.add(backgroundPaint);
 
@@ -100,12 +100,7 @@ public class SimpleWatchFace {
         batteryThreeQuartersIcon = context.getResources().getString(R.string.battery_three_quarters_icon);
         batteryFullIcon = context.getResources().getString(R.string.battery_full_icon);
 
-        this.timePaint = timePaint;
-        this.datePaint = datePaint;
-        this.batteryLevelPaint = batteryLevelPaint;
-        this.backgroundPaint = backgroundPaint;
-
-        this.time = new Time();
+        time = new Time();
     }
 
     public void draw(Canvas canvas, Rect bounds) {
