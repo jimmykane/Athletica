@@ -12,8 +12,8 @@ public class LocationEngine implements LocationListener {
     private static final String TAG = "LocationEngine";
     private static final Float MAX_ACCEPTED_ACCURACY = 50.0f;
     private static final Integer LAST_KNOWN_LOCATION_AGE = 3600000; // 1 hour
-    private static final Integer ACCURACY_FACTOR = 1;
-    private static final Integer AGE_FACTOR = 1;
+    private static final Float ACCURACY_WEIGHT = 0.3f;
+    private static final Float AGE_WEIGHT = 0.7f;
 
     private GoogleApiHelper googleApiHelper;
 
@@ -38,18 +38,22 @@ public class LocationEngine implements LocationListener {
         if (lastKnownLocation == null
                 || !lastKnownLocation.hasAltitude()
                 || lastKnownLocation.getAccuracy() > MAX_ACCEPTED_ACCURACY
-                || System.currentTimeMillis() - lastKnownLocation.getTime() > LAST_KNOWN_LOCATION_AGE){
-            Log.d(TAG, "Returned altitude from pressure");
+                || (System.currentTimeMillis() - lastKnownLocation.getTime()) > LAST_KNOWN_LOCATION_AGE){
+            Log.d(TAG, "Returning altitude from pressure");
             return (double)pressureAltitude;
         }
 
         // We have a location with altitude
         Double gpsAltitude = lastKnownLocation.getAltitude();
-        Log.d(TAG, "Returned combined altitude");
-        Log.d(TAG, pressureAltitude.toString());
-        Log.d(TAG, gpsAltitude.toString());
-        Log.d(TAG, lastKnownLocation.toString());
-        return (6*pressureAltitude + 2*gpsAltitude)/8;
+        // @todo check algo
+        Float gpsAltitudeWeight =
+                (lastKnownLocation.getAccuracy()*ACCURACY_WEIGHT + lastKnownLocation.getTime()*AGE_WEIGHT)
+                / (lastKnownLocation.getAccuracy() + lastKnownLocation.getTime());
+
+        Double combinedAltitude = (pressureAltitude + gpsAltitude*gpsAltitudeWeight)/(2 - gpsAltitudeWeight);
+
+        Log.d(TAG, "Returning combined altitude");
+        return combinedAltitude;
     }
 
     @Override
