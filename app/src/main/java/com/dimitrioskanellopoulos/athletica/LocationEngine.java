@@ -46,11 +46,11 @@ public class LocationEngine implements LocationListener {
         // We have a location with altitude
         Double gpsAltitude = lastKnownLocation.getAltitude();
         // @todo check algo
-        Float gpsAltitudeWeight =
+        Float gpsAltitudeWeight = 1 - (
                 (lastKnownLocation.getAccuracy()*ACCURACY_WEIGHT + lastKnownLocation.getTime()*AGE_WEIGHT)
-                / (lastKnownLocation.getAccuracy() + lastKnownLocation.getTime());
+                / (lastKnownLocation.getAccuracy() + lastKnownLocation.getTime()));
 
-        Double combinedAltitude = (pressureAltitude + gpsAltitude*gpsAltitudeWeight)/(2 - gpsAltitudeWeight);
+        Double combinedAltitude = (pressureAltitude*0.5f + gpsAltitude*gpsAltitudeWeight*0.5f)/(0.5f+0.5f*gpsAltitudeWeight);
 
         Log.d(TAG, "Returning combined altitude");
         return combinedAltitude;
