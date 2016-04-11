@@ -43,8 +43,8 @@ public class PressureSensor implements SensorEventListener{
         Log.d(TAG, "Stopped listening");
     }
 
-    public Boolean test(){
-        return this.isListening;
+    public Boolean isListening(){
+        return isListening;
     }
 
     @Override

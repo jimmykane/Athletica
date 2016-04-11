@@ -118,7 +118,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 registerTimeZoneReceiver();
                 registerBatteryInfoReceiver();
                 updateSunriseAndSunset();
-                if (!pressureSensor.test()) {
+                if (!pressureSensor.isListening()) {
                     pressureSensor.startListening();
                 }
                 // Update time zone in case it changed while we weren't visible.
@@ -126,7 +126,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             } else {
                 unregisterTimeZoneReceiver();
                 unregisterBatteryInfoReceiver();
-                if (pressureSensor.test() == true) {
+                if (pressureSensor.isListening() == true) {
                     pressureSensor.stopListening();
                 }
             }
@@ -181,9 +181,15 @@ public class WatchFaceService extends CanvasWatchFaceService {
             if (inAmbientMode) {
                 watchFace.updateBackgroundColourToDefault();
                 watchFace.updateDateAndTimeColourToDefault();
+                if (pressureSensor.isListening()) {
+                    pressureSensor.stopListening();
+                }
             } else {
                 watchFace.restoreBackgroundColour();
                 watchFace.restoreDateAndTimeColour();
+                if (!pressureSensor.isListening()) {
+                    pressureSensor.startListening();
+                }
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
@@ -224,6 +230,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         public void handleSensorValueChanged(Float value) {
             Double altitude = locationEngine.getAltitude(value);
+            if (altitude == null){
+                Log.d(TAG, "Could not update altitude");
+                return;
+            }
             watchFace.updateAltitude(String.format("%.01f", altitude));
             Log.d(TAG, "Updated Altitude");
         }
@@ -270,8 +280,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     handleSensorValueChanged(950.0f);
                     return;
                 }
-                if (!pressureSensor.test()) {
+                if (!pressureSensor.isListening()) {
+                    // To be simplified to avg
                     pressureSensor.startListening();
+                    pressureSensor.stopListening();
                 }
             }
             if ((minute%30) == 0){

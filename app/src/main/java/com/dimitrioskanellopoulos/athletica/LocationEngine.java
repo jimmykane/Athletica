@@ -10,7 +10,7 @@ import com.google.android.gms.location.LocationServices;
 public class LocationEngine implements LocationListener {
 
     private static final String TAG = "LocationEngine";
-    private static final Float MAX_ACCEPTED_ACCURACY = 50.0f;
+    private static final Float MAX_ACCEPTED_ACCURACY =200.0f;
     private static final Integer LAST_KNOWN_LOCATION_AGE = 3600000; // 1 hour
     private static final Float ACCURACY_WEIGHT = 0.3f;
     private static final Float AGE_WEIGHT = 0.7f;
@@ -32,8 +32,16 @@ public class LocationEngine implements LocationListener {
 
     public Double getAltitude(Float pressure){
         Log.d(TAG, "Calculating Combined Pressure Altitude");
+        if (!googleApiHelper.isConnected()){
+            Log.d(TAG, "Google Api is not connected aborting");
+            return null;
+        }
         // Get the pressure altitude from the pressure
         Float pressureAltitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressure);
+        getLastKnownLocation();
+        Log.d(TAG, "Bool" + lastKnownLocation.hasAltitude());
+        Log.d(TAG, "time" + lastKnownLocation.getTime());
+        Log.d(TAG, "accuracy" + lastKnownLocation.getAccuracy());
 
         if (lastKnownLocation == null
                 || !lastKnownLocation.hasAltitude()
