@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Vibrator;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
@@ -119,13 +118,17 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 registerTimeZoneReceiver();
                 registerBatteryInfoReceiver();
                 updateSunriseAndSunset();
-                pressureSensor.startListening();
+                if (!pressureSensor.test()) {
+                    pressureSensor.startListening();
+                }
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
                 unregisterTimeZoneReceiver();
                 unregisterBatteryInfoReceiver();
-                pressureSensor.stopListening();
+                if (pressureSensor.test() == true) {
+                    pressureSensor.stopListening();
+                }
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
@@ -222,8 +225,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void handleSensorValueChanged(Float value) {
             Double altitude = locationEngine.getAltitude(value);
             watchFace.updateAltitude(String.format("%.01f", altitude));
-            pressureSensor.stopListening();
-            Log.d(TAG, "Updated pressure");
+            Log.d(TAG, "Updated Altitude");
         }
 
         private void updateSunriseAndSunset() {
@@ -268,7 +270,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     handleSensorValueChanged(950.0f);
                     return;
                 }
-                pressureSensor.startListening();
+                if (!pressureSensor.test()) {
+                    pressureSensor.startListening();
+                }
             }
             if ((minute%30) == 0){
                 updateSunriseAndSunset();

@@ -18,7 +18,7 @@ public class PressureSensor implements SensorEventListener{
     private SensorManager sensorManager;
     private final Sensor sensor;
 
-    private Boolean isListening;
+    private Boolean isListening = false;
     private changeCallback changeCallback;
 
     public interface changeCallback {
@@ -43,8 +43,8 @@ public class PressureSensor implements SensorEventListener{
         Log.d(TAG, "Stopped listening");
     }
 
-    public Boolean isListening(){
-        return isListening;
+    public Boolean test(){
+        return this.isListening;
     }
 
     @Override
