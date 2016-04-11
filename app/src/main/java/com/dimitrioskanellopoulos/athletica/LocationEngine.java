@@ -11,6 +11,9 @@ public class LocationEngine implements LocationListener {
 
     private static final String TAG = "LocationEngine";
     private static final Float MAX_ACCEPTED_ACCURACY = 50.0f;
+    private static final Integer LAST_KNOWN_LOCATION_AGE = 3600000; // 1 hour
+    private static final Integer ACCURACY_FACTOR = 1;
+    private static final Integer AGE_FACTOR = 1;
 
     private GoogleApiHelper googleApiHelper;
 
@@ -35,7 +38,7 @@ public class LocationEngine implements LocationListener {
         if (lastKnownLocation == null
                 || !lastKnownLocation.hasAltitude()
                 || lastKnownLocation.getAccuracy() > MAX_ACCEPTED_ACCURACY
-                || System.currentTimeMillis() - lastKnownLocation.getTime() > 600000){
+                || System.currentTimeMillis() - lastKnownLocation.getTime() > LAST_KNOWN_LOCATION_AGE){
             Log.d(TAG, "Returned altitude from pressure");
             return (double)pressureAltitude;
         }
