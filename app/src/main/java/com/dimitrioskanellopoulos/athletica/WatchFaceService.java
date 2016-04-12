@@ -110,7 +110,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             locationEngine = new LocationEngine(googleApiHelper);
 
             // Create the sensors
-            for (Integer supportedSensorType : sensorTypes) {
+            for (Integer supportedSensorType : supportedSensorTypes) {
                 sensors.add(new CallbackSensor(getApplicationContext(), supportedSensorType, this));
             }
         }
@@ -129,22 +129,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 registerTimeZoneReceiver();
                 registerBatteryInfoReceiver();
                 updateSunriseAndSunset();
-                for (CallbackSensor sensor : sensors) {
-                    if (!sensor.isListening()) {
-                        sensor.startListening();
-                    }
-                }
+                startSensors();
 
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
                 unregisterTimeZoneReceiver();
                 unregisterBatteryInfoReceiver();
-                for (CallbackSensor sensor : sensors) {
-                    if (sensor.isListening()) {
-                        sensor.stopListening();
-                    }
-                }
+                stopSensors();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
@@ -197,19 +189,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
             if (inAmbientMode) {
                 watchFace.updateBackgroundColourToDefault();
                 watchFace.updateDateAndTimeColourToDefault();
-                for (CallbackSensor sensor : sensors) {
-                    if (sensor.isListening()) {
-                        sensor.stopListening();
-                    }
-                }
+                stopSensors();
             } else {
                 watchFace.restoreBackgroundColour();
                 watchFace.restoreDateAndTimeColour();
-                for (CallbackSensor sensor : sensors) {
-                    if (!sensor.isListening()) {
-                        sensor.startListening();
-                    }
-                }
+                startSensors();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
@@ -285,6 +269,22 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         private void registerBatteryInfoReceiver() {
             registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        }
+
+        private void startSensors(){
+            for (CallbackSensor sensor : sensors) {
+                if (!sensor.isListening()) {
+                    sensor.startListening();
+                }
+            }
+        }
+
+        private void stopSensors(){
+            for (CallbackSensor sensor : sensors) {
+                if (sensor.isListening()) {
+                    sensor.stopListening();
+                }
+            }
         }
 
         private void checkActions() {
