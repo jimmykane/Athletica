@@ -40,6 +40,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
      */
     private static final int MSG_UPDATE_TIME = 0;
 
+    /**
+     * The supported sensors
+     */
     private static final int[] supportedSensorTypes = {
             Sensor.TYPE_PRESSURE
     };
