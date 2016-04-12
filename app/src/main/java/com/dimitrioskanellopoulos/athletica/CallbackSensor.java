@@ -8,8 +8,8 @@ import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-public class PressureSensor implements SensorEventListener {
-    private static final String TAG = "PressureSensor";
+public class CallbackSensor implements SensorEventListener {
+    private static final String TAG = "CallbackSensor";
 
     private SensorManager sensorManager;
     private final Sensor sensor;
@@ -21,7 +21,7 @@ public class PressureSensor implements SensorEventListener {
         void handleSensorValueChanged(Float value);
     }
 
-    public PressureSensor(@NonNull Context context,Integer sensorType, @NonNull changeCallback changeCallback) {
+    public CallbackSensor(@NonNull Context context, Integer sensorType, @NonNull changeCallback changeCallback) {
         this.changeCallback = changeCallback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(sensorType);
