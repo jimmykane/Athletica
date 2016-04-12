@@ -108,7 +108,14 @@ public class WatchFace {
         calendar.setTimeInMillis(System.currentTimeMillis());
 
         // Should calc in foreach
-        canvas.drawRect(0, 0, bounds.width(), bounds.height(), paints.get(4));
+        Integer i = 0;
+        for (Paint paint : paints) {
+            if (i == 4){
+                canvas.drawRect(0, 0, bounds.width(), bounds.height(), paint);
+            }
+
+            i++;
+        }
 
         String timeText = String.format(
                 shouldShowSeconds ?
