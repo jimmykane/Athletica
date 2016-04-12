@@ -275,17 +275,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             if (second != 0) {
                 return;
             }
-            if ((minute % 5) == 0) {
-                if (isEmulator()) {
-                    handleSensorValueChanged(950.0f);
-                    return;
-                }
-                if (!pressureSensor.isListening()) {
-                    // To be simplified to avg
-                    pressureSensor.startListening();
-                    pressureSensor.stopListening();
-                }
-            }
             if ((minute % 30) == 0) {
                 updateSunriseAndSunset();
             }
