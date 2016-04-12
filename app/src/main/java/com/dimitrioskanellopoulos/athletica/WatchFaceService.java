@@ -122,6 +122,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
             googleApiHelper.disconnect();
+            stopSensors();
             super.onDestroy();
         }
 
