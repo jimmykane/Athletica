@@ -33,15 +33,12 @@ public class LocationEngine implements LocationListener {
     public Double getAltitude(Float pressure){
         Log.d(TAG, "Calculating Combined Pressure Altitude");
         if (!googleApiHelper.isConnected()){
-            Log.d(TAG, "Google Api is not connected aborting");
+            Log.e(TAG, "Google Api is not connected aborting");
             return null;
         }
         // Get the pressure altitude from the pressure
         Float pressureAltitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressure);
         getLastKnownLocation();
-        Log.d(TAG, "Bool" + lastKnownLocation.hasAltitude());
-        Log.d(TAG, "time" + lastKnownLocation.getTime());
-        Log.d(TAG, "accuracy" + lastKnownLocation.getAccuracy());
 
         if (lastKnownLocation == null
                 || !lastKnownLocation.hasAltitude()

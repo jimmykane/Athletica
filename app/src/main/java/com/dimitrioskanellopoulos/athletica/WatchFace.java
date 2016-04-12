@@ -122,7 +122,7 @@ public class WatchFace {
         float timeYOffset = computeTimeYOffset(timeText, timePaint, bounds);
         canvas.drawText(timeText, timeXOffset, timeYOffset, timePaint);
 
-        String dateText = String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH),  calendar.get(calendar.MONTH), calendar.get(calendar.YEAR));
+        String dateText = String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR));
         float dateXOffset = computeXOffset(dateText, datePaint, bounds);
         float dateYOffset = computeRowYOffset(dateText, datePaint);
         canvas.drawText(dateText, dateXOffset, timeYOffset + dateYOffset, datePaint);

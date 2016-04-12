@@ -63,7 +63,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 Intent batteryStatus = context.registerReceiver(null, ifilter);
                 int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
                 int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-                float batteryPct = level / (float)scale; // Used just in case
+                float batteryPct = level / (float) scale; // Used just in case
                 watchFace.updateBatteryLevel(level);
             }
         };
@@ -230,7 +230,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         public void handleSensorValueChanged(Float value) {
             Double altitude = locationEngine.getAltitude(value);
-            if (altitude == null){
+            if (altitude == null) {
                 Log.d(TAG, "Could not update altitude");
                 return;
             }
@@ -240,7 +240,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         private void updateSunriseAndSunset() {
             Location location = locationEngine.getLastKnownLocation();
-            if (location == null){
+            if (location == null) {
                 // If its a real device continue to run
                 // @todo solve this with timezone
                 if (!isEmulator()) {
@@ -267,15 +267,15 @@ public class WatchFaceService extends CanvasWatchFaceService {
             registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         }
 
-        private void checkActions(){
+        private void checkActions() {
             Calendar rightNow = Calendar.getInstance();
             int hour = rightNow.get(Calendar.HOUR_OF_DAY);
             int minute = rightNow.get(Calendar.MINUTE);
             int second = rightNow.get(Calendar.SECOND);
-            if (second != 0){
+            if (second != 0) {
                 return;
             }
-            if ((minute%5) == 0) {
+            if ((minute % 5) == 0) {
                 if (isEmulator()) {
                     handleSensorValueChanged(950.0f);
                     return;
@@ -286,26 +286,25 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     pressureSensor.stopListening();
                 }
             }
-            if ((minute%30) == 0){
+            if ((minute % 30) == 0) {
                 updateSunriseAndSunset();
             }
         }
 
 
-            // Create the LocationRequest object
-            // LocationRequest locationRequest = LocationRequest.create();
-            // Use high accuracy
-            // locationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
-            // Set the update interval to 2 seconds
-            // locationRequest.setInterval(TimeUnit.SECONDS.toMillis(2));
-            // Set the fastest update interval to 2 seconds
-            // locationRequest.setFastestInterval(TimeUnit.SECONDS.toMillis(2));
-            // Set the minimum displacement
-            // locationRequest.setSmallestDisplacement(2);
-            // Register listener using the LocationRequest object
-            // LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+        // Create the LocationRequest object
+        // LocationRequest locationRequest = LocationRequest.create();
+        // Use high accuracy
+        // locationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+        // Set the update interval to 2 seconds
+        // locationRequest.setInterval(TimeUnit.SECONDS.toMillis(2));
+        // Set the fastest update interval to 2 seconds
+        // locationRequest.setFastestInterval(TimeUnit.SECONDS.toMillis(2));
+        // Set the minimum displacement
+        // locationRequest.setSmallestDisplacement(2);
+        // Register listener using the LocationRequest object
+        // LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
     }
-
 
 
     private static class EngineHandler extends Handler {

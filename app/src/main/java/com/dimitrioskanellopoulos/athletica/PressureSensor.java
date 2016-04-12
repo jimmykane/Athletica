@@ -5,14 +5,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.hardware.TriggerEventListener;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.util.Calendar;
-import java.util.HashMap;
-
-public class PressureSensor implements SensorEventListener{
+public class PressureSensor implements SensorEventListener {
     private static final String TAG = "PressureSensor";
 
     private SensorManager sensorManager;
@@ -31,19 +27,19 @@ public class PressureSensor implements SensorEventListener{
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
     }
 
-    public void startListening(){
+    public void startListening() {
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         isListening = true;
         Log.d(TAG, "Started listening");
     }
 
-    public void stopListening(){
+    public void stopListening() {
         sensorManager.unregisterListener(this);
         isListening = false;
         Log.d(TAG, "Stopped listening");
     }
 
-    public Boolean isListening(){
+    public Boolean isListening() {
         return isListening;
     }
 
