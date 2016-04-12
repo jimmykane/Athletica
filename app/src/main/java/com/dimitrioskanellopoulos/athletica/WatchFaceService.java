@@ -50,7 +50,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
     }
 
     private class Engine extends CanvasWatchFaceService.Engine implements
-            PressureSensor.changeCallback {
+            CallbackSensor.changeCallback {
 
         private static final String TAG = "Engine";
 
@@ -89,7 +89,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         boolean mLowBitAmbient;
 
-        private final List<PressureSensor> sensors = new ArrayList<PressureSensor>();
+        private final List<CallbackSensor> sensors = new ArrayList<CallbackSensor>();
 
 
         @Override
@@ -109,11 +109,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
             locationEngine = new LocationEngine(googleApiHelper);
 
-            //pressureSensor = new PressureSensor(getApplicationContext(), Sensor.TYPE_PRESSURE, this);
-
             // Create the sensors
-            for (Integer supportedSensorType : supportedSensorTypes) {
-                sensors.add(new PressureSensor(getApplicationContext(), supportedSensorType, this));
+            for (Integer supportedSensorType : sensorTypes) {
+                sensors.add(new CallbackSensor(getApplicationContext(), supportedSensorType, this));
             }
         }
 
@@ -131,7 +129,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 registerTimeZoneReceiver();
                 registerBatteryInfoReceiver();
                 updateSunriseAndSunset();
-                for (PressureSensor sensor : sensors) {
+                for (CallbackSensor sensor : sensors) {
                     if (!sensor.isListening()) {
                         sensor.startListening();
                     }
@@ -142,7 +140,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             } else {
                 unregisterTimeZoneReceiver();
                 unregisterBatteryInfoReceiver();
-                for (PressureSensor sensor : sensors) {
+                for (CallbackSensor sensor : sensors) {
                     if (sensor.isListening()) {
                         sensor.stopListening();
                     }
@@ -199,7 +197,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             if (inAmbientMode) {
                 watchFace.updateBackgroundColourToDefault();
                 watchFace.updateDateAndTimeColourToDefault();
-                for (PressureSensor sensor : sensors) {
+                for (CallbackSensor sensor : sensors) {
                     if (sensor.isListening()) {
                         sensor.stopListening();
                     }
@@ -207,7 +205,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             } else {
                 watchFace.restoreBackgroundColour();
                 watchFace.restoreDateAndTimeColour();
-                for (PressureSensor sensor : sensors) {
+                for (CallbackSensor sensor : sensors) {
                     if (!sensor.isListening()) {
                         sensor.startListening();
                     }
