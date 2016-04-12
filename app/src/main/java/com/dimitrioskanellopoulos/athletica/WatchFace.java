@@ -115,8 +115,8 @@ public class WatchFace {
                         TIME_FORMAT_WITH_SECONDS :
                         TIME_FORMAT_WITHOUT_SECONDS,
                 calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(calendar.MINUTE),
-                calendar.get(calendar.SECOND));
+                calendar.get(Calendar.MINUTE),
+                calendar.get(Calendar.SECOND));
 
         float timeXOffset = computeXOffset(timeText, timePaint, bounds);
         float timeYOffset = computeTimeYOffset(timeText, timePaint, bounds);
