@@ -21,10 +21,10 @@ public class PressureSensor implements SensorEventListener {
         void handleSensorValueChanged(Float value);
     }
 
-    public PressureSensor(@NonNull Context context, @NonNull changeCallback changeCallback) {
+    public PressureSensor(@NonNull Context context,Integer sensorType, @NonNull changeCallback changeCallback) {
         this.changeCallback = changeCallback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
+        sensor = sensorManager.getDefaultSensor(sensorType);
     }
 
     public void startListening() {

@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.hardware.Sensor;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,7 +22,9 @@ import android.view.SurfaceHolder;
 import android.location.Location;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -36,6 +40,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
      * Handler message id for updating the time periodically in interactive mode.
      */
     private static final int MSG_UPDATE_TIME = 0;
+
+    private static final int[] supportedSensorTypes = {
+            Sensor.TYPE_PRESSURE
+    };
 
     @Override
     public CanvasWatchFaceService.Engine onCreateEngine() {
@@ -74,8 +82,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         private LocationEngine locationEngine;
 
-        private PressureSensor pressureSensor;
-
         private GoogleApiHelper googleApiHelper;
 
         /**
@@ -83,6 +89,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * disable anti-aliasing in ambient mode.
          */
         boolean mLowBitAmbient;
+
+        private final List<PressureSensor> sensors = new ArrayList<PressureSensor>();
+
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -101,7 +110,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
             locationEngine = new LocationEngine(googleApiHelper);
 
-            pressureSensor = new PressureSensor(getApplicationContext(), this);
+            //pressureSensor = new PressureSensor(getApplicationContext(), Sensor.TYPE_PRESSURE, this);
+
+            // Create the sensors
+            for (Integer supportedSensorType : supportedSensorTypes) {
+                sensors.add(new PressureSensor(getApplicationContext(), supportedSensorType, this));
+            }
         }
 
         @Override
@@ -118,16 +132,21 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 registerTimeZoneReceiver();
                 registerBatteryInfoReceiver();
                 updateSunriseAndSunset();
-                if (!pressureSensor.isListening()) {
-                    pressureSensor.startListening();
+                for (PressureSensor sensor : sensors) {
+                    if (!sensor.isListening()) {
+                        sensor.startListening();
+                    }
                 }
+
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
                 unregisterTimeZoneReceiver();
                 unregisterBatteryInfoReceiver();
-                if (pressureSensor.isListening() == true) {
-                    pressureSensor.stopListening();
+                for (PressureSensor sensor : sensors) {
+                    if (sensor.isListening()) {
+                        sensor.stopListening();
+                    }
                 }
             }
             // Whether the timer should be running depends on whether we're visible (as well as
@@ -181,14 +200,18 @@ public class WatchFaceService extends CanvasWatchFaceService {
             if (inAmbientMode) {
                 watchFace.updateBackgroundColourToDefault();
                 watchFace.updateDateAndTimeColourToDefault();
-                if (pressureSensor.isListening()) {
-                    pressureSensor.stopListening();
+                for (PressureSensor sensor : sensors) {
+                    if (sensor.isListening()) {
+                        sensor.stopListening();
+                    }
                 }
             } else {
                 watchFace.restoreBackgroundColour();
                 watchFace.restoreDateAndTimeColour();
-                if (!pressureSensor.isListening()) {
-                    pressureSensor.startListening();
+                for (PressureSensor sensor : sensors) {
+                    if (!sensor.isListening()) {
+                        sensor.startListening();
+                    }
                 }
             }
             // Whether the timer should be running depends on whether we're visible (as well as
