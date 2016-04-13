@@ -53,7 +53,12 @@ public class WatchFace {
         // Create fontAwesome typeface
         Typeface fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
 
-        // 0. Add paint for time
+        // 0. Add paint for background
+        backgroundPaint = new TextRowPaint();
+        backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
+        paints.add(backgroundPaint);
+
+        // 1. Add paint for time
         timePaint = new TextRowPaint();
         timePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
@@ -61,15 +66,7 @@ public class WatchFace {
         timePaint.setAntiAlias(true);
         paints.add(timePaint);
 
-        // 1. Add paint for sunrise
-        sunriseSunsetPaint = new TextRowPaint();
-        sunriseSunsetPaint.setTypeface(fontAwesome);
-        sunriseSunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
-        sunriseSunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
-        sunriseSunsetPaint.setAntiAlias(true);
-        paints.add(sunriseSunsetPaint);
-
-        // 2. Add paint for date
+        // 3. Add paint for date
         datePaint = new TextRowPaint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTextSize(context.getResources().getDimension(R.dimen.date_size));
@@ -77,18 +74,21 @@ public class WatchFace {
         datePaint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL));
         paints.add(datePaint);
 
-        // 3. Add paint for battery level
+        // 2. Add paint for sunrise
+        sunriseSunsetPaint = new TextRowPaint();
+        sunriseSunsetPaint.setTypeface(fontAwesome);
+        sunriseSunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
+        sunriseSunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
+        sunriseSunsetPaint.setAntiAlias(true);
+        paints.add(sunriseSunsetPaint);
+
+        // 4. Add paint for battery level
         batteryLevelPaint = new TextRowPaint();
         batteryLevelPaint.setTypeface(fontAwesome);
         batteryLevelPaint.setColor(TEXT_DEFAULT_COLOUR);
         batteryLevelPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
         batteryLevelPaint.setAntiAlias(true);
         paints.add(batteryLevelPaint);
-
-        // 4. Add paint for background
-        backgroundPaint = new TextRowPaint();
-        backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
-        paints.add(backgroundPaint);
 
         // Add the icons
         sunIcon = context.getResources().getString(R.string.sun_icon);
@@ -108,11 +108,16 @@ public class WatchFace {
         // Update time
         calendar.setTimeInMillis(System.currentTimeMillis());
 
+        // First draw background
+        canvas.drawRect(0, 0, bounds.width(), bounds.height(), paints.get(0));
+
+
         // Should calc in foreach
         Integer i = 0;
+        Float yOffset = 0f;
         for (TextRowPaint paint : paints) {
             // Special cases until I change the structure. 5 mins a day
-            if (i == 0){
+            if (i == 1){
                 paint.setText(String.format(
                         shouldShowSeconds ?
                                 TIME_FORMAT_WITH_SECONDS :
@@ -120,25 +125,21 @@ public class WatchFace {
                         calendar.get(Calendar.HOUR_OF_DAY),
                         calendar.get(Calendar.MINUTE),
                         calendar.get(Calendar.SECOND)));
-            }
-            if (i == 1){
-                paint.setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR)));
-            }else if (i == 2){
-                paint.setText(sunriseSunsetText);
-            }else if (i == 3){
-                paint.setText(batteryLevelText + "    " + altitudeText);
-            }else if (i == 4){
-                canvas.drawRect(0, 0, bounds.width(), bounds.height(), paint);
-                break;
-            }
-
-
-            float xOffset = computeXOffset(paint, bounds);
-            float yOffset = computeRowYOffset(paint);
-
-            if (i == 0){
                 yOffset = computeFirstPaintYOffset(paint, bounds);
             }
+            if (i == 2){
+                paint.setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR)));
+                yOffset = yOffset + computeRowYOffset(paint);
+            }else if (i == 3){
+                paint.setText(sunriseSunsetText);
+                yOffset = yOffset + computeRowYOffset(paint);
+            }else if (i == 4){
+                paint.setText(batteryLevelText + "    " + altitudeText);
+                yOffset = yOffset + computeRowYOffset(paint);
+            }
+
+            float xOffset = computeXOffset(paint, bounds);
+
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
             // Increase the counter
             i++;

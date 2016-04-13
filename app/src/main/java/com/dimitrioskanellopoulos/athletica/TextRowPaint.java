@@ -7,7 +7,7 @@ import android.graphics.Paint;
  */
 public class TextRowPaint extends Paint{
 
-    private String text;
+    private String text = "";
 
     public void setText(String text){
         this.text = text;
