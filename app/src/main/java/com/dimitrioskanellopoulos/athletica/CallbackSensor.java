@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 public class CallbackSensor implements SensorEventListener {
-    private final String TAG;
+    private String TAG = "CallbackSensor";
 
     private SensorManager sensorManager;
     private final Sensor sensor;
@@ -25,7 +25,6 @@ public class CallbackSensor implements SensorEventListener {
         this.changeCallback = changeCallback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(sensorType);
-        TAG = sensor.getStringType();
     }
 
     public void startListening() {
