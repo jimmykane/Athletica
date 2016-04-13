@@ -192,12 +192,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
             watchFace.setShowSeconds(!isInAmbientMode());
 
             if (inAmbientMode) {
-                watchFace.updateBackgroundColourToDefault();
-                watchFace.updateDateAndTimeColourToDefault();
                 stopSensors();
             } else {
-                watchFace.restoreBackgroundColour();
-                watchFace.restoreDateAndTimeColour();
                 startSensors();
             }
             // Whether the timer should be running depends on whether we're visible (as well as

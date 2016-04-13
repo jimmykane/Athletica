@@ -25,11 +25,6 @@ public class WatchFace {
 
     // Paints. Keep it list for fast access or ordered
     private final List<TextRowPaint> paints = new ArrayList<TextRowPaint>();
-    private final TextRowPaint timePaint;
-    private final TextRowPaint datePaint;
-    private final TextRowPaint batteryLevelPaint;
-    private final TextRowPaint sunriseSunsetPaint;
-    private final TextRowPaint backgroundPaint;
 
     // Icons
     private final String sunIcon;
@@ -54,12 +49,12 @@ public class WatchFace {
         Typeface fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
 
         // 0. Add paint for background
-        backgroundPaint = new TextRowPaint();
+        TextRowPaint backgroundPaint = new TextRowPaint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
         paints.add(backgroundPaint);
 
         // 1. Add paint for time
-        timePaint = new TextRowPaint();
+        TextRowPaint timePaint = new TextRowPaint();
         timePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(context.getResources().getDimension(R.dimen.time_size));
@@ -67,7 +62,7 @@ public class WatchFace {
         paints.add(timePaint);
 
         // 3. Add paint for date
-        datePaint = new TextRowPaint();
+        TextRowPaint datePaint = new TextRowPaint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTextSize(context.getResources().getDimension(R.dimen.date_size));
         datePaint.setAntiAlias(true);
@@ -75,7 +70,7 @@ public class WatchFace {
         paints.add(datePaint);
 
         // 2. Add paint for sunrise
-        sunriseSunsetPaint = new TextRowPaint();
+        TextRowPaint sunriseSunsetPaint = new TextRowPaint();
         sunriseSunsetPaint.setTypeface(fontAwesome);
         sunriseSunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseSunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
@@ -83,7 +78,7 @@ public class WatchFace {
         paints.add(sunriseSunsetPaint);
 
         // 4. Add paint for battery level
-        batteryLevelPaint = new TextRowPaint();
+        TextRowPaint batteryLevelPaint = new TextRowPaint();
         batteryLevelPaint.setTypeface(fontAwesome);
         batteryLevelPaint.setColor(TEXT_DEFAULT_COLOUR);
         batteryLevelPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
@@ -203,25 +198,5 @@ public class WatchFace {
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
         sunriseSunsetText = sunIcon + " " + sunriseSunset.first + "    " + moonIcon + " " + sunriseSunset.second;
-    }
-
-    public void restoreBackgroundColour() {
-        int backgroundColour = BACKGROUND_DEFAULT_COLOUR;
-        backgroundPaint.setColor(backgroundColour);
-    }
-
-    public void updateBackgroundColourToDefault() {
-        backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
-    }
-
-    public void updateDateAndTimeColourToDefault() {
-        timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
-        datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
-    }
-
-    public void restoreDateAndTimeColour() {
-        int dateAndTimeColour = DATE_AND_TIME_DEFAULT_COLOUR;
-        timePaint.setColor(dateAndTimeColour);
-        datePaint.setColor(dateAndTimeColour);
     }
 }
