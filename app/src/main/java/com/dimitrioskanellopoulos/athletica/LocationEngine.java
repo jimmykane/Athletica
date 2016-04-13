@@ -31,6 +31,7 @@ public class LocationEngine implements LocationListener {
     }
 
     public Float getAltitudeFromPressure(Float pressure){
+        Log.d(TAG, "Calculating altitude from pressure");
         return SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressure);
     }
 
