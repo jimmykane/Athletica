@@ -126,7 +126,7 @@ public class WatchFace {
                 calendar.get(Calendar.SECOND));
 
         float timeXOffset = computeXOffset(timeText, timePaint, bounds);
-        float timeYOffset = computeTimeYOffset(timeText, timePaint, bounds);
+        float timeYOffset = computeFirstPaintYOffset(timeText, timePaint, bounds);
         canvas.drawText(timeText, timeXOffset, timeYOffset, timePaint);
 
         String dateText = String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR));
@@ -140,7 +140,7 @@ public class WatchFace {
 
         String bottomRowText = batteryLevelText + "    " + altitudeText;
         float bottomRowTextXOffset = computeXOffset(bottomRowText, batteryLevelPaint, bounds);
-        float bottomRowTextYOffset = computeTimeYOffset(bottomRowText, batteryLevelPaint, bounds);
+        float bottomRowTextYOffset = computeFirstPaintYOffset(bottomRowText, batteryLevelPaint, bounds);
         canvas.drawText(bottomRowText, bottomRowTextXOffset, bottomRowTextYOffset * 2 - dateYOffset, batteryLevelPaint);
     }
 
@@ -150,7 +150,7 @@ public class WatchFace {
         return centerX - (textLength / 2.0f);
     }
 
-    private float computeTimeYOffset(String timeText, Paint timePaint, Rect watchBounds) {
+    private float computeFirstPaintYOffset(String timeText, Paint timePaint, Rect watchBounds) {
         float centerY = watchBounds.exactCenterY() - 17.0f;
         Rect textBounds = new Rect();
         timePaint.getTextBounds(timeText, 0, timeText.length(), textBounds);
