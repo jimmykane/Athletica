@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class WatchFace {
-    private static final String TAG = "Watchface" ;
+    private static final String TAG = "Watchface";
     private static final String TIME_FORMAT_WITHOUT_SECONDS = "%02d:%02d";
     private static final String TIME_FORMAT_WITH_SECONDS = TIME_FORMAT_WITHOUT_SECONDS + ":%02d";
     private static final String DATE_FORMAT = "%02d.%02d.%d";
@@ -121,9 +121,9 @@ public class WatchFace {
 
         // Draw the 1st one
         Float yOffset = 0f;
-        for (Integer i=1; i<paints.size(); i++) {
+        for (Integer i = 1; i < paints.size(); i++) {
             yOffset = yOffset + computeRowYOffset(paints.get(i));
-            if (i==1){
+            if (i == 1) {
                 yOffset = computeFirstPaintYOffset(paints.get(i), bounds);
             }
             Float xOffset = computeXOffset(paints.get(i), bounds);

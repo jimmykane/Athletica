@@ -235,7 +235,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         public void handleSensorValueChanged(SensorEvent event) {
 
-            switch (event.sensor.getType()){
+            switch (event.sensor.getType()) {
                 case Sensor.TYPE_PRESSURE:
                     watchFace.updateAltitude(String.format("%.01f", locationEngine.getAltitudeFromPressure(event.values[0])));
                     Log.d(TAG, "Updated altitude from pressure");
@@ -272,7 +272,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         }
 
-        private void startSensors(){
+        private void startSensors() {
             for (CallbackSensor sensor : sensors) {
                 if (!sensor.isListening()) {
                     sensor.startListening();
@@ -280,7 +280,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        private void stopSensors(){
+        private void stopSensors() {
             for (CallbackSensor sensor : sensors) {
                 if (sensor.isListening()) {
                     sensor.stopListening();
