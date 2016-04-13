@@ -110,10 +110,12 @@ public class WatchFace {
         // Should calc in foreach
         Integer i = 0;
         for (Paint paint : paints) {
-            if (i == 4){
-                canvas.drawRect(0, 0, bounds.width(), bounds.height(), paint);
+            switch (i){
+                case 4:
+                    canvas.drawRect(0, 0, bounds.width(), bounds.height(), paint);
+                    break;
             }
-
+            // Increase the counter
             i++;
         }
 
