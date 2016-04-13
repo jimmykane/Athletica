@@ -304,20 +304,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 updateSunriseAndSunset();
             }
         }
-
-
-        // Create the LocationRequest object
-        // LocationRequest locationRequest = LocationRequest.create();
-        // Use high accuracy
-        // locationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
-        // Set the update interval to 2 seconds
-        // locationRequest.setInterval(TimeUnit.SECONDS.toMillis(2));
-        // Set the fastest update interval to 2 seconds
-        // locationRequest.setFastestInterval(TimeUnit.SECONDS.toMillis(2));
-        // Set the minimum displacement
-        // locationRequest.setSmallestDisplacement(2);
-        // Register listener using the LocationRequest object
-        // LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
     }
 
 
