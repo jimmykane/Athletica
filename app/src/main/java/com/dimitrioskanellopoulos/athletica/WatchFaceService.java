@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.hardware.Sensor;
+import android.hardware.SensorEvent;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -236,14 +237,13 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        public void handleSensorValueChanged(Float value) {
-            Double altitude = locationEngine.getAltitude(value);
-            if (altitude == null) {
-                Log.d(TAG, "Could not update altitude");
-                return;
+        public void handleSensorValueChanged(SensorEvent event) {
+
+            switch (event.sensor.getType()){
+                case Sensor.TYPE_PRESSURE:
+                    watchFace.updateAltitude(String.format("%.01f", locationEngine.getAltitude(event.values[0])));
+                    break;
             }
-            watchFace.updateAltitude(String.format("%.01f", altitude));
-            Log.d(TAG, "Updated Altitude");
         }
 
         private void updateSunriseAndSunset() {
