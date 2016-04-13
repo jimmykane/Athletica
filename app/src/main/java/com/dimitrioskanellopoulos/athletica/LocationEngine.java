@@ -30,35 +30,8 @@ public class LocationEngine implements LocationListener {
         return lastKnownLocation;
     }
 
-    public Double getAltitude(Float pressure){
-        Log.d(TAG, "Calculating Combined Pressure Altitude");
-        if (!googleApiHelper.isConnected()){
-            Log.e(TAG, "Google Api is not connected aborting");
-            return null;
-        }
-        // Get the pressure altitude from the pressure
-        Float pressureAltitude = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressure);
-        getLastKnownLocation();
-
-        if (lastKnownLocation == null
-                || !lastKnownLocation.hasAltitude()
-                || lastKnownLocation.getAccuracy() > MAX_ACCEPTED_ACCURACY
-                || (System.currentTimeMillis() - lastKnownLocation.getTime()) > LAST_KNOWN_LOCATION_AGE){
-            Log.d(TAG, "Returning altitude from pressure");
-            return (double)pressureAltitude;
-        }
-
-        // We have a location with altitude
-        Double gpsAltitude = lastKnownLocation.getAltitude();
-        // @todo check algo
-        Float gpsAltitudeWeight = 1 - (
-                (lastKnownLocation.getAccuracy()*ACCURACY_WEIGHT + lastKnownLocation.getTime()*AGE_WEIGHT)
-                / (lastKnownLocation.getAccuracy() + lastKnownLocation.getTime()));
-
-        Double combinedAltitude = (pressureAltitude*0.5f + gpsAltitude*gpsAltitudeWeight*0.5f)/(0.5f+0.5f*gpsAltitudeWeight);
-
-        Log.d(TAG, "Returning combined altitude");
-        return combinedAltitude;
+    public Float getAltitudeFromPressure(Float pressure){
+        return SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressure);
     }
 
     @Override

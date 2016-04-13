@@ -18,7 +18,7 @@ public class CallbackSensor implements SensorEventListener {
     private changeCallback changeCallback;
 
     public interface changeCallback {
-        void handleSensorValueChanged(Float value);
+        void handleSensorValueChanged(SensorEvent value);
     }
 
     public CallbackSensor(@NonNull Context context, Integer sensorType, @NonNull changeCallback changeCallback) {
@@ -46,7 +46,7 @@ public class CallbackSensor implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         // Pass the value to the callback
-        changeCallback.handleSensorValueChanged(event.values[0]);
+        changeCallback.handleSensorValueChanged(event);
     }
 
     @Override

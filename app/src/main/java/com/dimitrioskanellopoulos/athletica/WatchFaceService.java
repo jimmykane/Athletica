@@ -241,7 +241,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
             switch (event.sensor.getType()){
                 case Sensor.TYPE_PRESSURE:
-                    watchFace.updateAltitude(String.format("%.01f", locationEngine.getAltitude(event.values[0])));
+                    watchFace.updateAltitude(String.format("%.01f", locationEngine.getAltitudeFromPressure(event.values[0])));
                     break;
             }
         }
