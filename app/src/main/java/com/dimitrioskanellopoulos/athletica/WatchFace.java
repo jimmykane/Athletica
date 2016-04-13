@@ -41,7 +41,6 @@ public class WatchFace {
     private boolean shouldShowSeconds = true;
     private String batteryLevelText = "";
     private String altitudeText = "";
-    private String sunriseSunsetText = "";
 
     public WatchFace(Context context) {
 
@@ -52,6 +51,7 @@ public class WatchFace {
         TextRowPaint backgroundPaint = new TextRowPaint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
         paints.add(backgroundPaint);
+        // @todo Maybe should draw now ?
 
         // 1. Add paint for time
         TextRowPaint timePaint = new TextRowPaint();
@@ -106,38 +106,28 @@ public class WatchFace {
         // First draw background
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), paints.get(0));
 
+        // Set texts on the most recent times for time
+        paints.get(1).setText(String.format(
+                shouldShowSeconds ?
+                        TIME_FORMAT_WITH_SECONDS :
+                        TIME_FORMAT_WITHOUT_SECONDS,
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                calendar.get(Calendar.SECOND)));
 
-        // Should calc in foreach
-        Integer i = 0;
+        // And date
+        paints.get(2).setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR)));
+        paints.get(4).setText(batteryLevelText + "    " + altitudeText);
+
+        // Draw the 1st one
         Float yOffset = 0f;
-        for (TextRowPaint paint : paints) {
-            // Special cases until I change the structure. 5 mins a day
-            if (i == 1){
-                paint.setText(String.format(
-                        shouldShowSeconds ?
-                                TIME_FORMAT_WITH_SECONDS :
-                                TIME_FORMAT_WITHOUT_SECONDS,
-                        calendar.get(Calendar.HOUR_OF_DAY),
-                        calendar.get(Calendar.MINUTE),
-                        calendar.get(Calendar.SECOND)));
-                yOffset = computeFirstPaintYOffset(paint, bounds);
+        for (Integer i=1; i<paints.size(); i++) {
+            yOffset = yOffset + computeRowYOffset(paints.get(i));
+            if (i==1){
+                yOffset = computeFirstPaintYOffset(paints.get(i), bounds);
             }
-            if (i == 2){
-                paint.setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR)));
-                yOffset = yOffset + computeRowYOffset(paint);
-            }else if (i == 3){
-                paint.setText(sunriseSunsetText);
-                yOffset = yOffset + computeRowYOffset(paint);
-            }else if (i == 4){
-                paint.setText(batteryLevelText + "    " + altitudeText);
-                yOffset = yOffset + computeRowYOffset(paint);
-            }
-
-            float xOffset = computeXOffset(paint, bounds);
-
-            canvas.drawText(paint.getText(), xOffset, yOffset, paint);
-            // Increase the counter
-            i++;
+            Float xOffset = computeXOffset(paints.get(i), bounds);
+            canvas.drawText(paints.get(i).getText(), xOffset, yOffset, paints.get(i));
         }
     }
 
@@ -148,7 +138,7 @@ public class WatchFace {
     }
 
     private float computeFirstPaintYOffset(TextRowPaint firstRowPaint, Rect watchBounds) {
-        float centerY = watchBounds.exactCenterY() - 17.0f;
+        float centerY = watchBounds.exactCenterY() - 15.0f;
         Rect textBounds = new Rect();
         firstRowPaint.getTextBounds(firstRowPaint.getText(), 0, firstRowPaint.getText().length(), textBounds);
         int textHeight = textBounds.height();
@@ -158,7 +148,7 @@ public class WatchFace {
     private float computeRowYOffset(TextRowPaint paint) {
         Rect textBounds = new Rect();
         paint.getTextBounds(paint.getText(), 0, paint.getText().length(), textBounds);
-        return textBounds.height() + 17.0f;
+        return textBounds.height() + 15.0f;
     }
 
     public void setAntiAlias(boolean antiAlias) {
@@ -197,6 +187,7 @@ public class WatchFace {
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
-        sunriseSunsetText = sunIcon + " " + sunriseSunset.first + "    " + moonIcon + " " + sunriseSunset.second;
+        paints.get(3).setText(sunIcon + " " + sunriseSunset.first + "    " + moonIcon + " " + sunriseSunset.second);
     }
+
 }
