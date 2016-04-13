@@ -111,7 +111,7 @@ public class WatchFace {
         Integer i = 0;
         for (Paint paint : paints) {
             switch (i){
-                case 4:
+                case 4: // Background
                     canvas.drawRect(0, 0, bounds.width(), bounds.height(), paint);
                     break;
             }
