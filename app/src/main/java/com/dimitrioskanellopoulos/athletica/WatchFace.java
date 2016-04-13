@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class WatchFace {
-
+    private static final String TAG = "Watchface" ;
     private static final String TIME_FORMAT_WITHOUT_SECONDS = "%02d:%02d";
     private static final String TIME_FORMAT_WITH_SECONDS = TIME_FORMAT_WITHOUT_SECONDS + ":%02d";
     private static final String DATE_FORMAT = "%02d.%02d.%d";
@@ -109,60 +110,58 @@ public class WatchFace {
 
         // Should calc in foreach
         Integer i = 0;
-        for (Paint paint : paints) {
-            switch (i){
-                case 4: // Background
-                    canvas.drawRect(0, 0, bounds.width(), bounds.height(), paint);
-                    break;
+        for (TextRowPaint paint : paints) {
+            // Special cases until I change the structure. 5 mins a day
+            if (i == 0){
+                paint.setText(String.format(
+                        shouldShowSeconds ?
+                                TIME_FORMAT_WITH_SECONDS :
+                                TIME_FORMAT_WITHOUT_SECONDS,
+                        calendar.get(Calendar.HOUR_OF_DAY),
+                        calendar.get(Calendar.MINUTE),
+                        calendar.get(Calendar.SECOND)));
             }
+            if (i == 1){
+                paint.setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR)));
+            }else if (i == 2){
+                paint.setText(sunriseSunsetText);
+            }else if (i == 3){
+                paint.setText(batteryLevelText + "    " + altitudeText);
+            }else if (i == 4){
+                canvas.drawRect(0, 0, bounds.width(), bounds.height(), paint);
+                break;
+            }
+
+
+            float xOffset = computeXOffset(paint, bounds);
+            float yOffset = computeRowYOffset(paint);
+
+            if (i == 0){
+                yOffset = computeFirstPaintYOffset(paint, bounds);
+            }
+            canvas.drawText(paint.getText(), xOffset, yOffset, paint);
             // Increase the counter
             i++;
         }
-
-        String timeText = String.format(
-                shouldShowSeconds ?
-                        TIME_FORMAT_WITH_SECONDS :
-                        TIME_FORMAT_WITHOUT_SECONDS,
-                calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE),
-                calendar.get(Calendar.SECOND));
-
-        float timeXOffset = computeXOffset(timeText, timePaint, bounds);
-        float timeYOffset = computeFirstPaintYOffset(timeText, timePaint, bounds);
-        canvas.drawText(timeText, timeXOffset, timeYOffset, timePaint);
-
-        String dateText = String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR));
-        float dateXOffset = computeXOffset(dateText, datePaint, bounds);
-        float dateYOffset = computeRowYOffset(dateText, datePaint);
-        canvas.drawText(dateText, dateXOffset, timeYOffset + dateYOffset, datePaint);
-
-        float firstRowTextXOffset = computeXOffset(sunriseSunsetText, sunriseSunsetPaint, bounds);
-        float firstRowYOffset = computeRowYOffset(sunriseSunsetText, sunriseSunsetPaint);
-        canvas.drawText(sunriseSunsetText, firstRowTextXOffset, timeYOffset + dateYOffset + firstRowYOffset, sunriseSunsetPaint);
-
-        String bottomRowText = batteryLevelText + "    " + altitudeText;
-        float bottomRowTextXOffset = computeXOffset(bottomRowText, batteryLevelPaint, bounds);
-        float bottomRowTextYOffset = computeFirstPaintYOffset(bottomRowText, batteryLevelPaint, bounds);
-        canvas.drawText(bottomRowText, bottomRowTextXOffset, bottomRowTextYOffset * 2 - dateYOffset, batteryLevelPaint);
     }
 
-    private float computeXOffset(String text, Paint paint, Rect watchBounds) {
+    private float computeXOffset(TextRowPaint paint, Rect watchBounds) {
         float centerX = watchBounds.exactCenterX();
-        float textLength = paint.measureText(text);
+        float textLength = paint.measureText(paint.getText());
         return centerX - (textLength / 2.0f);
     }
 
-    private float computeFirstPaintYOffset(String timeText, Paint timePaint, Rect watchBounds) {
+    private float computeFirstPaintYOffset(TextRowPaint firstRowPaint, Rect watchBounds) {
         float centerY = watchBounds.exactCenterY() - 17.0f;
         Rect textBounds = new Rect();
-        timePaint.getTextBounds(timeText, 0, timeText.length(), textBounds);
+        firstRowPaint.getTextBounds(firstRowPaint.getText(), 0, firstRowPaint.getText().length(), textBounds);
         int textHeight = textBounds.height();
         return centerY + (textHeight / 2.0f);
     }
 
-    private float computeRowYOffset(String text, Paint paint) {
+    private float computeRowYOffset(TextRowPaint paint) {
         Rect textBounds = new Rect();
-        paint.getTextBounds(text, 0, text.length(), textBounds);
+        paint.getTextBounds(paint.getText(), 0, paint.getText().length(), textBounds);
         return textBounds.height() + 17.0f;
     }
 
@@ -182,7 +181,7 @@ public class WatchFace {
 
 
     public void updateBatteryLevel(Integer batteryPercentage) {
-        String icon = "";
+        String icon;
         if (batteryPercentage > 80 && batteryPercentage <= 100) {
             icon = batteryFullIcon;
         } else if (batteryPercentage > 60 && batteryPercentage <= 80) {
