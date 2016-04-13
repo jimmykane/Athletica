@@ -66,7 +66,7 @@ public class WatchFace {
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTextSize(context.getResources().getDimension(R.dimen.date_size));
         datePaint.setAntiAlias(true);
-        datePaint.setTypeface(Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL));
+        datePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         paints.add(datePaint);
 
         // 2. Add paint for sunrise
@@ -117,7 +117,7 @@ public class WatchFace {
 
         // And date
         paints.get(2).setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR)));
-        paints.get(4).setText(batteryLevelText + "    " + altitudeText);
+        paints.get(4).setText(batteryLevelText + "  " + altitudeText);
 
         // Draw the 1st one
         Float yOffset = 0f;
@@ -132,9 +132,7 @@ public class WatchFace {
     }
 
     private float computeXOffset(TextRowPaint paint, Rect watchBounds) {
-        float centerX = watchBounds.exactCenterX();
-        float textLength = paint.measureText(paint.getText());
-        return centerX - (textLength / 2.0f);
+        return  watchBounds.exactCenterX() - (paint.measureText(paint.getText()) / 2.0f);
     }
 
     private float computeFirstPaintYOffset(TextRowPaint firstRowPaint, Rect watchBounds) {
