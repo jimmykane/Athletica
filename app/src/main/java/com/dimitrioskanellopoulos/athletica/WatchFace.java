@@ -77,7 +77,15 @@ public class WatchFace {
         sunriseSunsetPaint.setAntiAlias(true);
         paints.add(sunriseSunsetPaint);
 
-        // 4. Add paint for battery level
+        // 4. Add paint for altitude
+        TextRowPaint altitudePaint = new TextRowPaint();
+        altitudePaint.setTypeface(fontAwesome);
+        altitudePaint.setColor(TEXT_DEFAULT_COLOUR);
+        altitudePaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
+        altitudePaint.setAntiAlias(true);
+        paints.add(altitudePaint);
+
+        // 5. Add paint for battery level
         TextRowPaint batteryLevelPaint = new TextRowPaint();
         batteryLevelPaint.setTypeface(fontAwesome);
         batteryLevelPaint.setColor(TEXT_DEFAULT_COLOUR);
@@ -162,6 +170,9 @@ public class WatchFace {
         shouldShowSeconds = showSeconds;
     }
 
+    public void updateAltitude(String altitude) {
+        paints.get(4).setText(areaChartIcon + " " + altitude + "m");
+    }
 
     public void updateBatteryLevel(Integer batteryPercentage) {
         String icon;
@@ -176,13 +187,7 @@ public class WatchFace {
         } else {
             icon = batteryEmptyIcon;
         }
-        batteryLevelText = icon + " " + batteryPercentage + "%";
-        paints.get(4).setText(batteryLevelText + "  " + altitudeText);
-    }
-
-    public void updateAltitude(String altitude) {
-        altitudeText = areaChartIcon + " " + altitude + "m";
-        paints.get(4).setText(batteryLevelText + "  " + altitudeText);
+        paints.get(5).setText(icon + " " + batteryPercentage + "%");
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
