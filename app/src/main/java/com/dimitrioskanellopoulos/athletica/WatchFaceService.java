@@ -95,7 +95,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         private final List<CallbackSensor> sensors = new ArrayList<CallbackSensor>();
 
-
         @Override
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);

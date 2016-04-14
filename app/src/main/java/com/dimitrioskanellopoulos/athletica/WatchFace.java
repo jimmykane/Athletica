@@ -117,7 +117,6 @@ public class WatchFace {
 
         // And date
         paints.get(2).setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR)));
-        paints.get(4).setText(batteryLevelText + "  " + altitudeText);
 
         // Draw the 1st one
         Float yOffset = 0f;
@@ -178,10 +177,12 @@ public class WatchFace {
             icon = batteryEmptyIcon;
         }
         batteryLevelText = icon + " " + batteryPercentage + "%";
+        paints.get(4).setText(batteryLevelText + "  " + altitudeText);
     }
 
     public void updateAltitude(String altitude) {
         altitudeText = areaChartIcon + " " + altitude + "m";
+        paints.get(4).setText(batteryLevelText + "  " + altitudeText);
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
