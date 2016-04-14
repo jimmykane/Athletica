@@ -298,6 +298,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
             if ((minute % 30) == 0) {
                 updateSunriseAndSunset();
             }
+            if (isEmulator()) {
+                watchFace.updateAltitude("500");
+            }
         }
     }
 
