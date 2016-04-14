@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.util.Pair;
+import android.util.TypedValue;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,16 +37,22 @@ public class WatchFace {
     private final String batteryThreeQuartersIcon;
     private final String batteryFullIcon;
 
+    private final Float rowVerticalSize;
+
     private final Calendar calendar;
 
     private boolean shouldShowSeconds = true;
-    private String batteryLevelText = "";
-    private String altitudeText = "";
 
     public WatchFace(Context context) {
 
         // Create fontAwesome typeface
         Typeface fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
+
+        // Define the size of the rows for vertical
+        rowVerticalSize = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                context.getResources().getDimension(R.dimen.row_vertical_size),
+                context.getResources().getDisplayMetrics());
 
         // 0. Add paint for background
         TextRowPaint backgroundPaint = new TextRowPaint();
@@ -153,7 +160,7 @@ public class WatchFace {
     private float computeRowYOffset(TextRowPaint paint) {
         Rect textBounds = new Rect();
         paint.getTextBounds(paint.getText(), 0, paint.getText().length(), textBounds);
-        return textBounds.height() + 15.0f;
+        return textBounds.height() + rowVerticalSize;
     }
 
     public void setAntiAlias(boolean antiAlias) {
