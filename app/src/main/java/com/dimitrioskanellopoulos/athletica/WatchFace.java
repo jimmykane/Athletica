@@ -89,7 +89,7 @@ public class WatchFace {
         TextRowPaint batteryLevelPaint = new TextRowPaint();
         batteryLevelPaint.setTypeface(fontAwesome);
         batteryLevelPaint.setColor(TEXT_DEFAULT_COLOUR);
-        batteryLevelPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
+        batteryLevelPaint.setTextSize(context.getResources().getDimension(R.dimen.battery_text_size));
         batteryLevelPaint.setAntiAlias(true);
         paints.add(batteryLevelPaint);
 
