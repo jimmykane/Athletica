@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
@@ -45,7 +46,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
      * The supported sensors
      */
     private static final int[] supportedSensorTypes = {
-            Sensor.TYPE_PRESSURE
+            Sensor.TYPE_PRESSURE,
+            Sensor.TYPE_SIGNIFICANT_MOTION
     };
 
     @Override
@@ -147,42 +149,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             updateTimer();
         }
 
-        private void registerTimeZoneReceiver() {
-            if (mRegisteredTimeZoneReceiver) {
-                return;
-            }
-            mRegisteredTimeZoneReceiver = true;
-            IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
-            WatchFaceService.this.registerReceiver(mTimeZoneReceiver, filter);
-        }
-
-        private void unregisterTimeZoneReceiver() {
-            if (!mRegisteredTimeZoneReceiver) {
-                return;
-            }
-            mRegisteredTimeZoneReceiver = false;
-            WatchFaceService.this.unregisterReceiver(mTimeZoneReceiver);
-        }
-
-        @Override
-        public void onPropertiesChanged(Bundle properties) {
-            super.onPropertiesChanged(properties);
-            mLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
-        }
-
-        @Override
-        public void onDraw(Canvas canvas, Rect bounds) {
-            super.onDraw(canvas, bounds);
-            watchFace.draw(canvas, bounds);
-        }
-
-        @Override
-        public void onTimeTick() {
-            super.onTimeTick();
-            checkActions();
-            invalidate();
-        }
-
         @Override
         public void onAmbientModeChanged(boolean inAmbientMode) {
             super.onAmbientModeChanged(inAmbientMode);
@@ -198,6 +164,42 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
             updateTimer();
+        }
+
+        @Override
+        public void onPropertiesChanged(Bundle properties) {
+            super.onPropertiesChanged(properties);
+            mLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
+        }
+
+        @Override
+        public void onTimeTick() {
+            super.onTimeTick();
+            checkActions();
+            invalidate();
+        }
+
+        @Override
+        public void onDraw(Canvas canvas, Rect bounds) {
+            super.onDraw(canvas, bounds);
+            watchFace.draw(canvas, bounds);
+        }
+
+        private void registerTimeZoneReceiver() {
+            if (mRegisteredTimeZoneReceiver) {
+                return;
+            }
+            mRegisteredTimeZoneReceiver = true;
+            IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
+            WatchFaceService.this.registerReceiver(mTimeZoneReceiver, filter);
+        }
+
+        private void unregisterTimeZoneReceiver() {
+            if (!mRegisteredTimeZoneReceiver) {
+                return;
+            }
+            mRegisteredTimeZoneReceiver = false;
+            WatchFaceService.this.unregisterReceiver(mTimeZoneReceiver);
         }
 
         /**
@@ -238,6 +240,13 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 case Sensor.TYPE_PRESSURE:
                     watchFace.updateAltitude(String.format("%.01f", locationEngine.getAltitudeFromPressure(event.values[0])));
                     Log.d(TAG, "Updated altitude from pressure");
+                    break;
+                case Sensor.TYPE_SIGNIFICANT_MOTION:
+                    Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                    long[] vibrationPattern = {0, 500, 50, 300};
+                    //-1 - don't repeat
+                    final int indexInPatternToRepeat = -1;
+                    vibrator.vibrate(vibrationPattern, indexInPatternToRepeat);
                     break;
             }
         }
