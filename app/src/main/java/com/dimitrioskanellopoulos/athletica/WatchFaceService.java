@@ -47,7 +47,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
      */
     private static final int[] supportedSensorTypes = {
             Sensor.TYPE_PRESSURE,
-            Sensor.TYPE_SIGNIFICANT_MOTION
     };
 
     @Override
@@ -56,7 +55,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
     }
 
     private class Engine extends CanvasWatchFaceService.Engine implements
-            CallbackSensor.changeCallback {
+            CallbackSensor.onSensorEventCallback {
 
         private static final String TAG = "Engine";
 
@@ -234,19 +233,13 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        public void handleSensorValueChanged(SensorEvent event) {
-
+        public void handleOnSensorChangedEvent(SensorEvent event) {
             switch (event.sensor.getType()) {
                 case Sensor.TYPE_PRESSURE:
                     watchFace.updateAltitude(String.format("%.01f", locationEngine.getAltitudeFromPressure(event.values[0])));
                     Log.d(TAG, "Updated altitude from pressure");
                     break;
                 case Sensor.TYPE_SIGNIFICANT_MOTION:
-                    Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                    long[] vibrationPattern = {0, 500, 50, 300};
-                    //-1 - don't repeat
-                    final int indexInPatternToRepeat = -1;
-                    vibrator.vibrate(vibrationPattern, indexInPatternToRepeat);
                     break;
             }
         }

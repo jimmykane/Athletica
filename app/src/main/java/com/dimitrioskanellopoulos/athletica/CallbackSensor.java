@@ -15,13 +15,13 @@ public class CallbackSensor implements SensorEventListener {
     private final Sensor sensor;
 
     private Boolean isListening = false;
-    private changeCallback changeCallback;
+    private onSensorEventCallback changeCallback;
 
-    public interface changeCallback {
-        void handleSensorValueChanged(SensorEvent value);
+    public interface onSensorEventCallback {
+        void handleOnSensorChangedEvent(SensorEvent value);
     }
 
-    public CallbackSensor(@NonNull Context context, Integer sensorType, @NonNull changeCallback changeCallback) {
+    public CallbackSensor(@NonNull Context context, Integer sensorType, @NonNull onSensorEventCallback changeCallback) {
         this.changeCallback = changeCallback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(sensorType);
@@ -46,7 +46,7 @@ public class CallbackSensor implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         // Pass the value to the callback
-        changeCallback.handleSensorValueChanged(event);
+        changeCallback.handleOnSensorChangedEvent(event);
     }
 
     @Override
