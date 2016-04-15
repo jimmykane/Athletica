@@ -38,11 +38,14 @@ public class WatchFace {
     private final String batteryThreeQuartersIcon;
     private final String batteryFullIcon;
 
-    private final Float rowVerticalSize;
+    private final Float rowVerticalMargin;
 
     private final Calendar calendar;
 
     private boolean shouldShowSeconds = true;
+
+    private boolean isRound;
+    private int chinSize;
 
     public WatchFace(Context context) {
 
@@ -50,9 +53,9 @@ public class WatchFace {
         Typeface fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
 
         // Define the size of the rows for vertical
-        rowVerticalSize = TypedValue.applyDimension(
+        rowVerticalMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                context.getResources().getDimension(R.dimen.row_vertical_size),
+                context.getResources().getDimension(R.dimen.row_vertical_margin),
                 context.getResources().getDisplayMetrics());
 
         // Add paint for background
@@ -168,13 +171,13 @@ public class WatchFace {
         Rect textBounds = new Rect();
         lastRowPaint.getTextBounds(lastRowPaint.getText(), 0, lastRowPaint.getText().length(), textBounds);
         int textHeight = textBounds.height();
-        return watchBounds.bottom - textHeight - 17.0f;
+        return watchBounds.bottom - chinSize - textHeight ;
     }
 
     private float computeRowYOffset(TextRowPaint paint) {
         Rect textBounds = new Rect();
         paint.getTextBounds(paint.getText(), 0, paint.getText().length(), textBounds);
-        return textBounds.height() + rowVerticalSize;
+        return textBounds.height() + rowVerticalMargin;
     }
 
     public void setAntiAlias(boolean antiAlias) {
@@ -189,6 +192,14 @@ public class WatchFace {
 
     public void setShowSeconds(boolean showSeconds) {
         shouldShowSeconds = showSeconds;
+    }
+
+    public void setIsRound(boolean round) {
+        isRound = round;
+    }
+
+    public void setChinSize(Integer chinSize) {
+        this.chinSize = chinSize;
     }
 
     public void updateAltitude(String altitude) {

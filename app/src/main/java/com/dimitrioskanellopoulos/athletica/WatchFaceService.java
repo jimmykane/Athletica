@@ -20,6 +20,7 @@ import android.util.Pair;
 import android.view.SurfaceHolder;
 
 import android.location.Location;
+import android.view.WindowInsets;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -168,6 +169,13 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onPropertiesChanged(Bundle properties) {
             super.onPropertiesChanged(properties);
             mLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
+        }
+
+        @Override
+        public void onApplyWindowInsets(WindowInsets insets) {
+            super.onApplyWindowInsets(insets);
+            watchFace.setIsRound(insets.isRound());
+            watchFace.setChinSize(insets.getSystemWindowInsetBottom());
         }
 
         @Override
