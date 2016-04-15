@@ -203,19 +203,7 @@ public class WatchFace {
     }
 
     public void updateBatteryLevel(Integer batteryPercentage) {
-        String icon;
-        if (batteryPercentage > 80 && batteryPercentage <= 100) {
-            icon = batteryFullIcon;
-        } else if (batteryPercentage > 60 && batteryPercentage <= 80) {
-            icon = batteryThreeQuartersIcon;
-        } else if (batteryPercentage > 40 && batteryPercentage <= 60) {
-            icon = batteryHalfIcon;
-        } else if (batteryPercentage >= 20 && batteryPercentage <= 40) {
-            icon = batteryQuarterIcon;
-        } else {
-            icon = batteryEmptyIcon;
-        }
-        standardPaints.get("batteryPaint").setText(icon + " " + batteryPercentage + "%");
+        standardPaints.get("batteryPaint").setText(batteryPercentage.toString());
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
