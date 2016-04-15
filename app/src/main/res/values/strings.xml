@@ -6,9 +6,4 @@
     <string name="sun_icon">&#xf185;</string>
     <string name="moon_icon">&#xf186;</string>
     <string name="area_chart_icon">&#xf1fe;</string>
-    <string name="battery_empty_icon">&#xf244;</string>
-    <string name="battery_quarter_icon">&#xf243;</string>
-    <string name="battery_half_icon">&#xf242;</string>
-    <string name="battery_three_quarters_icon">&#xf241;</string>
-    <string name="battery_full_icon">&#xf240;</string>
 </resources>

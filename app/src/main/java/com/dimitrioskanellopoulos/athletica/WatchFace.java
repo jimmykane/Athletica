@@ -32,11 +32,6 @@ public class WatchFace {
     private final String sunIcon;
     private final String moonIcon;
     private final String areaChartIcon;
-    private final String batteryEmptyIcon;
-    private final String batteryQuarterIcon;
-    private final String batteryHalfIcon;
-    private final String batteryThreeQuartersIcon;
-    private final String batteryFullIcon;
 
     private final Float rowVerticalMargin;
 
@@ -107,11 +102,6 @@ public class WatchFace {
         sunIcon = context.getResources().getString(R.string.sun_icon);
         moonIcon = context.getResources().getString(R.string.moon_icon);
         areaChartIcon = context.getResources().getString(R.string.area_chart_icon);
-        batteryEmptyIcon = context.getResources().getString(R.string.battery_empty_icon);
-        batteryQuarterIcon = context.getResources().getString(R.string.battery_quarter_icon);
-        batteryHalfIcon = context.getResources().getString(R.string.battery_half_icon);
-        batteryThreeQuartersIcon = context.getResources().getString(R.string.battery_three_quarters_icon);
-        batteryFullIcon = context.getResources().getString(R.string.battery_full_icon);
 
         calendar = Calendar.getInstance();
     }
