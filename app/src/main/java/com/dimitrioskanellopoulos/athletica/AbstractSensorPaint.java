@@ -1,6 +1,10 @@
 package com.dimitrioskanellopoulos.athletica;
 
-public class SensorPaint extends AbstractTextPaint {
+abstract class AbstractSensorPaint extends AbstractTextPaint {
+
+    public AbstractSensorPaint(){
+
+    }
 
     @Override
     public void setText(String text) {
