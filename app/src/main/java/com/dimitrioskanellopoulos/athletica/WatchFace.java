@@ -3,19 +3,15 @@ package com.dimitrioskanellopoulos.athletica;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.TimeZone;
 
 public class WatchFace {
@@ -28,7 +24,7 @@ public class WatchFace {
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
 
     // Paints. Keep it list for fast access or ordered
-    private final HashMap<String, TextRowPaint> paints = new HashMap<String, TextRowPaint>();
+    private final LinkedHashMap<String, TextRowPaint> paints = new LinkedHashMap<String, TextRowPaint>();
 
     // Icons
     private final String sunIcon;
@@ -60,7 +56,7 @@ public class WatchFace {
         // 0. Add paint for background
         TextRowPaint backgroundPaint = new TextRowPaint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
-        paints.put("0backgroundPaint", backgroundPaint);
+        paints.put("backgroundPaint", backgroundPaint);
         // @todo Maybe should draw now ?
 
         // 1. Add paint for time
@@ -69,7 +65,7 @@ public class WatchFace {
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(context.getResources().getDimension(R.dimen.time_size));
         timePaint.setAntiAlias(true);
-        paints.put("1timePaint", timePaint);
+        paints.put("timePaint", timePaint);
 
         // 3. Add paint for date
         TextRowPaint datePaint = new TextRowPaint();
@@ -77,7 +73,7 @@ public class WatchFace {
         datePaint.setTextSize(context.getResources().getDimension(R.dimen.date_size));
         datePaint.setAntiAlias(true);
         datePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
-        paints.put("2datePaint", datePaint);
+        paints.put("datePaint", datePaint);
 
         // 2. Add paint for sunrise
         TextRowPaint sunriseSunsetPaint = new TextRowPaint();
@@ -85,7 +81,7 @@ public class WatchFace {
         sunriseSunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseSunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
         sunriseSunsetPaint.setAntiAlias(true);
-        paints.put("3sunriseSunsetPaint", sunriseSunsetPaint);
+        paints.put("sunriseSunsetPaint", sunriseSunsetPaint);
 
         // 4. Add paint for altitude
         TextRowPaint altitudePaint = new TextRowPaint();
@@ -93,7 +89,7 @@ public class WatchFace {
         altitudePaint.setColor(TEXT_DEFAULT_COLOUR);
         altitudePaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
         altitudePaint.setAntiAlias(true);
-        paints.put("4altitudePaint", altitudePaint);
+        paints.put("altitudePaint", altitudePaint);
 
         // 5. Add paint for battery level
         TextRowPaint batteryLevelPaint = new TextRowPaint();
@@ -101,7 +97,7 @@ public class WatchFace {
         batteryLevelPaint.setColor(TEXT_DEFAULT_COLOUR);
         batteryLevelPaint.setTextSize(context.getResources().getDimension(R.dimen.battery_text_size));
         batteryLevelPaint.setAntiAlias(true);
-        paints.put("5batteryLevelPaint", batteryLevelPaint);
+        paints.put("batteryLevelPaint", batteryLevelPaint);
 
         // Add the icons
         sunIcon = context.getResources().getString(R.string.sun_icon);
@@ -130,10 +126,10 @@ public class WatchFace {
         calendar.setTimeInMillis(System.currentTimeMillis());
 
         // First draw background
-        canvas.drawRect(0, 0, bounds.width(), bounds.height(), paints.get("0backgroundPaint"));
+        canvas.drawRect(0, 0, bounds.width(), bounds.height(), paints.get("backgroundPaint"));
 
         // Set texts on the most recent times for time
-        paints.get("1timePaint").setText(String.format(
+        paints.get("timePaint").setText(String.format(
                 shouldShowSeconds ?
                         TIME_FORMAT_WITH_SECONDS :
                         TIME_FORMAT_WITHOUT_SECONDS,
@@ -142,7 +138,7 @@ public class WatchFace {
                 calendar.get(Calendar.SECOND)));
 
         // And date
-        paints.get("2datePaint").setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR)));
+        paints.get("datePaint").setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR)));
 
         // Draw the 1st one
         Float yOffset = 0f;
@@ -151,7 +147,7 @@ public class WatchFace {
             TextRowPaint paint = entry.getValue();
             yOffset = yOffset + computeRowYOffset(paint);
             Float xOffset = computeXOffset(paint, bounds);
-            if (paintName == "2timePaint") {
+            if (paintName == "timePaint") {
                 yOffset = computeFirstPaintYOffset(paint, bounds);
                 canvas.drawText(paint.getText(), xOffset, computeFirstPaintYOffset(paint, bounds), paint);
             }else {
@@ -193,7 +189,7 @@ public class WatchFace {
     }
 
     public void updateAltitude(String altitude) {
-        paints.get("4altitudePaint").setText(areaChartIcon + " " + altitude + "m");
+        paints.get("altitudePaint").setText(areaChartIcon + " " + altitude + "m");
     }
 
     public void updateBatteryLevel(Integer batteryPercentage) {
@@ -209,11 +205,11 @@ public class WatchFace {
         } else {
             icon = batteryEmptyIcon;
         }
-        paints.get("5batteryLevelPaint").setText(icon + " " + batteryPercentage + "%");
+        paints.get("batteryLevelPaint").setText(icon + " " + batteryPercentage + "%");
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
-        paints.get("3sunriseSunsetPaint").setText(sunIcon + " " + sunriseSunset.first + "    " + moonIcon + " " + sunriseSunset.second);
+        paints.get("sunriseSunsetPaint").setText(sunIcon + " " + sunriseSunset.first + "    " + moonIcon + " " + sunriseSunset.second);
     }
 
 }
