@@ -1,10 +1,10 @@
 package com.dimitrioskanellopoulos.athletica;
 
-abstract class AbstractSensorPaint extends AbstractTextPaint {
 
-    public AbstractSensorPaint(){
+abstract class AbstractSensorPaint extends AbstractTextPaint implements SensorPaintInterface {
 
-    }
+    protected String icon;
+    protected String units;
 
     @Override
     public void setText(String text) {
@@ -13,6 +13,16 @@ abstract class AbstractSensorPaint extends AbstractTextPaint {
 
     @Override
     public String getText() {
-        return text;
+        return getIcon() + " " +  text + getUnits();
+    }
+
+    @Override
+    public String getIcon(){
+        return icon;
+    }
+
+    @Override
+    public String getUnits(){
+        return units;
     }
 }

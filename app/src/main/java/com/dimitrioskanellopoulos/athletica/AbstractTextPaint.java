@@ -5,6 +5,6 @@ import android.graphics.Paint;
 /**
  * A AbstractTextPaint is a normal paint that has just an extra placeholder for text
  */
-abstract class AbstractTextPaint extends Paint implements TextPaint{
+abstract class AbstractTextPaint extends Paint implements TextPaintInterface {
     protected String text = "";
 }

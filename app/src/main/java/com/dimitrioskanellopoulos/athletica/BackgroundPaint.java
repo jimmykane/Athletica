@@ -1,8 +1,6 @@
 package com.dimitrioskanellopoulos.athletica;
 
-import android.graphics.Paint;
-
-public class BackgroundPaint extends AbstractTextPaint{
+public class BackgroundPaint extends AbstractTextPaint {
 
     @Override
     public void setText(String text) {
