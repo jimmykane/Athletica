@@ -23,10 +23,10 @@ public class WatchFace {
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
 
     // Standard Paints -> Time and Battery
-    private final LinkedHashMap<String, TextRowPaint> standardPaints = new LinkedHashMap<String, TextRowPaint>();
+    private final LinkedHashMap<String, AbstractTextPaint> standardPaints = new LinkedHashMap<String, AbstractTextPaint>();
 
     // Extra Paints -> Dynamic
-    private final LinkedHashMap<String, TextRowPaint> extraPaints = new LinkedHashMap<String, TextRowPaint>();
+    private final LinkedHashMap<String, AbstractTextPaint> extraPaints = new LinkedHashMap<String, AbstractTextPaint>();
 
     // Icons
     private final String sunIcon;
@@ -59,13 +59,12 @@ public class WatchFace {
                 context.getResources().getDisplayMetrics());
 
         // Add paint for background
-        TextRowPaint backgroundPaint = new TextRowPaint();
+        BackgroundPaint backgroundPaint = new BackgroundPaint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
         standardPaints.put("backgroundPaint", backgroundPaint);
-        // @todo Maybe should draw now ?
 
         // Add paint for time
-        TextRowPaint timePaint = new TextRowPaint();
+        TimePaint timePaint = new TimePaint();
         timePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(context.getResources().getDimension(R.dimen.time_size));
@@ -73,15 +72,15 @@ public class WatchFace {
         standardPaints.put("timePaint", timePaint);
 
         // Add paint for battery level
-        TextRowPaint batteryLevelPaint = new TextRowPaint();
-        batteryLevelPaint.setTypeface(fontAwesome);
-        batteryLevelPaint.setColor(TEXT_DEFAULT_COLOUR);
-        batteryLevelPaint.setTextSize(context.getResources().getDimension(R.dimen.battery_text_size));
-        batteryLevelPaint.setAntiAlias(true);
-        standardPaints.put("batteryLevelPaint", batteryLevelPaint);
+        BatteryPaint batteryPaint = new BatteryPaint();
+        batteryPaint.setTypeface(fontAwesome);
+        batteryPaint.setColor(TEXT_DEFAULT_COLOUR);
+        batteryPaint.setTextSize(context.getResources().getDimension(R.dimen.battery_text_size));
+        batteryPaint.setAntiAlias(true);
+        standardPaints.put("batteryPaint", batteryPaint);
 
         // Add paint for date
-        TextRowPaint datePaint = new TextRowPaint();
+        DatePaint datePaint = new DatePaint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTextSize(context.getResources().getDimension(R.dimen.date_size));
         datePaint.setAntiAlias(true);
@@ -89,7 +88,7 @@ public class WatchFace {
         extraPaints.put("datePaint", datePaint);
 
         // Add paint for sunrise
-        TextRowPaint sunriseSunsetPaint = new TextRowPaint();
+        SensorPaint sunriseSunsetPaint = new SensorPaint();
         sunriseSunsetPaint.setTypeface(fontAwesome);
         sunriseSunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseSunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
@@ -97,7 +96,7 @@ public class WatchFace {
         extraPaints.put("sunriseSunsetPaint", sunriseSunsetPaint);
 
         // Add paint for altitude
-        TextRowPaint altitudePaint = new TextRowPaint();
+        SensorPaint altitudePaint = new SensorPaint();
         altitudePaint.setTypeface(fontAwesome);
         altitudePaint.setColor(TEXT_DEFAULT_COLOUR);
         altitudePaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
@@ -126,7 +125,7 @@ public class WatchFace {
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), standardPaints.get("backgroundPaint"));
 
         // Draw Time
-        TextRowPaint timePaint = standardPaints.get("timePaint");
+        AbstractTextPaint timePaint = standardPaints.get("timePaint");
         timePaint.setText(String.format(
                 shouldShowSeconds ?
                         TIME_FORMAT_WITH_SECONDS :
@@ -137,29 +136,26 @@ public class WatchFace {
         canvas.drawText(timePaint.getText(), computeXOffset(timePaint, bounds), computeFirstRowYOffset(timePaint, bounds), timePaint);
 
         // Draw battery
-        TextRowPaint batteryPaint = standardPaints.get("batteryLevelPaint");
+        AbstractTextPaint batteryPaint = standardPaints.get("batteryPaint");
         canvas.drawText(batteryPaint.getText(), computeXOffset(batteryPaint, bounds), computeLastRowYOffset(batteryPaint, bounds), batteryPaint);
-
 
         // Set the text of the data
         extraPaints.get("datePaint").setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR)));
 
-        // Draw the standard one since they are  fixed
-
         Float yOffset = computeFirstRowYOffset(timePaint, bounds);
-        for (Map.Entry<String, TextRowPaint> entry : extraPaints.entrySet()) {
-            TextRowPaint paint = entry.getValue();
+        for (Map.Entry<String, AbstractTextPaint> entry : extraPaints.entrySet()) {
+            AbstractTextPaint paint = entry.getValue();
             yOffset = yOffset + computeRowYOffset(paint);
             Float xOffset = computeXOffset(paint, bounds);
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
         }
     }
 
-    private float computeXOffset(TextRowPaint paint, Rect watchBounds) {
+    private float computeXOffset(AbstractTextPaint paint, Rect watchBounds) {
         return  watchBounds.exactCenterX() - (paint.measureText(paint.getText()) / 2.0f);
     }
 
-    private float computeFirstRowYOffset(TextRowPaint firstRowPaint, Rect watchBounds) {
+    private float computeFirstRowYOffset(AbstractTextPaint firstRowPaint, Rect watchBounds) {
         float centerY = watchBounds.exactCenterY() - 15.0f;
         Rect textBounds = new Rect();
         firstRowPaint.getTextBounds(firstRowPaint.getText(), 0, firstRowPaint.getText().length(), textBounds);
@@ -167,21 +163,21 @@ public class WatchFace {
         return centerY + (textHeight / 2.0f);
     }
 
-    private float computeLastRowYOffset(TextRowPaint lastRowPaint, Rect watchBounds) {
+    private float computeLastRowYOffset(AbstractTextPaint lastRowPaint, Rect watchBounds) {
         Rect textBounds = new Rect();
         lastRowPaint.getTextBounds(lastRowPaint.getText(), 0, lastRowPaint.getText().length(), textBounds);
         int textHeight = textBounds.height();
         return watchBounds.bottom - chinSize - textHeight ;
     }
 
-    private float computeRowYOffset(TextRowPaint paint) {
+    private float computeRowYOffset(AbstractTextPaint paint) {
         Rect textBounds = new Rect();
         paint.getTextBounds(paint.getText(), 0, paint.getText().length(), textBounds);
         return textBounds.height() + rowVerticalMargin;
     }
 
     public void setAntiAlias(boolean antiAlias) {
-        for (Map.Entry<String, TextRowPaint> entry : standardPaints.entrySet()) {
+        for (Map.Entry<String, AbstractTextPaint> entry : standardPaints.entrySet()) {
             entry.getValue().setAntiAlias(antiAlias);
         }
     }
@@ -219,7 +215,7 @@ public class WatchFace {
         } else {
             icon = batteryEmptyIcon;
         }
-        standardPaints.get("batteryLevelPaint").setText(icon + " " + batteryPercentage + "%");
+        standardPaints.get("batteryPaint").setText(icon + " " + batteryPercentage + "%");
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
