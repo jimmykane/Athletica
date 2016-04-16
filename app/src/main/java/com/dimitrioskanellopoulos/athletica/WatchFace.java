@@ -160,8 +160,7 @@ public class WatchFace {
     private float computeLastRowYOffset(AbstractTextPaint lastRowPaint, Rect watchBounds) {
         Rect textBounds = new Rect();
         lastRowPaint.getTextBounds(lastRowPaint.getText(), 0, lastRowPaint.getText().length(), textBounds);
-        int textHeight = textBounds.height();
-        return watchBounds.bottom - chinSize - textHeight ;
+        return watchBounds.bottom - chinSize - textBounds.height() ;
     }
 
     private float computeRowYOffset(AbstractTextPaint paint) {
@@ -172,6 +171,10 @@ public class WatchFace {
 
     public void setAntiAlias(boolean antiAlias) {
         for (Map.Entry<String, AbstractTextPaint> entry : standardPaints.entrySet()) {
+            entry.getValue().setAntiAlias(antiAlias);
+        }
+
+        for (Map.Entry<String, AbstractTextPaint> entry : extraPaints.entrySet()) {
             entry.getValue().setAntiAlias(antiAlias);
         }
     }
