@@ -1,8 +1,8 @@
 package com.dimitrioskanellopoulos.athletica;
 
-public class SunSetPaint extends AbstractSensorPaint {
+public class SunsetPaint extends AbstractSensorPaint {
 
-    private String icon = "\uf185";
+    private String icon = "\uf186";
 
     @Override
     public String getIcon() {

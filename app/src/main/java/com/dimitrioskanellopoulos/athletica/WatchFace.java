@@ -32,9 +32,6 @@ public class WatchFace {
     // Extra Paints -> Dynamic
     private final LinkedHashMap<String, AbstractTextPaint> extraPaints = new LinkedHashMap<String, AbstractTextPaint>();
 
-    // Sensor Paints -> Dynamic
-    private final LinkedHashMap<String, AbstractSensorPaint> sensorPaints = new LinkedHashMap<String, AbstractSensorPaint>();
-
     private final Float rowVerticalMargin;
 
     private final Calendar calendar;
@@ -87,22 +84,12 @@ public class WatchFace {
         datePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         extraPaints.put("datePaint", datePaint);
 
-        // Add paint for sunrise
-        AbstractSensorPaint sunrisePaint = new SunrisePaint();
-        sunrisePaint.setTypeface(fontAwesome);
-        sunrisePaint.setColor(TEXT_DEFAULT_COLOUR);
-        sunrisePaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
-        sunrisePaint.setAntiAlias(true);
-
-        // Add paint for sunset
-        AbstractSensorPaint sunsetPaint = new SunSetPaint();
-        sunsetPaint.setTypeface(fontAwesome);
-        sunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
-        sunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
-        sunsetPaint.setAntiAlias(true);
-
-        // Combo paint for the above
-        SensorComboPaint sunriseSunsetPaint = new SensorComboPaint(sunrisePaint, sunsetPaint);
+        // Add paint for sunrise and sunset ( can be divided)
+        AbstractSensorPaint sunriseSunsetPaint = new SunriseSunsetPaint();
+        sunriseSunsetPaint.setTypeface(fontAwesome);
+        sunriseSunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
+        sunriseSunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
+        sunriseSunsetPaint.setAntiAlias(true);
         extraPaints.put("sunriseSunsetPaint", sunriseSunsetPaint);
 
         // Add paint for altitude
@@ -214,8 +201,7 @@ public class WatchFace {
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
-        extraPaints.get("sunriseSunsetPaint").setText("123");
-        extraPaints.get("sunriseSunsetPaint").setText(sunriseSunset.first + "div" + sunriseSunset.second);
+        extraPaints.get("sunriseSunsetPaint").setText(sunriseSunset.first + "-" + sunriseSunset.second);
     }
 
 }
