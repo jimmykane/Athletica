@@ -2,8 +2,4 @@
 <resources>
     <string name="google_app_id">Athletica</string>
     <string name="app_name">Athletica</string>
-    <string name="white_space">&#160;</string>
-    <string name="sun_icon">&#xf185;</string>
-    <string name="moon_icon">&#xf186;</string>
-    <string name="area_chart_icon">&#xf1fe;</string>
 </resources>
