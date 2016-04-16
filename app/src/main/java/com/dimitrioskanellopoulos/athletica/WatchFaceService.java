@@ -301,12 +301,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
             int hour = rightNow.get(Calendar.HOUR_OF_DAY);
             int minute = rightNow.get(Calendar.MINUTE);
             int second = rightNow.get(Calendar.SECOND);
-            if (second != 0) {
+            // Everything happens at the first second every hour
+            if (second != 0 || minute == 0) {
                 return;
             }
-            if ((minute % 30) == 0) {
-                updateSunriseAndSunset();
-            }
+            updateSunriseAndSunset();
             if (isEmulator()) {
                 watchFace.updateAltitude("500");
             }
