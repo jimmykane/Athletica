@@ -16,12 +16,19 @@ import java.util.TimeZone;
 
 public class WatchFace {
     private static final String TAG = "Watchface";
+
+    /**
+     * Standard String formats for time, date and color
+     */
     private static final String TIME_FORMAT_WITHOUT_SECONDS = "%02d:%02d";
     private static final String TIME_FORMAT_WITH_SECONDS = TIME_FORMAT_WITHOUT_SECONDS + ":%02d";
     private static final String DATE_FORMAT = "%02d.%02d.%d";
     private static final int DATE_AND_TIME_DEFAULT_COLOUR = Color.WHITE;
     private static final int TEXT_DEFAULT_COLOUR = Color.WHITE;
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
+
+    // The Calendar
+    private static final Calendar calendar = Calendar.getInstance();
 
     // Background Paint
     private final Paint backgroundPaint;
@@ -33,8 +40,6 @@ public class WatchFace {
     private final LinkedHashMap<String, AbstractTextPaint> extraPaints = new LinkedHashMap<String, AbstractTextPaint>();
 
     private final Float rowVerticalMargin;
-
-    private final Calendar calendar;
 
     private boolean shouldShowSeconds = true;
 
@@ -99,8 +104,6 @@ public class WatchFace {
         altitudePaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
         altitudePaint.setAntiAlias(true);
         extraPaints.put("pressureSensorPaint", altitudePaint);
-
-        calendar = Calendar.getInstance();
     }
 
     /**
@@ -145,30 +148,57 @@ public class WatchFace {
         }
     }
 
+    /**
+     * Computes the X-Axis offset so that the text is horizontically centered
+     * @param paint
+     * @param watchBounds
+     * @return
+     */
     private float computeXOffset(AbstractTextPaint paint, Rect watchBounds) {
         return  watchBounds.exactCenterX() - (paint.measureText(paint.getText()) / 2.0f);
     }
 
+    /**
+     * Computes the Y-Axis offset for the first row based on the exact center of the screen
+     * @param firstRowPaint
+     * @param watchBounds
+     * @return
+     */
     private float computeFirstRowYOffset(AbstractTextPaint firstRowPaint, Rect watchBounds) {
-        float centerY = watchBounds.exactCenterY() - 15.0f;
+        float centerY = watchBounds.exactCenterY() - rowVerticalMargin;
         Rect textBounds = new Rect();
         firstRowPaint.getTextBounds(firstRowPaint.getText(), 0, firstRowPaint.getText().length(), textBounds);
         int textHeight = textBounds.height();
         return centerY + (textHeight / 2.0f);
     }
 
+    /**
+     * Computs the Y-Axis offset for the last row based on the bottom of the screen
+     * @param lastRowPaint
+     * @param watchBounds
+     * @return
+     */
     private float computeLastRowYOffset(AbstractTextPaint lastRowPaint, Rect watchBounds) {
         Rect textBounds = new Rect();
         lastRowPaint.getTextBounds(lastRowPaint.getText(), 0, lastRowPaint.getText().length(), textBounds);
         return watchBounds.bottom - chinSize - textBounds.height() ;
     }
 
+    /**
+     * Computes the Y-Axis offset for a paint, according to it's size and margin
+     * @param paint
+     * @return
+     */
     private float computeRowYOffset(AbstractTextPaint paint) {
         Rect textBounds = new Rect();
         paint.getTextBounds(paint.getText(), 0, paint.getText().length(), textBounds);
         return textBounds.height() + rowVerticalMargin;
     }
 
+    /**
+     * Toggles the antialias for all the paints
+     * @param antiAlias
+     */
     public void setAntiAlias(boolean antiAlias) {
         for (Map.Entry<String, AbstractTextPaint> entry : standardPaints.entrySet()) {
             entry.getValue().setAntiAlias(antiAlias);
