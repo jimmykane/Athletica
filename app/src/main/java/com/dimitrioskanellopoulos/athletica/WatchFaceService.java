@@ -45,7 +45,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
     /**
      * The supported sensors
      */
-    private static final int[] supportedSensorTypes = {
+    private static final int[] enabledSensorTypes = {
             Sensor.TYPE_PRESSURE,
     };
 
@@ -114,7 +114,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             locationEngine = new LocationEngine(googleApiHelper);
 
             // Create the sensors
-            for (Integer supportedSensorType : supportedSensorTypes) {
+            for (Integer supportedSensorType : enabledSensorTypes) {
                 sensors.add(new CallbackSensor(getApplicationContext(), supportedSensorType, this));
             }
         }

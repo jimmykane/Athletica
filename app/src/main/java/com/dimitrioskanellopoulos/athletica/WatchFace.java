@@ -3,7 +3,6 @@ package com.dimitrioskanellopoulos.athletica;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.Pair;
@@ -31,7 +30,7 @@ public class WatchFace {
     private static final Calendar calendar = Calendar.getInstance();
 
     // Background Paint
-    private final Paint backgroundPaint;
+    private final android.graphics.Paint backgroundPaint;
 
     // Standard Paints -> Time and Battery
     private final LinkedHashMap<String, AbstractTextPaint> standardPaints = new LinkedHashMap<String, AbstractTextPaint>();
@@ -62,11 +61,11 @@ public class WatchFace {
                 context.getResources().getDisplayMetrics());
 
         // Add paint for background
-        backgroundPaint = new Paint();
+        backgroundPaint = new android.graphics.Paint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
 
         // Add paint for time
-        TimePaint timePaint = new TimePaint();
+        Paint timePaint = new Paint();
         timePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(context.getResources().getDimension(R.dimen.time_size));
@@ -82,7 +81,7 @@ public class WatchFace {
         standardPaints.put("batterySensorPaint", batterySensorPaint);
 
         // Add paint for date
-        DatePaint datePaint = new DatePaint();
+        Paint datePaint = new Paint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTextSize(context.getResources().getDimension(R.dimen.date_size));
         datePaint.setAntiAlias(true);
