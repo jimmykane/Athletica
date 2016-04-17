@@ -151,14 +151,14 @@ public class WatchFace {
         // Go over the extra paints
         for (Map.Entry<String, AbstractTextPaint> entry : extraPaints.entrySet()) {
             AbstractTextPaint paint = entry.getValue();
-            yOffset = yOffset + computeRowYOffset(paint);
+            yOffset = yOffset + rowVerticalMargin  + computeRowYOffset(paint);
             Float xOffset = computeXOffset(paint, bounds);
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
         }
         // Go over the sesnor paints
         for (Map.Entry<Integer, AbstractSensorPaint> entry : sensorPaints.entrySet()) {
             AbstractTextPaint paint = entry.getValue();
-            yOffset = yOffset + computeRowYOffset(paint);
+            yOffset = yOffset + rowVerticalMargin + computeRowYOffset(paint);
             Float xOffset = computeXOffset(paint, bounds);
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
         }
@@ -175,20 +175,11 @@ public class WatchFace {
      * Computes the Y-Axis offset for the first row based on the exact center of the screen
      */
     private float computeFirstRowYOffset(AbstractTextPaint firstRowPaint, Rect watchBounds) {
-        float centerY = watchBounds.exactCenterY() - rowVerticalMargin;
+        float centerY = watchBounds.exactCenterY();
         Rect textBounds = new Rect();
         firstRowPaint.getTextBounds(firstRowPaint.getText(), 0, firstRowPaint.getText().length(), textBounds);
         int textHeight = textBounds.height();
         return centerY + (textHeight / 2.0f);
-    }
-
-    /**
-     * Computes the Y-Axis offset for the last row based on the bottom of the screen
-     */
-    private float computeLastRowYOffset(AbstractTextPaint lastRowPaint, Rect watchBounds) {
-        Rect textBounds = new Rect();
-        lastRowPaint.getTextBounds(lastRowPaint.getText(), 0, lastRowPaint.getText().length(), textBounds);
-        return watchBounds.bottom - chinSize - textBounds.height();
     }
 
     /**
@@ -197,7 +188,16 @@ public class WatchFace {
     private float computeRowYOffset(AbstractTextPaint paint) {
         Rect textBounds = new Rect();
         paint.getTextBounds(paint.getText(), 0, paint.getText().length(), textBounds);
-        return textBounds.height() + rowVerticalMargin;
+        return (textBounds.height()/2.0f);
+    }
+
+    /**
+     * Computes the Y-Axis offset for the last row based on the bottom of the screen
+     */
+    private float computeLastRowYOffset(AbstractTextPaint lastRowPaint, Rect watchBounds) {
+        Rect textBounds = new Rect();
+        lastRowPaint.getTextBounds(lastRowPaint.getText(), 0, lastRowPaint.getText().length(), textBounds);
+        return watchBounds.bottom - chinSize - (textBounds.height()/2.0f);
     }
 
     /**
