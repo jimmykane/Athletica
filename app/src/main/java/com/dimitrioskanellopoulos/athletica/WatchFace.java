@@ -107,12 +107,12 @@ public class WatchFace {
         extraPaints.put("datePaint", datePaint);
 
         // Add paint for sunrise and sunset ( can be divided)
-        AbstractSensorPaint sunriseSunsetPaint = new SunriseSunsetPaint();
+        AbstractTextPaint sunriseSunsetPaint = new SunriseSunsetPaint();
         sunriseSunsetPaint.setTypeface(fontAwesome);
         sunriseSunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseSunsetPaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sunriseSunsetPaint.setAntiAlias(true);
-        sensorPaints.put("sunriseSunsetPaint", sunriseSunsetPaint);
+        extraPaints.put("sunriseSunsetPaint", sunriseSunsetPaint);
     }
 
     /**
@@ -268,7 +268,7 @@ public class WatchFace {
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
-        sensorPaints.get("sunriseSunsetPaint").setText(sunriseSunset.first + "-" + sunriseSunset.second);
+        extraPaints.get("sunriseSunsetPaint").setText(sunriseSunset.first + "-" + sunriseSunset.second);
     }
 
 }

@@ -2,19 +2,14 @@ package com.dimitrioskanellopoulos.athletica.paints;
 
 import java.util.Objects;
 
-public class SunriseSunsetPaint extends AbstractSensorPaint {
+public class SunriseSunsetPaint extends AbstractTextPaint {
 
     private String sunIcon = "\uf185";
     private String moonIcon = "\uf186";
 
     @Override
-    public String getIcon() {
-        return icon;
-    }
-
-    @Override
-    public String getUnits(){
-        return units;
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override
