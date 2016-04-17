@@ -63,7 +63,6 @@ public class WatchFace {
 
     /**
      * The WatchFace. Everything the user sees. No extra init or data manipulation
-     * @param context
      */
     public WatchFace(Context context) {
 
@@ -117,8 +116,6 @@ public class WatchFace {
 
     /**
      * @todo should cache calcs
-     * @param canvas
-     * @param bounds
      */
     public void draw(Canvas canvas, Rect bounds) {
 
@@ -167,9 +164,6 @@ public class WatchFace {
 
     /**
      * Computes the X-Axis offset so that the text is horizontically centered
-     * @param paint
-     * @param watchBounds
-     * @return
      */
     private float computeXOffset(AbstractTextPaint paint, Rect watchBounds) {
         return  watchBounds.exactCenterX() - (paint.measureText(paint.getText()) / 2.0f);
@@ -177,9 +171,6 @@ public class WatchFace {
 
     /**
      * Computes the Y-Axis offset for the first row based on the exact center of the screen
-     * @param firstRowPaint
-     * @param watchBounds
-     * @return
      */
     private float computeFirstRowYOffset(AbstractTextPaint firstRowPaint, Rect watchBounds) {
         float centerY = watchBounds.exactCenterY() - rowVerticalMargin;
@@ -190,10 +181,7 @@ public class WatchFace {
     }
 
     /**
-     * Computs the Y-Axis offset for the last row based on the bottom of the screen
-     * @param lastRowPaint
-     * @param watchBounds
-     * @return
+     * Computes the Y-Axis offset for the last row based on the bottom of the screen
      */
     private float computeLastRowYOffset(AbstractTextPaint lastRowPaint, Rect watchBounds) {
         Rect textBounds = new Rect();
@@ -203,8 +191,6 @@ public class WatchFace {
 
     /**
      * Computes the Y-Axis offset for a paint, according to it's size and margin
-     * @param paint
-     * @return
      */
     private float computeRowYOffset(AbstractTextPaint paint) {
         Rect textBounds = new Rect();
@@ -214,7 +200,6 @@ public class WatchFace {
 
     /**
      * Toggles the antialias for all the paints
-     * @param antiAlias
      */
     public void setAntiAlias(boolean antiAlias) {
         for (Map.Entry<String, AbstractTextPaint> entry : standardPaints.entrySet()) {
