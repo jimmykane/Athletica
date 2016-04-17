@@ -13,6 +13,7 @@ import android.util.TypedValue;
 import com.dimitrioskanellopoulos.athletica.paints.AbstractSensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.AbstractTextPaint;
 import com.dimitrioskanellopoulos.athletica.paints.BatterySensorPaint;
+import com.dimitrioskanellopoulos.athletica.paints.HeartRateSensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.Paint;
 import com.dimitrioskanellopoulos.athletica.paints.PressureSensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.SunriseSunsetPaint;
@@ -243,7 +244,7 @@ public class WatchFace {
                 break;
             case Sensor.TYPE_HEART_RATE:
                 // Add paint for altitude
-                AbstractSensorPaint heartRatePaint = new PressureSensorPaint();
+                AbstractSensorPaint heartRatePaint = new HeartRateSensorPaint();
                 heartRatePaint.setTypeface(fontAwesome);
                 heartRatePaint.setColor(TEXT_DEFAULT_COLOUR);
                 heartRatePaint.setTextSize(resources.getDimension(R.dimen.text_size));
@@ -251,6 +252,10 @@ public class WatchFace {
                 sensorPaints.put(sensorType, heartRatePaint);
                 break;
         }
+    }
+
+    public void removeSensorPaint(Integer key){
+        sensorPaints.remove(key);
     }
 
     public void updateSensorPaintText(Integer key, String value){
