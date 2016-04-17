@@ -129,8 +129,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             List<Sensor> supportedSensors = mgr.getSensorList(Sensor.TYPE_ALL);
             for (Sensor supportedSensor : supportedSensors) {
                 if (ArrayUtils.contains(enabledSensorTypes, supportedSensor.getType())) {
-                    sensors.put(supportedSensor.getType(), new CallbackSensor(getApplicationContext(), supportedSensor.getType(), this));
-                    watchFace.addSensorPaint(supportedSensor.getType());
+                    addSensor(supportedSensor);
                 }
             }
         }
@@ -254,6 +253,16 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         - (timeMs % INTERACTIVE_UPDATE_RATE_MS);
                 mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs);
             }
+        }
+
+        private void addSensor(Sensor supportedSensor) {
+            sensors.put(supportedSensor.getType(), new CallbackSensor(getApplicationContext(), supportedSensor.getType(), this));
+            watchFace.addSensorPaint(supportedSensor.getType());
+        }
+
+        private void removeSensor(Sensor supportedSensor) {
+            sensors.remove(supportedSensor.getType());
+            watchFace.removeSensorPaint(supportedSensor.getType());
         }
 
         public void handleOnSensorChangedEvent(SensorEvent event) {
