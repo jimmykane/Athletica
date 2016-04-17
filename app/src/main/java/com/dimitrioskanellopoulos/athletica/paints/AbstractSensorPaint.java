@@ -13,16 +13,16 @@ public abstract class AbstractSensorPaint extends AbstractTextPaint implements S
 
     @Override
     public String getText() {
-        return getIcon() + " " +  text + getUnits();
+        return getIcon() + " " + text + getUnits();
     }
 
     @Override
-    public String getIcon(){
+    public String getIcon() {
         return icon;
     }
 
     @Override
-    public String getUnits(){
+    public String getUnits() {
         return units;
     }
 }

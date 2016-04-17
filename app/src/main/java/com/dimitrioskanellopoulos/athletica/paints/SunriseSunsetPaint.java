@@ -14,10 +14,10 @@ public class SunriseSunsetPaint extends AbstractTextPaint {
 
     @Override
     public String getText() {
-        if (Objects.equals(text, "") || text == null){
+        if (Objects.equals(text, "") || text == null) {
             return text;
         }
         String[] sunriseSunset = text.split("-");
-        return sunIcon + " " + sunriseSunset[0] + "   " + moonIcon + " " +sunriseSunset[1];
+        return sunIcon + " " + sunriseSunset[0] + "   " + moonIcon + " " + sunriseSunset[1];
     }
 }

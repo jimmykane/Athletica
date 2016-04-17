@@ -257,7 +257,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         public void handleOnSensorChangedEvent(SensorEvent event) {
-            if (event.values[0] == 0f){
+            if (event.values[0] == 0f) {
                 Log.d(TAG, "Could not update value for sensor: " + event.sensor.getStringType() + " due to 0");
                 return;
             }
@@ -267,6 +267,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 default:
                     break;
             }
+            // @todo should make sure the paint is there
             watchFace.updateSensorPaintText(event.sensor.getType(), String.format("%.01f", event.values[0]));
             Log.d(TAG, "Updated value for sensor: " + event.sensor.getStringType());
         }

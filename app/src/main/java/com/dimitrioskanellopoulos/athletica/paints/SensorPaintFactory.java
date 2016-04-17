@@ -3,7 +3,7 @@ package com.dimitrioskanellopoulos.athletica.paints;
 import android.hardware.Sensor;
 
 public class SensorPaintFactory {
-    public static AbstractSensorPaint getPaintForSensorType(Integer sensorType){
+    public static AbstractSensorPaint getPaintForSensorType(Integer sensorType) {
         AbstractSensorPaint sensorPaint;
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:

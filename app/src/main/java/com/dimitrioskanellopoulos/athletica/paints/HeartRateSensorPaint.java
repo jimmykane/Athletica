@@ -11,7 +11,7 @@ public class HeartRateSensorPaint extends AbstractSensorPaint {
     }
 
     @Override
-    public String getUnits(){
+    public String getUnits() {
         return units;
     }
 }

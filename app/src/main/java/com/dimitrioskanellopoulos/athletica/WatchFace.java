@@ -168,7 +168,7 @@ public class WatchFace {
      * Computes the X-Axis offset so that the text is horizontically centered
      */
     private float computeXOffset(AbstractTextPaint paint, Rect watchBounds) {
-        return  watchBounds.exactCenterX() - (paint.measureText(paint.getText()) / 2.0f);
+        return watchBounds.exactCenterX() - (paint.measureText(paint.getText()) / 2.0f);
     }
 
     /**
@@ -188,7 +188,7 @@ public class WatchFace {
     private float computeLastRowYOffset(AbstractTextPaint lastRowPaint, Rect watchBounds) {
         Rect textBounds = new Rect();
         lastRowPaint.getTextBounds(lastRowPaint.getText(), 0, lastRowPaint.getText().length(), textBounds);
-        return watchBounds.bottom - chinSize - textBounds.height() ;
+        return watchBounds.bottom - chinSize - textBounds.height();
     }
 
     /**
@@ -232,7 +232,7 @@ public class WatchFace {
         this.chinSize = chinSize;
     }
 
-    public void addSensorPaint(Integer sensorType){
+    public void addSensorPaint(Integer sensorType) {
         AbstractSensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(sensorType);
         sensorPaint.setTypeface(fontAwesome);
         sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
@@ -241,11 +241,11 @@ public class WatchFace {
         sensorPaints.put(sensorType, sensorPaint);
     }
 
-    public void removeSensorPaint(Integer key){
+    public void removeSensorPaint(Integer key) {
         sensorPaints.remove(key);
     }
 
-    public void updateSensorPaintText(Integer key, String value){
+    public void updateSensorPaintText(Integer key, String value) {
         sensorPaints.get(key).setText(value);
     }
 

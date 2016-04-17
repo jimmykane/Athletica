@@ -13,7 +13,7 @@ public class BatterySensorPaint extends AbstractSensorPaint {
 
     @Override
     public String getIcon() {
-        if (Objects.equals(text, "")){
+        if (Objects.equals(text, "")) {
             return text;
         }
         Integer batteryPercentage = Integer.parseInt(text);
@@ -32,7 +32,7 @@ public class BatterySensorPaint extends AbstractSensorPaint {
     }
 
     @Override
-    public String getUnits(){
+    public String getUnits() {
         return units;
     }
 }
