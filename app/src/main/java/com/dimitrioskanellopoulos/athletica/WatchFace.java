@@ -52,7 +52,7 @@ public class WatchFace {
     private final LinkedHashMap<String, AbstractTextPaint> extraPaints = new LinkedHashMap<String, AbstractTextPaint>();
 
     // Sensor Paints
-    private final LinkedHashMap<String, AbstractSensorPaint> sensorPaints = new LinkedHashMap<String, AbstractSensorPaint>();
+    private final LinkedHashMap<Integer, AbstractSensorPaint> sensorPaints = new LinkedHashMap<Integer, AbstractSensorPaint>();
 
     private final Float rowVerticalMargin;
 
@@ -157,7 +157,7 @@ public class WatchFace {
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
         }
         // Go over the sesnor paints
-        for (Map.Entry<String, AbstractSensorPaint> entry : sensorPaints.entrySet()) {
+        for (Map.Entry<Integer, AbstractSensorPaint> entry : sensorPaints.entrySet()) {
             AbstractTextPaint paint = entry.getValue();
             yOffset = yOffset + computeRowYOffset(paint);
             Float xOffset = computeXOffset(paint, bounds);
@@ -224,7 +224,7 @@ public class WatchFace {
         for (Map.Entry<String, AbstractTextPaint> entry : extraPaints.entrySet()) {
             entry.getValue().setAntiAlias(antiAlias);
         }
-        for (Map.Entry<String, AbstractSensorPaint> entry : sensorPaints.entrySet()) {
+        for (Map.Entry<Integer, AbstractSensorPaint> entry : sensorPaints.entrySet()) {
             entry.getValue().setAntiAlias(antiAlias);
         }
     }
@@ -254,13 +254,13 @@ public class WatchFace {
                 altitudePaint.setColor(TEXT_DEFAULT_COLOUR);
                 altitudePaint.setTextSize(resources.getDimension(R.dimen.text_size));
                 altitudePaint.setAntiAlias(true);
-                sensorPaints.put("pressureSensorPaint", altitudePaint);
+                sensorPaints.put(sensorType, altitudePaint);
                 break;
         }
     }
 
-    public void updateAltitude(String altitude) {
-        sensorPaints.get("pressureSensorPaint").setText(altitude);
+    public void updateSensorPaintValue(Integer key, String value){
+        sensorPaints.get(key).setText(value);
     }
 
     public void updateBatteryLevel(Integer batteryPercentage) {
