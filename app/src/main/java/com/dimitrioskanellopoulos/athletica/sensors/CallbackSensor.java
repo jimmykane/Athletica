@@ -25,6 +25,7 @@ public class CallbackSensor implements SensorEventListener {
         this.changeCallback = changeCallback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(sensorType);
+        TAG = TAG + ": " + sensor.getStringType();
     }
 
     public void startListening() {
