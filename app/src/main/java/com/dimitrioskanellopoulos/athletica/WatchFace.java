@@ -232,26 +232,22 @@ public class WatchFace {
     }
 
     public void createSensorPaint(Integer sensorType){
+        AbstractSensorPaint sensorPaint;
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
-                // Add paint for altitude
-                AbstractSensorPaint altitudePaint = new PressureSensorPaint();
-                altitudePaint.setTypeface(fontAwesome);
-                altitudePaint.setColor(TEXT_DEFAULT_COLOUR);
-                altitudePaint.setTextSize(resources.getDimension(R.dimen.text_size));
-                altitudePaint.setAntiAlias(true);
-                sensorPaints.put(sensorType, altitudePaint);
+                sensorPaint = new PressureSensorPaint();
                 break;
             case Sensor.TYPE_HEART_RATE:
-                // Add paint for altitude
-                AbstractSensorPaint heartRatePaint = new HeartRateSensorPaint();
-                heartRatePaint.setTypeface(fontAwesome);
-                heartRatePaint.setColor(TEXT_DEFAULT_COLOUR);
-                heartRatePaint.setTextSize(resources.getDimension(R.dimen.text_size));
-                heartRatePaint.setAntiAlias(true);
-                sensorPaints.put(sensorType, heartRatePaint);
+                sensorPaint = new HeartRateSensorPaint();
                 break;
+            default:
+                return;
         }
+        sensorPaint.setTypeface(fontAwesome);
+        sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
+        sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
+        sensorPaint.setAntiAlias(true);
+        sensorPaints.put(sensorType, sensorPaint);
     }
 
     public void removeSensorPaint(Integer key){
