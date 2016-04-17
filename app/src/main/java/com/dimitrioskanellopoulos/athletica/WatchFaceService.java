@@ -302,7 +302,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             int minute = rightNow.get(Calendar.MINUTE);
             int second = rightNow.get(Calendar.SECOND);
             // Everything happens at the first second every hour
-            if (second != 0 || minute == 0) {
+            if (second != 0 || minute != 0) {
                 return;
             }
             updateSunriseAndSunset();
