@@ -35,8 +35,11 @@ public class WatchFace {
     // Standard Paints -> Time and Battery
     private final LinkedHashMap<String, AbstractTextPaint> standardPaints = new LinkedHashMap<String, AbstractTextPaint>();
 
-    // Extra Paints -> Dynamic
+    // Extra Paints -> Date for now
     private final LinkedHashMap<String, AbstractTextPaint> extraPaints = new LinkedHashMap<String, AbstractTextPaint>();
+
+    // Sensor Paints
+    private final LinkedHashMap<String, AbstractSensorPaint> sensorPaints = new LinkedHashMap<String, AbstractSensorPaint>();
 
     private final Float rowVerticalMargin;
 
@@ -94,7 +97,7 @@ public class WatchFace {
         sunriseSunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseSunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
         sunriseSunsetPaint.setAntiAlias(true);
-        extraPaints.put("sunriseSunsetPaint", sunriseSunsetPaint);
+        sensorPaints.put("sunriseSunsetPaint", sunriseSunsetPaint);
 
         // Add paint for altitude
         AbstractSensorPaint altitudePaint = new PressureSensorPaint();
@@ -102,7 +105,7 @@ public class WatchFace {
         altitudePaint.setColor(TEXT_DEFAULT_COLOUR);
         altitudePaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
         altitudePaint.setAntiAlias(true);
-        extraPaints.put("pressureSensorPaint", altitudePaint);
+        sensorPaints.put("pressureSensorPaint", altitudePaint);
     }
 
     /**
@@ -139,7 +142,15 @@ public class WatchFace {
         extraPaints.get("datePaint").setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR)));
 
         Float yOffset = computeFirstRowYOffset(timePaint, bounds);
+        // Go over the extra paints
         for (Map.Entry<String, AbstractTextPaint> entry : extraPaints.entrySet()) {
+            AbstractTextPaint paint = entry.getValue();
+            yOffset = yOffset + computeRowYOffset(paint);
+            Float xOffset = computeXOffset(paint, bounds);
+            canvas.drawText(paint.getText(), xOffset, yOffset, paint);
+        }
+        // Go over the sesnor paints
+        for (Map.Entry<String, AbstractSensorPaint> entry : sensorPaints.entrySet()) {
             AbstractTextPaint paint = entry.getValue();
             yOffset = yOffset + computeRowYOffset(paint);
             Float xOffset = computeXOffset(paint, bounds);
@@ -206,6 +217,9 @@ public class WatchFace {
         for (Map.Entry<String, AbstractTextPaint> entry : extraPaints.entrySet()) {
             entry.getValue().setAntiAlias(antiAlias);
         }
+        for (Map.Entry<String, AbstractSensorPaint> entry : sensorPaints.entrySet()) {
+            entry.getValue().setAntiAlias(antiAlias);
+        }
     }
 
     public void updateTimeZoneWith(TimeZone timeZone) {
@@ -225,7 +239,7 @@ public class WatchFace {
     }
 
     public void updateAltitude(String altitude) {
-        extraPaints.get("pressureSensorPaint").setText(altitude);
+        sensorPaints.get("pressureSensorPaint").setText(altitude);
     }
 
     public void updateBatteryLevel(Integer batteryPercentage) {
@@ -233,7 +247,7 @@ public class WatchFace {
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
-        extraPaints.get("sunriseSunsetPaint").setText(sunriseSunset.first + "-" + sunriseSunset.second);
+        sensorPaints.get("sunriseSunsetPaint").setText(sunriseSunset.first + "-" + sunriseSunset.second);
     }
 
 }
