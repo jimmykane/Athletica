@@ -16,6 +16,7 @@ import com.dimitrioskanellopoulos.athletica.paints.BatterySensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.HeartRateSensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.Paint;
 import com.dimitrioskanellopoulos.athletica.paints.PressureSensorPaint;
+import com.dimitrioskanellopoulos.athletica.paints.SensorPaintFactory;
 import com.dimitrioskanellopoulos.athletica.paints.SunriseSunsetPaint;
 
 import java.util.Calendar;
@@ -232,17 +233,7 @@ public class WatchFace {
     }
 
     public void addSensorPaint(Integer sensorType){
-        AbstractSensorPaint sensorPaint;
-        switch (sensorType) {
-            case Sensor.TYPE_PRESSURE:
-                sensorPaint = new PressureSensorPaint();
-                break;
-            case Sensor.TYPE_HEART_RATE:
-                sensorPaint = new HeartRateSensorPaint();
-                break;
-            default:
-                return;
-        }
+        AbstractSensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(sensorType);
         sensorPaint.setTypeface(fontAwesome);
         sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
