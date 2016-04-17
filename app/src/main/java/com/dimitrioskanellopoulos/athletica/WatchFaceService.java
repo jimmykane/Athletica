@@ -23,6 +23,7 @@ import android.view.SurfaceHolder;
 import android.location.Location;
 import android.view.WindowInsets;
 
+import com.dimitrioskanellopoulos.athletica.paints.AbstractTextPaint;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -30,7 +31,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -99,7 +102,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         boolean mLowBitAmbient;
 
-        private final List<CallbackSensor> sensors = new ArrayList<CallbackSensor>();
+        private final LinkedHashMap<Integer, CallbackSensor> sensors = new LinkedHashMap<Integer, CallbackSensor>();
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -128,7 +131,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             List<Sensor> supportedSensors = mgr.getSensorList(Sensor.TYPE_ALL);
             for (Sensor supportedSensor : supportedSensors) {
                 if (ArrayUtils.contains(enabledSensorTypes, supportedSensor.getType())) {
-                    sensors.add(new CallbackSensor(getApplicationContext(), supportedSensor.getType(), this));
+                    sensors.put(supportedSensor.getType(), new CallbackSensor(getApplicationContext(), supportedSensor.getType(), this));
                     watchFace.createSensorPaint(supportedSensor.getType());
                 }
             }
@@ -294,17 +297,17 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void startAllSensors() {
-            for (CallbackSensor sensor : sensors) {
-                if (!sensor.isListening()) {
-                    sensor.startListening();
+            for (Map.Entry<Integer, CallbackSensor> entry : sensors.entrySet()) {
+                if (!entry.getValue().isListening()) {
+                    entry.getValue().startListening();
                 }
             }
         }
 
         private void stopAllSensors() {
-            for (CallbackSensor sensor : sensors) {
-                if (sensor.isListening()) {
-                    sensor.stopListening();
+            for (Map.Entry<Integer, CallbackSensor> entry : sensors.entrySet()) {
+                if (entry.getValue().isListening()) {
+                    entry.getValue().stopListening();
                 }
             }
         }
