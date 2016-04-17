@@ -1,6 +1,4 @@
-package com.dimitrioskanellopoulos.athletica;
-
-import java.util.Objects;
+package com.dimitrioskanellopoulos.athletica.paints;
 
 public class PressureSensorPaint extends AbstractSensorPaint {
 

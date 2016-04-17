@@ -1,7 +1,7 @@
-package com.dimitrioskanellopoulos.athletica;
+package com.dimitrioskanellopoulos.athletica.paints;
 
 
-abstract class AbstractSensorPaint extends AbstractTextPaint implements SensorPaintInterface {
+public abstract class AbstractSensorPaint extends AbstractTextPaint implements SensorPaintInterface {
 
     protected String icon;
     protected String units;

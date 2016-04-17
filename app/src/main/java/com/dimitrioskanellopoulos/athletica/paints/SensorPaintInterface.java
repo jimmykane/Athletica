@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.athletica;
+package com.dimitrioskanellopoulos.athletica.paints;
 
 public interface SensorPaintInterface {
     void setText(String text);

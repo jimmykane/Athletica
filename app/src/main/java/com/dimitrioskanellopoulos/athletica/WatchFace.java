@@ -8,6 +8,13 @@ import android.graphics.Typeface;
 import android.util.Pair;
 import android.util.TypedValue;
 
+import com.dimitrioskanellopoulos.athletica.paints.AbstractSensorPaint;
+import com.dimitrioskanellopoulos.athletica.paints.AbstractTextPaint;
+import com.dimitrioskanellopoulos.athletica.paints.BatterySensorPaint;
+import com.dimitrioskanellopoulos.athletica.paints.Paint;
+import com.dimitrioskanellopoulos.athletica.paints.PressureSensorPaint;
+import com.dimitrioskanellopoulos.athletica.paints.SunriseSunsetPaint;
+
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
