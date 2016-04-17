@@ -23,13 +23,11 @@ import android.view.SurfaceHolder;
 import android.location.Location;
 import android.view.WindowInsets;
 
-import com.dimitrioskanellopoulos.athletica.paints.AbstractTextPaint;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -132,7 +130,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             for (Sensor supportedSensor : supportedSensors) {
                 if (ArrayUtils.contains(enabledSensorTypes, supportedSensor.getType())) {
                     sensors.put(supportedSensor.getType(), new CallbackSensor(getApplicationContext(), supportedSensor.getType(), this));
-                    watchFace.createSensorPaint(supportedSensor.getType());
+                    watchFace.addSensorPaint(supportedSensor.getType());
                 }
             }
         }

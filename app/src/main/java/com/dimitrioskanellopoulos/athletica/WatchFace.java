@@ -231,7 +231,7 @@ public class WatchFace {
         this.chinSize = chinSize;
     }
 
-    public void createSensorPaint(Integer sensorType){
+    public void addSensorPaint(Integer sensorType){
         AbstractSensorPaint sensorPaint;
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
