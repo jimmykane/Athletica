@@ -23,9 +23,10 @@ import android.view.SurfaceHolder;
 import android.location.Location;
 import android.view.WindowInsets;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -123,7 +124,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             SensorManager mgr = (SensorManager) getSystemService(SENSOR_SERVICE);
             List<Sensor> supportedSensors = mgr.getSensorList(Sensor.TYPE_ALL);
             for (Sensor supportedSensor : supportedSensors) {
-                if (Arrays.asList(enabledSensorTypes).contains(supportedSensor.getType())) {
+                if (ArrayUtils.contains(enabledSensorTypes, supportedSensor.getType())) {
                     sensors.add(new CallbackSensor(getApplicationContext(), supportedSensor.getType(), this));
                 }
             }
