@@ -23,6 +23,8 @@ import android.view.SurfaceHolder;
 import android.location.Location;
 import android.view.WindowInsets;
 
+import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
@@ -136,7 +138,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
             googleApiHelper.disconnect();
-            stopSensors();
+            stopAllSensors();
             super.onDestroy();
         }
 
@@ -147,14 +149,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 registerTimeZoneReceiver();
                 registerBatteryInfoReceiver();
                 updateSunriseAndSunset();
-                startSensors();
+                startAllSensors();
 
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
                 unregisterTimeZoneReceiver();
                 unregisterBatteryInfoReceiver();
-                stopSensors();
+                stopAllSensors();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
@@ -169,9 +171,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
             watchFace.setShowSeconds(!isInAmbientMode());
 
             if (inAmbientMode) {
-                stopSensors();
+                stopAllSensors();
             } else {
-                startSensors();
+                startAllSensors();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
@@ -291,7 +293,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         }
 
-        private void startSensors() {
+        private void startAllSensors() {
             for (CallbackSensor sensor : sensors) {
                 if (!sensor.isListening()) {
                     sensor.startListening();
@@ -299,7 +301,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        private void stopSensors() {
+        private void stopAllSensors() {
             for (CallbackSensor sensor : sensors) {
                 if (sensor.isListening()) {
                     sensor.stopListening();
