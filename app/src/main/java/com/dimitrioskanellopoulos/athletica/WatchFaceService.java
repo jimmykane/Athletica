@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
+import android.hardware.SensorManager;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.view.WindowInsets;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -43,7 +45,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
     private static final int MSG_UPDATE_TIME = 0;
 
     /**
-     * The supported sensors
+     * The enabled sensors (sensors we want to display their values)
      */
     private static final int[] enabledSensorTypes = {
             Sensor.TYPE_PRESSURE,
@@ -100,6 +102,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
 
+            // Set the style
             setWatchFaceStyle(new WatchFaceStyle.Builder(WatchFaceService.this)
                     .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
                     .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
@@ -107,15 +110,22 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     .setShowSystemUiTime(false)
                     .build());
 
+            // Create a watch face
             watchFace = new WatchFace(WatchFaceService.this);
 
+            // Get a google api helper
             googleApiHelper = new GoogleApiHelper(WatchFaceService.this);
 
+            // Get a location engine
             locationEngine = new LocationEngine(googleApiHelper);
 
             // Create the sensors
-            for (Integer supportedSensorType : enabledSensorTypes) {
-                sensors.add(new CallbackSensor(getApplicationContext(), supportedSensorType, this));
+            SensorManager mgr = (SensorManager) getSystemService(SENSOR_SERVICE);
+            List<Sensor> supportedSensors = mgr.getSensorList(Sensor.TYPE_ALL);
+            for (Sensor supportedSensor : supportedSensors) {
+                if (Arrays.asList(enabledSensorTypes).contains(supportedSensor.getType())) {
+                    sensors.add(new CallbackSensor(getApplicationContext(), supportedSensor.getType(), this));
+                }
             }
         }
 
