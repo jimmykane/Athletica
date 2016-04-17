@@ -206,6 +206,22 @@ public class WatchFaceService extends CanvasWatchFaceService {
             watchFace.draw(canvas, bounds);
         }
 
+        @Override
+        public void onTapCommand(
+                @TapType int tapType, int x, int y, long eventTime) {
+            switch (tapType) {
+                case WatchFaceService.TAP_TYPE_TAP:
+
+                    break;
+
+                case WatchFaceService.TAP_TYPE_TOUCH:
+                    break;
+
+                case WatchFaceService.TAP_TYPE_TOUCH_CANCEL:
+                    break;
+            }
+        }
+
         private void registerTimeZoneReceiver() {
             if (mRegisteredTimeZoneReceiver) {
                 return;
