@@ -120,7 +120,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Get a location engine
             locationEngine = new LocationEngine(googleApiHelper);
 
-            // Create the sensors
+            // Create the sensors and their paitns if they are supported by the watch
             SensorManager mgr = (SensorManager) getSystemService(SENSOR_SERVICE);
             List<Sensor> supportedSensors = mgr.getSensorList(Sensor.TYPE_ALL);
             for (Sensor supportedSensor : supportedSensors) {
