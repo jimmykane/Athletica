@@ -241,6 +241,15 @@ public class WatchFace {
                 altitudePaint.setAntiAlias(true);
                 sensorPaints.put(sensorType, altitudePaint);
                 break;
+            case Sensor.TYPE_HEART_RATE:
+                // Add paint for altitude
+                AbstractSensorPaint heartRatePaint = new PressureSensorPaint();
+                heartRatePaint.setTypeface(fontAwesome);
+                heartRatePaint.setColor(TEXT_DEFAULT_COLOUR);
+                heartRatePaint.setTextSize(resources.getDimension(R.dimen.text_size));
+                heartRatePaint.setAntiAlias(true);
+                sensorPaints.put(sensorType, heartRatePaint);
+                break;
         }
     }
 
