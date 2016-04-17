@@ -255,7 +255,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void handleOnSensorChangedEvent(SensorEvent event) {
             switch (event.sensor.getType()) {
                 case Sensor.TYPE_PRESSURE:
-                    watchFace.updateSensorPaintValue(Sensor.TYPE_PRESSURE, String.format("%.01f", locationEngine.getAltitudeFromPressure(event.values[0])));
+                    watchFace.updateSensorPaintText(Sensor.TYPE_PRESSURE, String.format("%.01f", locationEngine.getAltitudeFromPressure(event.values[0])));
                     Log.d(TAG, "Updated altitude from pressure");
                     break;
             }

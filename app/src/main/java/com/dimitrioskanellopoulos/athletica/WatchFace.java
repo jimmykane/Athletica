@@ -259,7 +259,7 @@ public class WatchFace {
         }
     }
 
-    public void updateSensorPaintValue(Integer key, String value){
+    public void updateSensorPaintText(Integer key, String value){
         sensorPaints.get(key).setText(value);
     }
 
