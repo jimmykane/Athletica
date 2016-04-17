@@ -257,12 +257,18 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         public void handleOnSensorChangedEvent(SensorEvent event) {
+            if (event.values[0] == 0f){
+                Log.d(TAG, "Could not update value for sensor: " + event.sensor.getStringType() + " due to 0");
+                return;
+            }
             switch (event.sensor.getType()) {
                 case Sensor.TYPE_PRESSURE:
-                    watchFace.updateSensorPaintText(Sensor.TYPE_PRESSURE, String.format("%.01f", locationEngine.getAltitudeFromPressure(event.values[0])));
-                    Log.d(TAG, "Updated altitude from pressure");
+                    event.values[0] = locationEngine.getAltitudeFromPressure(event.values[0]);
+                default:
                     break;
             }
+            watchFace.updateSensorPaintText(event.sensor.getType(), String.format("%.01f", event.values[0]));
+            Log.d(TAG, "Updated value for sensor: " + event.sensor.getStringType());
         }
 
         private void updateSunriseAndSunset() {
