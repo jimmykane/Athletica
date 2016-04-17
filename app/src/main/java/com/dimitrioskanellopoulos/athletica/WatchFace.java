@@ -1,10 +1,12 @@
 package com.dimitrioskanellopoulos.athletica;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.hardware.Sensor;
 import android.util.Pair;
 import android.util.TypedValue;
 
@@ -32,6 +34,10 @@ public class WatchFace {
     private static final int DATE_AND_TIME_DEFAULT_COLOUR = Color.WHITE;
     private static final int TEXT_DEFAULT_COLOUR = Color.WHITE;
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
+
+    private final Resources resources;
+
+    private final Typeface fontAwesome;
 
     // The Calendar
     private static final Calendar calendar = Calendar.getInstance();
@@ -61,14 +67,16 @@ public class WatchFace {
      */
     public WatchFace(Context context) {
 
+        resources = context.getResources();
+
         // Create fontAwesome typeface
-        Typeface fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
+        fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
 
         // Define the size of the rows for vertical
         rowVerticalMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                context.getResources().getDimension(R.dimen.row_vertical_margin),
-                context.getResources().getDisplayMetrics());
+                resources.getDimension(R.dimen.row_vertical_margin),
+                resources.getDisplayMetrics());
 
         // Add paint for background
         backgroundPaint = new android.graphics.Paint();
@@ -78,7 +86,7 @@ public class WatchFace {
         Paint timePaint = new Paint();
         timePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
-        timePaint.setTextSize(context.getResources().getDimension(R.dimen.time_size));
+        timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
         timePaint.setAntiAlias(true);
         standardPaints.put("timePaint", timePaint);
 
@@ -86,14 +94,14 @@ public class WatchFace {
         BatterySensorPaint batterySensorPaint = new BatterySensorPaint();
         batterySensorPaint.setTypeface(fontAwesome);
         batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
-        batterySensorPaint.setTextSize(context.getResources().getDimension(R.dimen.battery_text_size));
+        batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
         batterySensorPaint.setAntiAlias(true);
         standardPaints.put("batterySensorPaint", batterySensorPaint);
 
         // Add paint for date
         Paint datePaint = new Paint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
-        datePaint.setTextSize(context.getResources().getDimension(R.dimen.date_size));
+        datePaint.setTextSize(resources.getDimension(R.dimen.date_size));
         datePaint.setAntiAlias(true);
         datePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         extraPaints.put("datePaint", datePaint);
@@ -102,17 +110,9 @@ public class WatchFace {
         AbstractSensorPaint sunriseSunsetPaint = new SunriseSunsetPaint();
         sunriseSunsetPaint.setTypeface(fontAwesome);
         sunriseSunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
-        sunriseSunsetPaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
+        sunriseSunsetPaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sunriseSunsetPaint.setAntiAlias(true);
         sensorPaints.put("sunriseSunsetPaint", sunriseSunsetPaint);
-
-        // Add paint for altitude
-        AbstractSensorPaint altitudePaint = new PressureSensorPaint();
-        altitudePaint.setTypeface(fontAwesome);
-        altitudePaint.setColor(TEXT_DEFAULT_COLOUR);
-        altitudePaint.setTextSize(context.getResources().getDimension(R.dimen.text_size));
-        altitudePaint.setAntiAlias(true);
-        sensorPaints.put("pressureSensorPaint", altitudePaint);
     }
 
     /**
@@ -243,6 +243,20 @@ public class WatchFace {
 
     public void setChinSize(Integer chinSize) {
         this.chinSize = chinSize;
+    }
+
+    public void createSensorPaint(Integer sensorType){
+        switch (sensorType) {
+            case Sensor.TYPE_PRESSURE:
+                // Add paint for altitude
+                AbstractSensorPaint altitudePaint = new PressureSensorPaint();
+                altitudePaint.setTypeface(fontAwesome);
+                altitudePaint.setColor(TEXT_DEFAULT_COLOUR);
+                altitudePaint.setTextSize(resources.getDimension(R.dimen.text_size));
+                altitudePaint.setAntiAlias(true);
+                sensorPaints.put("pressureSensorPaint", altitudePaint);
+                break;
+        }
     }
 
     public void updateAltitude(String altitude) {

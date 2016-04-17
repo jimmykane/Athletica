@@ -126,6 +126,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             for (Sensor supportedSensor : supportedSensors) {
                 if (ArrayUtils.contains(enabledSensorTypes, supportedSensor.getType())) {
                     sensors.add(new CallbackSensor(getApplicationContext(), supportedSensor.getType(), this));
+                    watchFace.createSensorPaint(supportedSensor.getType());
                 }
             }
         }
