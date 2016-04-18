@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Vibrator;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
@@ -24,7 +23,7 @@ import android.view.SurfaceHolder;
 import android.location.Location;
 import android.view.WindowInsets;
 
-import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
+import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorEventListener;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -49,6 +48,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
      */
     private static final int MSG_UPDATE_TIME = 0;
 
+
     /**
      * The enabled sensors (sensors we want to display their values)
      */
@@ -56,13 +56,15 @@ public class WatchFaceService extends CanvasWatchFaceService {
             Sensor.TYPE_PRESSURE,
     };
 
+    private static final int maxNumberOfSensorsToDisplay = 1;
+
     @Override
     public CanvasWatchFaceService.Engine onCreateEngine() {
         return new Engine();
     }
 
     private class Engine extends CanvasWatchFaceService.Engine implements
-            CallbackSensor.onSensorEventCallback {
+            CallbackSensorEventListener.onSensorEventCallback {
 
         private static final String TAG = "Engine";
 
@@ -101,7 +103,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         boolean mLowBitAmbient;
 
-        private final LinkedHashMap<Integer, CallbackSensor> sensors = new LinkedHashMap<Integer, CallbackSensor>();
+        private final LinkedHashMap<Integer, CallbackSensorEventListener> sensors = new LinkedHashMap<Integer, CallbackSensorEventListener>();
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -273,7 +275,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void addSensor(Sensor supportedSensor) {
-            sensors.put(supportedSensor.getType(), new CallbackSensor(getApplicationContext(), supportedSensor.getType(), this));
+            sensors.put(supportedSensor.getType(), new CallbackSensorEventListener(getApplicationContext(), supportedSensor.getType(), this));
             watchFace.addSensorPaint(supportedSensor.getType());
         }
 
@@ -328,7 +330,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void startAllSensors() {
-            for (Map.Entry<Integer, CallbackSensor> entry : sensors.entrySet()) {
+            for (Map.Entry<Integer, CallbackSensorEventListener> entry : sensors.entrySet()) {
                 if (!entry.getValue().isListening()) {
                     entry.getValue().startListening();
                 }
@@ -336,7 +338,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void stopAllSensors() {
-            for (Map.Entry<Integer, CallbackSensor> entry : sensors.entrySet()) {
+            for (Map.Entry<Integer, CallbackSensorEventListener> entry : sensors.entrySet()) {
                 if (entry.getValue().isListening()) {
                     entry.getValue().stopListening();
                 }
