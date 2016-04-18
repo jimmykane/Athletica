@@ -53,6 +53,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
      */
     private int[] enabledSensorTypes = {
             Sensor.TYPE_PRESSURE,
+            Sensor.TYPE_HEART_RATE,
     };
 
     private static final int maxNumberOfSensorsToDisplay = 1;
@@ -218,7 +219,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 @TapType int tapType, int x, int y, long eventTime) {
             switch (tapType) {
                 case WatchFaceService.TAP_TYPE_TAP:
-
+                    // When tapping remove all
+                    for (Map.Entry<Integer, CallbackSensorEventListener> entry : sensors.entrySet()) {
+                        removeSensor(entry.getKey());
+                    }
                     break;
 
                 case WatchFaceService.TAP_TYPE_TOUCH:
