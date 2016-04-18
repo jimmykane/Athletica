@@ -30,7 +30,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -52,7 +51,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
     /**
      * The enabled sensors (sensors we want to display their values)
      */
-    private static final int[] enabledSensorTypes = {
+    private int[] enabledSensorTypes = {
             Sensor.TYPE_PRESSURE,
     };
 
@@ -127,13 +126,18 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Get a location engine
             locationEngine = new LocationEngine(googleApiHelper);
 
-            // Create the sensors and their paitns if they are supported by the watch
             SensorManager mgr = (SensorManager) getSystemService(SENSOR_SERVICE);
-            List<Sensor> supportedSensors = mgr.getSensorList(Sensor.TYPE_ALL);
-            for (Sensor supportedSensor : supportedSensors) {
-                if (ArrayUtils.contains(enabledSensorTypes, supportedSensor.getType())) {
-                    addSensor(supportedSensor);
+            // Foreach of our enabled sensors check if the device has it and if not remove it
+            for (int enabledSensorType : enabledSensorTypes) {
+                if (mgr.getDefaultSensor(enabledSensorType) == null){
+                    Log.d(TAG, "Removed unsupported sensor: " + enabledSensorType);
+                    enabledSensorTypes = ArrayUtils.removeElement(enabledSensorTypes, enabledSensorType);
                 }
+            }
+
+            // Since now we have a clear list then add these sensors
+            for (int i = 0; (i < enabledSensorTypes.length) && (i < maxNumberOfSensorsToDisplay); i++) {
+                addSensor(enabledSensorTypes[i]);
             }
         }
 
@@ -274,9 +278,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        private void addSensor(Sensor supportedSensor) {
-            sensors.put(supportedSensor.getType(), new CallbackSensorEventListener(getApplicationContext(), supportedSensor.getType(), this));
-            watchFace.addSensorPaint(supportedSensor.getType());
+        private void addSensor(Integer sensorType) {
+            sensors.put(sensorType, new CallbackSensorEventListener(getApplicationContext(), sensorType, this));
+            watchFace.addSensorPaint(sensorType);
         }
 
         private void removeSensor(Sensor supportedSensor) {
