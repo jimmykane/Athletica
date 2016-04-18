@@ -283,9 +283,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
             watchFace.addSensorPaint(sensorType);
         }
 
-        private void removeSensor(Sensor supportedSensor) {
-            sensors.remove(supportedSensor.getType());
-            watchFace.removeSensorPaint(supportedSensor.getType());
+        private void removeSensor(Integer sensorType) {
+            sensors.remove(sensorType);
+            watchFace.removeSensorPaint(sensorType);
         }
 
         public void handleOnSensorChangedEvent(SensorEvent event) {
