@@ -8,7 +8,7 @@ import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-public class SensorEventCallbackListener implements SensorEventListener {
+public class SensorEventCallbackListener implements SensorEventCallbackListenerInterface {
     private String TAG = "SensorEventCallbackListener";
 
     private SensorManager sensorManager;
@@ -28,18 +28,21 @@ public class SensorEventCallbackListener implements SensorEventListener {
         TAG = TAG + ": " + sensor.getStringType();
     }
 
+    @Override
     public void startListening() {
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         isListening = true;
         Log.d(TAG, "Started listening");
     }
 
+    @Override
     public void stopListening() {
         sensorManager.unregisterListener(this);
         isListening = false;
         Log.d(TAG, "Stopped listening");
     }
 
+    @Override
     public Boolean isListening() {
         return isListening;
     }
