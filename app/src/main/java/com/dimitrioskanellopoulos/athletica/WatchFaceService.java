@@ -23,7 +23,8 @@ import android.view.SurfaceHolder;
 import android.location.Location;
 import android.view.WindowInsets;
 
-import com.dimitrioskanellopoulos.athletica.sensors.SensorEventCallbackListener;
+import com.dimitrioskanellopoulos.athletica.sensors.AbstractCallbackSensor;
+import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -64,7 +65,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
     }
 
     private class Engine extends CanvasWatchFaceService.Engine implements
-            SensorEventCallbackListener.onSensorEventCallback {
+            AbstractCallbackSensor.OnSensorEventCallback {
 
         private static final String TAG = "Engine";
 
@@ -103,7 +104,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         boolean mLowBitAmbient;
 
-        private final LinkedHashMap<Integer, SensorEventCallbackListener> activeSensors = new LinkedHashMap<Integer, SensorEventCallbackListener>();
+        private final LinkedHashMap<Integer, AbstractCallbackSensor> activeSensors = new LinkedHashMap<Integer, AbstractCallbackSensor>();
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -280,7 +281,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void activateSensor(Integer sensorType) {
-            activeSensors.put(sensorType, new SensorEventCallbackListener(getApplicationContext(), sensorType, this));
+            activeSensors.put(sensorType, CallbackSensorFactory.getCallbackSensor(getApplicationContext(), sensorType, this));
             watchFace.addSensorPaint(sensorType);
         }
 
@@ -337,7 +338,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void startActiveSensors() {
-            for (Map.Entry<Integer, SensorEventCallbackListener> entry : activeSensors.entrySet()) {
+            for (Map.Entry<Integer, AbstractCallbackSensor> entry : activeSensors.entrySet()) {
                 if (!entry.getValue().isListening()) {
                     entry.getValue().startListening();
                 }
@@ -345,7 +346,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void stopActiveSensors() {
-            for (Map.Entry<Integer, SensorEventCallbackListener> entry : activeSensors.entrySet()) {
+            for (Map.Entry<Integer, AbstractCallbackSensor> entry : activeSensors.entrySet()) {
                 if (entry.getValue().isListening()) {
                     entry.getValue().stopListening();
                 }
