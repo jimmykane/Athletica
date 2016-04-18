@@ -8,8 +8,8 @@ import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-public class CallbackSensorEventListener implements SensorEventListener {
-    private String TAG = "CallbackSensorEventListener";
+public class SensorEventCallbackListener implements SensorEventListener {
+    private String TAG = "SensorEventCallbackListener";
 
     private SensorManager sensorManager;
     private final Sensor sensor;
@@ -21,7 +21,7 @@ public class CallbackSensorEventListener implements SensorEventListener {
         void handleOnSensorChangedEvent(SensorEvent value);
     }
 
-    public CallbackSensorEventListener(@NonNull Context context, Integer sensorType, @NonNull onSensorEventCallback changeCallback) {
+    public SensorEventCallbackListener(@NonNull Context context, Integer sensorType, @NonNull onSensorEventCallback changeCallback) {
         this.changeCallback = changeCallback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(sensorType);

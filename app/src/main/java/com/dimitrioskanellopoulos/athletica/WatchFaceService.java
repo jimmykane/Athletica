@@ -23,7 +23,7 @@ import android.view.SurfaceHolder;
 import android.location.Location;
 import android.view.WindowInsets;
 
-import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorEventListener;
+import com.dimitrioskanellopoulos.athletica.sensors.SensorEventCallbackListener;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -49,14 +49,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
 
     /**
-     * The enabled sensors (sensors we want to display their values)
+     * The enabled activeSensors (activeSensors we want to display their values)
      */
     private int[] enabledSensorTypes = {
             Sensor.TYPE_PRESSURE,
             Sensor.TYPE_HEART_RATE,
     };
 
-    private static final int maxNumberOfSensorsToDisplay = 1;
+    private static final int maxActiveSensorsToDisplay = 1;
 
     @Override
     public CanvasWatchFaceService.Engine onCreateEngine() {
@@ -64,7 +64,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
     }
 
     private class Engine extends CanvasWatchFaceService.Engine implements
-            CallbackSensorEventListener.onSensorEventCallback {
+            SensorEventCallbackListener.onSensorEventCallback {
 
         private static final String TAG = "Engine";
 
@@ -103,7 +103,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         boolean mLowBitAmbient;
 
-        private final LinkedHashMap<Integer, CallbackSensorEventListener> sensors = new LinkedHashMap<Integer, CallbackSensorEventListener>();
+        private final LinkedHashMap<Integer, SensorEventCallbackListener> activeSensors = new LinkedHashMap<Integer, SensorEventCallbackListener>();
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -128,7 +128,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             locationEngine = new LocationEngine(googleApiHelper);
 
             SensorManager mgr = (SensorManager) getSystemService(SENSOR_SERVICE);
-            // Foreach of our enabled sensors check if the device has it and if not remove it
+            // Foreach of our enabled activeSensors check if the device has it and if not remove it
             for (int enabledSensorType : enabledSensorTypes) {
                 if (mgr.getDefaultSensor(enabledSensorType) == null){
                     Log.d(TAG, "Removed unsupported sensor: " + enabledSensorType);
@@ -136,9 +136,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 }
             }
 
-            // Since now we have a clear list then add these sensors
-            for (int i = 0; (i < enabledSensorTypes.length) && (i < maxNumberOfSensorsToDisplay); i++) {
-                addSensor(enabledSensorTypes[i]);
+            // Since now we have a clear list then add these activeSensors
+            for (int i = 0; (i < enabledSensorTypes.length) && (i < maxActiveSensorsToDisplay); i++) {
+                activateSensor(enabledSensorTypes[i]);
             }
         }
 
@@ -146,7 +146,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
             googleApiHelper.disconnect();
-            stopAllSensors();
+            stopActiveSensors();
             super.onDestroy();
         }
 
@@ -157,14 +157,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 registerTimeZoneReceiver();
                 registerBatteryInfoReceiver();
                 updateSunriseAndSunset();
-                startAllSensors();
+                startActiveSensors();
 
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
                 unregisterTimeZoneReceiver();
                 unregisterBatteryInfoReceiver();
-                stopAllSensors();
+                stopActiveSensors();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
@@ -179,9 +179,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
             watchFace.setShowSeconds(!isInAmbientMode());
 
             if (inAmbientMode) {
-                stopAllSensors();
+                stopActiveSensors();
             } else {
-                startAllSensors();
+                startActiveSensors();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
@@ -279,17 +279,19 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        private void addSensor(Integer sensorType) {
-            sensors.put(sensorType, new CallbackSensorEventListener(getApplicationContext(), sensorType, this));
+        private void activateSensor(Integer sensorType) {
+            activeSensors.put(sensorType, new SensorEventCallbackListener(getApplicationContext(), sensorType, this));
             watchFace.addSensorPaint(sensorType);
         }
 
-        private void removeSensor(Integer sensorType) {
-            sensors.remove(sensorType);
+        private void deactivateSensor(Integer sensorType) {
+            activeSensors.get(sensorType).stopListening();
+            activeSensors.remove(sensorType);
             watchFace.removeSensorPaint(sensorType);
         }
 
         public void handleOnSensorChangedEvent(SensorEvent event) {
+            // @todo should check if sensor exists
             if (event.values[0] == 0f) {
                 Log.d(TAG, "Could not update value for sensor: " + event.sensor.getStringType() + " due to 0");
                 return;
@@ -334,16 +336,16 @@ public class WatchFaceService extends CanvasWatchFaceService {
             registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         }
 
-        private void startAllSensors() {
-            for (Map.Entry<Integer, CallbackSensorEventListener> entry : sensors.entrySet()) {
+        private void startActiveSensors() {
+            for (Map.Entry<Integer, SensorEventCallbackListener> entry : activeSensors.entrySet()) {
                 if (!entry.getValue().isListening()) {
                     entry.getValue().startListening();
                 }
             }
         }
 
-        private void stopAllSensors() {
-            for (Map.Entry<Integer, CallbackSensorEventListener> entry : sensors.entrySet()) {
+        private void stopActiveSensors() {
+            for (Map.Entry<Integer, SensorEventCallbackListener> entry : activeSensors.entrySet()) {
                 if (entry.getValue().isListening()) {
                     entry.getValue().stopListening();
                 }
