@@ -219,10 +219,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 @TapType int tapType, int x, int y, long eventTime) {
             switch (tapType) {
                 case WatchFaceService.TAP_TYPE_TAP:
-                    // When tapping remove all
-                    for (Map.Entry<Integer, CallbackSensorEventListener> entry : sensors.entrySet()) {
-                        removeSensor(entry.getKey());
-                    }
+
                     break;
 
                 case WatchFaceService.TAP_TYPE_TOUCH:
