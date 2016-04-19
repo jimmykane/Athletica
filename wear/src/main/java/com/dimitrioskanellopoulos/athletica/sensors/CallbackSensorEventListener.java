@@ -1,11 +1,14 @@
 package com.dimitrioskanellopoulos.athletica.sensors;
 
+import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 
 public interface CallbackSensorEventListener extends SensorEventListener {
-    public void startListening();
+    void startListening();
 
-    public void stopListening();
+    void stopListening();
 
-    public Boolean isListening();
+    void getAverage(Integer time);
+
+    Boolean isListening();
 }
