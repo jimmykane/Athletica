@@ -57,7 +57,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             Sensor.TYPE_HEART_RATE,
     };
 
-    private static final int maxActiveSensorsToDisplay = 1;
+    private static final int maxActiveSensors = 1;
 
     @Override
     public CanvasWatchFaceService.Engine onCreateEngine() {
@@ -137,10 +137,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 }
             }
 
-            // Since now we have a clear list then add these activeSensors
-            for (int i = 0; (i < enabledSensorTypes.length) && (i < maxActiveSensorsToDisplay); i++) {
-                activateSensor(enabledSensorTypes[i]);
-            }
+            // Activate the 1st sensor
+            activateSensor(enabledSensorTypes[0]);
         }
 
         @Override
