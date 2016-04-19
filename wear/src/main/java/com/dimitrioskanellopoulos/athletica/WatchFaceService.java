@@ -218,24 +218,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 @TapType int tapType, int x, int y, long eventTime) {
             switch (tapType) {
                 case WatchFaceService.TAP_TYPE_TAP:
-                    // Go over the active sensors. Should be only one for now
-                    Integer activeSensorType = enabledSensorTypes[0];
-                    Integer nextSensorIndex = 0;
-                    Integer activeSensorIndex = -1;
-                    for (Map.Entry<Integer, AbstractCallbackSensor> entry : activeSensors.entrySet()) {
-                        activeSensorIndex = ArrayUtils.indexOf(enabledSensorTypes, entry.getKey());
-                        // If found break the loop
-                        if (activeSensorIndex != -1){
-                            activeSensorType = entry.getKey();
-                            break;
-                        }
-                    }
-                    // If it was the last in the list get the first
-                    if (activeSensorIndex != enabledSensorTypes.length - 1) {
-                        nextSensorIndex = activeSensorIndex + 1;
-                    }
-                    deactivateSensor(activeSensorType);
-                    activateSensor(enabledSensorTypes[nextSensorIndex]);
 
                     break;
 
