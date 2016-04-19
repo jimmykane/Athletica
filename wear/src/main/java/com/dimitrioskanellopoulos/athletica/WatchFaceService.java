@@ -229,6 +229,29 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
+        @Override
+        public void handleOnSensorChangedEvent(SensorEvent event) {
+            // @todo should check if sensor exists
+            if (event.values[0] == 0f) {
+                Log.d(TAG, "Could not update value for sensor: " + event.sensor.getStringType() + " due to 0");
+                return;
+            }
+            switch (event.sensor.getType()) {
+                case Sensor.TYPE_PRESSURE:
+                    event.values[0] = locationEngine.getAltitudeFromPressure(event.values[0]);
+                default:
+                    break;
+            }
+            // @todo should make sure the paint is there
+            watchFace.updateSensorPaintText(event.sensor.getType(), String.format("%.01f", event.values[0]));
+            Log.d(TAG, "Updated value for sensor: " + event.sensor.getStringType());
+        }
+
+        @Override
+        public void handleOnSensorAverageChanged(Float average) {
+
+        }
+
         private void registerTimeZoneReceiver() {
             if (mRegisteredTimeZoneReceiver) {
                 return;
@@ -287,23 +310,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             activeSensors.get(sensorType).stopListening();
             activeSensors.remove(sensorType);
             watchFace.removeSensorPaint(sensorType);
-        }
-
-        public void handleOnSensorChangedEvent(SensorEvent event) {
-            // @todo should check if sensor exists
-            if (event.values[0] == 0f) {
-                Log.d(TAG, "Could not update value for sensor: " + event.sensor.getStringType() + " due to 0");
-                return;
-            }
-            switch (event.sensor.getType()) {
-                case Sensor.TYPE_PRESSURE:
-                    event.values[0] = locationEngine.getAltitudeFromPressure(event.values[0]);
-                default:
-                    break;
-            }
-            // @todo should make sure the paint is there
-            watchFace.updateSensorPaintText(event.sensor.getType(), String.format("%.01f", event.values[0]));
-            Log.d(TAG, "Updated value for sensor: " + event.sensor.getStringType());
         }
 
         private void updateSunriseAndSunset() {
