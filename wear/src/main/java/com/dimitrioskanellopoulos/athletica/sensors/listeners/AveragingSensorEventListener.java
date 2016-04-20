@@ -5,8 +5,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.util.Log;
 
-import com.dimitrioskanellopoulos.athletica.sensors.AbstractAveragingCallbackSensor;
-import com.dimitrioskanellopoulos.athletica.sensors.AbstractCallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
 
 import java.util.ArrayList;

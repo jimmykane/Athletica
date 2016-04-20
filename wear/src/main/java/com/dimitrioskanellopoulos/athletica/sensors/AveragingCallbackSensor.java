@@ -16,7 +16,7 @@ import com.dimitrioskanellopoulos.athletica.sensors.listeners.AveragingSensorEve
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractAveragingCallbackSensor extends AbstractCallbackSensor implements SensorAverageListenerInterface, OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface {
+public class AveragingCallbackSensor extends AbstractCallbackSensor implements SensorAverageListenerInterface, OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface {
     private final static Integer samplingPeriodUs = 5000;
     private final static Integer maxReportLatencyUs = 5000;
 
@@ -25,11 +25,10 @@ public abstract class AbstractAveragingCallbackSensor extends AbstractCallbackSe
 
     protected final OnSensorAverageEventCallbackInterface averageChangeCallback;
 
-    public AbstractAveragingCallbackSensor(@NonNull Context context,
-           Integer sensorType,
-           @NonNull OnSensorEventCallbackInterface changeCallback,
-           @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback
-    ) {
+    public AveragingCallbackSensor(@NonNull Context context,
+                                   Integer sensorType,
+                                   @NonNull OnSensorEventCallbackInterface changeCallback,
+                                   @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
         super(context, sensorType, changeCallback);
         this.averageChangeCallback = averageChangeCallback;
     }
