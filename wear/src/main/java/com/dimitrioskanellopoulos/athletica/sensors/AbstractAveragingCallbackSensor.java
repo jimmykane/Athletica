@@ -1,15 +1,9 @@
 package com.dimitrioskanellopoulos.athletica.sensors;
 
 import android.content.Context;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.dimitrioskanellopoulos.athletica.sensors.interfaces.SensorAverageListenerInterface;
 
 public abstract class AbstractAveragingCallbackSensor extends AbstractCallbackSensor implements SensorAverageListenerInterface {
 

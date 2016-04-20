@@ -8,6 +8,8 @@ import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.sensors.interfaces.SensorEventListenerInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 
