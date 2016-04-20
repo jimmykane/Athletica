@@ -14,6 +14,9 @@ public class CallbackSensorFactory {
             case Sensor.TYPE_HEART_RATE:
                 callbackSensor = new HeartRateSensor(context, changeCallback);
                 break;
+            case Sensor.TYPE_AMBIENT_TEMPERATURE:
+                callbackSensor = new TemperatureSensor(context, changeCallback);
+                break;
             default:
                 callbackSensor = new CallbackSensor(context, sensorType, changeCallback);
         }
