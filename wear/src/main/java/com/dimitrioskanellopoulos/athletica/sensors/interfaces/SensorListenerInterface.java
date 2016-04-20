@@ -1,6 +1,6 @@
 package com.dimitrioskanellopoulos.athletica.sensors.interfaces;
 
-public interface SensorEventListenerInterface extends FilteredSensorEventListenerInterface {
+public interface SensorListenerInterface extends FilteredSensorListenerInterface {
     void startListening();
 
     void stopListening();

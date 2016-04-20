@@ -25,6 +25,8 @@ import android.view.WindowInsets;
 
 import com.dimitrioskanellopoulos.athletica.sensors.AbstractCallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
+import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
+import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -53,8 +55,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
      * The enabled activeSensors (activeSensors we want to display their values)
      */
     private int[] enabledSensorTypes = {
-            Sensor.TYPE_PRESSURE,
             Sensor.TYPE_HEART_RATE,
+            Sensor.TYPE_PRESSURE,
             Sensor.TYPE_TEMPERATURE,
     };
 
@@ -66,7 +68,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
     }
 
     private class Engine extends CanvasWatchFaceService.Engine implements
-            AbstractCallbackSensor.OnSensorEventCallback {
+            OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface {
 
         private static final String TAG = "Engine";
 
@@ -251,7 +253,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         @Override
-        public void handleOnSensorAverageChanged(SensorEvent event) {
+        public void handleOnSensorAverageChangedEvent(SensorEvent event) {
             handleOnSensorChangedEvent(event);
         }
 
@@ -347,6 +349,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private void startActiveSensors() {
             for (Map.Entry<Integer, AbstractCallbackSensor> entry : activeSensors.entrySet()) {
                 if (!entry.getValue().isListening()) {
+                    //entry.getValue().getAverage(5000L);
                     entry.getValue().startListening();
                 }
             }

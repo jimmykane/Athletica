@@ -3,31 +3,26 @@ package com.dimitrioskanellopoulos.athletica.sensors;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.dimitrioskanellopoulos.athletica.sensors.interfaces.SensorEventListenerInterface;
+import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
+import com.dimitrioskanellopoulos.athletica.sensors.interfaces.SensorListenerInterface;
+import com.dimitrioskanellopoulos.athletica.sensors.listeners.ContinuousSensorEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public abstract class AbstractCallbackSensor implements SensorEventListenerInterface {
+public class AbstractCallbackSensor implements SensorListenerInterface, OnSensorEventCallbackInterface {
     protected final String TAG;
 
     protected final SensorManager sensorManager;
     protected final Sensor sensor;
 
     protected Boolean isListening = false;
-    protected final OnSensorEventCallback changeCallback;
+    protected final OnSensorEventCallbackInterface changeCallback;
 
-    public interface OnSensorEventCallback {
-        void handleOnSensorChangedEvent(SensorEvent event);
-        void handleOnSensorAverageChanged(SensorEvent event);
-    }
+    private final ContinuousSensorEventListener continuousSensorEventListener = new ContinuousSensorEventListener(this);
 
-    public AbstractCallbackSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallback changeCallback) {
+    public AbstractCallbackSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallbackInterface changeCallback) {
         this.changeCallback = changeCallback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(sensorType);
@@ -41,14 +36,14 @@ public abstract class AbstractCallbackSensor implements SensorEventListenerInter
 
     @Override
     public void startListening() {
-        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(continuousSensorEventListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         isListening = true;
         Log.d(TAG, "Started listening");
     }
 
     @Override
     public void stopListening() {
-        sensorManager.unregisterListener(this);
+        sensorManager.unregisterListener(continuousSensorEventListener);
         isListening = false;
         Log.d(TAG, "Stopped listening");
     }
@@ -59,14 +54,9 @@ public abstract class AbstractCallbackSensor implements SensorEventListenerInter
     }
 
     @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (isEventValueAcceptable(event)) {
+    public void handleOnSensorChangedEvent(SensorEvent event) {
+        if(isEventValueAcceptable(event)) {
             changeCallback.handleOnSensorChangedEvent(event);
         }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        Log.d(TAG, "Accuracy changed");
     }
 }

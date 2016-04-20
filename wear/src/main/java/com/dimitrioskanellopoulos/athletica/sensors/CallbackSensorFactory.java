@@ -4,8 +4,10 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.support.annotation.NonNull;
 
+import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
+
 public class CallbackSensorFactory {
-    public static AbstractCallbackSensor getCallbackSensor(@NonNull Context context, Integer sensorType, @NonNull AbstractCallbackSensor.OnSensorEventCallback changeCallback) {
+    public static AbstractCallbackSensor getCallbackSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallbackInterface changeCallback) {
         AbstractCallbackSensor callbackSensor;
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:

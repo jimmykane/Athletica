@@ -6,10 +6,12 @@ import android.hardware.SensorEvent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
+
 public class HeartRateSensor extends AbstractCallbackSensor {
     private static final Integer sensorType = Sensor.TYPE_HEART_RATE;
 
-    public HeartRateSensor(@NonNull Context context, @NonNull OnSensorEventCallback changeCallback) {
+    public HeartRateSensor(@NonNull Context context, @NonNull OnSensorEventCallbackInterface changeCallback) {
         super(context, sensorType, changeCallback);
     }
 

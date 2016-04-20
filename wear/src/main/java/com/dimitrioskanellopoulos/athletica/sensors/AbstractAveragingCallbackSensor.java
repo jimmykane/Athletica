@@ -7,49 +7,23 @@ import android.hardware.SensorEventListener;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
+import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.SensorAverageListenerInterface;
+import com.dimitrioskanellopoulos.athletica.sensors.listeners.AveragingSensorEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractAveragingCallbackSensor extends AbstractCallbackSensor implements SensorAverageListenerInterface {
+public abstract class AbstractAveragingCallbackSensor extends AbstractCallbackSensor implements SensorAverageListenerInterface, OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface {
 
-    public AbstractAveragingCallbackSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallback changeCallback) {
+    private AveragingSensorEventListener averagingSensorEventListener = new AveragingSensorEventListener(this);
+
+    public AbstractAveragingCallbackSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallbackInterface changeCallback, @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
         super(context, sensorType, changeCallback);
     }
 
     @Override
     public void getAverage() {
     }
-
-    SensorEventListener averageListener = new SensorEventListener() {
-
-        private List<Float> averageValues = new ArrayList<>();
-
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-
-            // If there is space to add more averageValues add it and do nothing
-            if (averageValues.size() < 10) {
-                averageValues.add(event.values[0]);
-                Log.d(TAG, "Averaging value: " + event.values[0] + " total: " + averageValues.size());
-                return;
-            }
-
-            Float sum = 0.0f;
-            for (Float value: averageValues){
-                sum = sum + value;
-            }
-
-            event.values[0] = sum/ averageValues.size();
-            Log.d(TAG, "Total sum: " + sum +  " Average: " + event.values[0]);
-            averageValues.clear();
-            sensorManager.unregisterListener(this);
-            changeCallback.handleOnSensorAverageChanged(event);
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        }
-    };
 }
