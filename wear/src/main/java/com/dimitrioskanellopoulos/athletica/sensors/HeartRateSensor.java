@@ -4,6 +4,7 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 public class HeartRateSensor extends AbstractCallbackSensor {
     private static final Integer sensorType = Sensor.TYPE_HEART_RATE;
@@ -15,6 +16,7 @@ public class HeartRateSensor extends AbstractCallbackSensor {
     @Override
     public Boolean isEventValueAcceptable(SensorEvent event) {
         if (event.values[0] == 0.0f){
+            Log.d(TAG, "Event value was 0 thus not accepted");
             return false;
         }
         return super.isEventValueAcceptable(event);
