@@ -137,8 +137,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 }
             }
 
-            // Activate the 1st sensor
-            activateSensor(enabledSensorTypes[0]);
+            // Activate the 1st sensor if available
+            if (enabledSensorTypes.length > 0) {
+                activateSensor(enabledSensorTypes[0]);
+            }
         }
 
         @Override
