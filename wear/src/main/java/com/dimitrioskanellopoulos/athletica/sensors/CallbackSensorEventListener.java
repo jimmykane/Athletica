@@ -8,7 +8,7 @@ public interface CallbackSensorEventListener extends SensorEventListener {
 
     void stopListening();
 
-    void getAverage(Integer time);
+    void getAverage(Long time);
 
     Boolean isListening();
 }
