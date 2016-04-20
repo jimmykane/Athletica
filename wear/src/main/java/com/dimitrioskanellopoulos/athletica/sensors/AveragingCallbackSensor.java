@@ -41,12 +41,14 @@ public class AveragingCallbackSensor extends AbstractCallbackSensor implements S
         }
         Log.d(TAG, "Starting average calculation");
         sensorManager.registerListener(averagingSensorEventListener, sensor, samplingPeriodUs, maxReportLatencyUs);
+        isListening = true;
     }
 
     @Override
     public void handleOnSensorAverageChangedEvent(SensorEvent event) {
         Log.d(TAG, "Average calculated: " + String.format("%.01f", event.values[0]));
         sensorManager.unregisterListener(averagingSensorEventListener);
+        isListening = false;
         Log.d(TAG, "Stopped listening");
         if (isEventValueAcceptable(event)) {
             averageChangeCallback.handleOnSensorAverageChangedEvent(event);
