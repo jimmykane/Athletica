@@ -13,11 +13,10 @@ public class HeartRateSensor extends AbstractCallbackSensor {
     }
 
     @Override
-    public void onSensorChanged(SensorEvent event) {
-        // Do nothing if the values are not usable
+    public Boolean isEventValueAcceptable(SensorEvent event) {
         if (event.values[0] == 0.0f){
-            return;
+            return false;
         }
-        super.onSensorChanged(event);
+        return super.isEventValueAcceptable(event);
     }
 }
