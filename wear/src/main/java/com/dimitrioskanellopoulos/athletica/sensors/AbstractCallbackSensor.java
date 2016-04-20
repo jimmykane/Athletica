@@ -36,7 +36,7 @@ public class AbstractCallbackSensor implements SensorListenerInterface, OnSensor
 
     @Override
     public void startListening() {
-        sensorManager.registerListener(continuousSensorEventListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(continuousSensorEventListener, sensor, SensorManager.SENSOR_DELAY_UI);
         isListening = true;
         Log.d(TAG, "Started listening");
     }
