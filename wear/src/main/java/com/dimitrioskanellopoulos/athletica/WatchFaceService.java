@@ -252,7 +252,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         @Override
         public void handleOnSensorAverageChanged(SensorEvent event) {
-
+            handleOnSensorChangedEvent(event);
         }
 
         private void registerTimeZoneReceiver() {
