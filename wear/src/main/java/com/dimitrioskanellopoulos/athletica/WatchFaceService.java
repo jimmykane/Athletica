@@ -275,7 +275,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void handleOnSensorAverageChangedEvent(SensorEvent event) {
             handleOnSensorChangedEvent(event);
             // Vibrate for 50 milliseconds
-            vibrator.vibrate(50);
+            //vibrator.vibrate(50);
         }
 
         private void registerTimeZoneReceiver() {
@@ -398,7 +398,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             int minute = rightNow.get(Calendar.MINUTE);
             int second = rightNow.get(Calendar.SECOND);
 
-            if (second == 0) {
+            if (second == 0 && minute%15 == 0) {
                 calculateAverageForActiveSensors();
             }
             // Everything happens at the first second every hour
