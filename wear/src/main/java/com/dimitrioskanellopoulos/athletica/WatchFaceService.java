@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
@@ -108,6 +109,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
         boolean mLowBitAmbient;
 
         private final LinkedHashMap<Integer, AveragingCallbackSensor> activeSensors = new LinkedHashMap<Integer, AveragingCallbackSensor>();
+
+        private final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -236,25 +239,23 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         @Override
         public void handleOnSensorChangedEvent(SensorEvent event) {
-            // @todo should check if sensor exists
-            if (event.values[0] == 0f) {
-                Log.d(TAG, "Could not update value for sensor: " + event.sensor.getStringType() + " due to 0");
-                return;
-            }
             switch (event.sensor.getType()) {
                 case Sensor.TYPE_PRESSURE:
                     event.values[0] = locationEngine.getAltitudeFromPressure(event.values[0]);
                 default:
                     break;
             }
-            // @todo should make sure the paint is there
-            watchFace.updateSensorPaintText(event.sensor.getType(), String.format("%.01f", event.values[0]));
+            watchFace.updateSensorPaintText(event.sensor.getType(), String.format("%d", Math.round(event.values[0])));
             Log.d(TAG, "Updated value for sensor: " + event.sensor.getStringType());
+            Log.d(TAG, "Invalidating view");
+            postInvalidate();
         }
 
         @Override
         public void handleOnSensorAverageChangedEvent(SensorEvent event) {
             handleOnSensorChangedEvent(event);
+            // Vibrate for 50 milliseconds
+            vibrator.vibrate(50);
         }
 
         private void registerTimeZoneReceiver() {

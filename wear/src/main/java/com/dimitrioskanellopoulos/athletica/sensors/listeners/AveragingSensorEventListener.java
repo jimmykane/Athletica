@@ -23,11 +23,14 @@ public class AveragingSensorEventListener implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
+        if (event.values[0] == 0.0f){
+            Log.d(TAG, "Value [" + event.values[0] + "] is not accepted");
+            return;
+        }
         // If there is space to add more averageValues add it and do nothing
         if (averageValues.size() < 10) {
             averageValues.add(event.values[0]);
-            Log.d(TAG, "Averaging value: " + event.values[0] + " total: " + averageValues.size());
+            Log.d(TAG, "Value [" + event.values[0] + "], Collected Values [" + averageValues.size()+"]");
             return;
         }
 
@@ -37,7 +40,7 @@ public class AveragingSensorEventListener implements SensorEventListener {
         }
 
         event.values[0] = sum / averageValues.size();
-        Log.d(TAG, "Total sum: " + sum +  " Average: " + event.values[0]);
+        Log.d(TAG, "Total sum[" + sum +  "], Average[" + event.values[0]+ "]");
         averageValues.clear();
         changeCallback.handleOnSensorAverageChangedEvent(event);
     }
