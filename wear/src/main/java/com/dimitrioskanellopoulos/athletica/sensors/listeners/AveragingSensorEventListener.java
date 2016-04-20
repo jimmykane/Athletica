@@ -13,12 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AveragingSensorEventListener implements SensorEventListener {
+    protected final static String TAG = AveragingSensorEventListener.class.getName();
 
     private List<Float> averageValues = new ArrayList<>();
 
     private OnSensorAverageEventCallbackInterface changeCallback;
 
-    public AveragingSensorEventListener(OnSensorAverageEventCallbackInterface changeCallback){
+    public AveragingSensorEventListener(OnSensorAverageEventCallbackInterface changeCallback) {
         this.changeCallback = changeCallback;
     }
 
@@ -33,11 +34,11 @@ public class AveragingSensorEventListener implements SensorEventListener {
         }
 
         Float sum = 0.0f;
-        for (Float value: averageValues){
+        for (Float value : averageValues) {
             sum = sum + value;
         }
 
-        event.values[0] = sum/ averageValues.size();
+        event.values[0] = sum / averageValues.size();
         //Log.d(TAG, "Total sum: " + sum +  " Average: " + event.values[0]);
         averageValues.clear();
         changeCallback.handleOnSensorAverageChangedEvent(event);

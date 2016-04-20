@@ -17,7 +17,7 @@ import java.util.List;
 
 public abstract class AbstractAveragingCallbackSensor extends AbstractCallbackSensor implements SensorAverageListenerInterface, OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface {
 
-    private AveragingSensorEventListener averagingSensorEventListener = new AveragingSensorEventListener(this);
+    private final AveragingSensorEventListener averagingSensorEventListener = new AveragingSensorEventListener(this);
 
     public AbstractAveragingCallbackSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallbackInterface changeCallback, @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
         super(context, sensorType, changeCallback);
@@ -25,5 +25,6 @@ public abstract class AbstractAveragingCallbackSensor extends AbstractCallbackSe
 
     @Override
     public void getAverage() {
+
     }
 }

@@ -55,7 +55,7 @@ public class AbstractCallbackSensor implements SensorListenerInterface, OnSensor
 
     @Override
     public void handleOnSensorChangedEvent(SensorEvent event) {
-        if(isEventValueAcceptable(event)) {
+        if (isEventValueAcceptable(event)) {
             changeCallback.handleOnSensorChangedEvent(event);
         }
     }
