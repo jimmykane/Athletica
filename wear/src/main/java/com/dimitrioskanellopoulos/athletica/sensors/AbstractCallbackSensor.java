@@ -35,6 +35,11 @@ public abstract class AbstractCallbackSensor implements SensorEventListenerInter
     }
 
     @Override
+    public Boolean isEventValueAcceptable(SensorEvent event) {
+        return true;
+    }
+
+    @Override
     public void startListening() {
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         isListening = true;
@@ -55,8 +60,9 @@ public abstract class AbstractCallbackSensor implements SensorEventListenerInter
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        // Pass the value to the callback
-        changeCallback.handleOnSensorChangedEvent(event);
+        if (isEventValueAcceptable(event)) {
+            changeCallback.handleOnSensorChangedEvent(event);
+        }
     }
 
     @Override
