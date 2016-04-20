@@ -35,10 +35,6 @@ public class AveragingCallbackSensor extends AbstractCallbackSensor implements S
 
     @Override
     public void getAverage() {
-        if (isListening()){
-            Log.d(TAG, "Average calculation aborted. Sensor is listening");
-            return;
-        }
         Log.d(TAG, "Starting average calculation");
         sensorManager.registerListener(averagingSensorEventListener, sensor, samplingPeriodUs, maxReportLatencyUs);
         isListening = true;

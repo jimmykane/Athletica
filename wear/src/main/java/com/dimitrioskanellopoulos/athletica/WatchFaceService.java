@@ -356,6 +356,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
+        private void calculateAverageForActiveSensors() {
+            for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
+                if (!entry.getValue().isListening()) {
+                    entry.getValue().getAverage();
+                }
+            }
+        }
+
         private void stopActiveSensors() {
             for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
                 if (entry.getValue().isListening()) {
@@ -371,7 +379,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             int second = rightNow.get(Calendar.SECOND);
 
             if (second == 0) {
-                activeSensors.get(Sensor.TYPE_HEART_RATE).getAverage();
+                calculateAverageForActiveSensors();
             }
             // Everything happens at the first second every hour
             if (second != 0 || minute != 0) {
