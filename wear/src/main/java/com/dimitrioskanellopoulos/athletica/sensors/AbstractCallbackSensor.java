@@ -11,7 +11,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractCallbackSensor implements CallbackSensorEventListener {
+public abstract class AbstractCallbackSensor implements SensorEventListenerInterface {
     private String TAG = "CallbackSensor";
 
     private final SensorManager sensorManager;
@@ -49,13 +49,6 @@ public abstract class AbstractCallbackSensor implements CallbackSensorEventListe
     @Override
     public Boolean isListening() {
         return isListening;
-    }
-
-    @Override
-    public void getAverage(final Long timeMillis) {
-        sensorManager.unregisterListener(averageListener);
-        sensorManager.registerListener(averageListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-        Log.d(TAG, "Monitoring average");
     }
 
     @Override
