@@ -230,7 +230,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     Integer activeSensorType = enabledSensorTypes[0];
                     Integer nextSensorIndex = 0;
                     Integer activeSensorIndex = -1;
-                    for (Map.Entry<Integer, AbstractCallbackSensor> entry : activeSensors.entrySet()) {
+                    for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
                         activeSensorIndex = ArrayUtils.indexOf(enabledSensorTypes, entry.getKey());
                         // If found break the loop
                         if (activeSensorIndex != -1){
@@ -244,7 +244,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     }
                     deactivateSensor(activeSensorType);
                     activateSensor(enabledSensorTypes[nextSensorIndex]);
-
+                    startActiveSensors();
+                    long[] pattern = {0, 50, 50, 50, 50, 100, 100};
+                    vibrator.vibrate(pattern, -1);
                     break;
 
                 case WatchFaceService.TAP_TYPE_TOUCH:
