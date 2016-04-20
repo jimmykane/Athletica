@@ -5,14 +5,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public abstract class AbstractCallbackSensor implements CallbackSensorEventListener {
@@ -56,24 +52,9 @@ public abstract class AbstractCallbackSensor implements CallbackSensorEventListe
     }
 
     @Override
-    public void getAverage(Integer time) {
-        SensorEventListener mListener = new SensorEventListener() {
-
-            List<SensorEvent> samples = new ArrayList<SensorEvent>();
-
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                if (samples.size() > 10){
-                    changeCallback.handleOnSensorAverageChanged(event);
-                }
-            }
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            }
-
-        };
-        sensorManager.registerListener(mListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
-        isListening = true;
+    public void getAverage(final Long timeMillis) {
+        sensorManager.unregisterListener(averageListener);
+        sensorManager.registerListener(averageListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         Log.d(TAG, "Monitoring average");
     }
 
@@ -87,5 +68,36 @@ public abstract class AbstractCallbackSensor implements CallbackSensorEventListe
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         Log.d(TAG, "Accuracy changed");
     }
+
+    SensorEventListener averageListener = new SensorEventListener() {
+
+        private List<Float> averageValues = new ArrayList<>();
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+
+            // If there is space to add more averageValues add it and do nothing
+            if (averageValues.size() < 10) {
+                averageValues.add(event.values[0]);
+                Log.d(TAG, "Averaging value: " + event.values[0] + " total: " + averageValues.size());
+                return;
+            }
+
+            Float sum = 0.0f;
+            for (Float value: averageValues){
+                sum = sum + value;
+            }
+
+            event.values[0] = sum/ averageValues.size();
+            Log.d(TAG, "Total sum: " + sum +  " Average: " + event.values[0]);
+            averageValues.clear();
+            sensorManager.unregisterListener(this);
+            changeCallback.handleOnSensorAverageChanged(event);
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+        }
+    };
 
 }
