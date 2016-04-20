@@ -12,7 +12,7 @@ public class SensorPaintFactory {
             case Sensor.TYPE_HEART_RATE:
                 sensorPaint = new HeartRateSensorPaint();
                 break;
-            case Sensor.TYPE_AMBIENT_TEMPERATURE:
+            case Sensor.TYPE_TEMPERATURE:
                 sensorPaint = new TemperatureSensorPaint();
                 break;
             default:

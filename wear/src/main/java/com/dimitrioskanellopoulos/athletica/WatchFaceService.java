@@ -55,6 +55,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
     private int[] enabledSensorTypes = {
             Sensor.TYPE_PRESSURE,
             Sensor.TYPE_HEART_RATE,
+            Sensor.TYPE_TEMPERATURE,
     };
 
     private static final int maxActiveSensors = 1;
