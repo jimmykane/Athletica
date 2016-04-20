@@ -248,7 +248,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         @Override
-        public void handleOnSensorAverageChanged(Float average) {
+        public void handleOnSensorAverageChanged(SensorEvent event) {
 
         }
 

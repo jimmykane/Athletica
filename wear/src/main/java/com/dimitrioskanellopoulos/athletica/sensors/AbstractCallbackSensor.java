@@ -11,6 +11,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public abstract class AbstractCallbackSensor implements CallbackSensorEventListener {
     private String TAG = "CallbackSensor";
@@ -22,8 +25,8 @@ public abstract class AbstractCallbackSensor implements CallbackSensorEventListe
     private final OnSensorEventCallback changeCallback;
 
     public interface OnSensorEventCallback {
-        void handleOnSensorChangedEvent(SensorEvent value);
-        void handleOnSensorAverageChanged(Float average);
+        void handleOnSensorChangedEvent(SensorEvent event);
+        void handleOnSensorAverageChanged(SensorEvent event);
     }
 
     public AbstractCallbackSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallback changeCallback) {
@@ -56,8 +59,13 @@ public abstract class AbstractCallbackSensor implements CallbackSensorEventListe
     public void getAverage(Integer time) {
         SensorEventListener mListener = new SensorEventListener() {
 
+            List<SensorEvent> samples = new ArrayList<SensorEvent>();
+
             @Override
             public void onSensorChanged(SensorEvent event) {
+                if (samples.size() > 10){
+                    changeCallback.handleOnSensorAverageChanged(event);
+                }
             }
             @Override
             public void onAccuracyChanged(Sensor sensor, int accuracy) {
