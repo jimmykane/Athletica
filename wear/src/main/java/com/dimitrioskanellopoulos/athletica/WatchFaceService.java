@@ -23,7 +23,7 @@ import android.view.SurfaceHolder;
 import android.location.Location;
 import android.view.WindowInsets;
 
-import com.dimitrioskanellopoulos.athletica.sensors.AbstractCallbackSensor;
+import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
@@ -107,7 +107,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         boolean mLowBitAmbient;
 
-        private final LinkedHashMap<Integer, AbstractCallbackSensor> activeSensors = new LinkedHashMap<Integer, AbstractCallbackSensor>();
+        private final LinkedHashMap<Integer, AveragingCallbackSensor> activeSensors = new LinkedHashMap<Integer, AveragingCallbackSensor>();
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -347,7 +347,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void startActiveSensors() {
-            for (Map.Entry<Integer, AbstractCallbackSensor> entry : activeSensors.entrySet()) {
+            for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
                 if (!entry.getValue().isListening()) {
                     //entry.getValue().getAverage(5000L);
                     entry.getValue().startListening();
@@ -356,7 +356,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void stopActiveSensors() {
-            for (Map.Entry<Integer, AbstractCallbackSensor> entry : activeSensors.entrySet()) {
+            for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
                 if (entry.getValue().isListening()) {
                     entry.getValue().stopListening();
                 }
@@ -368,6 +368,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
             int hour = rightNow.get(Calendar.HOUR_OF_DAY);
             int minute = rightNow.get(Calendar.MINUTE);
             int second = rightNow.get(Calendar.SECOND);
+
+            if (second == 0) {
+                activeSensors.get(Sensor.TYPE_HEART_RATE).getAverage();
+            }
             // Everything happens at the first second every hour
             if (second != 0 || minute != 0) {
                 return;
