@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractCallbackSensor implements SensorEventListenerInterface {
-    private String TAG = "CallbackSensor";
+    protected String TAG = "CallbackSensor";
 
     private final SensorManager sensorManager;
     private final Sensor sensor;
