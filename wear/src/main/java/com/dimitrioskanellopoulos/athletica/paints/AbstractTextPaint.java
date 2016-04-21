@@ -5,5 +5,5 @@ import android.graphics.Paint;
 import com.dimitrioskanellopoulos.athletica.paints.interfaces.TextPaintInterface;
 
 public abstract class AbstractTextPaint extends Paint implements TextPaintInterface {
-    protected String text = "";
+    protected String text;
 }
