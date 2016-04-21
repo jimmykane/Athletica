@@ -14,4 +14,12 @@ public class HeartRateSensorPaint extends SensorPaint {
     public String getUnits() {
         return units;
     }
+
+    @Override
+    public String getText() {
+        if (text == null){
+            text = "-";
+        }
+        return super.getText();
+    }
 }
