@@ -51,18 +51,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
      */
     private static final int MSG_UPDATE_TIME = 0;
 
-
-    /**
-     * The enabled activeSensors (activeSensors we want to display their values)
-     */
-    private int[] enabledSensorTypes = {
-            Sensor.TYPE_HEART_RATE,
-            Sensor.TYPE_PRESSURE,
-            Sensor.TYPE_TEMPERATURE,
-    };
-
-    private static final int maxActiveSensors = 1;
-
     @Override
     public CanvasWatchFaceService.Engine onCreateEngine() {
         return new Engine();
@@ -107,6 +95,17 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * disable anti-aliasing in ambient mode.
          */
         boolean mLowBitAmbient;
+
+        /**
+         * The enabled activeSensors (activeSensors we want to display their values)
+         */
+        private int[] enabledSensorTypes = {
+                Sensor.TYPE_HEART_RATE,
+                Sensor.TYPE_PRESSURE,
+                Sensor.TYPE_TEMPERATURE,
+        };
+
+        private static final int maxActiveSensors = 1;
 
         private final LinkedHashMap<Integer, AveragingCallbackSensor> activeSensors = new LinkedHashMap<Integer, AveragingCallbackSensor>();
 
