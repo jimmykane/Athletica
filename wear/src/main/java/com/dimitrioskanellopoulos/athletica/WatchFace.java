@@ -148,6 +148,9 @@ public class WatchFace {
         // Go over the extra paints
         for (Map.Entry<String, AbstractTextPaint> entry : extraPaints.entrySet()) {
             AbstractTextPaint paint = entry.getValue();
+            if (paint.getText() == null){
+                continue;
+            }
             yOffset = yOffset + rowVerticalMargin  + computeRowYOffset(paint);
             Float xOffset = computeXOffset(paint, bounds);
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
