@@ -245,7 +245,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     deactivateSensor(activeSensorType);
                     activateSensor(enabledSensorTypes[nextSensorIndex]);
                     startActiveSensors();
-                    long[] pattern = {0, 50, 50, 50, 50, 100, 100};
+                    long[] pattern = {0, 50, 50, 50, 50};
                     vibrator.vibrate(pattern, -1);
                     break;
 
