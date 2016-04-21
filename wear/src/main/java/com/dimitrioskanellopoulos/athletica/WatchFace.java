@@ -6,16 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.hardware.Sensor;
 import android.util.Pair;
 import android.util.TypedValue;
 
-import com.dimitrioskanellopoulos.athletica.paints.AbstractSensorPaint;
+import com.dimitrioskanellopoulos.athletica.paints.SensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.AbstractTextPaint;
 import com.dimitrioskanellopoulos.athletica.paints.BatterySensorPaint;
-import com.dimitrioskanellopoulos.athletica.paints.HeartRateSensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.Paint;
-import com.dimitrioskanellopoulos.athletica.paints.PressureSensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.SensorPaintFactory;
 import com.dimitrioskanellopoulos.athletica.paints.SunriseSunsetPaint;
 
@@ -54,7 +51,7 @@ public class WatchFace {
     private final LinkedHashMap<String, AbstractTextPaint> extraPaints = new LinkedHashMap<String, AbstractTextPaint>();
 
     // Sensor Paints
-    private final LinkedHashMap<Integer, AbstractSensorPaint> sensorPaints = new LinkedHashMap<Integer, AbstractSensorPaint>();
+    private final LinkedHashMap<Integer, SensorPaint> sensorPaints = new LinkedHashMap<Integer, SensorPaint>();
 
     private final Float rowVerticalMargin;
 
@@ -156,7 +153,7 @@ public class WatchFace {
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
         }
         // Go over the sesnor paints
-        for (Map.Entry<Integer, AbstractSensorPaint> entry : sensorPaints.entrySet()) {
+        for (Map.Entry<Integer, SensorPaint> entry : sensorPaints.entrySet()) {
             AbstractTextPaint paint = entry.getValue();
             yOffset = yOffset + rowVerticalMargin + computeRowYOffset(paint);
             Float xOffset = computeXOffset(paint, bounds);
@@ -211,7 +208,7 @@ public class WatchFace {
         for (Map.Entry<String, AbstractTextPaint> entry : extraPaints.entrySet()) {
             entry.getValue().setAntiAlias(antiAlias);
         }
-        for (Map.Entry<Integer, AbstractSensorPaint> entry : sensorPaints.entrySet()) {
+        for (Map.Entry<Integer, SensorPaint> entry : sensorPaints.entrySet()) {
             entry.getValue().setAntiAlias(antiAlias);
         }
     }
@@ -233,7 +230,7 @@ public class WatchFace {
     }
 
     public void addSensorPaint(Integer sensorType) {
-        AbstractSensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(sensorType);
+        SensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(sensorType);
         sensorPaint.setTypeface(fontAwesome);
         sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
