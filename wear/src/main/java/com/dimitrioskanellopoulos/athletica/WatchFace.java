@@ -94,6 +94,7 @@ public class WatchFace {
         batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
         batterySensorPaint.setAntiAlias(true);
+        batterySensorPaint.setText("0");
         standardPaints.put("batterySensorPaint", batterySensorPaint);
 
         // Add paint for date
@@ -114,7 +115,7 @@ public class WatchFace {
     }
 
     /**
-     * @todo should cache calcs
+     * @todo should cache calculations
      */
     public void draw(Canvas canvas, Rect bounds) {
 
@@ -137,9 +138,7 @@ public class WatchFace {
 
         // Draw battery
         AbstractTextPaint batterySensorPaint = standardPaints.get("batterySensorPaint");
-        if (batterySensorPaint.getText() != null) {
-            canvas.drawText(batterySensorPaint.getText(), computeXOffset(batterySensorPaint, bounds), computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
-        }
+        canvas.drawText(batterySensorPaint.getText(), computeXOffset(batterySensorPaint, bounds), computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
 
         // Set the text of the data
         extraPaints.get("datePaint").setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH), calendar.get(calendar.YEAR)));
@@ -155,9 +154,12 @@ public class WatchFace {
             Float xOffset = computeXOffset(paint, bounds);
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
         }
-        // Go over the sesnor paints
+        // Go over the sensor paints
         for (Map.Entry<Integer, SensorPaint> entry : sensorPaints.entrySet()) {
             AbstractTextPaint paint = entry.getValue();
+            if (paint.getText() == null){
+                continue;
+            }
             yOffset = yOffset + rowVerticalMargin + computeRowYOffset(paint);
             Float xOffset = computeXOffset(paint, bounds);
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
@@ -207,7 +209,6 @@ public class WatchFace {
         for (Map.Entry<String, AbstractTextPaint> entry : standardPaints.entrySet()) {
             entry.getValue().setAntiAlias(antiAlias);
         }
-
         for (Map.Entry<String, AbstractTextPaint> entry : extraPaints.entrySet()) {
             entry.getValue().setAntiAlias(antiAlias);
         }

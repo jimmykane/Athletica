@@ -1,6 +1,8 @@
 package com.dimitrioskanellopoulos.athletica.paints;
 
 
+import android.support.annotation.NonNull;
+
 import com.dimitrioskanellopoulos.athletica.paints.interfaces.SensorPaintInterface;
 
 public class SensorPaint extends AbstractTextPaint implements SensorPaintInterface {
@@ -9,12 +11,15 @@ public class SensorPaint extends AbstractTextPaint implements SensorPaintInterfa
     private final static String units = "";
 
     @Override
-    public void setText(String text) {
+    public void setText(@NonNull String text) {
         this.text = text;
     }
 
     @Override
     public String getText() {
+        if (text == null){
+            return null;
+        }
         return getIcon() + " " + text + " " + getUnits();
     }
 

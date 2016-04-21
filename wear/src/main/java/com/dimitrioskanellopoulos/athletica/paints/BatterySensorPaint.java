@@ -13,7 +13,7 @@ public class BatterySensorPaint extends SensorPaint {
 
     @Override
     public String getIcon() {
-        if (Objects.equals(text, "") || text == null) {
+        if (text == null) {
             return batteryEmptyIcon;
         }
         Integer batteryPercentage = Integer.parseInt(text);
