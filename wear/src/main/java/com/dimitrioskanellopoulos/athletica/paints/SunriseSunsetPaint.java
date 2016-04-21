@@ -2,7 +2,7 @@ package com.dimitrioskanellopoulos.athletica.paints;
 
 import java.util.Objects;
 
-public class SunriseSunsetPaint extends AbstractTextPaint {
+public class SunriseSunsetPaint extends TextPaint {
 
     private String sunIcon = "\uf185";
     private String moonIcon = "\uf186";
