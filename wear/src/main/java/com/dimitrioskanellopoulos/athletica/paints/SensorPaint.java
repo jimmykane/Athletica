@@ -1,6 +1,8 @@
 package com.dimitrioskanellopoulos.athletica.paints;
 
 
+import com.dimitrioskanellopoulos.athletica.paints.interfaces.SensorPaintInterface;
+
 public class SensorPaint extends AbstractTextPaint implements SensorPaintInterface {
 
     protected String icon;
