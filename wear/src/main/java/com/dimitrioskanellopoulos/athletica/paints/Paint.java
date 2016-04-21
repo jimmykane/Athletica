@@ -1,14 +1,13 @@
 package com.dimitrioskanellopoulos.athletica.paints;
 
-public class BackgroundPaint extends AbstractTextPaint {
-
+public class Paint extends AbstractTextPaint {
     @Override
     public void setText(String text) {
-
+        this.text = text;
     }
 
     @Override
     public String getText() {
-        return null;
+        return text;
     }
 }

@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.athletica.paints.interfaces;
+package com.dimitrioskanellopoulos.athletica.paints;
 
 public interface TextPaintInterface {
     void setText(String text);

@@ -4,4 +4,14 @@ public class TemperatureSensorPaint extends SensorPaint {
 
     private String icon = "\uf080";
     private String units = "c";
+
+    @Override
+    public String getIcon() {
+        return icon;
+    }
+
+    @Override
+    public String getUnits() {
+        return units;
+    }
 }

@@ -10,8 +10,9 @@ import android.util.Pair;
 import android.util.TypedValue;
 
 import com.dimitrioskanellopoulos.athletica.paints.SensorPaint;
-import com.dimitrioskanellopoulos.athletica.paints.TextPaint;
+import com.dimitrioskanellopoulos.athletica.paints.AbstractTextPaint;
 import com.dimitrioskanellopoulos.athletica.paints.BatterySensorPaint;
+import com.dimitrioskanellopoulos.athletica.paints.Paint;
 import com.dimitrioskanellopoulos.athletica.paints.SensorPaintFactory;
 import com.dimitrioskanellopoulos.athletica.paints.SunriseSunsetPaint;
 
@@ -44,10 +45,10 @@ public class WatchFace {
     private final android.graphics.Paint backgroundPaint;
 
     // Standard Paints -> Time and Battery
-    private final LinkedHashMap<String, TextPaint> standardPaints = new LinkedHashMap<String, TextPaint>();
+    private final LinkedHashMap<String, AbstractTextPaint> standardPaints = new LinkedHashMap<String, AbstractTextPaint>();
 
     // Extra Paints -> Date for now
-    private final LinkedHashMap<String, TextPaint> extraPaints = new LinkedHashMap<String, TextPaint>();
+    private final LinkedHashMap<String, AbstractTextPaint> extraPaints = new LinkedHashMap<String, AbstractTextPaint>();
 
     // Sensor Paints
     private final LinkedHashMap<Integer, SensorPaint> sensorPaints = new LinkedHashMap<Integer, SensorPaint>();
@@ -80,7 +81,7 @@ public class WatchFace {
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
 
         // Add paint for time
-        TextPaint timePaint = new TextPaint();
+        Paint timePaint = new Paint();
         timePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
@@ -96,7 +97,7 @@ public class WatchFace {
         standardPaints.put("batterySensorPaint", batterySensorPaint);
 
         // Add paint for date
-        TextPaint datePaint = new TextPaint();
+        Paint datePaint = new Paint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTextSize(resources.getDimension(R.dimen.date_size));
         datePaint.setAntiAlias(true);
@@ -104,7 +105,7 @@ public class WatchFace {
         extraPaints.put("datePaint", datePaint);
 
         // Add paint for sunrise and sunset ( can be divided)
-        TextPaint sunriseSunsetPaint = new SunriseSunsetPaint();
+        AbstractTextPaint sunriseSunsetPaint = new SunriseSunsetPaint();
         sunriseSunsetPaint.setTypeface(fontAwesome);
         sunriseSunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseSunsetPaint.setTextSize(resources.getDimension(R.dimen.text_size));
@@ -124,7 +125,7 @@ public class WatchFace {
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
 
         // Draw Time
-        TextPaint timePaint = standardPaints.get("timePaint");
+        AbstractTextPaint timePaint = standardPaints.get("timePaint");
         timePaint.setText(String.format(
                 shouldShowSeconds ?
                         TIME_FORMAT_WITH_SECONDS :
@@ -135,7 +136,7 @@ public class WatchFace {
         canvas.drawText(timePaint.getText(), computeXOffset(timePaint, bounds), computeFirstRowYOffset(timePaint, bounds), timePaint);
 
         // Draw battery
-        TextPaint batterySensorPaint = standardPaints.get("batterySensorPaint");
+        AbstractTextPaint batterySensorPaint = standardPaints.get("batterySensorPaint");
         if (batterySensorPaint.getText() != null) {
             canvas.drawText(batterySensorPaint.getText(), computeXOffset(batterySensorPaint, bounds), computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
         }
@@ -145,15 +146,15 @@ public class WatchFace {
 
         Float yOffset = computeFirstRowYOffset(timePaint, bounds);
         // Go over the extra paints
-        for (Map.Entry<String, TextPaint> entry : extraPaints.entrySet()) {
-            TextPaint paint = entry.getValue();
+        for (Map.Entry<String, AbstractTextPaint> entry : extraPaints.entrySet()) {
+            AbstractTextPaint paint = entry.getValue();
             yOffset = yOffset + rowVerticalMargin  + computeRowYOffset(paint);
             Float xOffset = computeXOffset(paint, bounds);
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
         }
         // Go over the sesnor paints
         for (Map.Entry<Integer, SensorPaint> entry : sensorPaints.entrySet()) {
-            TextPaint paint = entry.getValue();
+            AbstractTextPaint paint = entry.getValue();
             yOffset = yOffset + rowVerticalMargin + computeRowYOffset(paint);
             Float xOffset = computeXOffset(paint, bounds);
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
@@ -163,14 +164,14 @@ public class WatchFace {
     /**
      * Computes the X-Axis offset so that the text is horizontically centered
      */
-    private float computeXOffset(TextPaint paint, Rect watchBounds) {
+    private float computeXOffset(AbstractTextPaint paint, Rect watchBounds) {
         return watchBounds.exactCenterX() - (paint.measureText(paint.getText()) / 2.0f);
     }
 
     /**
      * Computes the Y-Axis offset for the first row based on the exact center of the screen
      */
-    private float computeFirstRowYOffset(TextPaint firstRowPaint, Rect watchBounds) {
+    private float computeFirstRowYOffset(AbstractTextPaint firstRowPaint, Rect watchBounds) {
         float centerY = watchBounds.exactCenterY();
         Rect textBounds = new Rect();
         firstRowPaint.getTextBounds(firstRowPaint.getText(), 0, firstRowPaint.getText().length(), textBounds);
@@ -181,7 +182,7 @@ public class WatchFace {
     /**
      * Computes the Y-Axis offset for a paint, according to it's size and margin
      */
-    private float computeRowYOffset(TextPaint paint) {
+    private float computeRowYOffset(AbstractTextPaint paint) {
         Rect textBounds = new Rect();
         paint.getTextBounds(paint.getText(), 0, paint.getText().length(), textBounds);
         return (textBounds.height()/2.0f);
@@ -190,7 +191,7 @@ public class WatchFace {
     /**
      * Computes the Y-Axis offset for the last row based on the bottom of the screen
      */
-    private float computeLastRowYOffset(TextPaint lastRowPaint, Rect watchBounds) {
+    private float computeLastRowYOffset(AbstractTextPaint lastRowPaint, Rect watchBounds) {
         Rect textBounds = new Rect();
         lastRowPaint.getTextBounds(lastRowPaint.getText(), 0, lastRowPaint.getText().length(), textBounds);
         return watchBounds.bottom - chinSize - (textBounds.height()/2.0f);
@@ -200,11 +201,11 @@ public class WatchFace {
      * Toggles the antialias for all the paints
      */
     public void setAntiAlias(boolean antiAlias) {
-        for (Map.Entry<String, TextPaint> entry : standardPaints.entrySet()) {
+        for (Map.Entry<String, AbstractTextPaint> entry : standardPaints.entrySet()) {
             entry.getValue().setAntiAlias(antiAlias);
         }
 
-        for (Map.Entry<String, TextPaint> entry : extraPaints.entrySet()) {
+        for (Map.Entry<String, AbstractTextPaint> entry : extraPaints.entrySet()) {
             entry.getValue().setAntiAlias(antiAlias);
         }
         for (Map.Entry<Integer, SensorPaint> entry : sensorPaints.entrySet()) {

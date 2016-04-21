@@ -4,4 +4,14 @@ public class PressureSensorPaint extends SensorPaint {
 
     private String icon = "\uf1fe";
     private String units = "m";
+
+    @Override
+    public String getIcon() {
+        return icon;
+    }
+
+    @Override
+    public String getUnits() {
+        return units;
+    }
 }

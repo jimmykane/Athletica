@@ -30,4 +30,9 @@ public class BatterySensorPaint extends SensorPaint {
         }
         return icon;
     }
+
+    @Override
+    public String getUnits() {
+        return units;
+    }
 }
