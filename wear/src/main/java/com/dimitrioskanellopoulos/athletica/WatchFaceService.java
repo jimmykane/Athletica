@@ -273,8 +273,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void handleOnSensorAverageChangedEvent(SensorEvent event) {
             handleOnSensorChangedEvent(event);
-            // Vibrate for 50 milliseconds
-            //vibrator.vibrate(50);
         }
 
         private void registerTimeZoneReceiver() {
