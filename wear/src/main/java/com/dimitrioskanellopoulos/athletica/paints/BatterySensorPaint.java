@@ -12,6 +12,14 @@ public class BatterySensorPaint extends SensorPaint {
     private final static String units = "%";
 
     @Override
+    public String getText() {
+        if (text == null){
+            return null;
+        }
+        return getIcon() + " " + text + "" + getUnits();
+    }
+
+    @Override
     public String getIcon() {
         if (text == null) {
             return batteryEmptyIcon;
