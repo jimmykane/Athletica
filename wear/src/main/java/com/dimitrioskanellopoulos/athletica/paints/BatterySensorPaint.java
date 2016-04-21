@@ -4,12 +4,12 @@ import java.util.Objects;
 
 public class BatterySensorPaint extends SensorPaint {
 
-    private String batteryEmptyIcon = "\uf244";
-    private String batteryQuarterIcon = "\uf243";
-    private String batteryHalfIcon = "\uf242";
-    private String batteryThreeQuartersIcon = "\uf241";
-    private String batteryFullIcon = "\uf240";
-    private String units = "%";
+    private final static String batteryEmptyIcon = "\uf244";
+    private final static String batteryQuarterIcon = "\uf243";
+    private final static String batteryHalfIcon = "\uf242";
+    private final static String batteryThreeQuartersIcon = "\uf241";
+    private final static String batteryFullIcon = "\uf240";
+    private final static String units = "%";
 
     @Override
     public String getIcon() {

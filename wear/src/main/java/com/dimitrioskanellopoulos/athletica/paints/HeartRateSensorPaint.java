@@ -2,8 +2,8 @@ package com.dimitrioskanellopoulos.athletica.paints;
 
 public class HeartRateSensorPaint extends SensorPaint {
 
-    private String icon = "\uf21e";
-    private String units = "bpm";
+    private final static String icon = "\uf21e";
+    private final static String units = "bpm";
 
     @Override
     public String getIcon() {

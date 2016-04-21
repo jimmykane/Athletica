@@ -2,8 +2,8 @@ package com.dimitrioskanellopoulos.athletica.paints;
 
 public class TemperatureSensorPaint extends SensorPaint {
 
-    private String icon = "\uf080";
-    private String units = "c";
+    private final static String icon = "\uf080";
+    private final static String units = "c";
 
     @Override
     public String getIcon() {

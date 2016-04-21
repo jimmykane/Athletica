@@ -4,8 +4,8 @@ import java.util.Objects;
 
 public class SunriseSunsetPaint extends AbstractTextPaint {
 
-    private String sunIcon = "\uf185";
-    private String moonIcon = "\uf186";
+    private final static String sunIcon = "\uf185";
+    private final static String moonIcon = "\uf186";
 
     @Override
     public void setText(String text) {

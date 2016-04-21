@@ -5,8 +5,8 @@ import com.dimitrioskanellopoulos.athletica.paints.interfaces.SensorPaintInterfa
 
 public class SensorPaint extends AbstractTextPaint implements SensorPaintInterface {
 
-    protected String icon;
-    protected String units;
+    private final static String icon = "\uf1db";
+    private final static String units = "";
 
     @Override
     public void setText(String text) {
