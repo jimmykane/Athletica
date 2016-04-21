@@ -137,7 +137,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             SensorManager mgr = (SensorManager) getSystemService(SENSOR_SERVICE);
             // Foreach of our enabled activeSensors check if the device has it and if not remove it
             for (int enabledSensorType : enabledSensorTypes) {
-                if (mgr.getDefaultSensor(enabledSensorType) == null){
+                if (mgr.getDefaultSensor(enabledSensorType) == null) {
                     Log.d(TAG, "Removed unsupported sensor: " + enabledSensorType);
                     enabledSensorTypes = ArrayUtils.removeElement(enabledSensorTypes, enabledSensorType);
                 }
@@ -233,7 +233,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
                         activeSensorIndex = ArrayUtils.indexOf(enabledSensorTypes, entry.getKey());
                         // If found break the loop
-                        if (activeSensorIndex != -1){
+                        if (activeSensorIndex != -1) {
                             activeSensorType = entry.getKey();
                             break;
                         }
@@ -370,7 +370,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private void startActiveSensors() {
             for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
                 if (!entry.getValue().isListening()) {
-                    //entry.getValue().getAverage(5000L);
                     entry.getValue().startListening();
                 }
             }
@@ -398,7 +397,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
             int minute = rightNow.get(Calendar.MINUTE);
             int second = rightNow.get(Calendar.SECOND);
 
-            if (second == 0 && minute%15 == 0) {
+            // Every 15 minutes
+            if (second == 0 && minute % 15 == 0) {
                 calculateAverageForActiveSensors();
             }
             // Everything happens at the first second every hour

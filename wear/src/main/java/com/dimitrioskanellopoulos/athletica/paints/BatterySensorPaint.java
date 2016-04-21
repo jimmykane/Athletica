@@ -14,7 +14,7 @@ public class BatterySensorPaint extends AbstractSensorPaint {
     @Override
     public String getIcon() {
         if (Objects.equals(text, "")) {
-            return "\uF068";
+            return batteryEmptyIcon;
         }
         Integer batteryPercentage = Integer.parseInt(text);
         if (batteryPercentage > 80 && batteryPercentage <= 100) {
