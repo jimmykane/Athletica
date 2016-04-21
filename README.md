@@ -1,1 +1,1 @@
-# Athletica
+# Athletica WatchFace for Android Wear
