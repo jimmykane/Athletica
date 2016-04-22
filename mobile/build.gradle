@@ -7,9 +7,9 @@ android {
     defaultConfig {
         applicationId "com.dimitrioskanellopoulos.athletica"
         minSdkVersion 22
-        targetSdkVersion 23
-        versionCode 6
-        versionName "1.0.2"
+        targetSdkVersion 22
+        versionCode 1
+        versionName "0.0.1"
     }
     buildTypes {
         release {

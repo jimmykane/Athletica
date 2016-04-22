@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.dimitrioskanellopoulos.athletica">
+  package="com.dimitrioskanellopoulos.athleticawatchface">
 
   <uses-feature android:name="android.hardware.type.watch"/>
 
@@ -17,7 +17,7 @@
     <uses-library android:name="com.google.android.wearable" android:required="false" />
 
     <service
-      android:name="com.dimitrioskanellopoulos.athletica.WatchFaceService"
+      android:name="com.dimitrioskanellopoulos.athleticawatchface.WatchFaceService"
       android:label="@string/app_name"
       android:permission="android.permission.BIND_WALLPAPER">
 
@@ -40,7 +40,7 @@
     </service>
 
     <activity
-        android:name=".LocationPermissionActivity"
+        android:name="com.dimitrioskanellopoulos.athleticawatchface.LocationPermissionActivity"
         android:label="@string/location_permission_activity" >
     </activity>
 
