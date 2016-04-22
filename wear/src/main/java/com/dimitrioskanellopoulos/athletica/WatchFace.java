@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.hardware.Sensor;
 import android.util.Pair;
 import android.util.TypedValue;
 
@@ -112,6 +113,24 @@ public class WatchFace {
         sunriseSunsetPaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sunriseSunsetPaint.setAntiAlias(true);
         extraPaints.put("sunriseSunsetPaint", sunriseSunsetPaint);
+
+        if (EmulatorHelper.isEmulator()){
+            SensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(Sensor.TYPE_HEART_RATE);
+            sensorPaint.setTypeface(fontAwesome);
+            sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
+            sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
+            sensorPaint.setAntiAlias(true);
+            sensorPaint.setText("60");
+            sensorPaints.put(Sensor.TYPE_HEART_RATE, sensorPaint);
+
+//            SensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(Sensor.TYPE_PRESSURE);
+//            sensorPaint.setTypeface(fontAwesome);
+//            sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
+//            sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
+//            sensorPaint.setAntiAlias(true);
+//            sensorPaint.setText("930");
+//            sensorPaints.put(Sensor.TYPE_PRESSURE, sensorPaint);
+        }
     }
 
     /**

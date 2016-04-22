@@ -1,9 +1,11 @@
 package com.dimitrioskanellopoulos.athletica;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.hardware.Sensor;
@@ -14,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+import android.support.v4.app.ActivityCompat;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
@@ -224,6 +227,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 @TapType int tapType, int x, int y, long eventTime) {
             switch (tapType) {
                 case WatchFaceService.TAP_TYPE_TAP:
+                    checkSelfPermissions();
+
                     // Go over the active sensors. Should be only one for now
                     Integer activeSensorType = enabledSensorTypes[0];
                     Integer nextSensorIndex = 0;
@@ -253,6 +258,35 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 case WatchFaceService.TAP_TYPE_TOUCH_CANCEL:
                     break;
             }
+        }
+
+        private void checkSelfPermissions() {
+            //@todo fix copy pasta
+            if (ActivityCompat.checkSelfPermission(
+                    getApplicationContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Intent permissionIntent = new Intent(
+                        getApplicationContext(),
+                        LocationPermissionActivity.class);
+                permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(permissionIntent);
+                // Return to relax the user
+                return;
+            }
+
+
+
+            if (ActivityCompat.checkSelfPermission(
+                    getApplicationContext(),
+                    Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED) {
+                Intent permissionIntent = new Intent(
+                        getApplicationContext(),
+                        BodySensorsPermissionActivity.class);
+                permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(permissionIntent);
+                return;
+            }
+
         }
 
         @Override

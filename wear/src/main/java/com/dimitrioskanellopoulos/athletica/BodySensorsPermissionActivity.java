@@ -10,10 +10,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.dimitrioskanellopoulos.athletica.R;
+
 /**
  * Simple Activity for displaying Calendar Permission Rationale to user.
  */
-public class LocationPermissionActivity extends WearableActivity {
+public class BodySensorsPermissionActivity extends WearableActivity {
 
     private static final String TAG = "PermissionActivity";
 
@@ -23,7 +25,7 @@ public class LocationPermissionActivity extends WearableActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location_watch_face_permission);
+        setContentView(R.layout.activity_body_sensors_watch_face_permission);
         setAmbientEnabled();
     }
 
@@ -36,7 +38,7 @@ public class LocationPermissionActivity extends WearableActivity {
         Log.d(TAG, "onClickEnablePermission()");
         ActivityCompat.requestPermissions(
                 this,
-                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                new String[]{Manifest.permission.BODY_SENSORS},
                 PERMISSION_REQUEST_LOCATION);
     }
 
@@ -57,8 +59,8 @@ public class LocationPermissionActivity extends WearableActivity {
                     finish();
                 } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                     // Should we show an explanation?
-                    if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                        Toast.makeText(this, "Please go to settings and allow this permission if you want to get sunrise and sunset times", Toast.LENGTH_LONG).show();
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.BODY_SENSORS)) {
+                        Toast.makeText(this, "Please go to settings and allow this permission if you want to get heart rate", Toast.LENGTH_LONG).show();
                         //Never ask again selected, or device policy prohibits the app from having that permission.
                         //So, disable that feature, or fall back to another situation...
                         // user denied flagging NEVER ASK AGAIN
@@ -70,7 +72,7 @@ public class LocationPermissionActivity extends WearableActivity {
                         finish();
                         return;
                     }
-                    Toast.makeText(this, "Please allow location permission for sunrise and sunset calculation", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Please allow body sensor permission for heart rate", Toast.LENGTH_LONG).show();
                     requestPermissions();
                     finish();
                     // user denied WITHOUT never ask again

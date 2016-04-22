@@ -44,6 +44,12 @@
         android:label="@string/location_permission_activity" >
     </activity>
 
+    <activity
+        android:name=".BodySensorsPermissionActivity"
+        android:label="@string/location_permission_activity" >
+    </activity>
+
+
   </application>
 
 </manifest>
