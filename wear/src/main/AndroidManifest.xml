@@ -37,6 +37,11 @@
       </intent-filter>
     </service>
 
+    <activity
+        android:name=".acivities.activities.LocationPermissionActivity"
+        android:label="@string/location_permission_activity" >
+    </activity>
+
   </application>
 
 </manifest>

@@ -2,4 +2,6 @@
 <resources>
     <string name="google_app_id">Athletica</string>
     <string name="app_name">Athletica</string>
+    <string name="location_permission_text">Allow location</string>
+    <string name="location_permission_activity">Location Permission Activity</string>
 </resources>
