@@ -114,23 +114,23 @@ public class WatchFace {
         sunriseSunsetPaint.setAntiAlias(true);
         extraPaints.put("sunriseSunsetPaint", sunriseSunsetPaint);
 
-        if (EmulatorHelper.isEmulator()){
-            SensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(Sensor.TYPE_HEART_RATE);
-            sensorPaint.setTypeface(fontAwesome);
-            sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
-            sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
-            sensorPaint.setAntiAlias(true);
-            sensorPaint.setText("60");
-            sensorPaints.put(Sensor.TYPE_HEART_RATE, sensorPaint);
-
-//            SensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(Sensor.TYPE_PRESSURE);
+//        if (EmulatorHelper.isEmulator()){
+//            SensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(Sensor.TYPE_HEART_RATE);
 //            sensorPaint.setTypeface(fontAwesome);
 //            sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
 //            sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
 //            sensorPaint.setAntiAlias(true);
-//            sensorPaint.setText("930");
-//            sensorPaints.put(Sensor.TYPE_PRESSURE, sensorPaint);
-        }
+//            sensorPaint.setText("60");
+//            sensorPaints.put(Sensor.TYPE_HEART_RATE, sensorPaint);
+//
+////            SensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(Sensor.TYPE_PRESSURE);
+////            sensorPaint.setTypeface(fontAwesome);
+////            sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
+////            sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
+////            sensorPaint.setAntiAlias(true);
+////            sensorPaint.setText("930");
+////            sensorPaints.put(Sensor.TYPE_PRESSURE, sensorPaint);
+//        }
     }
 
     /**

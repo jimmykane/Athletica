@@ -102,8 +102,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * The enabled activeSensors (activeSensors we want to display their values)
          */
         private int[] enabledSensorTypes = {
-                Sensor.TYPE_HEART_RATE,
                 Sensor.TYPE_PRESSURE,
+                Sensor.TYPE_HEART_RATE,
                 Sensor.TYPE_TEMPERATURE,
         };
 
@@ -234,7 +234,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             switch (tapType) {
                 case WatchFaceService.TAP_TYPE_TAP:
                     checkSelfPermissions();
-                    initializeSensors();
+                    //initializeSensors();
 
                     // Go over the active sensors. Should be only one for now
                     Integer activeSensorType = enabledSensorTypes[0];
