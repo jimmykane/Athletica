@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-        applicationId "com.dimitrioskanellopoulos.athletica"
+        applicationId "com.dimitrioskanellopoulos.Athletica"
         minSdkVersion 22
         targetSdkVersion 22
         versionCode 1
