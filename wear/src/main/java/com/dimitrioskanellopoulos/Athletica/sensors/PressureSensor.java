@@ -1,0 +1,17 @@
+package com.dimitrioskanellopoulos.Athletica.sensors;
+
+import android.content.Context;
+import android.hardware.Sensor;
+import android.support.annotation.NonNull;
+
+import com.dimitrioskanellopoulos.Athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
+import com.dimitrioskanellopoulos.Athletica.sensors.interfaces.OnSensorEventCallbackInterface;
+
+public class PressureSensor extends AveragingCallbackSensor {
+    private static final Integer sensorType = Sensor.TYPE_PRESSURE;
+
+    public PressureSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallbackInterface changeCallback, @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
+        super(context, sensorType, changeCallback, averageChangeCallback);
+    }
+
+}

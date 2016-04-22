@@ -10,7 +10,7 @@
     android:paddingTop="32dp"
     android:paddingLeft="36dp"
     android:paddingRight="22dp"
-    tools:context="com.dimitrioskanellopoulos.athleticawatchface.LocationPermissionActivity"
+    tools:context="com.dimitrioskanellopoulos.Athletica.LocationPermissionActivity"
     tools:deviceIds="wear">
     <LinearLayout
         android:layout_width="match_parent"
