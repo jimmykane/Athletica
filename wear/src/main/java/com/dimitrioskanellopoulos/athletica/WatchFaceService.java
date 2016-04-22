@@ -135,10 +135,16 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Get a location engine
             locationEngine = new LocationEngine(googleApiHelper);
 
-            SensorManager mgr = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+            initializeSensors();
+
+        }
+
+        private void initializeSensors() {
+            SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
             // Foreach of our enabled activeSensors check if the device has it and if not remove it
             for (int enabledSensorType : enabledSensorTypes) {
-                if (mgr.getDefaultSensor(enabledSensorType) == null) {
+                if (sensorManager.getDefaultSensor(enabledSensorType) == null) {
                     Log.d(TAG, "Removed unsupported sensor: " + enabledSensorType);
                     enabledSensorTypes = ArrayUtils.removeElement(enabledSensorTypes, enabledSensorType);
                 }
@@ -228,6 +234,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             switch (tapType) {
                 case WatchFaceService.TAP_TYPE_TAP:
                     checkSelfPermissions();
+                    initializeSensors();
 
                     // Go over the active sensors. Should be only one for now
                     Integer activeSensorType = enabledSensorTypes[0];
