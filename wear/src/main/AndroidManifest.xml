@@ -40,11 +40,6 @@
     </service>
 
     <activity
-        android:name=".LocationPermissionActivity"
-        android:label="@string/location_permission_activity" >
-    </activity>
-
-    <activity
         android:name=".BodySensorsPermissionActivity"
         android:label="@string/body_sensors_permission_activity" >
     </activity>
