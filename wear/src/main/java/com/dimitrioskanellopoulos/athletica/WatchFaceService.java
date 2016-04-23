@@ -291,7 +291,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED) {
                 Intent permissionIntent = new Intent(
                         getApplicationContext(),
-                        BodySensorsPermissionActivity.class);
+                        PermissionActivity.class);
                 permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(permissionIntent);
                 return;

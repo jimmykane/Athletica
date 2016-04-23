@@ -40,7 +40,7 @@
     </service>
 
     <activity
-        android:name=".BodySensorsPermissionActivity"
+        android:name=".PermissionActivity"
         android:label="@string/body_sensors_permission_activity" >
     </activity>
 
