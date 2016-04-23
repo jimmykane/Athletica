@@ -37,7 +37,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 app:circle_radius="20dp"
-                app:circle_color="#0086D4"
+                app:circle_color="@color/black"
                 android:src="@drawable/ic_lock_open_white_24dp"/>
 
             <android.support.v4.widget.Space
@@ -47,9 +47,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="#0086D4"
-                android:text="@string/enable_permission"/>
+                android:textSize="14sp"
+                android:textColor="@color/white"
+                android:text="@string/enable_permissions"/>
 
         </LinearLayout>
 
