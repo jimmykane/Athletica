@@ -143,12 +143,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void initializeSensors() {
-            for (Integer supportedSensorType: supportedSensorTypes){
-                deactivateSensor(supportedSensorType);
-            }
-            enabledSensorTypes.clear();
-
-            // Foreach of our enabled activeSensors check if the device has it and if not remove it
             for (int supportedSensorType : supportedSensorTypes) {
                 if (sensorManager.getDefaultSensor(supportedSensorType) != null) {
                     Log.d(TAG, "Enabled sensor: " + supportedSensorType);
@@ -178,7 +172,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 registerTimeZoneReceiver();
                 registerBatteryInfoReceiver();
                 updateSunriseAndSunset();
-                initializeSensors();
                 startListeningToSensors();
 
                 // Update time zone in case it changed while we weren't visible.
@@ -380,9 +373,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void deactivateSensor(Integer sensorType) {
-            if (!activeSensors.containsKey(sensorType)){
-                return;
-            }
             activeSensors.get(sensorType).stopListening();
             activeSensors.remove(sensorType);
             watchFace.removeSensorPaint(sensorType);
