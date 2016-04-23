@@ -2,6 +2,7 @@
 <resources>
     <string name="google_app_id">Athletica</string>
     <string name="app_name">Athletica</string>
-    <string name="location_permission_text">Allow location</string>
-    <string name="body_sensors_permission_activity">Heart Rate Sensor and body sensors</string>
+    <string name="permissions_explanation">Athletica needs permissions</string>
+    <string name="permissions_activity">Permissions Activity</string>
+    <string name="enable_permission">Enable Permission</string>
 </resources>

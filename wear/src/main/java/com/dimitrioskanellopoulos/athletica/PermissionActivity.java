@@ -10,11 +10,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class PermissionActivity extends WearableActivity {
 
     private static final String TAG = "PermissionActivity";
 
-    private static final String[] permissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS};
+    private static final String[] wantedPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS};
 
     private static final int PERMISSION_REQUEST = 1;
 
@@ -26,15 +28,12 @@ public class PermissionActivity extends WearableActivity {
     }
 
     public void onClickEnablePermission(View view) {
-        requestPermissions();
+        requestPermissions(wantedPermissions);
     }
 
-    public void requestPermissions() {
+    public void requestPermissions(String[] wantedPermissions) {
         Log.d(TAG, "onClickEnablePermission()");
-        ActivityCompat.requestPermissions(
-                this,
-                new String[]{Manifest.permission.BODY_SENSORS},
-                PERMISSION_REQUEST);
+        ActivityCompat.requestPermissions(this, wantedPermissions, PERMISSION_REQUEST);
     }
 
     @Override
@@ -53,34 +52,36 @@ public class PermissionActivity extends WearableActivity {
             return;
         }
 
+        ArrayList toRequestAgain = new ArrayList<>();
 
         for (Integer grantResult : grantResults){
+
             if (grantResult == PackageManager.PERMISSION_GRANTED) {
-                //Do the stuff that requires permission...
-                finish();
-            } else if (grantResult == PackageManager.PERMISSION_DENIED) {
-                // Should we show an explanation?
-                if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.BODY_SENSORS)) {
-                    Toast.makeText(this, "Please go to settings and allow this permission if you want to get heart rate", Toast.LENGTH_LONG).show();
-                    //Never ask again selected, or device policy prohibits the app from having that permission.
-                    //So, disable that feature, or fall back to another situation...
-                    // user denied flagging NEVER ASK AGAIN
-                    // you can either enable some fall back,
-                    // disable features of your app
-                    // or open another dialog explaining
-                    // again the permission and directing to
-                    // the app setting
-                    finish();
-                    return;
-                }
-                Toast.makeText(this, "Please allow body sensor permission for heart rate", Toast.LENGTH_LONG).show();
-                requestPermissions();
-                finish();
-                // user denied WITHOUT never ask again
-                // this is a good place to explain the user
-                // why you need the permission and ask if he want
-                // to accept it (the rationale)
+                // Check next this one is granted
+                continue;
             }
+
+            // Permission was not granted
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.BODY_SENSORS)) {
+                Toast.makeText(this, "Please go to settings and allow this permission if you want to get heart rate", Toast.LENGTH_LONG).show();
+                //Never ask again selected, or device policy prohibits the app from having that permission.
+                //So, disable that feature, or fall back to another situation...
+                // user denied flagging NEVER ASK AGAIN
+                // you can either enable some fall back,
+                // disable features of your app
+                // or open another dialog explaining
+                // again the permission and directing to
+                // the app setting
+                continue;
+            }
+
+            toRequestAgain.add(permissions[0]);
+            Toast.makeText(this, "Please allow body sensor permission for heart rate", Toast.LENGTH_LONG).show();
+            finish();
+            // user denied WITHOUT never ask again
+            // this is a good place to explain the user
+            // why you need the permission and ask if he want
+            // to accept it (the rationale)
         }
     }
 }

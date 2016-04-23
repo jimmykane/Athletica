@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/container"
-    android:background="@color/white"
+    android:background="@color/black"
     android:paddingTop="32dp"
     android:paddingLeft="36dp"
     android:paddingRight="22dp"
@@ -24,8 +24,8 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:paddingBottom="18dp"
-            android:textColor="#000000"
-            android:text="@string/body_sensors_permission_activity"/>
+            android:textColor="@color/white"
+            android:text="@string/permissions_explanation"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textColor="#0086D4"
-                android:text="Enable Permission"/>
+                android:text="@string/enable_permission"/>
 
         </LinearLayout>
 

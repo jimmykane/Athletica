@@ -277,26 +277,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 Intent permissionIntent = new Intent(
                         getApplicationContext(),
-                        LocationPermissionActivity.class);
-                permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(permissionIntent);
-                // Return to relax the user
-                return;
-            }
-
-
-
-            if (ActivityCompat.checkSelfPermission(
-                    getApplicationContext(),
-                    Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED) {
-                Intent permissionIntent = new Intent(
-                        getApplicationContext(),
                         PermissionActivity.class);
                 permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(permissionIntent);
-                return;
+                // Return to relax the user
             }
-
         }
 
         @Override
