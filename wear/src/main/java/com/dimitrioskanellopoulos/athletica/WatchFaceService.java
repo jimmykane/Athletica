@@ -18,7 +18,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
@@ -32,8 +31,6 @@ import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -143,15 +140,19 @@ public class WatchFaceService extends CanvasWatchFaceService {
             locationEngine = new LocationEngine(googleApiHelper);
 
             initializeSensors();
-
         }
 
         private void initializeSensors() {
+            for (Integer supportedSensorType: supportedSensorTypes){
+                deactivateSensor(supportedSensorType);
+            }
+            enabledSensorTypes.clear();
+
             // Foreach of our enabled activeSensors check if the device has it and if not remove it
-            for (int enabledSensorType : supportedSensorTypes) {
-                if (sensorManager.getDefaultSensor(enabledSensorType) != null) {
-                    Log.d(TAG, "Enabled sensor: " + enabledSensorType);
-                    enabledSensorTypes.add(enabledSensorType);
+            for (int supportedSensorType : supportedSensorTypes) {
+                if (sensorManager.getDefaultSensor(supportedSensorType) != null) {
+                    Log.d(TAG, "Enabled sensor: " + supportedSensorType);
+                    enabledSensorTypes.add(supportedSensorType);
                 }
             }
 
@@ -165,7 +166,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
             googleApiHelper.disconnect();
-            stopActiveSensors();
+            stopListeningToSensors();
             super.onDestroy();
         }
 
@@ -173,17 +174,19 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
             if (visible) {
+                Log.d(TAG, "Visible");
                 registerTimeZoneReceiver();
                 registerBatteryInfoReceiver();
                 updateSunriseAndSunset();
-                startActiveSensors();
+                initializeSensors();
+                startListeningToSensors();
 
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
                 unregisterTimeZoneReceiver();
                 unregisterBatteryInfoReceiver();
-                stopActiveSensors();
+                stopListeningToSensors();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
@@ -198,9 +201,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
             watchFace.setShowSeconds(!isInAmbientMode());
 
             if (inAmbientMode) {
-                stopActiveSensors();
+                stopListeningToSensors();
             } else {
-                startActiveSensors();
+                startListeningToSensors();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
@@ -239,7 +242,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             switch (tapType) {
                 case WatchFaceService.TAP_TYPE_TAP:
                     checkSelfPermissions();
-                    //initializeSensors();
 
                     // Go over the active sensors. Should be only one for now
                     Integer activeSensorType = enabledSensorTypes.get(0);
@@ -259,7 +261,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     }
                     deactivateSensor(activeSensorType);
                     activateSensor(enabledSensorTypes.get(nextSensorIndex));
-                    startActiveSensors();
+                    startListeningToSensors();
                     long[] pattern = {0, 50, 50, 50, 50};
                     vibrator.vibrate(pattern, -1);
                     break;
@@ -378,6 +380,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void deactivateSensor(Integer sensorType) {
+            if (!activeSensors.containsKey(sensorType)){
+                return;
+            }
             activeSensors.get(sensorType).stopListening();
             activeSensors.remove(sensorType);
             watchFace.removeSensorPaint(sensorType);
@@ -412,7 +417,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         }
 
-        private void startActiveSensors() {
+        private void startListeningToSensors() {
             for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
                 if (!entry.getValue().isListening()) {
                     entry.getValue().startListening();
@@ -428,7 +433,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        private void stopActiveSensors() {
+        private void stopListeningToSensors() {
             for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
                 if (entry.getValue().isListening()) {
                     entry.getValue().stopListening();
