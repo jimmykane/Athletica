@@ -79,7 +79,7 @@ public class PermissionActivity extends WearableActivity {
 
             // Permission was not granted
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
-                Toast.makeText(this, "Please go to settings and allow this permission", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getText(R.string.permissions_do_not_ask_again_message), Toast.LENGTH_LONG).show();
                 //Never ask again selected, or device policy prohibits the app from having that permission.
                 //So, disable that feature, or fall back to another situation...
                 // user denied flagging NEVER ASK AGAIN
