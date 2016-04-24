@@ -6,4 +6,5 @@
     <string name="permissions_activity">Permissions Activity</string>
     <string name="enable_permissions">Enable Permissions</string>
     <string name="permissions_do_not_ask_again_message">Please go to settings and allow this permission</string>
+    <string name="permissions_restart_app">Restart watchface from permission to take effect</string>
 </resources>

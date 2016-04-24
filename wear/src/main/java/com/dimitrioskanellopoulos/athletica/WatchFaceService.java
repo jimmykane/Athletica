@@ -302,6 +302,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * @todo think about service
          */
         private void initializeSensors() {
+            // Clear all enabled
+            enabledSensorTypes.clear();
+            // Add the ones supported by the device and the app
             for (int supportedSensorType : supportedSensorTypes) {
                 if (sensorManager.getDefaultSensor(supportedSensorType) != null) {
                     Log.d(TAG, "Enabled sensor: " + supportedSensorType);
@@ -309,7 +312,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 }
             }
 
-            // Activate the 1st sensor if available
             if (enabledSensorTypes.size() > 0) {
                 activateSensor(enabledSensorTypes.get(0));
             }

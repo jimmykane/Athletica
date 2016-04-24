@@ -71,6 +71,7 @@ public class PermissionActivity extends WearableActivity {
 
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                 // Check next this one is granted
+                Toast.makeText(this, getResources().getText(R.string.permissions_restart_app), Toast.LENGTH_LONG).show();
                 continue;
             }
 
