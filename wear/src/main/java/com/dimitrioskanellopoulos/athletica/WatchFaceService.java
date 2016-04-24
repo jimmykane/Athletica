@@ -312,16 +312,15 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * Checks if the watchface service has the required permissions to at 100%
          */
         private void checkSelfPermissions() {
-            // @todo make this static
             if (!requiresRuntimePermissions) {
                 return;
             }
 
-//            Intent permissionIntent = new Intent(
-//                    getApplicationContext(),
-//                    PermissionActivity.class);
-//            permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(permissionIntent);
+            Intent permissionIntent = new Intent(
+                    getApplicationContext(),
+                    PermissionActivity.class);
+            permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(permissionIntent);
         }
 
         @Override
