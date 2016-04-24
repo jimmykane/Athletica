@@ -50,7 +50,7 @@ public class PermissionActivity extends WearableActivity {
             }
 
         }
-        return missingPermissions.toArray(new String[0]);
+        return missingPermissions.toArray(new String[missingPermissions.size()]);
     }
 
     @Override
