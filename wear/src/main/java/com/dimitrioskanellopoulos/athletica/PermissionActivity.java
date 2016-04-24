@@ -33,17 +33,17 @@ public class PermissionActivity extends WearableActivity {
 
     public void requestPermissions() {
         Log.d(TAG, "onClickEnablePermission()");
-        ActivityCompat.requestPermissions(this, getMissingPermissions(), PERMISSION_REQUEST);
+        ActivityCompat.requestPermissions(this, findMissingPermissions(), PERMISSION_REQUEST);
     }
 
-    public String[] getMissingPermissions(){
+    public String[] findMissingPermissions(){
         ArrayList<String> missingPermissions = new ArrayList<>();
 
         for(String permission : requiredPermissions){
 
             if(ActivityCompat.checkSelfPermission(
                     getApplicationContext(),
-                    Manifest.permission.BODY_SENSORS) != PackageManager.PERMISSION_GRANTED
+                    permission) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.shouldShowRequestPermissionRationale(this, permission)){
 
                 missingPermissions.add(permission);
