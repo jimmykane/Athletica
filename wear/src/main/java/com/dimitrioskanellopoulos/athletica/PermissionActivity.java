@@ -36,19 +36,16 @@ public class PermissionActivity extends WearableActivity {
         ActivityCompat.requestPermissions(this, findMissingPermissions(), PERMISSION_REQUEST);
     }
 
-    public String[] findMissingPermissions(){
+    public String[] findMissingPermissions() {
         ArrayList<String> missingPermissions = new ArrayList<>();
-
-        for(String permission : requiredPermissions){
-
-            if(ActivityCompat.checkSelfPermission(
+        for (String permission : requiredPermissions) {
+            if (ActivityCompat.checkSelfPermission(
                     getApplicationContext(),
                     permission) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.shouldShowRequestPermissionRationale(this, permission)){
+                    && ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
 
                 missingPermissions.add(permission);
             }
-
         }
         return missingPermissions.toArray(new String[missingPermissions.size()]);
     }
@@ -60,17 +57,17 @@ public class PermissionActivity extends WearableActivity {
         Log.d(TAG, "onRequestPermissionsResult()");
 
         // It's not out code
-        if (requestCode != PERMISSION_REQUEST){
+        if (requestCode != PERMISSION_REQUEST) {
             return;
         }
 
         // We did not have any grant results
-        if (grantResults.length <= 0){
+        if (grantResults.length <= 0) {
             return;
         }
 
 
-        for (int i=0; i<grantResults.length; i++){
+        for (int i = 0; i < grantResults.length; i++) {
 
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                 // Check next this one is granted
