@@ -178,6 +178,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
             initializeSensors();
         }
 
+        /**
+         * Initialized the sensors. Checks which ones the app supports and which ones the device
+         */
         private void initializeSensors() {
             for (int supportedSensorType : supportedSensorTypes) {
                 if (sensorManager.getDefaultSensor(supportedSensorType) != null) {
@@ -204,16 +207,22 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
             if (visible) {
-                Log.d(TAG, "Visible");
+                // Check for timezone changes
                 registerTimeZoneReceiver();
+                // Check for battery changes
                 registerBatteryInfoReceiver();
+                // Update sunrise and sunset
                 updateSunriseAndSunset();
+                // Start updating sensor values
                 startListeningToSensors();
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
+                // Stop checking for timezone updates
                 unregisterTimeZoneReceiver();
+                // Stop checking for battery level changes
                 unregisterBatteryInfoReceiver();
+                // Stop updating sensor values
                 stopListeningToSensors();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
@@ -395,6 +404,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void updateSunriseAndSunset() {
+            //@todo should check last time
             Location location = locationEngine.getLastKnownLocation();
             if (location == null) {
                 // If its a real device continue to run
