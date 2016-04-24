@@ -1,5 +1,6 @@
 package com.dimitrioskanellopoulos.athletica;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.Context;
@@ -64,6 +65,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * Whether we are on Marshmallow and permissions checks are needed
          */
         private final Boolean requiresRuntimePermissions = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+
+        /**
+         * Code number for a permissions request activity
+         */
+        private final static int PERMISSIONS_REQUEST = 403;
 
         /**
          * Handler for updating the time
@@ -173,23 +179,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             locationEngine = new LocationEngine(googleApiHelper);
 
             initializeSensors();
-        }
-
-        /**
-         * Initialized the sensors. Checks which ones the app supports and which ones the device
-         */
-        private void initializeSensors() {
-            for (int supportedSensorType : supportedSensorTypes) {
-                if (sensorManager.getDefaultSensor(supportedSensorType) != null) {
-                    Log.d(TAG, "Enabled sensor: " + supportedSensorType);
-                    enabledSensorTypes.add(supportedSensorType);
-                }
-            }
-
-            // Activate the 1st sensor if available
-            if (enabledSensorTypes.size() > 0) {
-                activateSensor(enabledSensorTypes.get(0));
-            }
         }
 
         @Override
@@ -305,6 +294,24 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
                 case WatchFaceService.TAP_TYPE_TOUCH_CANCEL:
                     break;
+            }
+        }
+
+        /**
+         * Initialize the sensors.
+         * @todo think about service
+         */
+        private void initializeSensors() {
+            for (int supportedSensorType : supportedSensorTypes) {
+                if (sensorManager.getDefaultSensor(supportedSensorType) != null) {
+                    Log.d(TAG, "Enabled sensor: " + supportedSensorType);
+                    enabledSensorTypes.add(supportedSensorType);
+                }
+            }
+
+            // Activate the 1st sensor if available
+            if (enabledSensorTypes.size() > 0) {
+                activateSensor(enabledSensorTypes.get(0));
             }
         }
 
