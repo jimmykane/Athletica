@@ -63,7 +63,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * Whether we are on Marshmallow and permissions checks are needed
          */
-        private final Boolean requiresRuntimePermissions = Build.VERSION.SDK_INT < Build.VERSION_CODES.M;
+        private final Boolean requiresRuntimePermissions = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
 
         /**
          * Handler for updating the time
@@ -308,9 +308,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
+        /**
+         * Checks if the watchface service has the required permissions to at 100%
+         */
         private void checkSelfPermissions() {
             // @todo make this static
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            if (!requiresRuntimePermissions) {
                 return;
             }
 
