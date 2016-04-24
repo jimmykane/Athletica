@@ -268,20 +268,16 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void checkSelfPermissions() {
+            // @todo make this static
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
                 return;
             }
-            //@todo fix copy pasta
-            if (ActivityCompat.checkSelfPermission(
-                    getApplicationContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                Intent permissionIntent = new Intent(
-                        getApplicationContext(),
-                        PermissionActivity.class);
-                permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(permissionIntent);
-                // Return to relax the user
-            }
+
+//            Intent permissionIntent = new Intent(
+//                    getApplicationContext(),
+//                    PermissionActivity.class);
+//            permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            startActivity(permissionIntent);
         }
 
         @Override
