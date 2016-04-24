@@ -63,41 +63,70 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         private static final String TAG = "Engine";
 
-        final Handler mUpdateTimeHandler = new EngineHandler(this);
+        /**
+         * Whether we are on Marshmallow and permissions checks are needed
+         */
+        private final Boolean requiresRuntimePermissions = Build.VERSION.SDK_INT < Build.VERSION_CODES.M;
 
-        final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
+        /**
+         * Handler for updating the time
+         */
+        private final Handler mUpdateTimeHandler = new EngineHandler(this);
+
+        /**
+         * Broadcast receiver for updating the timezone
+         */
+        private final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 watchFace.updateTimeZoneWith(TimeZone.getTimeZone(intent.getStringExtra("time-zone")));
             }
         };
 
+        /**
+         * Broadcast receiver for updating the battery level
+         */
         final BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
                 Intent batteryStatus = context.registerReceiver(null, ifilter);
                 int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-                int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-                float batteryPct = level / (float) scale; // Used just in case
+                //int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+                //float batteryPct = level / (float) scale;
                 watchFace.updateBatteryLevel(level);
             }
         };
 
+        /**
+         * Whether tha timezone reciever is registered
+         */
         boolean mRegisteredTimeZoneReceiver = false;
 
+        /**
+         * The watchface. Used for drawing and updating the view/watchface
+         */
         private WatchFace watchFace;
 
+        /**
+         * The location engine that helps for retrieving location and it's updates
+         */
         private LocationEngine locationEngine;
 
+        /**
+         * A helper for google api that can be shared within the app
+         */
         private GoogleApiHelper googleApiHelper;
 
         /**
          * Whether the display supports fewer bits for each color in ambient mode. When true, we
          * disable anti-aliasing in ambient mode.
          */
-        boolean mLowBitAmbient;
+        private boolean mLowBitAmbient;
 
+        /**
+         * The supported sensor types for this watch face. Not the supported ones by the device
+         */
         private int[] supportedSensorTypes = {
                 Sensor.TYPE_PRESSURE,
                 Sensor.TYPE_HEART_RATE,
@@ -109,12 +138,19 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         ArrayList<Integer> enabledSensorTypes = new ArrayList<Integer>();
 
-        private static final int maxActiveSensors = 1;
-
+        /**
+         * The active sensors list. These sensors are the active ones at runtime
+         */
         private final LinkedHashMap<Integer, AveragingCallbackSensor> activeSensors = new LinkedHashMap<Integer, AveragingCallbackSensor>();
 
+        /**
+         * Don't be kinky on this. It's the virbrating system service. Useful for haptic feedback
+         */
         private final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+        /**
+         * The sensor manager service
+         */
         private final SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         @Override
@@ -173,7 +209,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 registerBatteryInfoReceiver();
                 updateSunriseAndSunset();
                 startListeningToSensors();
-
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
