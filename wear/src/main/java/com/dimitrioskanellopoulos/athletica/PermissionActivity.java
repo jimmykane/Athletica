@@ -16,8 +16,14 @@ public class PermissionActivity extends WearableActivity {
 
     private static final String TAG = "PermissionActivity";
 
+    /**
+     * The permissions we would like to have. Wanted because they are not actually needed
+     */
     private static final String[] wantedPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS};
 
+    /**
+     * The broadcast signal for our permission request
+     */
     private static final int PERMISSION_REQUEST = 1;
 
     @Override
@@ -40,6 +46,9 @@ public class PermissionActivity extends WearableActivity {
         //setAmbientEnabled();
     }
 
+    /**
+     * When he clicks on the layouts
+     */
     public void onClickEnablePermission(View view) {
         Log.d(TAG, "onClickEnablePermission()");
         ActivityCompat.requestPermissions(this, getPermissionsWeCanRequest(), PERMISSION_REQUEST);
@@ -85,6 +94,9 @@ public class PermissionActivity extends WearableActivity {
         return permissionsWeCanRequest.toArray(new String[permissionsWeCanRequest.size()]);
     }
 
+    /**
+     * When the user makes his choice
+     */
     @Override
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -101,9 +113,9 @@ public class PermissionActivity extends WearableActivity {
             return;
         }
 
-
+        // Go over the results. It's a 1:1 array with the permissions
         for (int i = 0; i < grantResults.length; i++) {
-
+            // If this permission is granted
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                 // Check next this one is granted
                 Toast.makeText(this, getResources().getText(R.string.permissions_restart_app), Toast.LENGTH_LONG).show();
@@ -114,7 +126,7 @@ public class PermissionActivity extends WearableActivity {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
                 Toast.makeText(this, getResources().getText(R.string.permissions_do_not_ask_again_message), Toast.LENGTH_LONG).show();
                 //Never ask again selected, or device policy prohibits the app from having that permission.
-                //So, disable that feature, or fall back to another situation...
+                // So, disable that feature, or fall back to another situation...
                 // user denied flagging NEVER ASK AGAIN
                 // you can either enable some fall back,
                 // disable features of your app
