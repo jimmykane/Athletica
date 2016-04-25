@@ -1,7 +1,6 @@
 package com.dimitrioskanellopoulos.athletica;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.Context;
@@ -252,7 +251,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onTimeTick() {
             super.onTimeTick();
-            runOnTimeTickActions();
+            runOnTimeTickTasks();
             invalidate();
         }
 
@@ -477,7 +476,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        private void runOnTimeTickActions() {
+        private void runOnTimeTickTasks() {
             // @todo this is wrong
             Calendar rightNow = Calendar.getInstance();
             int hour = rightNow.get(Calendar.HOUR_OF_DAY);
