@@ -24,7 +24,7 @@ public class PermissionActivity extends WearableActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watch_face_permissions);
-        setAmbientEnabled();
+        //setAmbientEnabled();
     }
 
     public void onClickEnablePermission(View view) {
