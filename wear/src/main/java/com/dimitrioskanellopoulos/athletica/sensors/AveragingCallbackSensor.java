@@ -29,6 +29,7 @@ public class AveragingCallbackSensor extends CallbackSensor implements SensorAve
 
     @Override
     public void getAverage() {
+        stopListening();
         Log.d(TAG, "Starting average calculation");
         sensorManager.registerListener(averagingSensorEventListener, sensor, samplingPeriodUs, maxReportLatencyUs);
         isListening = true;
@@ -42,10 +43,8 @@ public class AveragingCallbackSensor extends CallbackSensor implements SensorAve
 
     @Override
     public void handleOnSensorAverageChangedEvent(SensorEvent event) {
+        stopListening();
         Log.d(TAG, "Average calculated: " + String.format("%.01f", event.values[0]));
-        sensorManager.unregisterListener(averagingSensorEventListener);
-        isListening = false;
-        Log.d(TAG, "Stopped listening");
         if (isEventValueAcceptable(event)) {
             averageChangeCallback.handleOnSensorAverageChangedEvent(event);
         }
