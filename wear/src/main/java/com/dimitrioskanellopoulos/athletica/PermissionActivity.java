@@ -16,13 +16,15 @@ public class PermissionActivity extends WearableActivity {
 
     private static final String TAG = "PermissionActivity";
 
-    private static final String[] requiredPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS};
+    private static final String[] wantedPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS};
 
     private static final int PERMISSION_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // If we cannot request any permissions show a toast and exit
+
         setContentView(R.layout.activity_watch_face_permissions);
         //setAmbientEnabled();
     }
@@ -33,7 +35,7 @@ public class PermissionActivity extends WearableActivity {
     }
 
     public void requestPermissions() {
-        String[] missingPermissions = findMissingPermissions();
+        String[] missingPermissions = getPermissionsWeCanRequest();
         if (missingPermissions.length == 0){
             finish();
             return;
@@ -41,18 +43,18 @@ public class PermissionActivity extends WearableActivity {
         ActivityCompat.requestPermissions(this, missingPermissions, PERMISSION_REQUEST);
     }
 
-    public String[] findMissingPermissions() {
-        ArrayList<String> missingPermissions = new ArrayList<>();
-        for (String permission : requiredPermissions) {
+    public String[] getPermissionsWeCanRequest() {
+        ArrayList<String> permissionsWeCanRequest = new ArrayList<>();
+        for (String permission : wantedPermissions) {
             if (ActivityCompat.checkSelfPermission(
                     getApplicationContext(),
                     permission) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
 
-                missingPermissions.add(permission);
+                permissionsWeCanRequest.add(permission);
             }
         }
-        return missingPermissions.toArray(new String[missingPermissions.size()]);
+        return permissionsWeCanRequest.toArray(new String[permissionsWeCanRequest.size()]);
     }
 
     @Override
