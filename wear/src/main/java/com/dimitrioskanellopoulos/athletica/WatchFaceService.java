@@ -461,25 +461,19 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         private void startListeningToSensors() {
             for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
-                if (!entry.getValue().isListening()) {
-                    entry.getValue().startListening();
-                }
+                entry.getValue().startListening();
             }
         }
 
         private void calculateAverageForActiveSensors() {
             for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
-                if (!entry.getValue().isListening()) {
-                    entry.getValue().getAverage();
-                }
+                entry.getValue().getAverage();
             }
         }
 
         private void stopListeningToSensors() {
             for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
-                if (entry.getValue().isListening()) {
-                    entry.getValue().stopListening();
-                }
+                entry.getValue().stopListening();
             }
         }
 
