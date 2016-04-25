@@ -1,7 +1,10 @@
 package com.dimitrioskanellopoulos.athletica;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.hardware.SensorManager;
 import android.location.Location;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.google.android.gms.location.LocationListener;
@@ -28,11 +31,6 @@ public class LocationEngine implements LocationListener {
             lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiHelper.getGoogleApiClient());
         }
         return lastKnownLocation;
-    }
-
-    public Float getAltitudeFromPressure(Float pressure) {
-        Log.d(TAG, "Calculating altitude from pressure");
-        return SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressure);
     }
 
     @Override

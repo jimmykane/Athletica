@@ -353,7 +353,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void handleOnSensorChangedEvent(SensorEvent event) {
             switch (event.sensor.getType()) {
                 case Sensor.TYPE_PRESSURE:
-                    event.values[0] = locationEngine.getAltitudeFromPressure(event.values[0]);
+                    event.values[0] = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, event.values[0]);
                 default:
                     break;
             }
