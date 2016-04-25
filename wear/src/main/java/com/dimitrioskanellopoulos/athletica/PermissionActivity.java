@@ -28,12 +28,17 @@ public class PermissionActivity extends WearableActivity {
     }
 
     public void onClickEnablePermission(View view) {
+        Log.d(TAG, "onClickEnablePermission()");
         requestPermissions();
     }
 
     public void requestPermissions() {
-        Log.d(TAG, "onClickEnablePermission()");
-        ActivityCompat.requestPermissions(this, findMissingPermissions(), PERMISSION_REQUEST);
+        String[] missingPermissions = findMissingPermissions();
+        if (missingPermissions.length == 0){
+            finish();
+            return;
+        }
+        ActivityCompat.requestPermissions(this, missingPermissions, PERMISSION_REQUEST);
     }
 
     public String[] findMissingPermissions() {

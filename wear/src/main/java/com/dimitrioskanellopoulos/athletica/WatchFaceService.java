@@ -1,10 +1,12 @@
 package com.dimitrioskanellopoulos.athletica;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.hardware.Sensor;
@@ -16,6 +18,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+import android.support.v4.app.ActivityCompat;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
@@ -322,6 +325,21 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         private void checkSelfPermissions() {
             if (!requiresRuntimePermissions) {
+                return;
+            }
+
+            String[] requiredPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS};
+            ArrayList<String> missingPermissions = new ArrayList<>();
+
+            for (String permission : requiredPermissions) {
+                if (ActivityCompat.checkSelfPermission(
+                        getApplicationContext(),
+                        permission) != PackageManager.PERMISSION_GRANTED) {
+
+                    missingPermissions.add(permission);
+                }
+            }
+            if (missingPermissions.size() <= 0){
                 return;
             }
 
