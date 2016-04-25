@@ -35,6 +35,12 @@ public class AveragingCallbackSensor extends AbstractCallbackSensor implements S
     }
 
     @Override
+    public void stopListening() {
+        sensorManager.unregisterListener(averagingSensorEventListener);
+        super.stopListening();
+    }
+
+    @Override
     public void handleOnSensorAverageChangedEvent(SensorEvent event) {
         Log.d(TAG, "Average calculated: " + String.format("%.01f", event.values[0]));
         sensorManager.unregisterListener(averagingSensorEventListener);
