@@ -23,34 +23,62 @@ public class PermissionActivity extends WearableActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // If we cannot request any permissions show a toast and exit
-
+        // If there are no permissions missing what are we doing here?
+        if (!hasMissingPermissions()){
+            Log.w(TAG, "Launched with no missing permissions");
+            finish();
+            return;
+        }
+        // If there are no permissions that we can request then show a toast and exit
+        if (!hasPermissionsWeCanRequest()){
+            Toast.makeText(this, getResources().getText(R.string.permissions_do_not_ask_again_message), Toast.LENGTH_LONG).show();
+            finish();
+            return;
+        }
+        // We can request the permissions
         setContentView(R.layout.activity_watch_face_permissions);
         //setAmbientEnabled();
     }
 
     public void onClickEnablePermission(View view) {
         Log.d(TAG, "onClickEnablePermission()");
-        requestPermissions();
+        ActivityCompat.requestPermissions(this, getPermissionsWeCanRequest(), PERMISSION_REQUEST);
     }
 
-    public void requestPermissions() {
-        String[] missingPermissions = getPermissionsWeCanRequest();
-        if (missingPermissions.length == 0){
-            finish();
-            return;
+    /**
+     * Can we request any permissions or has the user denied with do not ask again?
+     */
+    public Boolean hasPermissionsWeCanRequest(){
+        return getPermissionsWeCanRequest().length != 0;
+    }
+
+    /**
+     * Are there any permissions what we want and we don't have?
+     */
+    public Boolean hasMissingPermissions(){
+        return getMissingPermissions().length != 0;
+    }
+
+    /**
+     * Permissions that are missing from the wanted permissions
+     */
+    public String[] getMissingPermissions(){
+        ArrayList<String> missingPermissions = new ArrayList<>();
+        for (String permission : wantedPermissions) {
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(), permission) != PackageManager.PERMISSION_GRANTED) {
+                missingPermissions.add(permission);
+            }
         }
-        ActivityCompat.requestPermissions(this, missingPermissions, PERMISSION_REQUEST);
+        return missingPermissions.toArray(new String[missingPermissions.size()]);
     }
 
+    /**
+     * Permissions that are missing and we can request
+     */
     public String[] getPermissionsWeCanRequest() {
         ArrayList<String> permissionsWeCanRequest = new ArrayList<>();
-        for (String permission : wantedPermissions) {
-            if (ActivityCompat.checkSelfPermission(
-                    getApplicationContext(),
-                    permission) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
-
+        for (String permission : getMissingPermissions()) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
                 permissionsWeCanRequest.add(permission);
             }
         }
