@@ -180,6 +180,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Get a location engine
             locationEngine = new LocationEngine(googleApiHelper);
 
+            // Initialize all sensors
             initializeSensors();
         }
 
@@ -221,10 +222,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onAmbientModeChanged(boolean inAmbientMode) {
             super.onAmbientModeChanged(inAmbientMode);
-
+            // Obvious
             watchFace.setAntiAlias(!inAmbientMode);
             watchFace.setShowSeconds(!isInAmbientMode());
 
+            // When we are active show realtime data from the sensors. Start listening
             if (inAmbientMode) {
                 stopListeningToSensors();
             } else {
