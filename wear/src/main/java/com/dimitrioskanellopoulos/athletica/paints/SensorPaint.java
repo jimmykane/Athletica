@@ -8,14 +8,15 @@ import com.dimitrioskanellopoulos.athletica.paints.interfaces.SensorPaintInterfa
 public class SensorPaint extends TextPaint implements SensorPaintInterface {
 
     private final static String icon = "\uf1db";
-    private final static String units = "";
+    private final static String units = "?";
 
     @Override
     public String getText() {
-        if (super.getText() == null){
-            return null;
+        String text = "-/-";
+        if (super.getText() != null){
+            text = super.getText();
         }
-        return getIcon() + " " + super.getText() + " " + getUnits();
+        return getIcon() + " " + text + " " + getUnits();
     }
 
     @Override
