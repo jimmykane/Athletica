@@ -209,7 +209,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Activate the "next" sensors
             activateNextSensors();
 
-            registerServiceReceiver();
+            registerPermissionsGrantedReceiver();
         }
 
         @Override
@@ -217,7 +217,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
             googleApiHelper.disconnect();
             stopListeningToSensors();
-            unregisterServiceReceiver();
+            unregisterPermissionsGrantedReceiver();
             super.onDestroy();
         }
 
@@ -395,11 +395,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
             WatchFaceService.this.unregisterReceiver(mTimeZoneReceiver);
         }
 
-        private void registerServiceReceiver() {
+        private void registerPermissionsGrantedReceiver() {
             registerReceiver(permissionsGrantedReceiver, new IntentFilter(PERMISSIONS_GRANTED_MESSAGE));
         }
 
-        private void unregisterServiceReceiver() {
+        private void unregisterPermissionsGrantedReceiver() {
             unregisterReceiver(permissionsGrantedReceiver);
         }
 
