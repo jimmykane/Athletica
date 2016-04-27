@@ -280,17 +280,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
             switch (tapType) {
                 case WatchFaceService.TAP_TYPE_TAP:
                     checkSelfPermissions();
-
-
-                    // If it was the last in the list get the first
-//                    if (activeSensorIndex != availableSensorTypes.size() - 1) {
-//                        nextSensorIndex = activeSensorIndex + 1;
-//                    }
-//                    deactivateSensor(activeSensorType);
-//                    activateSensor(availableSensorTypes.get(nextSensorIndex));
-//                    startListeningToSensors();
-//                    long[] pattern = {0, 50, 50, 50, 50};
-//                    vibrator.vibrate(pattern, -1);
+                    activateNextSensors();
+                    startListeningToSensors();
+                    vibrator.vibrate(new long[] {0, 50, 50, 50, 50}, -1);
                     break;
 
                 case WatchFaceService.TAP_TYPE_TOUCH:
