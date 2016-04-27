@@ -26,6 +26,7 @@ import android.view.SurfaceHolder;
 
 import android.location.Location;
 import android.view.WindowInsets;
+import android.widget.Toast;
 
 import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
@@ -63,6 +64,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         private static final String TAG = "Engine";
 
+        private static final String PERMISSIONS_GRANTED_MESSAGE = "PERMISSIONS_GRANTED_MESSAGE";
+
         /**
          * Whether we are on Marshmallow and permissions checks are needed
          */
@@ -91,7 +94,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * Broadcast receiver for updating the battery level
          */
-        final BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
+        private final BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
@@ -100,6 +103,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 //int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
                 //float batteryPct = level / (float) scale;
                 watchFace.updateBatteryLevel(level);
+            }
+        };
+
+        private BroadcastReceiver permissionsChangedReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                findAndSetAvailableSensorTypes();
+                Toast.makeText(getApplicationContext(), "Updated enabled sensors", Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -194,6 +205,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
             // Activate the "next" sensors
             activateNextSensors();
+
+            registerServiceReceiver();
         }
 
         @Override
@@ -201,6 +214,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
             googleApiHelper.disconnect();
             stopListeningToSensors();
+            unregisterServiceReceiver();
             super.onDestroy();
         }
 
@@ -483,6 +497,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
             Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(location, TimeZone.getDefault().getID());
             watchFace.updateSunriseSunset(sunriseSunset);
             Log.d(TAG, "Successfully updated sunrise");
+        }
+
+        private void registerServiceReceiver() {
+            registerReceiver(permissionsChangedReceiver, new IntentFilter(PERMISSIONS_GRANTED_MESSAGE));
+        }
+
+        private void unregisterServiceReceiver() {
+            unregisterReceiver(permissionsChangedReceiver);
         }
 
         private void unregisterBatteryInfoReceiver() {
