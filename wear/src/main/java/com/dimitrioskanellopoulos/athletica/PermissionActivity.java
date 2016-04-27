@@ -38,13 +38,7 @@ public class PermissionActivity extends WearableActivity {
             finish();
             return;
         }
-        // If there are no permissions that we can request then show a toast and exit
-        if (!hasPermissionsWeCanRequest()){
-            Toast.makeText(this, getResources().getText(R.string.permissions_do_not_ask_again_message), Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }
-        // We can request the permissions
+
         setContentView(R.layout.activity_watch_face_permissions);
         //setAmbientEnabled();
     }
@@ -54,14 +48,7 @@ public class PermissionActivity extends WearableActivity {
      */
     public void onClickEnablePermission(View view) {
         Log.d(TAG, "onClickEnablePermission()");
-        ActivityCompat.requestPermissions(this, getPermissionsWeCanRequest(), PERMISSION_REQUEST);
-    }
-
-    /**
-     * Can we request any permissions or has the user denied with do not ask again?
-     */
-    public Boolean hasPermissionsWeCanRequest(){
-        return getPermissionsWeCanRequest().length != 0;
+        ActivityCompat.requestPermissions(this, getMissingPermissions(), PERMISSION_REQUEST);
     }
 
     /**
@@ -82,19 +69,6 @@ public class PermissionActivity extends WearableActivity {
             }
         }
         return missingPermissions.toArray(new String[missingPermissions.size()]);
-    }
-
-    /**
-     * Permissions that are missing and we can request
-     */
-    public String[] getPermissionsWeCanRequest() {
-        ArrayList<String> permissionsWeCanRequest = new ArrayList<>();
-        for (String permission : getMissingPermissions()) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
-                permissionsWeCanRequest.add(permission);
-            }
-        }
-        return permissionsWeCanRequest.toArray(new String[permissionsWeCanRequest.size()]);
     }
 
     /**
@@ -138,7 +112,7 @@ public class PermissionActivity extends WearableActivity {
                 // again the permission and directing to
                 // the app setting
             }
-
+            Toast.makeText(this, getResources().getText(R.string.permissions_do_not_ask_again_message), Toast.LENGTH_LONG).show();
             // user denied WITHOUT never ask again
             // this is a good place to explain the user
             // why you need the permission and ask if he want

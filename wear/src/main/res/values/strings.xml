@@ -6,5 +6,6 @@
     <string name="permissions_activity">Permissions Activity</string>
     <string name="enable_permissions">Enable Permissions</string>
     <string name="permissions_do_not_ask_again_message">Please go to settings and grant the required permissions if you want to use all features of the watchface</string>
+    <string name="permissions_rationale">Please grant the required permissions if you want the full experience</string>
     <string name="permission_granted">Permission granted</string>
 </resources>
