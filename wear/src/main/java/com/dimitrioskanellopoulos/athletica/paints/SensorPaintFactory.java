@@ -13,7 +13,17 @@ public class SensorPaintFactory {
                 sensorPaint = new HeartRateSensorPaint();
                 break;
             case Sensor.TYPE_TEMPERATURE:
+            case Sensor.TYPE_AMBIENT_TEMPERATURE:
                 sensorPaint = new TemperatureSensorPaint();
+                break;
+            case Sensor.TYPE_ACCELEROMETER:
+                sensorPaint = new AccelerometerSensorPaint();
+                break;
+            case Sensor.TYPE_MAGNETIC_FIELD:
+                sensorPaint = new MagneticFieldSensorPaint();
+                break;
+            case Sensor.TYPE_LIGHT:
+                sensorPaint = new LightSensorPaint();
                 break;
             default:
                 sensorPaint = new SensorPaint();

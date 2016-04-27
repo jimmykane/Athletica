@@ -138,7 +138,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 Sensor.TYPE_TEMPERATURE,
                 Sensor.TYPE_AMBIENT_TEMPERATURE,
                 Sensor.TYPE_LIGHT,
-                Sensor.TYPE_RELATIVE_HUMIDITY,
+                Sensor.TYPE_MAGNETIC_FIELD,
                 Sensor.TYPE_ACCELEROMETER,
         };
 
