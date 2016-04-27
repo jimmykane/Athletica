@@ -2,7 +2,8 @@
 <resources>
     <string name="google_app_id">Athletica</string>
     <string name="app_name">Athletica</string>
-    <string name="permissions_explanation">Athletica needs permissions</string>
+    <string name="permissions_title">Athletica requires permissions:</string>
+    <string name="permissions_details">- <b><u>Coarse Location</u></b> for sunrise/sunset times\n- <b><u>Body Sensors</u></b> for Heart Rate Sensor</string>
     <string name="permissions_activity">Permissions Activity</string>
     <string name="enable_permissions">Enable Permissions</string>
     <string name="permissions_do_not_ask_again_message">Please go to settings and grant the required permissions if you want to use all features of the watchface</string>
