@@ -5,22 +5,17 @@ import android.support.annotation.NonNull;
 
 import com.dimitrioskanellopoulos.athletica.paints.interfaces.SensorPaintInterface;
 
-public class SensorPaint extends AbstractTextPaint implements SensorPaintInterface {
+public class SensorPaint extends TextPaint implements SensorPaintInterface {
 
     private final static String icon = "\uf1db";
     private final static String units = "";
 
     @Override
-    public void setText(@NonNull String text) {
-        this.text = text;
-    }
-
-    @Override
     public String getText() {
-        if (text == null){
+        if (super.getText() == null){
             return null;
         }
-        return getIcon() + " " + text + " " + getUnits();
+        return getIcon() + " " + super.getText() + " " + getUnits();
     }
 
     @Override

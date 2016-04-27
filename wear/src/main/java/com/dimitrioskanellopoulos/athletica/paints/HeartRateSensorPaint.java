@@ -15,11 +15,4 @@ public class HeartRateSensorPaint extends SensorPaint {
         return units;
     }
 
-    @Override
-    public String getText() {
-        if (text == null){
-            text = "-";
-        }
-        return super.getText();
-    }
 }
