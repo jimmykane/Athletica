@@ -115,7 +115,7 @@ public class WatchFace {
     }
 
     /**
-     * @todo should cache calculations
+     * @todo maybe cache calculations
      */
     public void draw(Canvas canvas, Rect bounds) {
 
