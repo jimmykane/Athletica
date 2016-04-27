@@ -139,9 +139,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
         };
 
         /**
-         * The enabled activeSensors (activeSensors we want to display their values)
+         * The available sensors. Cross of supported by the app sensors and supported by the device
          */
-        ArrayList<Integer> enabledSensorTypes = new ArrayList<Integer>();
+        private ArrayList<Integer> availableSensorTypes = new ArrayList<Integer>();
+
+        /**
+         * How many sensors we want to utilize concurently
+         */
+        final Integer maxActiveSensors = 1;
 
         /**
          * The active sensors list. These sensors are the active ones at runtime
@@ -180,8 +185,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Get a location engine
             locationEngine = new LocationEngine(googleApiHelper);
 
-            // Initialize all sensors
-            initializeSensors();
+            // Finds and sets the available sensor types
+            findAndSetAvailableSensorTypes();
+
+            // Activate the "next" sensors
+            activateNextSensors();
         }
 
         @Override
@@ -273,27 +281,16 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 case WatchFaceService.TAP_TYPE_TAP:
                     checkSelfPermissions();
 
-                    // Go over the active sensors. Should be only one for now
-                    Integer activeSensorType = enabledSensorTypes.get(0);
-                    Integer nextSensorIndex = 0;
-                    Integer activeSensorIndex = -1;
-                    for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
-                        activeSensorIndex = enabledSensorTypes.indexOf(entry.getKey());
-                        // If found break the loop
-                        if (activeSensorIndex != -1) {
-                            activeSensorType = entry.getKey();
-                            break;
-                        }
-                    }
+
                     // If it was the last in the list get the first
-                    if (activeSensorIndex != enabledSensorTypes.size() - 1) {
-                        nextSensorIndex = activeSensorIndex + 1;
-                    }
-                    deactivateSensor(activeSensorType);
-                    activateSensor(enabledSensorTypes.get(nextSensorIndex));
-                    startListeningToSensors();
-                    long[] pattern = {0, 50, 50, 50, 50};
-                    vibrator.vibrate(pattern, -1);
+//                    if (activeSensorIndex != availableSensorTypes.size() - 1) {
+//                        nextSensorIndex = activeSensorIndex + 1;
+//                    }
+//                    deactivateSensor(activeSensorType);
+//                    activateSensor(availableSensorTypes.get(nextSensorIndex));
+//                    startListeningToSensors();
+//                    long[] pattern = {0, 50, 50, 50, 50};
+//                    vibrator.vibrate(pattern, -1);
                     break;
 
                 case WatchFaceService.TAP_TYPE_TOUCH:
@@ -306,21 +303,16 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         /**
          * Initialize the sensors.
-         * @todo think about service
          */
-        private void initializeSensors() {
+        private void findAndSetAvailableSensorTypes() {
             // Clear all enabled
-            enabledSensorTypes.clear();
+            availableSensorTypes.clear();
             // Add the ones supported by the device and the app
             for (int supportedSensorType : supportedSensorTypes) {
                 if (sensorManager.getDefaultSensor(supportedSensorType) != null) {
                     Log.d(TAG, "Enabled sensor: " + supportedSensorType);
-                    enabledSensorTypes.add(supportedSensorType);
+                    availableSensorTypes.add(supportedSensorType);
                 }
-            }
-
-            if (enabledSensorTypes.size() > 0) {
-                activateSensor(enabledSensorTypes.get(0));
             }
         }
 
@@ -343,7 +335,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     missingPermissions.add(permission);
                 }
             }
-            if (missingPermissions.size() <= 0){
+            if (missingPermissions.size() <= 0) {
                 return;
             }
 
@@ -422,6 +414,41 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
+        /**
+         * Activates the next sensors
+         */
+        private void activateNextSensors() {
+            // Find the active sensors position in the available sensors
+            int countFound = 0;
+            int lastFoundIndex = 0;
+            for (Integer availableSensorType : availableSensorTypes) {
+                if (!activeSensors.containsKey(availableSensorType)) {
+                    continue;
+                }
+                // Found one
+                countFound += 1;
+                // If we found all
+                if (countFound == maxActiveSensors){
+                    // Get the index that the last was found
+                    lastFoundIndex = availableSensorTypes.indexOf(availableSensorType);
+                    // Stop we don't need to loop more
+                    break;
+                }
+            }
+            // Deactivate all sensors
+            deactivateAllSensors();
+            // Enable the next ones
+            for (int i=lastFoundIndex; i < maxActiveSensors; i++){
+                // Check if we hit the last
+                if (i == availableSensorTypes.size()-1){
+                    // Reset the index to start
+                    lastFoundIndex = 0;
+                }
+                // Activate
+                activateSensor(availableSensorTypes.get(lastFoundIndex));
+            }
+        }
+
         private void activateSensor(Integer sensorType) {
             activeSensors.put(sensorType, CallbackSensorFactory.getCallbackSensor(getApplicationContext(), sensorType, this, this));
             watchFace.addSensorPaint(sensorType);
@@ -431,6 +458,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
             activeSensors.get(sensorType).stopListening();
             activeSensors.remove(sensorType);
             watchFace.removeSensorPaint(sensorType);
+        }
+
+        private void deactivateAllSensors() {
+            for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
+                deactivateSensor(entry.getKey());
+            }
         }
 
         private void updateSunriseAndSunset() {
