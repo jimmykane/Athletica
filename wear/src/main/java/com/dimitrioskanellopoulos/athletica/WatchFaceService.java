@@ -72,11 +72,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private final Boolean requiresRuntimePermissions = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
 
         /**
-         * Code number for a permissions request activity
-         */
-        private final static int PERMISSIONS_REQUEST = 403;
-
-        /**
          * Handler for updating the time
          */
         private final Handler mUpdateTimeHandler = new EngineHandler(this);
