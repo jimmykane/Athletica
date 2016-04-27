@@ -19,6 +19,7 @@ public class PermissionActivity extends WearableActivity {
 
     /**
      * The permissions we would like to have. Wanted because they are not actually needed
+     * @todo get this via the extra from the service
      */
     private static final String[] wantedPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS};
 
@@ -102,6 +103,7 @@ public class PermissionActivity extends WearableActivity {
 
             // Permission was not granted
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
+                // @todo make per permission text
                 Toast.makeText(this, getResources().getText(R.string.permissions_do_not_ask_again_message), Toast.LENGTH_LONG).show();
                 //Never ask again selected, or device policy prohibits the app from having that permission.
                 // So, disable that feature, or fall back to another situation...
@@ -113,6 +115,7 @@ public class PermissionActivity extends WearableActivity {
                 // the app setting
                 continue;
             }
+            // @todo make per permission text
             Toast.makeText(this, getResources().getText(R.string.permissions_rationale), Toast.LENGTH_LONG).show();
             // user denied WITHOUT never ask again
             // this is a good place to explain the user
