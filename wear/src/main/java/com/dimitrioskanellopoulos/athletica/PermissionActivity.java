@@ -122,7 +122,7 @@ public class PermissionActivity extends WearableActivity {
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                 // Check next this one is granted
                 Toast.makeText(this, getResources().getText(R.string.permission_granted), Toast.LENGTH_LONG).show();
-                sendBroadcast();
+                sendBroadcast(permissions[i]);
                 continue;
             }
 
@@ -147,9 +147,9 @@ public class PermissionActivity extends WearableActivity {
         finish();
     }
 
-    private void sendBroadcast() {
-        Intent new_intent = new Intent();
-        new_intent.setAction(PERMISSIONS_GRANTED_MESSAGE);
-        sendBroadcast(new_intent);
+    private void sendBroadcast(String permission) {
+        Intent intent = new Intent(PERMISSIONS_GRANTED_MESSAGE);
+        intent.putExtra("permission", permission);
+        sendBroadcast(intent);
     }
 }

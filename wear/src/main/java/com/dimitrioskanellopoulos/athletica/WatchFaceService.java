@@ -110,12 +110,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
             @Override
             public void onReceive(Context context, Intent intent) {
                 findAndSetAvailableSensorTypes();
-                Toast.makeText(getApplicationContext(), "Updated enabled sensors", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Updated enabled" + intent.getExtras().get("permission"), Toast.LENGTH_SHORT).show();
             }
         };
 
         /**
-         * Whether tha timezone reciever is registered
+         * Whether tha timezone receiver is registered
          */
         boolean mRegisteredTimeZoneReceiver = false;
 
