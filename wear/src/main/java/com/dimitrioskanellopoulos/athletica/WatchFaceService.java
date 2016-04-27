@@ -260,9 +260,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 stopListeningToSensors();
             } else {
                 startListeningToSensors();
-                if (EmulatorHelper.isEmulator()) {
-                    watchFace.updateSensorPaintText(Sensor.TYPE_TEMPERATURE, "20");
-                }
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
