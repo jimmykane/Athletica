@@ -300,6 +300,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     checkSelfPermissions();
                     activateNextSensors();
                     startListeningToSensors();
+                    updateSunriseAndSunset();
                     vibrator.vibrate(new long[] {0, 50, 50, 50, 50}, -1);
                     break;
 
