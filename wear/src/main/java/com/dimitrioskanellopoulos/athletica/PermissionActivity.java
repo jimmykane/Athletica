@@ -111,8 +111,9 @@ public class PermissionActivity extends WearableActivity {
                 // or open another dialog explaining
                 // again the permission and directing to
                 // the app setting
+                continue;
             }
-            Toast.makeText(this, getResources().getText(R.string.permissions_do_not_ask_again_message), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getResources().getText(R.string.permissions_rationale), Toast.LENGTH_LONG).show();
             // user denied WITHOUT never ask again
             // this is a good place to explain the user
             // why you need the permission and ask if he want
