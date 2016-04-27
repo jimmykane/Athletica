@@ -113,7 +113,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             @Override
             public void onReceive(Context context, Intent intent) {
                 findAndSetAvailableSensorTypes();
-                Toast.makeText(getApplicationContext(), "Updated enabled" + intent.getExtras().get("permission"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Enabled permission: " + intent.getExtras().get("permission"), Toast.LENGTH_SHORT).show();
             }
         };
 
