@@ -106,7 +106,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         };
 
-        private BroadcastReceiver permissionsChangedReceiver = new BroadcastReceiver() {
+        /**
+         * Broadcast receiver for when a the permissions request has granted permissions
+         */
+        private BroadcastReceiver permissionsGrantedReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 findAndSetAvailableSensorTypes();
@@ -392,6 +395,22 @@ public class WatchFaceService extends CanvasWatchFaceService {
             WatchFaceService.this.unregisterReceiver(mTimeZoneReceiver);
         }
 
+        private void registerServiceReceiver() {
+            registerReceiver(permissionsGrantedReceiver, new IntentFilter(PERMISSIONS_GRANTED_MESSAGE));
+        }
+
+        private void unregisterServiceReceiver() {
+            unregisterReceiver(permissionsGrantedReceiver);
+        }
+
+        private void unregisterBatteryInfoReceiver() {
+            unregisterReceiver(batteryInfoReceiver);
+        }
+
+        private void registerBatteryInfoReceiver() {
+            registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        }
+
         /**
          * Starts the {@link #mUpdateTimeHandler} timer if it should be running and isn't currently
          * or stops it if it shouldn't be running but currently is.
@@ -497,22 +516,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(location, TimeZone.getDefault().getID());
             watchFace.updateSunriseSunset(sunriseSunset);
             Log.d(TAG, "Successfully updated sunrise");
-        }
-
-        private void registerServiceReceiver() {
-            registerReceiver(permissionsChangedReceiver, new IntentFilter(PERMISSIONS_GRANTED_MESSAGE));
-        }
-
-        private void unregisterServiceReceiver() {
-            unregisterReceiver(permissionsChangedReceiver);
-        }
-
-        private void unregisterBatteryInfoReceiver() {
-            unregisterReceiver(batteryInfoReceiver);
-        }
-
-        private void registerBatteryInfoReceiver() {
-            registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         }
 
         private void startListeningToSensors() {
