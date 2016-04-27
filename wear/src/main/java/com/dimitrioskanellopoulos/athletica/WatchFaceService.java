@@ -136,6 +136,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 Sensor.TYPE_PRESSURE,
                 Sensor.TYPE_HEART_RATE,
                 Sensor.TYPE_TEMPERATURE,
+                Sensor.TYPE_PROXIMITY,
         };
 
         /**
@@ -302,7 +303,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Add the ones supported by the device and the app
             for (int supportedSensorType : supportedSensorTypes) {
                 if (sensorManager.getDefaultSensor(supportedSensorType) != null) {
-                    Log.d(TAG, "Enabled sensor: " + supportedSensorType);
+                    Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(supportedSensorType).getStringType());
                     availableSensorTypes.add(supportedSensorType);
                 }
             }
@@ -429,10 +430,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             // Deactivate all sensors
             deactivateAllSensors();
-            // Enable the next ones
-            for (int i=lastFoundIndex; i < maxActiveSensors; i++){
+            // Enable the next ones (+1)
+            for (int i=0; i < maxActiveSensors; i++){
                 // Check if we hit the last
-                if (i == availableSensorTypes.size()-1){
+                lastFoundIndex += 1;
+                if (lastFoundIndex == availableSensorTypes.size()){
                     // Reset the index to start
                     lastFoundIndex = 0;
                 }
