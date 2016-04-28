@@ -1,5 +1,6 @@
 package com.dimitrioskanellopoulos.athletica.sensors.listeners;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -15,6 +16,8 @@ public class AveragingSensorEventListener implements SensorEventListener {
 
     private List<Float> averageValues = new ArrayList<>();
 
+    private Integer numberOfSamples = 10;
+
     private OnSensorAverageEventCallbackInterface changeCallback;
 
     public AveragingSensorEventListener(OnSensorAverageEventCallbackInterface changeCallback) {
@@ -24,11 +27,12 @@ public class AveragingSensorEventListener implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.values[0] == 0.0f){
+            numberOfSamples -= 1;
             Log.d(TAG, "Value [" + event.values[0] + "] is not accepted");
             return;
         }
         // If there is space to add more averageValues add it and do nothing
-        if (averageValues.size() < 10) {
+        if (averageValues.size() < numberOfSamples) {
             averageValues.add(event.values[0]);
             Log.d(TAG, "Value [" + event.values[0] + "], Collected Values [" + averageValues.size()+"]");
             return;
