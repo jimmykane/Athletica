@@ -21,9 +21,8 @@ public class PermissionActivity extends WearableActivity {
 
     /**
      * The permissions we would like to have. Wanted because they are not actually needed
-     * @todo get this via the extra from the service
      */
-    private static final String[] wantedPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS};
+    private final static ArrayList<String> wantedPermissions = new ArrayList<>();
 
     /**
      * The broadcast signal for our permission request
@@ -35,6 +34,9 @@ public class PermissionActivity extends WearableActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        wantedPermissions.add(getIntent().getExtras().getString("permission"));
+
         // If there are no permissions missing what are we doing here?
         if (!hasMissingPermissions()){
             Log.w(TAG, "Launched with no missing permissions");

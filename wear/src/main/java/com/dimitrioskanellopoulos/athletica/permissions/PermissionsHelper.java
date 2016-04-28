@@ -33,12 +33,12 @@ public class PermissionsHelper {
     /**
      * Another wrapper for firing an intent
      */
-    public void getIntentForPermission(String permission){
+    public Intent getIntentForPermission(String permission){
         Intent permissionIntent = new Intent(
                 context,
                 PermissionActivity.class);
         permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         permissionIntent.putExtra("permission", permission);
-        context.startActivity(permissionIntent);
+        return permissionIntent;
     }
 }

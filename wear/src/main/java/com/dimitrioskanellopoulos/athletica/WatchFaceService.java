@@ -1,5 +1,6 @@
 package com.dimitrioskanellopoulos.athletica;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.Context;
@@ -26,6 +27,7 @@ import android.location.Location;
 import android.view.WindowInsets;
 import android.widget.Toast;
 
+import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
 import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
@@ -202,6 +204,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         private final LocationRequest locationRequest = new LocationRequest().setInterval(10).setFastestInterval(10).setPriority(LocationRequest.PRIORITY_LOW_POWER);
 
+        private PermissionsHelper permissionsHelper;
+
         @Override
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
@@ -217,6 +221,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
             // Create a watch face
             watchFace = new WatchFace(WatchFaceService.this);
+
+            // Add the helper
+            permissionsHelper = new PermissionsHelper(getApplicationContext());
 
             // Get a Google API client
             googleApiClient = new GoogleApiClient.Builder(WatchFaceService.this)
@@ -262,6 +269,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 startListeningToSensors();
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
+                //
+                registerLocationReceiver();
             } else {
                 // Stop checking for timezone updates
                 unregisterTimeZoneReceiver();
@@ -269,6 +278,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 unregisterBatteryInfoReceiver();
                 // Stop updating sensor values
                 stopListeningToSensors();
+
+                unregisterLocationReceiver();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
@@ -405,15 +416,33 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void registerLocationReceiver(){
-            if (isRegisteredLocationReceiver){
+            if (!googleApiClient.isConnected()){
+                Log.d(TAG, "Google API client is not ready yet, wont register for location updates");
                 return;
             }
+            if (isRegisteredLocationReceiver){
+                Log.d(TAG, "Location listener is registered nothing to do");
+                return;
+            }
+            // Check permissions (hopefully the receiver wont be registered
+            if (!permissionsHelper.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
+                Log.d(TAG, "Could not register location receiver");
+                Intent permissionsIntent = permissionsHelper.getIntentForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+                startActivity(permissionsIntent);
+                return;
+            }
+
             isRegisteredLocationReceiver = true;
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, locationChangedReceiver);
         }
 
         private void unregisterLocationReceiver(){
+            if (!googleApiClient.isConnected()){
+                Log.d(TAG, "Google API client is not ready yet, wont unregister listener");
+                return;
+            }
             if (!isRegisteredLocationReceiver){
+                Log.d(TAG, "Location listener is not registered nothing to do");
                 return;
             }
             isRegisteredLocationReceiver = false;
