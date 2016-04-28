@@ -1,10 +1,6 @@
 package com.dimitrioskanellopoulos.athletica;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.hardware.SensorManager;
 import android.location.Location;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.google.android.gms.location.LocationListener;
