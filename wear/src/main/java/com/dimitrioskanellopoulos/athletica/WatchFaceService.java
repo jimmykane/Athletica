@@ -200,7 +200,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             googleApiHelper = new GoogleApiHelper(WatchFaceService.this);
 
             // Get a location engine
-            locationEngine = new LocationEngine(googleApiHelper);
+            locationEngine = new LocationEngine(WatchFaceService.this, googleApiHelper);
 
             // Finds and sets the available sensor types
             findAndSetAvailableSensorTypes();
