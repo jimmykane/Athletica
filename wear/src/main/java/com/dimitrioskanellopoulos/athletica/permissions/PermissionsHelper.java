@@ -14,7 +14,7 @@ public class PermissionsHelper {
     /**
      * Whether we are on Marshmallow and permissions checks are needed
      */
-    private final Boolean requiresRuntimePermissions = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    private final static Boolean requiresRuntimePermissions = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
 
     private final Context context;
 
@@ -26,14 +26,14 @@ public class PermissionsHelper {
      * Just a wrapper to help
      */
     @NonNull
-    private Boolean hasPermission(String permission) {
+    public Boolean hasPermission(String permission) {
         return !requiresRuntimePermissions || (ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
     }
 
     /**
      * Another wrapper for firing an intent
      */
-    private void getIntentForPermission(String permission){
+    public void getIntentForPermission(String permission){
         Intent permissionIntent = new Intent(
                 context,
                 PermissionActivity.class);
