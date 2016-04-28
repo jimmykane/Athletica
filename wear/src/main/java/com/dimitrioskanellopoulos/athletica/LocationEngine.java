@@ -2,7 +2,6 @@ package com.dimitrioskanellopoulos.athletica;
 
 import android.content.Context;
 import android.location.Location;
-import android.location.LocationManager;
 import android.util.Log;
 
 import com.google.android.gms.location.LocationListener;
@@ -16,16 +15,15 @@ public class LocationEngine implements LocationListener {
 
     private Location lastKnownLocation;
 
-    private LocationManager locationManager;
+    private Context context;
 
     public LocationEngine(Context context, GoogleApiHelper googleApiHelper) {
         this.googleApiHelper = googleApiHelper;
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        this.context = context;
     }
 
     public Location getLastKnownLocation() {
         if (googleApiHelper.isConnected()) {
-            //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, this);
             lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiHelper.getGoogleApiClient());
         }
         return lastKnownLocation;
