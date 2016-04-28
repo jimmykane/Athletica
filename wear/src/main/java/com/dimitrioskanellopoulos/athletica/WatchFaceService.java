@@ -405,10 +405,18 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void registerLocationReceiver(){
+            if (isRegisteredLocationReceiver){
+                return;
+            }
+            isRegisteredLocationReceiver = true;
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, locationChangedReceiver);
         }
 
         private void unregisterLocationReceiver(){
+            if (!isRegisteredLocationReceiver){
+                return;
+            }
+            isRegisteredLocationReceiver = false;
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, locationChangedReceiver);
         }
 
