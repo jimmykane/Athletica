@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
@@ -32,6 +34,11 @@ import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -60,7 +67,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
     }
 
     private class Engine extends CanvasWatchFaceService.Engine implements
-            OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface {
+            OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface,
+            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
         private static final String TAG = "Engine";
 
@@ -127,14 +135,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private WatchFace watchFace;
 
         /**
-         * The location engine that helps for retrieving location and it's updates
-         */
-        private LocationEngine locationEngine;
-
-        /**
          * A helper for google api that can be shared within the app
          */
-        private GoogleApiHelper googleApiHelper;
+        private GoogleApiClient googleApiClient;
 
         /**
          * Whether the display supports fewer bits for each color in ambient mode. When true, we
@@ -196,11 +199,15 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Create a watch face
             watchFace = new WatchFace(WatchFaceService.this);
 
-            // Get a google api helper
-            googleApiHelper = new GoogleApiHelper(WatchFaceService.this);
+            // Get a google api client
+            googleApiClient = new GoogleApiClient.Builder(WatchFaceService.this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
 
-            // Get a location engine
-            locationEngine = new LocationEngine(WatchFaceService.this, googleApiHelper);
+            // Connect
+            googleApiClient.connect();
 
             // Finds and sets the available sensor types
             findAndSetAvailableSensorTypes();
@@ -214,7 +221,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
-            googleApiHelper.disconnect();
+            googleApiClient.disconnect();
             stopListeningToSensors();
             unregisterPermissionsGrantedReceiver();
             super.onDestroy();
@@ -229,7 +236,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 // Check for battery changes
                 registerBatteryInfoReceiver();
                 // Update sunrise and sunset
-                updateSunriseAndSunset();
+                updateSunriseAndSunset(getLastKnownLocation());
                 // Start updating sensor values
                 startListeningToSensors();
                 // Update time zone in case it changed while we weren't visible.
@@ -299,8 +306,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     checkSelfPermissions();
                     activateNextSensors();
                     startListeningToSensors();
-                    updateSunriseAndSunset();
-                    vibrator.vibrate(new long[] {0, 50, 50, 50, 50}, -1);
+                    updateSunriseAndSunset(getLastKnownLocation());
+                    vibrator.vibrate(new long[]{0, 50, 50, 50, 50}, -1);
                     break;
 
                 case WatchFaceService.TAP_TYPE_TOUCH:
@@ -309,6 +316,26 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 case WatchFaceService.TAP_TYPE_TOUCH_CANCEL:
                     break;
             }
+        }
+
+        @Override
+        public void onConnected(@Nullable Bundle bundle) {
+            Log.d(TAG, "Google API connected");
+        }
+
+        @Override
+        public void onConnectionSuspended(int i) {
+            Log.d(TAG, "Google API connection suspended");
+        }
+
+        @Override
+        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+            Log.d(TAG, "Google API connection failed");
+        }
+
+        @Override
+        public void onLocationChanged(Location location) {
+            Log.d(TAG, "Location changed");
         }
 
         /**
@@ -454,7 +481,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 // Found one
                 countFound += 1;
                 // If we found all
-                if (countFound == maxActiveSensors){
+                if (countFound == maxActiveSensors) {
                     // Get the index that the last was found
                     lastFoundIndex = availableSensorTypes.indexOf(availableSensorType);
                     // Stop we don't need to loop more
@@ -464,10 +491,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Deactivate all sensors
             deactivateAllSensors();
             // Enable the next ones (+1)
-            for (int i=0; i < maxActiveSensors; i++){
+            for (int i = 0; i < maxActiveSensors; i++) {
                 // Check if we hit the last
                 lastFoundIndex += 1;
-                if (lastFoundIndex == availableSensorTypes.size()){
+                if (lastFoundIndex == availableSensorTypes.size()) {
                     // Reset the index to start
                     lastFoundIndex = 0;
                 }
@@ -493,9 +520,21 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        private void updateSunriseAndSunset() {
+        public Location getLastKnownLocation() {
+            if (!googleApiClient.isConnected()) {
+                Log.d(TAG, "Google API client is not connected, could not retrieve location");
+                return null;
+            }
+            if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "No permissions for last known location");
+                return null;
+            }
+            Location lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            return lastKnownLocation;
+        }
+
+        private void updateSunriseAndSunset(Location location) {
             //@todo should check last time
-            Location location = locationEngine.getLastKnownLocation();
             if (location == null) {
                 // If its a real device continue to run
                 // @todo solve this with timezone
@@ -544,7 +583,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 calculateAverageForActiveSensors();
             }
             if (minute == 0) {
-                updateSunriseAndSunset();
+                updateSunriseAndSunset(getLastKnownLocation());
             }
         }
     }
