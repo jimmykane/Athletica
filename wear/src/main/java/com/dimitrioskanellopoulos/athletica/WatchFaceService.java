@@ -1,26 +1,21 @@
 package com.dimitrioskanellopoulos.athletica;
 
-import android.Manifest;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.os.BatteryManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
@@ -31,7 +26,6 @@ import android.location.Location;
 import android.view.WindowInsets;
 import android.widget.Toast;
 
-import com.dimitrioskanellopoulos.athletica.permissions.PermissionActivity;
 import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
@@ -71,7 +65,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
     private class Engine extends CanvasWatchFaceService.Engine implements
             OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface,
-            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
         private static final String TAG = "Engine";
 
@@ -125,26 +119,29 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * Broadcast receiver for location intent
          */
-        private BroadcastReceiver locationChangedReceiver = new BroadcastReceiver() {
-            private String TAG = this.getClass().getSimpleName();
-
-            private LocationResult locationResult;
-
+        private LocationListener locationChangedReceiver = new LocationListener() {
             @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.d(TAG, "Onreceiver");
-                if(LocationResult.hasResult(intent)) {
-                    this.locationResult = LocationResult.extractResult(intent);
-                    Log.i(TAG, "Location Received: " + this.locationResult.toString());
-                }
+            public void onLocationChanged(Location location) {
+                Log.d(TAG, "Location changed");
+                Log.d(TAG, "Provider: " + location.getProvider());
+                Log.d(TAG, "Lat: " + location.getLatitude());
+                Log.d(TAG, "Long: " + location.getLongitude());
+                Log.d(TAG, "Altitude: " + location.getAltitude());
+                Log.d(TAG, "Accuracy: " + location.getAccuracy());
+                vibrator.vibrate(new long[]{0, 50}, -1);
+                updateSunriseAndSunset(location);
             }
         };
-
 
         /**
          * Whether tha timezone receiver is registered
          */
-        boolean mRegisteredTimeZoneReceiver = false;
+        boolean isRegisteredTimeZoneReceiver = false;
+
+        /**
+         * Whether tha location receiver is registered
+         */
+        boolean isRegisteredLocationReceiver = false;
 
         /**
          * The watchface. Used for drawing and updating the view/watchface
@@ -199,6 +196,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * The sensor manager service
          */
         private final SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+
+        /**
+         * The location request we will be making
+         */
+        private final LocationRequest locationRequest = new LocationRequest().setInterval(10).setFastestInterval(10).setPriority(LocationRequest.PRIORITY_LOW_POWER);
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -352,18 +354,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         @Override
-        public void onLocationChanged(Location location) {
-            Log.d(TAG, "Location changed");
-            Log.d(TAG, "Provider: " + location.getProvider());
-            Log.d(TAG, "Lat: " + location.getLatitude());
-            Log.d(TAG, "Long: " + location.getLongitude());
-            Log.d(TAG, "Altitude: " + location.getAltitude());
-            Log.d(TAG, "Accuracy: " + location.getAccuracy());
-            vibrator.vibrate(new long[]{0, 50, 50, 50, 50}, -1);
-            updateSunriseAndSunset(location);
-        }
-
-        @Override
         public void handleOnSensorChangedEvent(SensorEvent event) {
             switch (event.sensor.getType()) {
                 case Sensor.TYPE_PRESSURE:
@@ -398,44 +388,28 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void registerTimeZoneReceiver() {
-            if (mRegisteredTimeZoneReceiver) {
+            if (isRegisteredTimeZoneReceiver) {
                 return;
             }
-            mRegisteredTimeZoneReceiver = true;
+            isRegisteredTimeZoneReceiver = true;
             IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
             WatchFaceService.this.registerReceiver(mTimeZoneReceiver, filter);
         }
 
         private void unregisterTimeZoneReceiver() {
-            if (!mRegisteredTimeZoneReceiver) {
+            if (!isRegisteredTimeZoneReceiver) {
                 return;
             }
-            mRegisteredTimeZoneReceiver = false;
+            isRegisteredTimeZoneReceiver = false;
             WatchFaceService.this.unregisterReceiver(mTimeZoneReceiver);
         }
 
         private void registerLocationReceiver(){
-            //mInProgress = false;
-            // Create the LocationRequest object
-            LocationRequest locationRequest = LocationRequest.create();
-            // Use high accuracy
-            locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-            locationRequest.setInterval(1);
-            locationRequest.setFastestInterval(1);
-
-            Intent intent = new Intent(WatchFaceService.this, locationChangedReceiver.getClass());
-
-            PendingIntent pendingIntent = PendingIntent
-                    .getBroadcast(WatchFaceService.this, 54321, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,
-                    locationRequest, pendingIntent);
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, locationChangedReceiver);
         }
 
         private void unregisterLocationReceiver(){
-            Intent intent = new Intent(WatchFaceService.this, locationChangedReceiver.getClass());
-            PendingIntent pendingIntent = PendingIntent
-                    .getBroadcast(WatchFaceService.this, 54321, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, pendingIntent);
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, locationChangedReceiver);
         }
 
         private void registerPermissionsGrantedReceiver() {
@@ -579,14 +553,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
                 entry.getValue().stopListening();
             }
-        }
-
-        private void startListeningForLocationUpdates(){
-            LocationRequest mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(10);
-            mLocationRequest.setFastestInterval(10);
-            mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
         }
 
         /**
