@@ -30,6 +30,7 @@ import android.location.Location;
 import android.view.WindowInsets;
 import android.widget.Toast;
 
+import com.dimitrioskanellopoulos.athletica.permissions.PermissionActivity;
 import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
@@ -38,6 +39,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
 import java.lang.ref.WeakReference;
@@ -73,11 +75,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private static final String TAG = "Engine";
 
         private static final String PERMISSIONS_GRANTED_MESSAGE = "PERMISSIONS_GRANTED_MESSAGE";
-
-        /**
-         * Whether we are on Marshmallow and permissions checks are needed
-         */
-        private final Boolean requiresRuntimePermissions = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
 
         /**
          * Handler for updating the time
@@ -123,6 +120,25 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 Toast.makeText(getApplicationContext(), "Enabled permission: " + intent.getExtras().get("permission"), Toast.LENGTH_SHORT).show();
             }
         };
+
+        /**
+         * Broadcast receiver for location intent
+         */
+        private BroadcastReceiver locationChangedReceiver = new BroadcastReceiver() {
+            private String TAG = this.getClass().getSimpleName();
+
+            private LocationResult locationResult;
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                if(LocationResult.hasResult(intent)) {
+                    this.locationResult = LocationResult.extractResult(intent);
+                    Log.i(TAG, "Location Received: " + this.locationResult.toString());
+                }
+            }
+        };
+
 
         /**
          * Whether tha timezone receiver is registered
@@ -305,7 +321,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 @TapType int tapType, int x, int y, long eventTime) {
             switch (tapType) {
                 case WatchFaceService.TAP_TYPE_TAP:
-                    checkSelfPermissions();
                     activateNextSensors();
                     startListeningToSensors();
                     vibrator.vibrate(new long[]{0, 50, 50, 50, 50}, -1);
@@ -322,10 +337,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onConnected(@Nullable Bundle bundle) {
             Log.d(TAG, "Google API connected");
-            if (!hasCoarseLocationPermission()) {
-                return;
-            }
-            startListeningForLocationUpdates();
         }
 
         @Override
@@ -370,7 +381,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         /**
-         * Initialize the sensors.
+         * Finds and sets all the available and supported sensors
          */
         private void findAndSetAvailableSensorTypes() {
             // Clear all enabled
@@ -382,41 +393,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     availableSensorTypes.add(supportedSensorType);
                 }
             }
-        }
-
-        @NonNull
-        private Boolean hasCoarseLocationPermission(){
-            return ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-        }
-
-        /**
-         * Checks if the watchface service has the required permissions to at 100%
-         */
-        private void checkSelfPermissions() {
-            if (!requiresRuntimePermissions) {
-                return;
-            }
-
-            String[] requiredPermissions = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS};
-            ArrayList<String> missingPermissions = new ArrayList<>();
-
-            for (String permission : requiredPermissions) {
-                if (ActivityCompat.checkSelfPermission(
-                        getApplicationContext(),
-                        permission) != PackageManager.PERMISSION_GRANTED) {
-
-                    missingPermissions.add(permission);
-                }
-            }
-            if (missingPermissions.size() <= 0) {
-                return;
-            }
-
-            Intent permissionIntent = new Intent(
-                    getApplicationContext(),
-                    PermissionActivity.class);
-            permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(permissionIntent);
         }
 
         private void registerTimeZoneReceiver() {
