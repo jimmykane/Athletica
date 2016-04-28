@@ -222,17 +222,18 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
+            stopListeningToSensors();
+            unregisterPermissionsGrantedReceiver();
             if (googleApiClient.isConnected()) {
                 googleApiClient.disconnect();
             }
-            stopListeningToSensors();
-            unregisterPermissionsGrantedReceiver();
             super.onDestroy();
         }
 
         @Override
         public void onVisibilityChanged(boolean visible) {
             super.onVisibilityChanged(visible);
+            Log.d(TAG, "Visibility changed: " + visible);
             if (visible) {
                 // Check for timezone changes
                 registerTimeZoneReceiver();
