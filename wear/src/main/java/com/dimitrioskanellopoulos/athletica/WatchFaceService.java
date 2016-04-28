@@ -215,6 +215,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Activate the "next" sensors
             activateNextSensors();
 
+            // Listen to any permissions granted broadcast in order to enable functionality
             registerPermissionsGrantedReceiver();
         }
 
@@ -336,6 +337,25 @@ public class WatchFaceService extends CanvasWatchFaceService {
             Log.d(TAG, "Location changed");
         }
 
+        @Override
+        public void handleOnSensorChangedEvent(SensorEvent event) {
+            switch (event.sensor.getType()) {
+                case Sensor.TYPE_PRESSURE:
+                    event.values[0] = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, event.values[0]);
+                default:
+                    break;
+            }
+            watchFace.updateSensorPaintText(event.sensor.getType(), String.format("%d", Math.round(event.values[0])));
+            Log.d(TAG, "Updated value for sensor: " + event.sensor.getStringType());
+            Log.d(TAG, "Invalidating view");
+            postInvalidate();
+        }
+
+        @Override
+        public void handleOnSensorAverageChangedEvent(SensorEvent event) {
+            handleOnSensorChangedEvent(event);
+        }
+
         /**
          * Initialize the sensors.
          */
@@ -379,25 +399,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     PermissionActivity.class);
             permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(permissionIntent);
-        }
-
-        @Override
-        public void handleOnSensorChangedEvent(SensorEvent event) {
-            switch (event.sensor.getType()) {
-                case Sensor.TYPE_PRESSURE:
-                    event.values[0] = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, event.values[0]);
-                default:
-                    break;
-            }
-            watchFace.updateSensorPaintText(event.sensor.getType(), String.format("%d", Math.round(event.values[0])));
-            Log.d(TAG, "Updated value for sensor: " + event.sensor.getStringType());
-            Log.d(TAG, "Invalidating view");
-            postInvalidate();
-        }
-
-        @Override
-        public void handleOnSensorAverageChangedEvent(SensorEvent event) {
-            handleOnSensorChangedEvent(event);
         }
 
         private void registerTimeZoneReceiver() {
@@ -501,23 +502,35 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
+        /**
+         * Activate a specific type of sensor
+         */
         private void activateSensor(Integer sensorType) {
             activeSensors.put(sensorType, CallbackSensorFactory.getCallbackSensor(getApplicationContext(), sensorType, this, this));
             watchFace.addSensorPaint(sensorType);
         }
 
+        /**
+         * Deactivate a specific type of sensor
+         */
         private void deactivateSensor(Integer sensorType) {
             activeSensors.get(sensorType).stopListening();
             activeSensors.remove(sensorType);
             watchFace.removeSensorPaint(sensorType);
         }
 
+        /**
+         * Deactivate all types of active sensors
+         */
         private void deactivateAllSensors() {
             for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
                 deactivateSensor(entry.getKey());
             }
         }
 
+        /**
+         * Get's the last known location
+         */
         public Location getLastKnownLocation() {
             if (!googleApiClient.isConnected()) {
                 Log.d(TAG, "Google API client is not connected, could not retrieve location");
@@ -531,6 +544,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
             return lastKnownLocation;
         }
 
+        /**
+         * Updates the sunrise and sunset according to a location if possible
+         * @param location
+         */
         private void updateSunriseAndSunset(Location location) {
             if (location == null) {
                 // If its a real device continue to run
@@ -560,6 +577,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
+        /**
+         * Run's tasks according to the current time
+         */
         private void runOnTimeTickTasks() {
             // @todo this is wrong
             Calendar rightNow = Calendar.getInstance();
@@ -576,7 +596,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
     }
 
-
+    /**
+     * Handler for various messages
+     */
     private static class EngineHandler extends Handler {
         private final WeakReference<WatchFaceService.Engine> mWeakReference;
 
