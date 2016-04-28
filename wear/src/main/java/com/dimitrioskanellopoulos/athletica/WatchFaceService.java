@@ -322,11 +322,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             if (!hasCoarseLocationPermission()) {
                 return;
             }
-            LocationRequest mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(10);
-            mLocationRequest.setFastestInterval(10);
-            mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
+            startListeningForLocationUpdates();
         }
 
         @Override
@@ -578,6 +574,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
             for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
                 entry.getValue().stopListening();
             }
+        }
+
+        private void startListeningForLocationUpdates(){
+            LocationRequest mLocationRequest = new LocationRequest();
+            mLocationRequest.setInterval(10);
+            mLocationRequest.setFastestInterval(10);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
         }
 
         /**
