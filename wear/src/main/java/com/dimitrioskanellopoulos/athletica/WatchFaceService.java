@@ -1,6 +1,7 @@
 package com.dimitrioskanellopoulos.athletica;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.Context;
@@ -131,7 +132,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
             @Override
             public void onReceive(Context context, Intent intent) {
-
+                Log.d(TAG, "Onreceiver");
                 if(LocationResult.hasResult(intent)) {
                     this.locationResult = LocationResult.extractResult(intent);
                     Log.i(TAG, "Location Received: " + this.locationResult.toString());
@@ -337,6 +338,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onConnected(@Nullable Bundle bundle) {
             Log.d(TAG, "Google API connected");
+            registerLocationReceiver();
         }
 
         @Override
@@ -410,6 +412,30 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             mRegisteredTimeZoneReceiver = false;
             WatchFaceService.this.unregisterReceiver(mTimeZoneReceiver);
+        }
+
+        private void registerLocationReceiver(){
+            //mInProgress = false;
+            // Create the LocationRequest object
+            LocationRequest locationRequest = LocationRequest.create();
+            // Use high accuracy
+            locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+            locationRequest.setInterval(1);
+            locationRequest.setFastestInterval(1);
+
+            Intent intent = new Intent(WatchFaceService.this, locationChangedReceiver.getClass());
+
+            PendingIntent pendingIntent = PendingIntent
+                    .getBroadcast(WatchFaceService.this, 54321, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient,
+                    locationRequest, pendingIntent);
+        }
+
+        private void unregisterLocationReceiver(){
+            Intent intent = new Intent(WatchFaceService.this, locationChangedReceiver.getClass());
+            PendingIntent pendingIntent = PendingIntent
+                    .getBroadcast(WatchFaceService.this, 54321, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, pendingIntent);
         }
 
         private void registerPermissionsGrantedReceiver() {
