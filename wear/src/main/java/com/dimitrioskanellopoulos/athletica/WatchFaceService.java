@@ -269,8 +269,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 startListeningToSensors();
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
-                //
-                registerLocationReceiver();
             } else {
                 // Stop checking for timezone updates
                 unregisterTimeZoneReceiver();
@@ -278,7 +276,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 unregisterBatteryInfoReceiver();
                 // Stop updating sensor values
                 stopListeningToSensors();
-
+                // Unregister location receiver to save up in case of a foreground app
                 unregisterLocationReceiver();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
@@ -337,6 +335,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 case WatchFaceService.TAP_TYPE_TAP:
                     activateNextSensors();
                     startListeningToSensors();
+                    registerLocationReceiver();
                     vibrator.vibrate(new long[]{0, 50, 50, 50, 50}, -1);
                     break;
 

@@ -22,7 +22,7 @@ public class PermissionActivity extends WearableActivity {
     /**
      * The permissions we would like to have. Wanted because they are not actually needed
      */
-    private final static ArrayList<String> wantedPermissions = new ArrayList<>();
+    private final  ArrayList<String> wantedPermissions = new ArrayList<>();
 
     /**
      * The broadcast signal for our permission request
@@ -34,7 +34,7 @@ public class PermissionActivity extends WearableActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        wantedPermissions.clear();
         wantedPermissions.add(getIntent().getExtras().getString("permission"));
 
         // If there are no permissions missing what are we doing here?
@@ -96,7 +96,7 @@ public class PermissionActivity extends WearableActivity {
         }
 
         // Go over the results. It's a 1:1 array with the permissions
-        for (int i = 0; i < grantResults.length; i++) {
+        for (int i = 0; i < permissions.length; i++) {
             // If this permission is granted
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                 // Check next this one is granted
@@ -108,7 +108,7 @@ public class PermissionActivity extends WearableActivity {
             // Permission was not granted
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
                 // @todo make per permission text
-                Toast.makeText(this, getResources().getText(R.string.permissions_do_not_ask_again_message), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getResources().getText(R.string.permissions_do_not_ask_again_message) + " [" + permissions[i] + "]", Toast.LENGTH_SHORT).show();
                 //Never ask again selected, or device policy prohibits the app from having that permission.
                 // So, disable that feature, or fall back to another situation...
                 // user denied flagging NEVER ASK AGAIN
@@ -120,7 +120,7 @@ public class PermissionActivity extends WearableActivity {
                 continue;
             }
             // @todo make per permission text
-            Toast.makeText(this, getResources().getText(R.string.permissions_rationale), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getResources().getText(R.string.permissions_rationale) + "[" + permissions[i] + "]", Toast.LENGTH_SHORT).show();
             // user denied WITHOUT never ask again
             // this is a good place to explain the user
             // why you need the permission and ask if he want
