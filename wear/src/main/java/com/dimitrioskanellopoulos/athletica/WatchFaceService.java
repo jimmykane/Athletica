@@ -235,8 +235,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 registerTimeZoneReceiver();
                 // Check for battery changes
                 registerBatteryInfoReceiver();
-                // Update sunrise and sunset
-                updateSunriseAndSunset(getLastKnownLocation());
                 // Start updating sensor values
                 startListeningToSensors();
                 // Update time zone in case it changed while we weren't visible.
