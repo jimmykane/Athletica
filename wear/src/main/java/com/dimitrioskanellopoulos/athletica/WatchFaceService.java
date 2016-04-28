@@ -199,14 +199,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Create a watch face
             watchFace = new WatchFace(WatchFaceService.this);
 
-            // Get a google api client
+            // Get a Google API client
             googleApiClient = new GoogleApiClient.Builder(WatchFaceService.this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
 
-            // Connect
+            // Connect to Google API
             googleApiClient.connect();
 
             // Finds and sets the available sensor types
@@ -305,7 +305,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     checkSelfPermissions();
                     activateNextSensors();
                     startListeningToSensors();
-                    updateSunriseAndSunset(getLastKnownLocation());
                     vibrator.vibrate(new long[]{0, 50, 50, 50, 50}, -1);
                     break;
 
@@ -320,6 +319,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onConnected(@Nullable Bundle bundle) {
             Log.d(TAG, "Google API connected");
+            if (!hasCoarseLocationPermission()) {
+                return;
+            }
+            LocationRequest mLocationRequest = new LocationRequest();
+            mLocationRequest.setInterval(10);
+            mLocationRequest.setFastestInterval(10);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, mLocationRequest, this);
         }
 
         @Override
@@ -335,6 +342,13 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onLocationChanged(Location location) {
             Log.d(TAG, "Location changed");
+            Log.d(TAG, "Provider: " + location.getProvider());
+            Log.d(TAG, "Lat: " + location.getLatitude());
+            Log.d(TAG, "Long: " + location.getLongitude());
+            Log.d(TAG, "Altitude: " + location.getAltitude());
+            Log.d(TAG, "Accuracy: " + location.getAccuracy());
+            vibrator.vibrate(new long[]{0, 50, 50, 50, 50}, -1);
+            updateSunriseAndSunset(location);
         }
 
         @Override
@@ -369,6 +383,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     availableSensorTypes.add(supportedSensorType);
                 }
             }
+        }
+
+        @NonNull
+        private Boolean hasCoarseLocationPermission(){
+            return ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         }
 
         /**
@@ -529,24 +548,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         /**
-         * Get's the last known location
-         */
-        public Location getLastKnownLocation() {
-            if (!googleApiClient.isConnected()) {
-                Log.d(TAG, "Google API client is not connected, could not retrieve location");
-                return null;
-            }
-            if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                Log.d(TAG, "No permissions for last known location");
-                return null;
-            }
-            Location lastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            return lastKnownLocation;
-        }
-
-        /**
          * Updates the sunrise and sunset according to a location if possible
-         * @param location
          */
         private void updateSunriseAndSunset(Location location) {
             if (location == null) {
@@ -589,9 +591,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Every 15 minutes
             if (minute % 15 == 0) {
                 calculateAverageForActiveSensors();
-            }
-            if (minute == 0) {
-                updateSunriseAndSunset(getLastKnownLocation());
             }
         }
     }
