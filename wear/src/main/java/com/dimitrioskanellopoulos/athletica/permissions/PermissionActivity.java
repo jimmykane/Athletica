@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.athletica;
+package com.dimitrioskanellopoulos.athletica.permissions;
 
 import android.Manifest;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import com.dimitrioskanellopoulos.athletica.R;
 
 import java.util.ArrayList;
 

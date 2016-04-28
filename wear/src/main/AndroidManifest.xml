@@ -40,7 +40,7 @@
     </service>
 
     <activity
-        android:name=".PermissionActivity"
+        android:name=".permissions.PermissionActivity"
         android:label="@string/permissions_activity" >
     </activity>
 
