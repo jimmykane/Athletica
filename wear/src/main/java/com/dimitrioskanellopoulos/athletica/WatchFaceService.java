@@ -558,6 +558,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(location, TimeZone.getDefault().getID());
             watchFace.updateSunriseSunset(sunriseSunset);
+            invalidate();
             Log.d(TAG, "Successfully updated sunrise");
         }
 
