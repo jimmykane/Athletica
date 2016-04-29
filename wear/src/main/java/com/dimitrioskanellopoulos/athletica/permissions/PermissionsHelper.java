@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.dimitrioskanellopoulos.athletica.R;
@@ -16,6 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.Objects;
 
 public class PermissionsHelper {
+    private final static String TAG = "PermissionsHelper";
     /**
      * Whether we are on Marshmallow and permissions checks are needed
      */
@@ -24,20 +26,28 @@ public class PermissionsHelper {
     private final Context context;
 
     public static final String PERMISSIONS_CHANGED_BROADCAST = "PERMISSIONS_CHANGED_BROADCAST";
-    public static final String PERMISSION_CHECK = "PERMISSION_CHECK";
-    public static final String PERMISSION_MISSING = "PERMISSION_MISSING";
+    public static final String PERMISSION_UNKNOWN = "PERMISSION_UNKNOWN";
     public static final String PERMISSION_GRANTED = "PERMISSION_GRANTED";
     public static final String PERMISSION_DENIED = "PERMISSION_DENIED";
     public static final String PERMISSION_DENIED_DO_NOT_ASK_AGAIN = "PERMISSION_DENIED_DO_NOT_ASK_AGAIN";
 
     private final LinkedHashMap<String, String> permissions = new LinkedHashMap<>();
 
+    private Boolean isPermissionActivityStarted = false;
+
     /**
      * Broadcast receiver for when a the permissions request has granted permissions
      */
-    private BroadcastReceiver permissionsChangedReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver permissionsActivityIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (intent.hasExtra("finished")){
+                if (Objects.equals(intent.getExtras().get("finished").toString(), "true")) {
+                    Log.d(TAG, "Permissions Activity Intent finished");
+                    isPermissionActivityStarted = false;
+                    return;
+                }
+            }
             String status = intent.getExtras().get("status").toString();
             String permission = intent.getExtras().get("permission").toString();
             switch (status){
@@ -53,6 +63,7 @@ public class PermissionsHelper {
                 default:
                     break;
             }
+            Log.d(TAG, permission + status);
             permissions.put(permission, status);
         }
     };
@@ -60,7 +71,7 @@ public class PermissionsHelper {
     public PermissionsHelper(Context context, String[] permissions) {
         this.context = context;
         for (String permission : permissions){
-            this.permissions.put(permission, PERMISSION_CHECK);
+            this.permissions.put(permission, PERMISSION_UNKNOWN);
         }
         registerPermissionsChangedReceiver();
     }
@@ -82,19 +93,23 @@ public class PermissionsHelper {
      * Another wrapper for firing an intent
      */
     public void askForPermission(String permission) {
+        if (isPermissionActivityStarted){
+            return;
+        }
         Intent permissionIntent = new Intent(
                 context,
                 PermissionActivity.class);
         permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         permissionIntent.putExtra("permission", permission);
         context.startActivity(permissionIntent);
+        isPermissionActivityStarted = true;
     }
 
     private void registerPermissionsChangedReceiver() {
-        context.registerReceiver(permissionsChangedReceiver, new IntentFilter(PERMISSIONS_CHANGED_BROADCAST));
+        context.registerReceiver(permissionsActivityIntentReceiver, new IntentFilter(PERMISSIONS_CHANGED_BROADCAST));
     }
 
     private void unregisterPermissionsChangedReceiver() {
-        context.unregisterReceiver(permissionsChangedReceiver);
+        context.unregisterReceiver(permissionsActivityIntentReceiver);
     }
 }

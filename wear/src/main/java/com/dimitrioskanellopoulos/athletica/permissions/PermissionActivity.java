@@ -45,6 +45,12 @@ public class PermissionActivity extends WearableActivity {
         setAmbientEnabled();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        sendFinishedBroadcast();
+    }
+
     /**
      * When he clicks on the layouts
      */
@@ -128,6 +134,12 @@ public class PermissionActivity extends WearableActivity {
         Intent intent = new Intent(PermissionsHelper.PERMISSIONS_CHANGED_BROADCAST);
         intent.putExtra("permission", permission);
         intent.putExtra("status", status);
+        sendBroadcast(intent);
+    }
+
+    private void sendFinishedBroadcast() {
+        Intent intent = new Intent(PermissionsHelper.PERMISSIONS_CHANGED_BROADCAST);
+        intent.putExtra("finished", "true");
         sendBroadcast(intent);
     }
 }
