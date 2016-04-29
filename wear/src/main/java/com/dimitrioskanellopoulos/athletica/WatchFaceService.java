@@ -120,7 +120,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 Log.d(TAG, "Long: " + location.getLongitude());
                 Log.d(TAG, "Altitude: " + location.getAltitude());
                 Log.d(TAG, "Accuracy: " + location.getAccuracy());
-                vibrator.vibrate(new long[]{0, 50}, -1);
                 updateSunriseAndSunset(location);
             }
         };
