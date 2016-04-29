@@ -1,6 +1,5 @@
 package com.dimitrioskanellopoulos.athletica.permissions;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -28,8 +27,6 @@ public class PermissionActivity extends WearableActivity {
      * The broadcast signal for our permission request
      */
     private static final int PERMISSION_REQUEST = 1;
-
-    private static final String PERMISSIONS_GRANTED_MESSAGE = "PERMISSIONS_GRANTED_MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +98,7 @@ public class PermissionActivity extends WearableActivity {
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                 // Check next this one is granted
                 Toast.makeText(this, getResources().getText(R.string.permission_granted), Toast.LENGTH_LONG).show();
-                sendBroadcast(permissions[i]);
+                sendPermissionChangedBroadcast(PermissionsHelper.PERMISSIONS_GRANTED, permissions[i]);
                 continue;
             }
 
@@ -119,8 +116,8 @@ public class PermissionActivity extends WearableActivity {
                 // the app setting
                 continue;
             }
+            sendPermissionChangedBroadcast(PermissionsHelper.PERMISSIONS_DENIED, permissions[i]);
             // @todo make per permission text
-            Toast.makeText(this, getResources().getText(R.string.permissions_rationale) + "[" + permissions[i] + "]", Toast.LENGTH_SHORT).show();
             // user denied WITHOUT never ask again
             // this is a good place to explain the user
             // why you need the permission and ask if he want
@@ -129,9 +126,10 @@ public class PermissionActivity extends WearableActivity {
         finish();
     }
 
-    private void sendBroadcast(String permission) {
-        Intent intent = new Intent(PERMISSIONS_GRANTED_MESSAGE);
+    private void sendPermissionChangedBroadcast(String status, String permission) {
+        Intent intent = new Intent(PermissionsHelper.PERMISSIONS_CHANGED_BROADCAST);
         intent.putExtra("permission", permission);
+        intent.putExtra("status", status);
         sendBroadcast(intent);
     }
 }
