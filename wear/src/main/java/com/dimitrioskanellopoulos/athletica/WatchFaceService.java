@@ -177,7 +177,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private final LinkedHashMap<Integer, AveragingCallbackSensor> activeSensors = new LinkedHashMap<Integer, AveragingCallbackSensor>();
 
         /**
-         * Don't be kinky on this. It's the virbrating system service. Useful for haptic feedback
+         * Don't be kinky on this. It's the vibrating system service. Useful for haptic feedback
          */
         private final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
