@@ -147,17 +147,17 @@ public class WatchFace {
         // Go over the extra paints
         for (Map.Entry<String, TextPaint> entry : extraPaints.entrySet()) {
             TextPaint paint = entry.getValue();
-            if (paint.getText() == null){
+            if (paint.getText() == null) {
                 continue;
             }
-            yOffset = yOffset + rowVerticalMargin  + computeRowYOffset(paint);
+            yOffset = yOffset + rowVerticalMargin + computeRowYOffset(paint);
             Float xOffset = computeXOffset(paint, bounds);
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
         }
         // Go over the sensor paints
         for (Map.Entry<Integer, SensorPaint> entry : sensorPaints.entrySet()) {
             TextPaint paint = entry.getValue();
-            if (paint.getText() == null){
+            if (paint.getText() == null) {
                 continue;
             }
             yOffset = yOffset + rowVerticalMargin + computeRowYOffset(paint);
@@ -190,7 +190,7 @@ public class WatchFace {
     private float computeRowYOffset(TextPaint paint) {
         Rect textBounds = new Rect();
         paint.getTextBounds(paint.getText(), 0, paint.getText().length(), textBounds);
-        return (textBounds.height()/2.0f);
+        return (textBounds.height() / 2.0f);
     }
 
     /**
@@ -199,7 +199,7 @@ public class WatchFace {
     private float computeLastRowYOffset(TextPaint lastRowPaint, Rect watchBounds) {
         Rect textBounds = new Rect();
         lastRowPaint.getTextBounds(lastRowPaint.getText(), 0, lastRowPaint.getText().length(), textBounds);
-        return watchBounds.bottom - chinSize - (textBounds.height()/2.0f);
+        return watchBounds.bottom - chinSize - (textBounds.height() / 2.0f);
     }
 
     /**

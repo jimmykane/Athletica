@@ -45,7 +45,7 @@ public class PermissionsHelper {
         public void onReceive(Context context, Intent intent) {
             String status = intent.getExtras().getString("status");
             String permission = intent.getExtras().getString("permission");
-            switch (status){
+            switch (status) {
                 case PERMISSION_STATUS_GRANTED:
                     Toast.makeText(context, context.getResources().getText(R.string.permission_granted) + "[" + permission + "]", Toast.LENGTH_SHORT).show();
                     break;
@@ -73,7 +73,7 @@ public class PermissionsHelper {
 
     public PermissionsHelper(Context context, String[] permissions) {
         this.context = context;
-        for (String permission : permissions){
+        for (String permission : permissions) {
             this.permissions.put(permission, PERMISSION_STATUS_UNKNOWN);
         }
         registerPermissionsChangedReceiver();
@@ -97,7 +97,7 @@ public class PermissionsHelper {
      * Another wrapper for firing an intent
      */
     public void askForPermission(String permission) {
-        if (isPermissionActivityIntentStarted){
+        if (isPermissionActivityIntentStarted) {
             return;
         }
         Intent permissionIntent = new Intent(

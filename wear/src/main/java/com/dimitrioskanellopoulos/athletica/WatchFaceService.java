@@ -25,7 +25,6 @@ import android.view.SurfaceHolder;
 
 import android.location.Location;
 import android.view.WindowInsets;
-import android.widget.Toast;
 
 import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
 import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
@@ -36,7 +35,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
 import java.lang.ref.WeakReference;
@@ -130,7 +128,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * Whether tha timezone receiver is registered
          */
-        boolean isRegisteredTimeZoneReceiver = false;
+        private boolean isRegisteredTimeZoneReceiver = false;
 
         /**
          * Whether tha location receiver is registered
@@ -172,9 +170,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private ArrayList<Integer> availableSensorTypes = new ArrayList<Integer>();
 
         /**
-         * How many sensors we want to utilize concurently
+         * How many sensors we want to utilize concurrently
          */
-        final Integer maxActiveSensors = 1;
+        private final Integer maxActiveSensors = 1;
 
         /**
          * The active sensors list. These sensors are the active ones at runtime
@@ -218,7 +216,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             watchFace = new WatchFace(WatchFaceService.this);
 
             // Add the helper
-            permissionsHelper = new PermissionsHelper(getApplicationContext(), new String[] {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS});
+            permissionsHelper = new PermissionsHelper(getApplicationContext(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS});
 
             // Get a Google API client
             googleApiClient = new GoogleApiClient.Builder(WatchFaceService.this)
@@ -380,8 +378,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Add the ones supported by the device and the app
             for (int supportedSensorType : supportedSensorTypes) {
 
-                if (supportedSensorType == Sensor.TYPE_HEART_RATE){
-                    if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)){
+                if (supportedSensorType == Sensor.TYPE_HEART_RATE) {
+                    if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
                         permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
                     }
                 }
@@ -409,18 +407,18 @@ public class WatchFaceService extends CanvasWatchFaceService {
             WatchFaceService.this.unregisterReceiver(mTimeZoneReceiver);
         }
 
-        private void registerLocationReceiver(){
-            if (!googleApiClient.isConnected()){
+        private void registerLocationReceiver() {
+            if (!googleApiClient.isConnected()) {
                 Log.d(TAG, "Google API client is not ready yet, wont register for location updates");
                 return;
             }
-            if (isRegisteredLocationReceiver){
+            if (isRegisteredLocationReceiver) {
                 Log.d(TAG, "Location listener is registered nothing to do");
                 return;
             }
             // Check permissions (hopefully the receiver wont be registered
-            if (!permissionsHelper.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
-                if (permissionsHelper.canAskAgainForPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
+            if (!permissionsHelper.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                if (permissionsHelper.canAskAgainForPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
                     permissionsHelper.askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
                     Log.d(TAG, "Asking for location permissions");
                 }
@@ -431,12 +429,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, locationChangedReceiver);
         }
 
-        private void unregisterLocationReceiver(){
-            if (!googleApiClient.isConnected()){
+        private void unregisterLocationReceiver() {
+            if (!googleApiClient.isConnected()) {
                 Log.d(TAG, "Google API client is not ready yet, wont unregister listener");
                 return;
             }
-            if (!isRegisteredLocationReceiver){
+            if (!isRegisteredLocationReceiver) {
                 Log.d(TAG, "Location listener is not registered nothing to do");
                 return;
             }

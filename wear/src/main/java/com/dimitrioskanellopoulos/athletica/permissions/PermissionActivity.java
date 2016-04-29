@@ -21,7 +21,7 @@ public class PermissionActivity extends WearableActivity {
     /**
      * The permissions we would like to have. Wanted because they are not actually needed
      */
-    private final  ArrayList<String> wantedPermissions = new ArrayList<>();
+    private final ArrayList<String> wantedPermissions = new ArrayList<>();
 
     /**
      * The broadcast signal for our permission request
@@ -35,7 +35,7 @@ public class PermissionActivity extends WearableActivity {
         wantedPermissions.add(getIntent().getExtras().getString("permission"));
 
         // If there are no permissions missing what are we doing here?
-        if (!hasMissingPermissions()){
+        if (!hasMissingPermissions()) {
             Log.w(TAG, "Launched with no missing permissions");
             finish();
             return;
@@ -62,14 +62,14 @@ public class PermissionActivity extends WearableActivity {
     /**
      * Are there any permissions what we want and we don't have?
      */
-    public Boolean hasMissingPermissions(){
+    public Boolean hasMissingPermissions() {
         return getMissingPermissions().length != 0;
     }
 
     /**
      * Permissions that are missing from the wanted permissions
      */
-    public String[] getMissingPermissions(){
+    public String[] getMissingPermissions() {
         ArrayList<String> missingPermissions = new ArrayList<>();
         for (String permission : wantedPermissions) {
             if (ActivityCompat.checkSelfPermission(getApplicationContext(), permission) != PackageManager.PERMISSION_GRANTED) {
