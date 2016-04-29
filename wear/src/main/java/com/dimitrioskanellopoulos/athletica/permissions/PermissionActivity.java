@@ -45,7 +45,7 @@ public class PermissionActivity extends WearableActivity {
         }
 
         setContentView(R.layout.activity_watch_face_permissions);
-        //setAmbientEnabled();
+        setAmbientEnabled();
     }
 
     /**
