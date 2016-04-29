@@ -1,14 +1,11 @@
 package com.dimitrioskanellopoulos.athletica.permissions;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-
-import java.util.ArrayList;
 
 public class PermissionsHelper {
     /**
@@ -18,7 +15,7 @@ public class PermissionsHelper {
 
     private final Context context;
 
-    public PermissionsHelper(Context context){
+    public PermissionsHelper(Context context) {
         this.context = context;
     }
 
@@ -33,7 +30,7 @@ public class PermissionsHelper {
     /**
      * Another wrapper for firing an intent
      */
-    public Intent getIntentForPermission(String permission){
+    public Intent getIntentForPermission(String permission) {
         Intent permissionIntent = new Intent(
                 context,
                 PermissionActivity.class);
