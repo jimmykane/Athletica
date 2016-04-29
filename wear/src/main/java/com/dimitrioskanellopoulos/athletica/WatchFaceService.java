@@ -250,6 +250,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 registerBatteryInfoReceiver();
                 // Start updating sensor values
                 startListeningToSensors();
+                // Start again listening for location requests
+                registerLocationReceiver();
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
