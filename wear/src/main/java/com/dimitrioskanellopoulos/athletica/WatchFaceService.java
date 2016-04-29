@@ -68,8 +68,13 @@ public class WatchFaceService extends CanvasWatchFaceService {
     private class Engine extends CanvasWatchFaceService.Engine implements
             OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface,
             GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
         private static final String TAG = "Engine";
+
+        /**
+         * The location update intervals: 1hour in ms
+         */
+        private static final long LOCATION_UPDATE_INTERVAL_MS = 3600000;
+        private static final long LOCATION_UPDATE_FASTEST_INTERVAL_MS = 3600000;
 
         /**
          * Handler for updating the time
@@ -108,7 +113,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * Broadcast receiver for location intent
          */
-        private LocationListener locationChangedReceiver = new LocationListener() {
+        private final LocationListener locationChangedReceiver = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 Log.d(TAG, "Location changed");
@@ -189,7 +194,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * The location request we will be making
          */
-        private final LocationRequest locationRequest = new LocationRequest().setInterval(10).setFastestInterval(10).setPriority(LocationRequest.PRIORITY_LOW_POWER);
+        private final LocationRequest locationRequest = new LocationRequest()
+                .setInterval(LOCATION_UPDATE_INTERVAL_MS)
+                .setFastestInterval(LOCATION_UPDATE_FASTEST_INTERVAL_MS)
+                .setPriority(LocationRequest.PRIORITY_LOW_POWER);
 
         private PermissionsHelper permissionsHelper;
 
