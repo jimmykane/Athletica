@@ -425,6 +425,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             // Check permissions (hopefully the receiver wont be registered
             if (!permissionsHelper.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
+                // @todo should register if possible to call
                 Log.d(TAG, "Could not register location receiver");
                 Intent permissionsIntent = permissionsHelper.getIntentForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
                 startActivity(permissionsIntent);
