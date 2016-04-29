@@ -222,9 +222,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Connect to Google API
             googleApiClient.connect();
 
-            // Finds and sets the available sensor types
-            findAndSetAvailableSensorTypes();
-
             // Activate the "next" sensors
             activateNextSensors();
         }
@@ -374,6 +371,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
             availableSensorTypes.clear();
             // Add the ones supported by the device and the app
             for (int supportedSensorType : supportedSensorTypes) {
+
+                if (supportedSensorType == Sensor.TYPE_HEART_RATE){
+                    if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)){
+                        permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
+                    }
+                }
                 if (sensorManager.getDefaultSensor(supportedSensorType) != null) {
                     Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(supportedSensorType).getStringType());
                     availableSensorTypes.add(supportedSensorType);
@@ -480,6 +483,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * Activates the next sensors
          */
         private void activateNextSensors() {
+            findAndSetAvailableSensorTypes();
             // Find the active sensors position in the available sensors
             int countFound = 0;
             int lastFoundIndex = 0;
