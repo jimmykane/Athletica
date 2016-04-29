@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.dimitrioskanellopoulos.athletica.R;
@@ -26,54 +25,59 @@ public class PermissionsHelper {
     private final Context context;
 
     public static final String PERMISSIONS_CHANGED_BROADCAST = "PERMISSIONS_CHANGED_BROADCAST";
-    public static final String PERMISSION_UNKNOWN = "PERMISSION_UNKNOWN";
-    public static final String PERMISSION_GRANTED = "PERMISSION_GRANTED";
-    public static final String PERMISSION_DENIED = "PERMISSION_DENIED";
-    public static final String PERMISSION_DENIED_DO_NOT_ASK_AGAIN = "PERMISSION_DENIED_DO_NOT_ASK_AGAIN";
+
+    public static final String PERMISSIONS_ACTIVITY_INTENT_FINISHED = "PERMISSIONS_ACTIVITY_INTENT_FINISHED";
+
+    public static final String PERMISSION_STATUS_UNKNOWN = "PERMISSION_STATUS_UNKNOWN";
+    public static final String PERMISSION_STATUS_GRANTED = "PERMISSION_STATUS_GRANTED";
+    public static final String PERMISSION_STATUS_DENIED = "PERMISSION_STATUS_DENIED";
+    public static final String PERMISSION_STATUS_DENIED_DO_NOT_ASK_AGAIN = "PERMISSION_STATUS_DENIED_DO_NOT_ASK_AGAIN";
 
     private final LinkedHashMap<String, String> permissions = new LinkedHashMap<>();
 
-    private Boolean isPermissionActivityStarted = false;
+    private Boolean isPermissionActivityIntentStarted = false;
 
     /**
-     * Broadcast receiver for when a the permissions request has granted permissions
+     * Broadcast receiver changes in the permissions
      */
-    private BroadcastReceiver permissionsActivityIntentReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver permissionsChangedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.hasExtra("finished")){
-                if (Objects.equals(intent.getExtras().get("finished").toString(), "true")) {
-                    Log.d(TAG, "Permissions Activity Intent finished");
-                    isPermissionActivityStarted = false;
-                    return;
-                }
-            }
-            String status = intent.getExtras().get("status").toString();
-            String permission = intent.getExtras().get("permission").toString();
+            String status = intent.getExtras().getString("status");
+            String permission = intent.getExtras().getString("permission");
             switch (status){
-                case PERMISSION_GRANTED:
+                case PERMISSION_STATUS_GRANTED:
                     Toast.makeText(context, context.getResources().getText(R.string.permissions_rationale) + "[" + permission + "]", Toast.LENGTH_SHORT).show();
                     break;
-                case PERMISSION_DENIED:
+                case PERMISSION_STATUS_DENIED:
                     Toast.makeText(context, context.getResources().getText(R.string.permissions_rationale) + "[" + permission + "]", Toast.LENGTH_SHORT).show();
                     break;
-                case PERMISSION_DENIED_DO_NOT_ASK_AGAIN:
+                case PERMISSION_STATUS_DENIED_DO_NOT_ASK_AGAIN:
                     Toast.makeText(context, context.getResources().getText(R.string.permissions_do_not_ask_again_message) + " [" + permission + "]", Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
             }
-            Log.d(TAG, permission + status);
             permissions.put(permission, status);
         }
     };
 
+
+    private BroadcastReceiver permissionsActivityIntentFinishedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            isPermissionActivityIntentStarted = false;
+        }
+    };
+
+
     public PermissionsHelper(Context context, String[] permissions) {
         this.context = context;
         for (String permission : permissions){
-            this.permissions.put(permission, PERMISSION_UNKNOWN);
+            this.permissions.put(permission, PERMISSION_STATUS_UNKNOWN);
         }
         registerPermissionsChangedReceiver();
+        registerPermissionActivityIntentFinishedReceiver();
     }
 
     /**
@@ -86,14 +90,14 @@ public class PermissionsHelper {
 
     @NonNull
     public Boolean canAskAgainForPermission(String permission) {
-        return !Objects.equals(permissions.get(permission), PERMISSION_DENIED_DO_NOT_ASK_AGAIN);
+        return !Objects.equals(permissions.get(permission), PERMISSION_STATUS_DENIED_DO_NOT_ASK_AGAIN);
     }
 
     /**
      * Another wrapper for firing an intent
      */
     public void askForPermission(String permission) {
-        if (isPermissionActivityStarted){
+        if (isPermissionActivityIntentStarted){
             return;
         }
         Intent permissionIntent = new Intent(
@@ -102,14 +106,22 @@ public class PermissionsHelper {
         permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         permissionIntent.putExtra("permission", permission);
         context.startActivity(permissionIntent);
-        isPermissionActivityStarted = true;
+        isPermissionActivityIntentStarted = true;
     }
 
     private void registerPermissionsChangedReceiver() {
-        context.registerReceiver(permissionsActivityIntentReceiver, new IntentFilter(PERMISSIONS_CHANGED_BROADCAST));
+        context.registerReceiver(permissionsChangedReceiver, new IntentFilter(PERMISSIONS_CHANGED_BROADCAST));
     }
 
     private void unregisterPermissionsChangedReceiver() {
-        context.unregisterReceiver(permissionsActivityIntentReceiver);
+        context.unregisterReceiver(permissionsChangedReceiver);
+    }
+
+    private void registerPermissionActivityIntentFinishedReceiver() {
+        context.registerReceiver(permissionsActivityIntentFinishedReceiver, new IntentFilter(PERMISSIONS_ACTIVITY_INTENT_FINISHED));
+    }
+
+    private void unregisterPermissionActivityIntentFinishedReceiver() {
+        context.unregisterReceiver(permissionsActivityIntentFinishedReceiver);
     }
 }

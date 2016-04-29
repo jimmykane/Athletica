@@ -104,13 +104,13 @@ public class PermissionActivity extends WearableActivity {
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                 // Check next this one is granted
                 Toast.makeText(this, getResources().getText(R.string.permission_granted), Toast.LENGTH_LONG).show();
-                sendPermissionChangedBroadcast(PermissionsHelper.PERMISSION_GRANTED, permissions[i]);
+                sendPermissionChangedBroadcast(PermissionsHelper.PERMISSION_STATUS_GRANTED, permissions[i]);
                 continue;
             }
 
             // Permission was not granted
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
-                sendPermissionChangedBroadcast(PermissionsHelper.PERMISSION_DENIED_DO_NOT_ASK_AGAIN, permissions[i]);
+                sendPermissionChangedBroadcast(PermissionsHelper.PERMISSION_STATUS_DENIED_DO_NOT_ASK_AGAIN, permissions[i]);
                 // Never ask again selected, or device policy prohibits the app from having that permission.
                 // So, disable that feature, or fall back to another situation...
                 // user denied flagging NEVER ASK AGAIN
@@ -121,7 +121,7 @@ public class PermissionActivity extends WearableActivity {
                 // the app setting
                 continue;
             }
-            sendPermissionChangedBroadcast(PermissionsHelper.PERMISSION_DENIED, permissions[i]);
+            sendPermissionChangedBroadcast(PermissionsHelper.PERMISSION_STATUS_DENIED, permissions[i]);
             // user denied WITHOUT never ask again
             // this is a good place to explain the user
             // why you need the permission and ask if he want
@@ -138,8 +138,7 @@ public class PermissionActivity extends WearableActivity {
     }
 
     private void sendFinishedBroadcast() {
-        Intent intent = new Intent(PermissionsHelper.PERMISSIONS_CHANGED_BROADCAST);
-        intent.putExtra("finished", "true");
+        Intent intent = new Intent(PermissionsHelper.PERMISSIONS_ACTIVITY_INTENT_FINISHED);
         sendBroadcast(intent);
     }
 }
