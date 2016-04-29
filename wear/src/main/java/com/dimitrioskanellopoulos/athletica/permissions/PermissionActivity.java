@@ -104,8 +104,8 @@ public class PermissionActivity extends WearableActivity {
 
             // Permission was not granted
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
-                sendPermissionChangedBroadcast(PermissionsHelper.PERMISSIONS_DENIED_DONT_ASK_AGAIN, permissions[i]);
-                //Never ask again selected, or device policy prohibits the app from having that permission.
+                sendPermissionChangedBroadcast(PermissionsHelper.PERMISSIONS_DENIED_DO_NOT_ASK_AGAIN, permissions[i]);
+                // Never ask again selected, or device policy prohibits the app from having that permission.
                 // So, disable that feature, or fall back to another situation...
                 // user denied flagging NEVER ASK AGAIN
                 // you can either enable some fall back,
@@ -116,7 +116,6 @@ public class PermissionActivity extends WearableActivity {
                 continue;
             }
             sendPermissionChangedBroadcast(PermissionsHelper.PERMISSIONS_DENIED, permissions[i]);
-            // @todo make per permission text
             // user denied WITHOUT never ask again
             // this is a good place to explain the user
             // why you need the permission and ask if he want
