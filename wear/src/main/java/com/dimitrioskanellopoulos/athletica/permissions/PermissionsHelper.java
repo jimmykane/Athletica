@@ -23,6 +23,7 @@ public class PermissionsHelper {
     public static final String PERMISSIONS_CHANGED_BROADCAST = "PERMISSIONS_CHANGED_BROADCAST";
     public static final String PERMISSIONS_GRANTED = "PERMISSIONS_GRANTED";
     public static final String PERMISSIONS_DENIED = "PERMISSIONS_DENIED";
+    public static final String PERMISSIONS_DENIED_DONT_ASK_AGAIN = "PERMISSIONS_DENIED_DONT_ASK_AGAIN";
 
     /**
      * Broadcast receiver for when a the permissions request has granted permissions
@@ -34,10 +35,14 @@ public class PermissionsHelper {
             String permission = intent.getExtras().get("permission").toString();
             switch (status){
                 case PERMISSIONS_GRANTED:
-                    Toast.makeText(context, "Enabled permission: " + permission, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getResources().getText(R.string.permissions_rationale) + "[" + permission + "]", Toast.LENGTH_SHORT).show();
                     break;
                 case PERMISSIONS_DENIED:
                     Toast.makeText(context, context.getResources().getText(R.string.permissions_rationale) + "[" + permission + "]", Toast.LENGTH_SHORT).show();
+                    break;
+                case PERMISSIONS_DENIED_DONT_ASK_AGAIN:
+                    Toast.makeText(context, context.getResources().getText(R.string.permissions_do_not_ask_again_message) + " [" + permission + "]", Toast.LENGTH_SHORT).show();
+                    break;
                 default:
                     break;
             }
