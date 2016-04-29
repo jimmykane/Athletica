@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.dimitrioskanellopoulos.athletica.R;
 
+import java.util.LinkedHashMap;
+
 public class PermissionsHelper {
     /**
      * Whether we are on Marshmallow and permissions checks are needed
@@ -21,9 +23,12 @@ public class PermissionsHelper {
     private final Context context;
 
     public static final String PERMISSIONS_CHANGED_BROADCAST = "PERMISSIONS_CHANGED_BROADCAST";
-    public static final String PERMISSIONS_GRANTED = "PERMISSIONS_GRANTED";
-    public static final String PERMISSIONS_DENIED = "PERMISSIONS_DENIED";
-    public static final String PERMISSIONS_DENIED_DO_NOT_ASK_AGAIN = "PERMISSIONS_DENIED_DO_NOT_ASK_AGAIN";
+    public static final String PERMISSION_CHECK = "PERMISSION_CHECK";
+    public static final String PERMISSION_GRANTED = "PERMISSION_GRANTED";
+    public static final String PERMISSION_DENIED = "PERMISSION_DENIED";
+    public static final String PERMISSION_DENIED_DO_NOT_ASK_AGAIN = "PERMISSION_DENIED_DO_NOT_ASK_AGAIN";
+
+    private final LinkedHashMap<String, String> permissions = new LinkedHashMap<>();
 
     /**
      * Broadcast receiver for when a the permissions request has granted permissions
@@ -34,23 +39,27 @@ public class PermissionsHelper {
             String status = intent.getExtras().get("status").toString();
             String permission = intent.getExtras().get("permission").toString();
             switch (status){
-                case PERMISSIONS_GRANTED:
+                case PERMISSION_GRANTED:
                     Toast.makeText(context, context.getResources().getText(R.string.permissions_rationale) + "[" + permission + "]", Toast.LENGTH_SHORT).show();
                     break;
-                case PERMISSIONS_DENIED:
+                case PERMISSION_DENIED:
                     Toast.makeText(context, context.getResources().getText(R.string.permissions_rationale) + "[" + permission + "]", Toast.LENGTH_SHORT).show();
                     break;
-                case PERMISSIONS_DENIED_DO_NOT_ASK_AGAIN:
+                case PERMISSION_DENIED_DO_NOT_ASK_AGAIN:
                     Toast.makeText(context, context.getResources().getText(R.string.permissions_do_not_ask_again_message) + " [" + permission + "]", Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
             }
+            permissions.put(permission, status);
         }
     };
 
-    public PermissionsHelper(Context context) {
+    public PermissionsHelper(Context context, String[] permissions) {
         this.context = context;
+        for (String permission : permissions){
+            this.permissions.put(permission, PERMISSION_CHECK);
+        }
         registerPermissionsChangedReceiver();
     }
 

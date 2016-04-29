@@ -98,13 +98,13 @@ public class PermissionActivity extends WearableActivity {
             if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                 // Check next this one is granted
                 Toast.makeText(this, getResources().getText(R.string.permission_granted), Toast.LENGTH_LONG).show();
-                sendPermissionChangedBroadcast(PermissionsHelper.PERMISSIONS_GRANTED, permissions[i]);
+                sendPermissionChangedBroadcast(PermissionsHelper.PERMISSION_GRANTED, permissions[i]);
                 continue;
             }
 
             // Permission was not granted
             if (!ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[i])) {
-                sendPermissionChangedBroadcast(PermissionsHelper.PERMISSIONS_DENIED_DO_NOT_ASK_AGAIN, permissions[i]);
+                sendPermissionChangedBroadcast(PermissionsHelper.PERMISSION_DENIED_DO_NOT_ASK_AGAIN, permissions[i]);
                 // Never ask again selected, or device policy prohibits the app from having that permission.
                 // So, disable that feature, or fall back to another situation...
                 // user denied flagging NEVER ASK AGAIN
@@ -115,7 +115,7 @@ public class PermissionActivity extends WearableActivity {
                 // the app setting
                 continue;
             }
-            sendPermissionChangedBroadcast(PermissionsHelper.PERMISSIONS_DENIED, permissions[i]);
+            sendPermissionChangedBroadcast(PermissionsHelper.PERMISSION_DENIED, permissions[i]);
             // user denied WITHOUT never ask again
             // this is a good place to explain the user
             // why you need the permission and ask if he want
