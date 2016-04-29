@@ -71,8 +71,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         private static final String TAG = "Engine";
 
-        private static final String PERMISSIONS_GRANTED_MESSAGE = "PERMISSIONS_GRANTED_MESSAGE";
-
         /**
          * Handler for updating the time
          */
@@ -104,17 +102,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 //int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
                 //float batteryPct = level / (float) scale;
                 watchFace.updateBatteryLevel(level);
-            }
-        };
-
-        /**
-         * Broadcast receiver for when a the permissions request has granted permissions
-         */
-        private BroadcastReceiver permissionsGrantedReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                findAndSetAvailableSensorTypes();
-                Toast.makeText(getApplicationContext(), "Enabled permission: " + intent.getExtras().get("permission"), Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -223,7 +210,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             watchFace = new WatchFace(WatchFaceService.this);
 
             // Add the helper
-            permissionsHelper = new PermissionsHelper(getApplicationContext());
+            permissionsHelper = new PermissionsHelper(getApplicationContext(), new String[] {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS});
 
             // Get a Google API client
             googleApiClient = new GoogleApiClient.Builder(WatchFaceService.this)
@@ -240,16 +227,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
             // Activate the "next" sensors
             activateNextSensors();
-
-            // Listen to any permissions granted broadcast in order to enable functionality
-            registerPermissionsGrantedReceiver();
         }
 
         @Override
         public void onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
             stopListeningToSensors();
-            unregisterPermissionsGrantedReceiver();
             if (googleApiClient.isConnected()) {
                 googleApiClient.disconnect();
             }
@@ -335,7 +318,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 case WatchFaceService.TAP_TYPE_TAP:
                     activateNextSensors();
                     startListeningToSensors();
-                    registerLocationReceiver();
                     vibrator.vibrate(new long[]{0, 50, 50, 50, 50}, -1);
                     break;
 
@@ -425,10 +407,13 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             // Check permissions (hopefully the receiver wont be registered
             if (!permissionsHelper.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
-                // @todo should register if possible to call
-                Log.d(TAG, "Could not register location receiver");
-                Intent permissionsIntent = permissionsHelper.getIntentForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-                startActivity(permissionsIntent);
+                Log.d(TAG, "Could not register location receiver due to missing permissions");
+                if (!permissionsHelper.canAskAgainForPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
+                    Log.d(TAG, "Could not ask for location permissions");
+                    return;
+                }
+                permissionsHelper.askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+                Log.d(TAG, "Asking for location permissions");
                 return;
             }
 
@@ -447,14 +432,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             isRegisteredLocationReceiver = false;
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, locationChangedReceiver);
-        }
-
-        private void registerPermissionsGrantedReceiver() {
-            registerReceiver(permissionsGrantedReceiver, new IntentFilter(PERMISSIONS_GRANTED_MESSAGE));
-        }
-
-        private void unregisterPermissionsGrantedReceiver() {
-            unregisterReceiver(permissionsGrantedReceiver);
         }
 
         private void unregisterBatteryInfoReceiver() {

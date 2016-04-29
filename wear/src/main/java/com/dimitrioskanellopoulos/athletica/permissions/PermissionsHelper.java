@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.dimitrioskanellopoulos.athletica.R;
 
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 public class PermissionsHelper {
     /**
@@ -24,6 +25,7 @@ public class PermissionsHelper {
 
     public static final String PERMISSIONS_CHANGED_BROADCAST = "PERMISSIONS_CHANGED_BROADCAST";
     public static final String PERMISSION_CHECK = "PERMISSION_CHECK";
+    public static final String PERMISSION_MISSING = "PERMISSION_MISSING";
     public static final String PERMISSION_GRANTED = "PERMISSION_GRANTED";
     public static final String PERMISSION_DENIED = "PERMISSION_DENIED";
     public static final String PERMISSION_DENIED_DO_NOT_ASK_AGAIN = "PERMISSION_DENIED_DO_NOT_ASK_AGAIN";
@@ -71,16 +73,21 @@ public class PermissionsHelper {
         return !requiresRuntimePermissions || (ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED);
     }
 
+    @NonNull
+    public Boolean canAskAgainForPermission(String permission) {
+        return !Objects.equals(permissions.get(permission), PERMISSION_DENIED_DO_NOT_ASK_AGAIN);
+    }
+
     /**
      * Another wrapper for firing an intent
      */
-    public Intent getIntentForPermission(String permission) {
+    public void askForPermission(String permission) {
         Intent permissionIntent = new Intent(
                 context,
                 PermissionActivity.class);
         permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         permissionIntent.putExtra("permission", permission);
-        return permissionIntent;
+        context.startActivity(permissionIntent);
     }
 
     private void registerPermissionsChangedReceiver() {
