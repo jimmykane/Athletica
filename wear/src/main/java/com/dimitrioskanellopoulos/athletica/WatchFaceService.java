@@ -420,13 +420,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             // Check permissions (hopefully the receiver wont be registered
             if (!permissionsHelper.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
-                Log.d(TAG, "Could not register location receiver due to missing permissions");
-                if (!permissionsHelper.canAskAgainForPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
-                    Log.d(TAG, "Could not ask for location permissions");
-                    return;
+                if (permissionsHelper.canAskAgainForPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
+                    permissionsHelper.askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+                    Log.d(TAG, "Asking for location permissions");
                 }
-                permissionsHelper.askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-                Log.d(TAG, "Asking for location permissions");
                 return;
             }
 
