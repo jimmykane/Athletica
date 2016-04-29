@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.dimitrioskanellopoulos.athletica.R;
@@ -35,7 +36,8 @@ public class PermissionsHelper {
 
     private final LinkedHashMap<String, String> permissions = new LinkedHashMap<>();
 
-    private Boolean isPermissionActivityIntentStarted = false;
+    private Boolean isRegisteredPermissionsChangedReceiver = false;
+    private Boolean isRegisteredPermissionsActivityIntentFinishedReceiver = false;
 
     /**
      * Broadcast receiver changes in the permissions
@@ -63,10 +65,14 @@ public class PermissionsHelper {
     };
 
 
+    /**
+     * When the activity ends then lets us add it as state
+     */
     private BroadcastReceiver permissionsActivityIntentFinishedReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            isPermissionActivityIntentStarted = false;
+            unregisterPermissionsChangedReceiver();
+            unregisterPermissionActivityIntentFinishedReceiver();
         }
     };
 
@@ -76,8 +82,6 @@ public class PermissionsHelper {
         for (String permission : permissions) {
             this.permissions.put(permission, PERMISSION_STATUS_UNKNOWN);
         }
-        registerPermissionsChangedReceiver();
-        registerPermissionActivityIntentFinishedReceiver();
     }
 
     /**
@@ -97,7 +101,8 @@ public class PermissionsHelper {
      * Another wrapper for firing an intent
      */
     public void askForPermission(String permission) {
-        if (isPermissionActivityIntentStarted) {
+        if (isRegisteredPermissionsActivityIntentFinishedReceiver){
+            Log.d(TAG, "Cannot ask for permission: " + permission + " - a permission activity has not finished");
             return;
         }
         Intent permissionIntent = new Intent(
@@ -106,22 +111,43 @@ public class PermissionsHelper {
         permissionIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         permissionIntent.putExtra("permission", permission);
         context.startActivity(permissionIntent);
-        isPermissionActivityIntentStarted = true;
+        registerPermissionActivityIntentFinishedReceiver();
+        registerPermissionsChangedReceiver();
     }
 
     private void registerPermissionsChangedReceiver() {
+        Log.d(TAG, "registerPermissionsChangedReceiver");
+        if (isRegisteredPermissionsChangedReceiver) {
+            return;
+        }
         context.registerReceiver(permissionsChangedReceiver, new IntentFilter(PERMISSIONS_CHANGED_BROADCAST));
+        isRegisteredPermissionsChangedReceiver = true;
     }
 
     private void unregisterPermissionsChangedReceiver() {
+        Log.d(TAG, "unregisterPermissionsChangedReceiver");
+        if (!isRegisteredPermissionsChangedReceiver){
+            return;
+        }
         context.unregisterReceiver(permissionsChangedReceiver);
+        isRegisteredPermissionsChangedReceiver = false;
     }
 
     private void registerPermissionActivityIntentFinishedReceiver() {
+        Log.d(TAG, "registerPermissionActivityIntentFinishedReceiver");
+        if (isRegisteredPermissionsActivityIntentFinishedReceiver){
+            return;
+        }
         context.registerReceiver(permissionsActivityIntentFinishedReceiver, new IntentFilter(PERMISSIONS_ACTIVITY_INTENT_FINISHED));
+        isRegisteredPermissionsActivityIntentFinishedReceiver = true;
     }
 
     private void unregisterPermissionActivityIntentFinishedReceiver() {
+        Log.d(TAG, "unregisterPermissionActivityIntentFinishedReceiver");
+        if (!isRegisteredPermissionsActivityIntentFinishedReceiver){
+            return;
+        }
         context.unregisterReceiver(permissionsActivityIntentFinishedReceiver);
+        isRegisteredPermissionsActivityIntentFinishedReceiver = false;
     }
 }
