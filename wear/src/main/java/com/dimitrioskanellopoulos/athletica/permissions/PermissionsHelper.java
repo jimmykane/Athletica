@@ -46,7 +46,7 @@ public class PermissionsHelper {
 
     public PermissionsHelper(Context context) {
         this.context = context;
-        registerPermissionsGrantedReceiver();
+        registerPermissionsChangedReceiver();
     }
 
     /**
@@ -69,11 +69,11 @@ public class PermissionsHelper {
         return permissionIntent;
     }
 
-    private void registerPermissionsGrantedReceiver() {
+    private void registerPermissionsChangedReceiver() {
         context.registerReceiver(permissionsChangedReceiver, new IntentFilter(PERMISSIONS_CHANGED_BROADCAST));
     }
 
-    private void unregisterPermissionsGrantedReceiver() {
+    private void unregisterPermissionsChangedReceiver() {
         context.unregisterReceiver(permissionsChangedReceiver);
     }
 }
