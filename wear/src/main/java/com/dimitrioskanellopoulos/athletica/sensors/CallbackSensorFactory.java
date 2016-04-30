@@ -14,6 +14,9 @@ public class CallbackSensorFactory {
             case Sensor.TYPE_PRESSURE:
                 callbackSensor = new PressureSensor(context, sensorType, changeCallback, averageChangeCallback);
                 break;
+            case CallbackSensor.TYPE_PRESSURE_ALTITUDE:
+                callbackSensor = new PressureAltitudeSensor(context, sensorType, changeCallback, averageChangeCallback);
+                break;
             case Sensor.TYPE_HEART_RATE:
                 callbackSensor = new HeartRateSensor(context, sensorType, changeCallback, averageChangeCallback);
                 break;

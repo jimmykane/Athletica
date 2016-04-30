@@ -11,6 +11,6 @@ public class TemperatureSensor extends AveragingCallbackSensor {
     private static final Integer sensorType = Sensor.TYPE_TEMPERATURE;
 
     public TemperatureSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallbackInterface changeCallback, @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
-        super(context, sensorType, changeCallback, averageChangeCallback);
+        super(context, TemperatureSensor.sensorType, changeCallback, averageChangeCallback);
     }
 }

@@ -13,7 +13,7 @@ public class HeartRateSensor extends AveragingCallbackSensor {
     private static final Integer sensorType = Sensor.TYPE_HEART_RATE;
 
     public HeartRateSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallbackInterface changeCallback, @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
-        super(context, sensorType, changeCallback, averageChangeCallback);
+        super(context, HeartRateSensor.sensorType, changeCallback, averageChangeCallback);
     }
 
     @Override

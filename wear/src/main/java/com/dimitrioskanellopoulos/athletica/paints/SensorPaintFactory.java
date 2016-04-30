@@ -2,12 +2,17 @@ package com.dimitrioskanellopoulos.athletica.paints;
 
 import android.hardware.Sensor;
 
+import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
+
 public class SensorPaintFactory {
     public static SensorPaint getPaintForSensorType(Integer sensorType) {
         SensorPaint sensorPaint;
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
                 sensorPaint = new PressureSensorPaint();
+                break;
+            case CallbackSensor.TYPE_PRESSURE_ALTITUDE:
+                sensorPaint = new PressureAltitudeSensorPaint();
                 break;
             case Sensor.TYPE_HEART_RATE:
                 sensorPaint = new HeartRateSensorPaint();

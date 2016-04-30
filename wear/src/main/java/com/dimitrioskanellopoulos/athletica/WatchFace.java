@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
@@ -247,6 +248,7 @@ public class WatchFace {
     }
 
     public void updateSensorPaintText(Integer key, String value) {
+        Log.d(TAG,"key" +  key);
         sensorPaints.get(key).setText(value);
     }
 

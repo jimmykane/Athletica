@@ -1,9 +1,9 @@
 package com.dimitrioskanellopoulos.athletica.paints;
 
-public class PressureSensorPaint extends SensorPaint {
+public class PressureAltitudeSensorPaint extends SensorPaint {
 
-    private final static String icon = "\uf0c3";
-    private final static String units = "hPa";
+    private final static String icon = "\uf1fe";
+    private final static String units = "m";
 
     @Override
     public String getIcon() {

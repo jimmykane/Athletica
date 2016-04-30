@@ -28,6 +28,7 @@ import android.view.WindowInsets;
 
 import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
 import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
+import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
@@ -355,13 +356,17 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         @Override
         public void handleOnSensorChangedEvent(SensorEvent event) {
-            switch (event.sensor.getType()) {
-                case Sensor.TYPE_PRESSURE:
-                    event.values[0] = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, event.values[0]);
+            Integer sensorType = event.sensor.getType();
+            Float sensorValue = event.values[0];
+            switch (sensorType) {
+                case CallbackSensor.TYPE_PRESSURE_ALTITUDE:
+                    sensorValue = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, sensorValue);
+                    sensorType = CallbackSensor.TYPE_PRESSURE_ALTITUDE;
+                    break;
                 default:
                     break;
             }
-            watchFace.updateSensorPaintText(event.sensor.getType(), String.format("%d", Math.round(event.values[0])));
+            watchFace.updateSensorPaintText(sensorType, String.format("%d", Math.round(sensorValue)));
             Log.d(TAG, "Updated value for sensor: " + event.sensor.getStringType());
             Log.d(TAG, "Invalidating view");
             postInvalidate();
@@ -389,6 +394,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 if (sensorManager.getDefaultSensor(supportedSensorType) != null) {
                     Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(supportedSensorType).getStringType());
                     availableSensorTypes.add(supportedSensorType);
+                    if (supportedSensorType == Sensor.TYPE_PRESSURE){
+                        availableSensorTypes.add(CallbackSensor.TYPE_PRESSURE_ALTITUDE);
+                    }
+
                 }
             }
         }
