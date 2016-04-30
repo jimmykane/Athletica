@@ -66,6 +66,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
     private class Engine extends CanvasWatchFaceService.Engine implements
             OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface,
             GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
         private static final String TAG = "Engine";
 
         /**
@@ -235,6 +236,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
             stopListeningToSensors();
+            unregisterLocationReceiver();
+            unregisterBatteryInfoReceiver();
+            unregisterTimeZoneReceiver();
             if (googleApiClient.isConnected()) {
                 googleApiClient.disconnect();
             }
