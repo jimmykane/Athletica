@@ -11,13 +11,13 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.SensorAverageList
 import com.dimitrioskanellopoulos.athletica.sensors.listeners.AveragingSensorEventListener;
 
 public class AveragingCallbackSensor extends CallbackSensor implements SensorAverageListenerInterface, OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface {
-    private final static Integer samplingPeriodUs = 5000;
-    private final static Integer maxReportLatencyUs = 5000;
+    private final static Integer samplingPeriodUs = 1000000;
+    private final static Integer maxReportLatencyUs = 1000000;
 
 
     private final AveragingSensorEventListener averagingSensorEventListener = new AveragingSensorEventListener(this);
 
-    protected final OnSensorAverageEventCallbackInterface averageChangeCallback;
+    private final OnSensorAverageEventCallbackInterface averageChangeCallback;
 
     public AveragingCallbackSensor(@NonNull Context context,
                                    Integer sensorType,

@@ -18,7 +18,7 @@ public class CallbackSensor implements SensorListenerInterface, OnSensorEventCal
     protected final Sensor sensor;
 
     protected Boolean isListening = false;
-    protected final OnSensorEventCallbackInterface changeCallback;
+    private final OnSensorEventCallbackInterface changeCallback;
 
     private final ContinuousSensorEventListener continuousSensorEventListener = new ContinuousSensorEventListener(this);
 
@@ -38,7 +38,7 @@ public class CallbackSensor implements SensorListenerInterface, OnSensorEventCal
     public void startListening() {
         // First stop listening
         stopListening();
-        sensorManager.registerListener(continuousSensorEventListener, sensor, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(continuousSensorEventListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
         isListening = true;
         Log.d(TAG, "Started listening");
     }
