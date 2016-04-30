@@ -1,5 +1,6 @@
 package com.dimitrioskanellopoulos.athletica.permissions;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dimitrioskanellopoulos.athletica.R;
@@ -31,8 +33,9 @@ public class PermissionActivity extends WearableActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String permission = getIntent().getExtras().getString("permission");
         wantedPermissions.clear();
-        wantedPermissions.add(getIntent().getExtras().getString("permission"));
+        wantedPermissions.add(permission);
 
         // If there are no permissions missing what are we doing here?
         if (!hasMissingPermissions()) {
@@ -42,6 +45,17 @@ public class PermissionActivity extends WearableActivity {
         }
 
         setContentView(R.layout.activity_watch_face_permissions);
+        TextView permissionExplanationTextView = (TextView)findViewById(R.id.permission_explanation);
+
+        switch (permission){
+            case Manifest.permission.ACCESS_COARSE_LOCATION:
+                permissionExplanationTextView.setText(R.string.permission_explanation_coarse_location);
+                break;
+            case Manifest.permission.BODY_SENSORS:
+                permissionExplanationTextView.setText(R.string.permission_explanation_body_sensors);
+                break;
+
+        }
         setAmbientEnabled();
     }
 

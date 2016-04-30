@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="permission_title">Athletica needs the following permission:</string>
+    <string name="permission_explanation_coarse_location">- <b>Coarse Location</b> is used to calculate sunrise and sunset times</string>
+    <string name="permission_explanation_body_sensors">- <b><u>Body Sensors</u></b> to enable and use the Heart Rate Sensor</string>
+    <string name="permission_enable">Enable Permission</string>
+    <string name="permission_do_not_ask_again_message">Please go to settings and grant the required permissions if you want to use all features of the watchface</string>
+    <string name="permission_rationale">Please grant the required permissions if you want the full experience</string>
+    <string name="permission_granted">Permission granted</string>
+</resources>
