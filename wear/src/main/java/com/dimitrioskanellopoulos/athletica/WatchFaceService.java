@@ -362,6 +362,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 case Sensor.TYPE_PRESSURE:
                     if (watchFace.sensorPaints.containsKey(CallbackSensor.TYPE_PRESSURE_ALTITUDE)){
                         watchFace.updateSensorPaintText(CallbackSensor.TYPE_PRESSURE_ALTITUDE, String.format("%d", Math.round(SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, sensorValue))));
+                    }else {
+                        watchFace.updateSensorPaintText(sensorType, String.format("%d", Math.round(sensorValue)));
                     }
                     break;
                 default:
