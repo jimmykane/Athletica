@@ -1,8 +1,5 @@
 package com.dimitrioskanellopoulos.athletica.paints;
 
-
-import android.support.annotation.NonNull;
-
 import com.dimitrioskanellopoulos.athletica.paints.interfaces.SensorPaintInterface;
 
 public class SensorPaint extends TextPaint implements SensorPaintInterface {

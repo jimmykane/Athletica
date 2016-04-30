@@ -1,7 +1,5 @@
 package com.dimitrioskanellopoulos.athletica.paints;
 
-import java.util.Objects;
-
 public class BatterySensorPaint extends SensorPaint {
 
     private final static String batteryEmptyIcon = "\uf244";

@@ -1,7 +1,5 @@
 package com.dimitrioskanellopoulos.athletica.paints;
 
-import com.dimitrioskanellopoulos.athletica.paints.SensorPaint;
-
 public class MagneticFieldSensorPaint extends SensorPaint {
 
     private final static String icon = "\uf076";
