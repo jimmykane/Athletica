@@ -359,15 +359,16 @@ public class WatchFaceService extends CanvasWatchFaceService {
             Integer sensorType = event.sensor.getType();
             Float sensorValue = event.values[0];
             switch (sensorType) {
-                case CallbackSensor.TYPE_PRESSURE_ALTITUDE:
-                    sensorValue = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, sensorValue);
-                    sensorType = CallbackSensor.TYPE_PRESSURE_ALTITUDE;
+                case Sensor.TYPE_PRESSURE:
+                    if (watchFace.sensorPaints.containsKey(CallbackSensor.TYPE_PRESSURE_ALTITUDE)){
+                        watchFace.updateSensorPaintText(CallbackSensor.TYPE_PRESSURE_ALTITUDE, String.format("%d", Math.round(SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, sensorValue))));
+                    }
                     break;
                 default:
+                    watchFace.updateSensorPaintText(sensorType, String.format("%d", Math.round(sensorValue)));
                     break;
             }
-            watchFace.updateSensorPaintText(sensorType, String.format("%d", Math.round(sensorValue)));
-            Log.d(TAG, "Updated value for sensor: " + event.sensor.getStringType());
+            Log.d(TAG, "Updated value for sensor: " + sensorType);
             Log.d(TAG, "Invalidating view");
             postInvalidate();
         }
@@ -396,6 +397,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     availableSensorTypes.add(supportedSensorType);
                     if (supportedSensorType == Sensor.TYPE_PRESSURE){
                         availableSensorTypes.add(CallbackSensor.TYPE_PRESSURE_ALTITUDE);
+                        Log.d(TAG, "Available sensor: TYPE_PRESSURE_ALTITUDE");
                     }
 
                 }

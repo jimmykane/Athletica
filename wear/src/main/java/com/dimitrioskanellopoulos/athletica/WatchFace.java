@@ -52,7 +52,7 @@ public class WatchFace {
     private final LinkedHashMap<String, TextPaint> extraPaints = new LinkedHashMap<String, TextPaint>();
 
     // Sensor Paints
-    private final LinkedHashMap<Integer, SensorPaint> sensorPaints = new LinkedHashMap<Integer, SensorPaint>();
+    protected final LinkedHashMap<Integer, SensorPaint> sensorPaints = new LinkedHashMap<Integer, SensorPaint>();
 
     private final Float rowVerticalMargin;
 
@@ -235,6 +235,7 @@ public class WatchFace {
     }
 
     public void addSensorPaint(Integer sensorType) {
+        Log.d(TAG, "Added paint for " + sensorType);
         SensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(sensorType);
         sensorPaint.setTypeface(fontAwesome);
         sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
