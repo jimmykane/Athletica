@@ -22,6 +22,8 @@ public class CallbackSensor implements SensorListenerInterface, OnSensorEventCal
 
     private final ContinuousSensorEventListener continuousSensorEventListener = new ContinuousSensorEventListener(this);
 
+    public final static int TYPE_ALTITUDE_FROM_PRESSURE = 10000;
+
     public CallbackSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallbackInterface changeCallback) {
         this.changeCallback = changeCallback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
