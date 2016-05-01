@@ -18,7 +18,8 @@ public class TriggerSensor implements OnSensorTriggerCallbackInterface {
 
     private final TriggerSensorEventListener triggerSensorEventListener = new TriggerSensorEventListener(this);
 
-    public TriggerSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorTriggerCallbackInterface triggerCallback) {
+    public TriggerSensor(@NonNull Context context, Integer sensorType,
+                         @NonNull OnSensorTriggerCallbackInterface triggerCallback) {
         this.triggerCallback = triggerCallback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(sensorType);

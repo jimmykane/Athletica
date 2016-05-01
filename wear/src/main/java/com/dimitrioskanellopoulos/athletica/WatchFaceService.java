@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.os.BatteryManager;
 import android.os.Bundle;
@@ -66,9 +65,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
     }
 
     private class Engine extends CanvasWatchFaceService.Engine implements
-            OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface, OnSensorTriggerCallbackInterface,
-            GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
+            OnSensorEventCallbackInterface,
+            OnSensorAverageEventCallbackInterface,
+            OnSensorTriggerCallbackInterface,
+            GoogleApiClient.ConnectionCallbacks,
+            GoogleApiClient.OnConnectionFailedListener {
         private static final String TAG = "Engine";
 
         /**

@@ -23,7 +23,8 @@ public class CallbackSensor implements SensorListenerInterface, OnSensorEventCal
 
     public final static int TYPE_PRESSURE_ALTITUDE = 10000;
 
-    public CallbackSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallbackInterface changeCallback) {
+    public CallbackSensor(@NonNull Context context, Integer sensorType,
+                          @NonNull OnSensorEventCallbackInterface changeCallback) {
         this.changeCallback = changeCallback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(sensorType);

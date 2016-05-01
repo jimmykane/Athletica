@@ -8,7 +8,9 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEv
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
 
 public class CallbackSensorFactory {
-    public static AveragingCallbackSensor getCallbackSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallbackInterface changeCallback, @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
+    public static AveragingCallbackSensor getCallbackSensor(@NonNull Context context, Integer sensorType,
+                                                            @NonNull OnSensorEventCallbackInterface changeCallback,
+                                                            @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
         AveragingCallbackSensor callbackSensor;
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:

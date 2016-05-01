@@ -2,7 +2,6 @@ package com.dimitrioskanellopoulos.athletica.sensors;
 
 import android.content.Context;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -11,7 +10,9 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCall
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.SensorAverageListenerInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.listeners.AveragingSensorEventListener;
 
-public class AveragingCallbackSensor extends CallbackSensor implements SensorAverageListenerInterface, OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface {
+public class AveragingCallbackSensor extends CallbackSensor implements
+        SensorAverageListenerInterface, OnSensorEventCallbackInterface,
+        OnSensorAverageEventCallbackInterface {
     private final static Integer samplingPeriodUs = 1000000;
     private final static Integer maxReportLatencyUs = 1000000;
 

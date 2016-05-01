@@ -2,7 +2,6 @@ package com.dimitrioskanellopoulos.athletica.sensors.listeners;
 
 import android.hardware.TriggerEvent;
 import android.hardware.TriggerEventListener;
-import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorTriggerCallbackInterface;
 

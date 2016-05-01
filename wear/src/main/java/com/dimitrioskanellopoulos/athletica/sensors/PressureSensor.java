@@ -10,8 +10,9 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCall
 public class PressureSensor extends AveragingCallbackSensor {
     private static final Integer sensorType = Sensor.TYPE_PRESSURE;
 
-    public PressureSensor(@NonNull Context context, @NonNull OnSensorEventCallbackInterface changeCallback, @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
+    public PressureSensor(@NonNull Context context,
+                          @NonNull OnSensorEventCallbackInterface changeCallback,
+                          @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
         super(context, PressureSensor.sensorType, changeCallback, averageChangeCallback);
     }
-
 }
