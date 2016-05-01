@@ -8,6 +8,10 @@ import android.support.annotation.NonNull;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
 
+/**
+ * This a camouflaged pressure sensor.
+ * It initializes a normal pressure sensor but overrides the callbacks to add special values and type
+ */
 public class PressureAltitudeSensor extends AveragingCallbackSensor {
     private static final Integer sensorOriginalType = Sensor.TYPE_PRESSURE;
     private static final Integer sensorType = CallbackSensor.TYPE_PRESSURE_ALTITUDE;

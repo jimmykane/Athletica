@@ -388,6 +388,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 if (sensorManager.getDefaultSensor(supportedSensorType) != null) {
                     Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(supportedSensorType).getStringType());
                     availableSensorTypes.add(supportedSensorType);
+                    // Small hack here to add a pressure altitude sensor
                     if (supportedSensorType == Sensor.TYPE_PRESSURE){
                         availableSensorTypes.add(CallbackSensor.TYPE_PRESSURE_ALTITUDE);
                         Log.d(TAG, "Available sensor: TYPE_PRESSURE_ALTITUDE");
