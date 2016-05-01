@@ -357,13 +357,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
             switch (sensorType) {
-                case Sensor.TYPE_PRESSURE:
-                    if (watchFace.sensorPaints.containsKey(CallbackSensor.TYPE_PRESSURE_ALTITUDE)){
-                        watchFace.updateSensorPaintText(CallbackSensor.TYPE_PRESSURE_ALTITUDE, String.format("%d", Math.round(SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, eventValues[0]))));
-                    }else {
-                        watchFace.updateSensorPaintText(sensorType, String.format("%d", Math.round(eventValues[0])));
-                    }
-                    break;
                 default:
                     watchFace.updateSensorPaintText(sensorType, String.format("%d", Math.round(eventValues[0])));
                     break;
@@ -386,7 +379,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             availableSensorTypes.clear();
             // Add the ones supported by the device and the app
             for (int supportedSensorType : supportedSensorTypes) {
-
+                // If the sensor is heart rate we need to ask permissions
                 if (supportedSensorType == Sensor.TYPE_HEART_RATE) {
                     if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
                         permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
