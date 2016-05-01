@@ -17,7 +17,7 @@ public class ContinuousSensorEventListener implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        changeCallback.handleOnSensorChangedEvent(event);
+        changeCallback.handleOnSensorChangedEvent(event.sensor, event.sensor.getType(), event.values);
     }
 
     @Override

@@ -50,7 +50,7 @@ public class AveragingSensorEventListener implements SensorEventListener {
         Log.d(TAG, "Total sum[" + sum +  "], Average[" + average + "]");
         averageValues.clear();
         event.values[0] = average;
-        changeCallback.handleOnSensorAverageChangedEvent(event);
+        changeCallback.handleOnSensorAverageChangedEvent(event.sensor, event.sensor.getType(), event.values);
     }
 
     @Override

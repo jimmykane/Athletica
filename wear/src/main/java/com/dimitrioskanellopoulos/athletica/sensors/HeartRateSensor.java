@@ -2,7 +2,6 @@ package com.dimitrioskanellopoulos.athletica.sensors;
 
 import android.content.Context;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -17,11 +16,11 @@ public class HeartRateSensor extends AveragingCallbackSensor {
     }
 
     @Override
-    public Boolean isEventValueAcceptable(SensorEvent event) {
-        if (event.values[0] == 0.0f){
+    public Boolean isEventValuesAcceptable(float[] eventValues) {
+        if (eventValues[0] == 0.0f){
             Log.d(TAG, "Event value was 0 thus not accepted");
             return false;
         }
-        return super.isEventValueAcceptable(event);
+        return super.isEventValuesAcceptable(eventValues);
     }
 }

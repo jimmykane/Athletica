@@ -355,19 +355,17 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         @Override
-        public void handleOnSensorChangedEvent(SensorEvent event) {
-            Integer sensorType = event.sensor.getType();
-            Float sensorValue = event.values[0];
+        public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
             switch (sensorType) {
                 case Sensor.TYPE_PRESSURE:
                     if (watchFace.sensorPaints.containsKey(CallbackSensor.TYPE_PRESSURE_ALTITUDE)){
-                        watchFace.updateSensorPaintText(CallbackSensor.TYPE_PRESSURE_ALTITUDE, String.format("%d", Math.round(SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, sensorValue))));
+                        watchFace.updateSensorPaintText(CallbackSensor.TYPE_PRESSURE_ALTITUDE, String.format("%d", Math.round(SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, eventValues[0]))));
                     }else {
-                        watchFace.updateSensorPaintText(sensorType, String.format("%d", Math.round(sensorValue)));
+                        watchFace.updateSensorPaintText(sensorType, String.format("%d", Math.round(eventValues[0])));
                     }
                     break;
                 default:
-                    watchFace.updateSensorPaintText(sensorType, String.format("%d", Math.round(sensorValue)));
+                    watchFace.updateSensorPaintText(sensorType, String.format("%d", Math.round(eventValues[0])));
                     break;
             }
             Log.d(TAG, "Updated value for sensor: " + sensorType);
@@ -376,8 +374,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         @Override
-        public void handleOnSensorAverageChangedEvent(SensorEvent event) {
-            handleOnSensorChangedEvent(event);
+        public void handleOnSensorAverageChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
+            handleOnSensorChangedEvent(sensor, sensorType, eventValues);
         }
 
         /**

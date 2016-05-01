@@ -2,7 +2,6 @@ package com.dimitrioskanellopoulos.athletica.sensors;
 
 import android.content.Context;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -32,7 +31,7 @@ public class CallbackSensor implements SensorListenerInterface, OnSensorEventCal
     }
 
     @Override
-    public Boolean isEventValueAcceptable(SensorEvent event) {
+    public Boolean isEventValuesAcceptable(float[] eventValues) {
         return true;
     }
 
@@ -58,9 +57,9 @@ public class CallbackSensor implements SensorListenerInterface, OnSensorEventCal
     }
 
     @Override
-    public void handleOnSensorChangedEvent(SensorEvent event) {
-        if (isEventValueAcceptable(event)) {
-            changeCallback.handleOnSensorChangedEvent(event);
+    public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
+        if (isEventValuesAcceptable(eventValues)) {
+            changeCallback.handleOnSensorChangedEvent(sensor, sensorType, eventValues);
         }
     }
 }

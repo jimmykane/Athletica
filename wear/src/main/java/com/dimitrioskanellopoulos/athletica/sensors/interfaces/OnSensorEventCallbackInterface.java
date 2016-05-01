@@ -1,7 +1,7 @@
 package com.dimitrioskanellopoulos.athletica.sensors.interfaces;
 
-import android.hardware.SensorEvent;
+import android.hardware.Sensor;
 
 public interface OnSensorEventCallbackInterface {
-    void handleOnSensorChangedEvent(SensorEvent event);
+    void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues);
 }

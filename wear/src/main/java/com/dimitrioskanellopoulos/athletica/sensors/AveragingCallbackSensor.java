@@ -1,6 +1,7 @@
 package com.dimitrioskanellopoulos.athletica.sensors;
 
 import android.content.Context;
+import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -42,11 +43,11 @@ public class AveragingCallbackSensor extends CallbackSensor implements SensorAve
     }
 
     @Override
-    public void handleOnSensorAverageChangedEvent(SensorEvent event) {
+    public void handleOnSensorAverageChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
         stopListening();
-        Log.d(TAG, "Average calculated: " + String.format("%.01f", event.values[0]));
-        if (isEventValueAcceptable(event)) {
-            averageChangeCallback.handleOnSensorAverageChangedEvent(event);
+        Log.d(TAG, "Average calculated: " + String.format("%.01f", eventValues[0]));
+        if (isEventValuesAcceptable(eventValues)) {
+            averageChangeCallback.handleOnSensorAverageChangedEvent(sensor, sensorType, eventValues);
         }
     }
 }
