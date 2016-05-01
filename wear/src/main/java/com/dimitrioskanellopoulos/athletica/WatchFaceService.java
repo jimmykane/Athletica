@@ -39,6 +39,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.lang.ref.WeakReference;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
@@ -358,9 +359,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         @Override
         public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
+            // Special cases for special sensors :-)
+            DecimalFormat decimalFormat = new DecimalFormat("#.##");
             switch (sensorType) {
+                case Sensor.TYPE_PRESSURE:
+                    watchFace.updateSensorPaintText(sensorType, decimalFormat.format(eventValues[0]));
+                    break;
                 default:
-                    watchFace.updateSensorPaintText(sensorType, String.format("%d", Math.round(eventValues[0])));
+                    watchFace.updateSensorPaintText(sensorType, decimalFormat.format(Math.round(eventValues[0])));
                     break;
             }
             Log.d(TAG, "Updated value for sensor: " + sensorType);
