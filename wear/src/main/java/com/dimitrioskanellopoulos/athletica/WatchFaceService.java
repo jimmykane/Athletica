@@ -360,8 +360,13 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
             // Special cases for special sensors :-)
-            DecimalFormat decimalFormat = new DecimalFormat("#.##");
+            DecimalFormat decimalFormat = new DecimalFormat("#.#");
             switch (sensorType) {
+                case Sensor.TYPE_ACCELEROMETER:
+                    watchFace.updateSensorPaintText(sensorType, decimalFormat.format(eventValues[0])
+                            + ":" + decimalFormat.format(eventValues[1])
+                            + ":" + decimalFormat.format(eventValues[2]));
+                    break;
                 case Sensor.TYPE_PRESSURE:
                     watchFace.updateSensorPaintText(sensorType, decimalFormat.format(eventValues[0]));
                     break;
