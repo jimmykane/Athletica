@@ -104,6 +104,8 @@ public class WatchFace {
         datePaint.setTextSize(resources.getDimension(R.dimen.date_size));
         datePaint.setAntiAlias(true);
         datePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+        datePaint.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/Play-Regular.ttf"));
+
         extraPaints.put("datePaint", datePaint);
 
         // Add paint for sunrise and sunset ( can be divided)
