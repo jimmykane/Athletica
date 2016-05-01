@@ -1,5 +1,7 @@
 package com.dimitrioskanellopoulos.athletica.paints;
 
+import android.graphics.Color;
+
 public class BatterySensorPaint extends SensorPaint {
 
     private final static String batteryEmptyIcon = "\uf244";
@@ -31,6 +33,9 @@ public class BatterySensorPaint extends SensorPaint {
             icon = batteryQuarterIcon;
         } else {
             icon = batteryEmptyIcon;
+            if (!isInAmbientMode()) {
+                setColor(Color.RED);
+            }
         }
         return icon;
     }

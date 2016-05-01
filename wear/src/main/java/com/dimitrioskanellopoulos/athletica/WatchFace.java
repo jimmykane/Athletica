@@ -83,7 +83,7 @@ public class WatchFace {
 
         // Add paint for time
         TextPaint timePaint = new TextPaint();
-        timePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+        timePaint.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL));
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
         timePaint.setAntiAlias(true);
@@ -204,17 +204,17 @@ public class WatchFace {
     }
 
     /**
-     * Toggles the antialias for all the paints
+     * Toggles the ambient or not mode for all the paints
      */
-    public void setAntiAlias(boolean antiAlias) {
+    public void inAmbientMode(boolean inAmbientMode) {
         for (Map.Entry<String, TextPaint> entry : standardPaints.entrySet()) {
-            entry.getValue().setAntiAlias(antiAlias);
+            entry.getValue().inAmbientMode(inAmbientMode);
         }
         for (Map.Entry<String, TextPaint> entry : extraPaints.entrySet()) {
-            entry.getValue().setAntiAlias(antiAlias);
+            entry.getValue().inAmbientMode(inAmbientMode);
         }
         for (Map.Entry<Integer, SensorPaint> entry : sensorPaints.entrySet()) {
-            entry.getValue().setAntiAlias(antiAlias);
+            entry.getValue().inAmbientMode(inAmbientMode);
         }
     }
 
