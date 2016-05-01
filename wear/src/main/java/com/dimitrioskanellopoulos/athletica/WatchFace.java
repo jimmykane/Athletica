@@ -249,7 +249,6 @@ public class WatchFace {
     }
 
     public void updateSensorPaintText(Integer key, String value) {
-        Log.d(TAG,"key" +  key);
         sensorPaints.get(key).setText(value);
     }
 
