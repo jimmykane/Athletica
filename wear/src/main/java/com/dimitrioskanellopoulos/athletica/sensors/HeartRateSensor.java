@@ -12,7 +12,7 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCall
 public class HeartRateSensor extends AveragingCallbackSensor {
     private static final Integer sensorType = Sensor.TYPE_HEART_RATE;
 
-    public HeartRateSensor(@NonNull Context context, Integer sensorType, @NonNull OnSensorEventCallbackInterface changeCallback, @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
+    public HeartRateSensor(@NonNull Context context, @NonNull OnSensorEventCallbackInterface changeCallback, @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
         super(context, HeartRateSensor.sensorType, changeCallback, averageChangeCallback);
     }
 

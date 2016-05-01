@@ -12,16 +12,16 @@ public class CallbackSensorFactory {
         AveragingCallbackSensor callbackSensor;
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
-                callbackSensor = new PressureSensor(context, sensorType, changeCallback, averageChangeCallback);
+                callbackSensor = new PressureSensor(context, changeCallback, averageChangeCallback);
                 break;
             case CallbackSensor.TYPE_PRESSURE_ALTITUDE:
-                callbackSensor = new PressureAltitudeSensor(context, sensorType, changeCallback, averageChangeCallback);
+                callbackSensor = new PressureAltitudeSensor(context, changeCallback, averageChangeCallback);
                 break;
             case Sensor.TYPE_HEART_RATE:
-                callbackSensor = new HeartRateSensor(context, sensorType, changeCallback, averageChangeCallback);
+                callbackSensor = new HeartRateSensor(context, changeCallback, averageChangeCallback);
                 break;
             case Sensor.TYPE_TEMPERATURE:
-                callbackSensor = new TemperatureSensor(context, sensorType, changeCallback, averageChangeCallback);
+                callbackSensor = new TemperatureSensor(context, changeCallback, averageChangeCallback);
                 break;
             default:
                 callbackSensor = new AveragingCallbackSensor(context, sensorType, changeCallback, averageChangeCallback);
