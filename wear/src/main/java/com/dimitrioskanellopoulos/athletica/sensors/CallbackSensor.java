@@ -23,6 +23,10 @@ public class CallbackSensor implements SensorListenerInterface, OnSensorEventCal
 
     public final static int TYPE_PRESSURE_ALTITUDE = 10000;
 
+    public final static Integer samplingPeriodUs = 1000000;
+
+    public final static Integer maxReportLatencyUs = 1000000;
+
     public CallbackSensor(@NonNull Context context, Integer sensorType,
                           @NonNull OnSensorEventCallbackInterface changeCallback) {
         this.changeCallback = changeCallback;
@@ -40,7 +44,7 @@ public class CallbackSensor implements SensorListenerInterface, OnSensorEventCal
     public void startListening() {
         // First stop listening
         stopListening();
-        sensorManager.registerListener(continuousSensorEventListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(continuousSensorEventListener, sensor, samplingPeriodUs, maxReportLatencyUs);
         isListening = true;
         Log.d(TAG, "Started listening");
     }
