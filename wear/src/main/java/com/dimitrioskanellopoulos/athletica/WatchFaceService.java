@@ -32,6 +32,7 @@ import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
+import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorTriggerCallbackInterface;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -65,7 +66,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
     }
 
     private class Engine extends CanvasWatchFaceService.Engine implements
-            OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface,
+            OnSensorEventCallbackInterface, OnSensorAverageEventCallbackInterface, OnSensorTriggerCallbackInterface,
             GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
         private static final String TAG = "Engine";
@@ -369,6 +370,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void handleOnSensorAverageChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
             handleOnSensorChangedEvent(sensor, sensorType, eventValues);
+        }
+
+        @Override
+        public void handleOnSensorTriggerEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
         }
 
         /**
