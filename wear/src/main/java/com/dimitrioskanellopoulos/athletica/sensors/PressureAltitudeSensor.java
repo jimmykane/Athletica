@@ -2,7 +2,6 @@ package com.dimitrioskanellopoulos.athletica.sensors;
 
 import android.content.Context;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.support.annotation.NonNull;
 
@@ -20,12 +19,12 @@ public class PressureAltitudeSensor extends AveragingCallbackSensor {
     @Override
     public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
         eventValues[0] = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, eventValues[0]);
-        super.handleOnSensorChangedEvent(sensor, sensorType, eventValues);
+        super.handleOnSensorChangedEvent(sensor, PressureAltitudeSensor.sensorType, eventValues);
     }
 
     @Override
     public void handleOnSensorAverageChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
         eventValues[0] = SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, eventValues[0]);
-        super.handleOnSensorAverageChangedEvent(sensor, sensorType, eventValues);
+        super.handleOnSensorAverageChangedEvent(sensor, PressureAltitudeSensor.sensorType, eventValues);
     }
 }
