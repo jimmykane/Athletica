@@ -568,12 +568,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * Updates the sunrise and sunset according to a location if possible
          */
-        private void updateSunriseAndSunset(Location location) {
-            if (location == null) {
-                // If its a real device continue to run
-                Log.e(TAG, "Could not update sunrise/sunset because no location was found");
-                return;
-            }
+        private void updateSunriseAndSunset(@NonNull Location location) {
             Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(location, TimeZone.getDefault().getID());
             watchFace.updateSunriseSunset(sunriseSunset);
             invalidate();
