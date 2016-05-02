@@ -330,7 +330,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 case WatchFaceService.TAP_TYPE_TAP:
                     activateNextSensors();
                     startListeningToSensors();
-                    vibrator.vibrate(new long[]{0, 50, 50, 50, 50}, -1);
+                    vibrator.vibrate(new long[]{0, 50, 50}, -1);
                     break;
 
                 case WatchFaceService.TAP_TYPE_TOUCH:
