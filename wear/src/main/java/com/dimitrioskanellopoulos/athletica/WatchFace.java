@@ -169,7 +169,7 @@ public class WatchFace {
     }
 
     /**
-     * Computes the X-Axis offset so that the text is horizontically centered
+     * Computes the X-Axis offset so that the text is horizontally centered
      */
     private float computeXOffset(TextPaint paint, Rect watchBounds) {
         return watchBounds.exactCenterX() - (paint.measureText(paint.getText()) / 2.0f);
