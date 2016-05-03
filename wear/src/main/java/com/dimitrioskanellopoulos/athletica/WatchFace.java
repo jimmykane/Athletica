@@ -143,7 +143,7 @@ public class WatchFace {
         canvas.drawText(batterySensorPaint.getText(), computeXOffset(batterySensorPaint, bounds), computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
 
         // Set the text of the data
-        extraPaints.get("datePaint").setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH) + 1, calendar.get(calendar.MONTH), calendar.get(calendar.YEAR)));
+        extraPaints.get("datePaint").setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH)  + 1, calendar.get(calendar.YEAR)));
 
         Float yOffset = computeFirstRowYOffset(timePaint, bounds);
         // Go over the extra paints
