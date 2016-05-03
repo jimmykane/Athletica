@@ -12,10 +12,11 @@ import android.util.Pair;
 import android.util.TypedValue;
 
 import com.dimitrioskanellopoulos.athletica.paints.SensorPaint;
+import com.dimitrioskanellopoulos.athletica.paints.SunsetTimePaint;
 import com.dimitrioskanellopoulos.athletica.paints.TextPaint;
 import com.dimitrioskanellopoulos.athletica.paints.BatterySensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.SensorPaintFactory;
-import com.dimitrioskanellopoulos.athletica.paints.SunriseSunsetPaint;
+import com.dimitrioskanellopoulos.athletica.paints.SunriseTimePaint;
 
 import java.util.Calendar;
 import java.util.LinkedHashMap;
@@ -107,13 +108,21 @@ public class WatchFace {
 
         extraPaints.put("datePaint", datePaint);
 
-        // Add paint for sunrise and sunset ( can be divided)
-        TextPaint sunriseSunsetPaint = new SunriseSunsetPaint();
-        sunriseSunsetPaint.setTypeface(fontAwesome);
-        sunriseSunsetPaint.setColor(TEXT_DEFAULT_COLOUR);
-        sunriseSunsetPaint.setTextSize(resources.getDimension(R.dimen.text_size));
-        sunriseSunsetPaint.setAntiAlias(true);
-        extraPaints.put("sunriseSunsetPaint", sunriseSunsetPaint);
+        // Add paint for sunrise
+        SensorPaint sunriseTimePaint = new SunriseTimePaint();
+        sunriseTimePaint.setTypeface(fontAwesome);
+        sunriseTimePaint.setColor(TEXT_DEFAULT_COLOUR);
+        sunriseTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
+        sunriseTimePaint.setAntiAlias(true);
+        extraPaints.put("sunriseTimePaint", sunriseTimePaint);
+
+        // Add paint for sunset
+        SensorPaint sunsetTimePaint = new SunsetTimePaint();
+        sunsetTimePaint.setTypeface(fontAwesome);
+        sunsetTimePaint.setColor(TEXT_DEFAULT_COLOUR);
+        sunsetTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
+        sunsetTimePaint.setAntiAlias(true);
+        extraPaints.put("sunsetTimePaint", sunsetTimePaint);
     }
 
     /**
@@ -258,7 +267,8 @@ public class WatchFace {
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
-        extraPaints.get("sunriseSunsetPaint").setText(sunriseSunset.first + "-" + sunriseSunset.second);
+        extraPaints.get("sunriseTimePaint").setText(sunriseSunset.first);
+        extraPaints.get("sunsetTimePaint").setText(sunriseSunset.second);
     }
 
 }
