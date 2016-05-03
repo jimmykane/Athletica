@@ -165,8 +165,8 @@ public class WatchFace {
         // Until this gets combine look statically.
         SensorPaint sunrisePaint = thirdRowPaints.get("sunriseTimePaint");
         SensorPaint sunsetPaint = thirdRowPaints.get("sunsetTimePaint");
-        yOffset = yOffset + rowVerticalMargin + (computeRowYOffset(sunrisePaint.getText() + "" + sunsetPaint.getText(), sunrisePaint));
-        canvas.drawText(sunrisePaint.getText() + "" + sunsetPaint.getText(), computeXOffset(sunrisePaint.getText() + "" + sunsetPaint.getText(), sunrisePaint, bounds), yOffset, sunrisePaint);
+        yOffset = yOffset + rowVerticalMargin + (computeRowYOffset(sunrisePaint.getText() + "    " + sunsetPaint.getText(), sunrisePaint));
+        canvas.drawText(sunrisePaint.getText() + "   " + sunsetPaint.getText(), computeXOffset(sunrisePaint.getText() + "    " + sunsetPaint.getText(), sunrisePaint, bounds), yOffset, sunrisePaint);
 
 
         // Go over the sensor paints
