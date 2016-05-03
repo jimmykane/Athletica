@@ -46,14 +46,17 @@ public class WatchFace {
     // Background Paint
     private final android.graphics.Paint backgroundPaint;
 
-    // Standard Paints -> Time and Battery
-    private final LinkedHashMap<String, TextPaint> standardPaints = new LinkedHashMap<String, TextPaint>();
+    // First row of paints
+    private final LinkedHashMap<String, TextPaint> firstRowPaints = new LinkedHashMap<>();
 
-    // Extra Paints -> Date for now
-    private final LinkedHashMap<String, TextPaint> extraPaints = new LinkedHashMap<String, TextPaint>();
+    // Second row
+    private final LinkedHashMap<String, TextPaint> secondRowPaints = new LinkedHashMap<>();
 
-    // Sensor Paints
-    protected final LinkedHashMap<Integer, SensorPaint> sensorPaints = new LinkedHashMap<Integer, SensorPaint>();
+    // Third row
+    private final LinkedHashMap<String, SensorPaint> thirdRowPaints = new LinkedHashMap<>();
+
+    // Forth row
+    protected final LinkedHashMap<Integer, SensorPaint> forthRowPaints = new LinkedHashMap<>();
 
     private final Float rowVerticalMargin;
 
@@ -88,7 +91,7 @@ public class WatchFace {
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
         timePaint.setAntiAlias(true);
-        standardPaints.put("timePaint", timePaint);
+        firstRowPaints.put("timePaint", timePaint);
 
         // Add paint for battery level
         BatterySensorPaint batterySensorPaint = new BatterySensorPaint();
@@ -97,7 +100,7 @@ public class WatchFace {
         batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
         batterySensorPaint.setAntiAlias(true);
         batterySensorPaint.setText("0");
-        standardPaints.put("batterySensorPaint", batterySensorPaint);
+        firstRowPaints.put("batterySensorPaint", batterySensorPaint);
 
         // Add paint for date
         TextPaint datePaint = new TextPaint();
@@ -106,7 +109,7 @@ public class WatchFace {
         datePaint.setAntiAlias(true);
         datePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
 
-        extraPaints.put("datePaint", datePaint);
+        secondRowPaints.put("datePaint", datePaint);
 
         // Add paint for sunrise
         SensorPaint sunriseTimePaint = new SunriseTimePaint();
@@ -114,7 +117,7 @@ public class WatchFace {
         sunriseTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sunriseTimePaint.setAntiAlias(true);
-        extraPaints.put("sunriseTimePaint", sunriseTimePaint);
+        thirdRowPaints.put("sunriseTimePaint", sunriseTimePaint);
 
         // Add paint for sunset
         SensorPaint sunsetTimePaint = new SunsetTimePaint();
@@ -122,7 +125,7 @@ public class WatchFace {
         sunsetTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunsetTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sunsetTimePaint.setAntiAlias(true);
-        extraPaints.put("sunsetTimePaint", sunsetTimePaint);
+        thirdRowPaints.put("sunsetTimePaint", sunsetTimePaint);
     }
 
     /**
@@ -136,8 +139,9 @@ public class WatchFace {
         // First draw background
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
 
-        // Draw Time
-        TextPaint timePaint = standardPaints.get("timePaint");
+        // @todo refactor the shit out of this when you find your layout
+        // Draw Time for now
+        TextPaint timePaint = firstRowPaints.get("timePaint");
         timePaint.setText(String.format(
                 shouldShowSeconds ?
                         TIME_FORMAT_WITH_SECONDS :
@@ -145,43 +149,48 @@ public class WatchFace {
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
                 calendar.get(Calendar.SECOND)));
-        canvas.drawText(timePaint.getText(), computeXOffset(timePaint, bounds), computeFirstRowYOffset(timePaint, bounds), timePaint);
+        Float yOffset = computeFirstRowYOffset(timePaint, bounds);
+        canvas.drawText(timePaint.getText(), computeXOffset(timePaint.getText(), timePaint, bounds), yOffset, timePaint);
 
-        // Draw battery
-        TextPaint batterySensorPaint = standardPaints.get("batterySensorPaint");
-        canvas.drawText(batterySensorPaint.getText(), computeXOffset(batterySensorPaint, bounds), computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
+
+
 
         // Set the text of the data
-        extraPaints.get("datePaint").setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH)  + 1, calendar.get(calendar.YEAR)));
+        TextPaint datePaint = secondRowPaints.get("datePaint");
+        datePaint.setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH)  + 1, calendar.get(calendar.YEAR)));
+        yOffset = yOffset + rowVerticalMargin + computeRowYOffset(datePaint.getText(), datePaint);
+        canvas.drawText(datePaint.getText(), computeXOffset(datePaint.getText(), datePaint, bounds), yOffset, datePaint);
 
-        Float yOffset = computeFirstRowYOffset(timePaint, bounds);
-        // Go over the extra paints
-        for (Map.Entry<String, TextPaint> entry : extraPaints.entrySet()) {
-            TextPaint paint = entry.getValue();
-            if (paint.getText() == null) {
-                continue;
-            }
-            yOffset = yOffset + rowVerticalMargin + computeRowYOffset(paint);
-            Float xOffset = computeXOffset(paint, bounds);
-            canvas.drawText(paint.getText(), xOffset, yOffset, paint);
-        }
+
+        // Until this gets combine look statically.
+        SensorPaint sunrisePaint = thirdRowPaints.get("sunriseTimePaint");
+        SensorPaint sunsetPaint = thirdRowPaints.get("sunsetTimePaint");
+        yOffset = yOffset + rowVerticalMargin + (computeRowYOffset(sunrisePaint.getText() + "" + sunsetPaint.getText(), sunrisePaint));
+        canvas.drawText(sunrisePaint.getText() + "" + sunsetPaint.getText(), computeXOffset(sunrisePaint.getText() + "" + sunsetPaint.getText(), sunrisePaint, bounds), yOffset, sunrisePaint);
+
+
         // Go over the sensor paints
-        for (Map.Entry<Integer, SensorPaint> entry : sensorPaints.entrySet()) {
+        for (Map.Entry<Integer, SensorPaint> entry : forthRowPaints.entrySet()) {
             TextPaint paint = entry.getValue();
             if (paint.getText() == null) {
                 continue;
             }
-            yOffset = yOffset + rowVerticalMargin + computeRowYOffset(paint);
-            Float xOffset = computeXOffset(paint, bounds);
+            yOffset = yOffset + rowVerticalMargin + computeRowYOffset(paint.getText(), paint);
+            Float xOffset = computeXOffset(paint.getText(), paint, bounds);
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
         }
+
+
+        // Draw battery
+        TextPaint batterySensorPaint = firstRowPaints.get("batterySensorPaint");
+        canvas.drawText(batterySensorPaint.getText(), computeXOffset(batterySensorPaint.getText(), batterySensorPaint, bounds), computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
     }
 
     /**
      * Computes the X-Axis offset so that the text is horizontally centered
      */
-    private float computeXOffset(TextPaint paint, Rect watchBounds) {
-        return watchBounds.exactCenterX() - (paint.measureText(paint.getText()) / 2.0f);
+    private float computeXOffset(String text, TextPaint paint, Rect watchBounds) {
+        return watchBounds.exactCenterX() - (paint.measureText(text) / 2.0f);
     }
 
     /**
@@ -198,9 +207,9 @@ public class WatchFace {
     /**
      * Computes the Y-Axis offset for a paint, according to it's size and margin
      */
-    private float computeRowYOffset(TextPaint paint) {
+    private float computeRowYOffset(String Text, TextPaint paint) {
         Rect textBounds = new Rect();
-        paint.getTextBounds(paint.getText(), 0, paint.getText().length(), textBounds);
+        paint.getTextBounds(Text, 0, Text.length(), textBounds);
         return (textBounds.height() / 2.0f);
     }
 
@@ -217,13 +226,13 @@ public class WatchFace {
      * Toggles the ambient or not mode for all the paints
      */
     public void inAmbientMode(boolean inAmbientMode) {
-        for (Map.Entry<String, TextPaint> entry : standardPaints.entrySet()) {
+        for (Map.Entry<String, TextPaint> entry : firstRowPaints.entrySet()) {
             entry.getValue().inAmbientMode(inAmbientMode);
         }
-        for (Map.Entry<String, TextPaint> entry : extraPaints.entrySet()) {
+        for (Map.Entry<String, TextPaint> entry : secondRowPaints.entrySet()) {
             entry.getValue().inAmbientMode(inAmbientMode);
         }
-        for (Map.Entry<Integer, SensorPaint> entry : sensorPaints.entrySet()) {
+        for (Map.Entry<Integer, SensorPaint> entry : forthRowPaints.entrySet()) {
             entry.getValue().inAmbientMode(inAmbientMode);
         }
     }
@@ -251,24 +260,24 @@ public class WatchFace {
         sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sensorPaint.setAntiAlias(true);
-        sensorPaints.put(sensorType, sensorPaint);
+        forthRowPaints.put(sensorType, sensorPaint);
     }
 
     public void removeSensorPaint(Integer key) {
-        sensorPaints.remove(key);
+        forthRowPaints.remove(key);
     }
 
     public void updateSensorPaintText(Integer key, String value) {
-        sensorPaints.get(key).setText(value);
+        forthRowPaints.get(key).setText(value);
     }
 
     public void updateBatteryLevel(Integer batteryPercentage) {
-        standardPaints.get("batterySensorPaint").setText(batteryPercentage.toString());
+        firstRowPaints.get("batterySensorPaint").setText(batteryPercentage.toString());
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
-        extraPaints.get("sunriseTimePaint").setText(sunriseSunset.first);
-        extraPaints.get("sunsetTimePaint").setText(sunriseSunset.second);
+        thirdRowPaints.get("sunriseTimePaint").setText(sunriseSunset.first);
+        thirdRowPaints.get("sunsetTimePaint").setText(sunriseSunset.second);
     }
 
 }
