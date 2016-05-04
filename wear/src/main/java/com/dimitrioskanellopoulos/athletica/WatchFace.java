@@ -62,7 +62,7 @@ public class WatchFace {
     protected final static LinkedHashMap<String, SensorPaint> lastRowPaints = new LinkedHashMap<>();
 
     // All the rows together
-    private final static LinkedHashMap[] sensorPaintRows = {thirdRowPaints, forthRowPaints};
+    private final static LinkedHashMap[] sensorPaintRows = {firstRowPaints, secondRowPaints, thirdRowPaints, forthRowPaints};
 
     private final Float rowVerticalMargin;
 
@@ -153,7 +153,6 @@ public class WatchFace {
         // First draw background
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
 
-        // @todo refactor the shit out of this when you find your layout
         // Draw Time for now
         TextPaint timePaint = firstRowPaints.get("timePaint");
         timePaint.setText(String.format(
@@ -163,61 +162,29 @@ public class WatchFace {
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
                 calendar.get(Calendar.SECOND)));
-        Float yOffset = computeFirstRowYOffset(timePaint.getText(), timePaint, bounds);
-        canvas.drawText(timePaint.getText(), computeXOffset(timePaint.getText(), timePaint, bounds), yOffset, timePaint);
 
         // Set the text of the data
         TextPaint datePaint = secondRowPaints.get("datePaint");
         datePaint.setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH) + 1, calendar.get(calendar.YEAR)));
-        yOffset = yOffset + rowVerticalMargin + computeRowYOffset(datePaint.getText(), datePaint);
-        canvas.drawText(datePaint.getText(), computeXOffset(datePaint.getText(), datePaint, bounds), yOffset, datePaint);
 
-        // Draw the 3rd row
-        drawRows(canvas, yOffset, bounds);
-//        Float totalTextWidth = 0f;
-//        Float maxTextHeight = 0f;
-//        for (Map.Entry<String, SensorPaint> entry : thirdRowPaints.entrySet()) {
-//            SensorPaint sensorPaint = entry.getValue();
-//            totalTextWidth += sensorPaint.getSelfTextWidth() + rowHorizontalMargin;
-//            if (maxTextHeight < sensorPaint.getSelfTextHeight()){
-//                maxTextHeight = sensorPaint.getSelfTextHeight();
-//            }
-//        }
-//
-//        yOffset += rowVerticalMargin + maxTextHeight/2.0f;
-//        Float cursor = bounds.exactCenterX() - (totalTextWidth-rowHorizontalMargin)/2.0f;
-//        int i = 0;
-//        for (Map.Entry<String, SensorPaint> entry : thirdRowPaints.entrySet()) {
-//            SensorPaint sensorPaint = entry.getValue();
-//            canvas.drawText(sensorPaint.getText(), cursor, yOffset  , sensorPaint); // check if it needs per paint height
-//            cursor += sensorPaint.getSelfTextWidth() + rowHorizontalMargin;
-//        }
-
-        // Go over the sensor paints
-//        for (Map.Entry<Integer, SensorPaint> entry : forthRowPaints.entrySet()) {
-//            TextPaint paint = entry.getValue();
-//            if (paint.getText() == null) {
-//                continue;
-//            }
-//            yOffset = yOffset + rowVerticalMargin + computeRowYOffset(paint.getText(), paint);
-//            Float xOffset = computeXOffset(paint.getText(), paint, bounds);
-//            canvas.drawText(paint.getText(), xOffset, yOffset, paint);
-//        }
+        // Draw Paints
+        drawRows(canvas, bounds);
 
         // Draw battery
         SensorPaint batterySensorPaint = lastRowPaints.get("batterySensorPaint");
         float xOffsetTotal = computeXOffset(batterySensorPaint.getIcon() + batterySensorPaint.getText(), batterySensorPaint, bounds);
-
         canvas.drawText(batterySensorPaint.getIcon(), xOffsetTotal, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
         canvas.drawText(batterySensorPaint.getText(), xOffsetTotal + batterySensorPaint.measureText(batterySensorPaint.getIcon()) / 1f, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
     }
 
-    public void drawRows(Canvas canvas, Float yOffset, Rect bounds){
-        for (LinkedHashMap<String, SensorPaint> sensorPaintRow : sensorPaintRows){
+    public void drawRows(Canvas canvas, Rect bounds){
+        int i = 0;
+        Float yOffset = bounds.exactCenterY();
+        for (LinkedHashMap<String, TextPaint> sensorPaintRow : sensorPaintRows){
             Float totalTextWidth = 0f;
             Float maxTextHeight = 0f;
-            for (Map.Entry<String, SensorPaint> entry : sensorPaintRow.entrySet()) {
-                SensorPaint sensorPaint = entry.getValue();
+            for (Map.Entry<String, TextPaint> entry : sensorPaintRow.entrySet()) {
+                TextPaint sensorPaint = entry.getValue();
                 totalTextWidth += sensorPaint.getSelfTextWidth() + rowHorizontalMargin;
                 if (maxTextHeight < sensorPaint.getSelfTextHeight()){
                     maxTextHeight = sensorPaint.getSelfTextHeight();
@@ -225,13 +192,16 @@ public class WatchFace {
             }
 
             yOffset += rowVerticalMargin + maxTextHeight/2.0f;
+            if (i==0){
+                yOffset = yOffset -rowHorizontalMargin;
+            }
             Float cursor = bounds.exactCenterX() - (totalTextWidth-rowHorizontalMargin)/2.0f;
-            int i = 0;
-            for (Map.Entry<String, SensorPaint> entry : sensorPaintRow.entrySet()) {
-                SensorPaint sensorPaint = entry.getValue();
+            for (Map.Entry<String, TextPaint> entry : sensorPaintRow.entrySet()) {
+                TextPaint sensorPaint = entry.getValue();
                 canvas.drawText(sensorPaint.getText(), cursor, yOffset  , sensorPaint); // check if it needs per paint height
                 cursor += sensorPaint.getSelfTextWidth() + rowHorizontalMargin;
             }
+            i++;
         }
     }
 
