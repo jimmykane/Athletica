@@ -18,6 +18,7 @@ import com.dimitrioskanellopoulos.athletica.paints.BatterySensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.SensorPaintFactory;
 import com.dimitrioskanellopoulos.athletica.paints.SunriseTimePaint;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -47,19 +48,22 @@ public class WatchFace {
     private final android.graphics.Paint backgroundPaint;
 
     // First row of paints
-    private final LinkedHashMap<String, TextPaint> firstRowPaints = new LinkedHashMap<>();
+    private final static LinkedHashMap<String, TextPaint> firstRowPaints = new LinkedHashMap<>();
 
     // Second row
-    private final LinkedHashMap<String, TextPaint> secondRowPaints = new LinkedHashMap<>();
+    private final static LinkedHashMap<String, TextPaint> secondRowPaints = new LinkedHashMap<>();
 
     // Third row
-    private final LinkedHashMap<String, SensorPaint> thirdRowPaints = new LinkedHashMap<>();
+    private final static LinkedHashMap<String, SensorPaint> thirdRowPaints = new LinkedHashMap<>();
 
     // Forth row
-    protected final LinkedHashMap<Integer, SensorPaint> forthRowPaints = new LinkedHashMap<>();
+    protected final static LinkedHashMap<Integer, SensorPaint> forthRowPaints = new LinkedHashMap<>();
 
     // Last row
-    protected final LinkedHashMap<String, SensorPaint> lastRowPaints = new LinkedHashMap<>();
+    protected final static LinkedHashMap<String, SensorPaint> lastRowPaints = new LinkedHashMap<>();
+
+    // All the rows together
+    private final static LinkedHashMap[] rows = {firstRowPaints, secondRowPaints, thirdRowPaints, forthRowPaints, lastRowPaints};
 
     private final Float rowVerticalMargin;
 
@@ -188,6 +192,7 @@ public class WatchFace {
 
     /**
      * Computes the X-Axis offset so that the text is horizontally centered
+     * @todo should go over array and called compute rowXOffset for paints
      */
     private float computeXOffset(String text, TextPaint paint, Rect watchBounds) {
         return watchBounds.exactCenterX() - (paint.measureText(text) / 2.0f);
