@@ -152,7 +152,7 @@ public class WatchFace {
                 calendar.get(Calendar.HOUR_OF_DAY),
                 calendar.get(Calendar.MINUTE),
                 calendar.get(Calendar.SECOND)));
-        Float yOffset = computeFirstRowYOffset(timePaint, bounds);
+        Float yOffset = computeFirstRowYOffset(timePaint.getText(), timePaint, bounds);
         canvas.drawText(timePaint.getText(), computeXOffset(timePaint.getText(), timePaint, bounds), yOffset, timePaint);
 
 
@@ -201,10 +201,10 @@ public class WatchFace {
     /**
      * Computes the Y-Axis offset for the first row based on the exact center of the screen
      */
-    private float computeFirstRowYOffset(TextPaint firstRowPaint, Rect watchBounds) {
+    private float computeFirstRowYOffset(String text, TextPaint firstRowPaint, Rect watchBounds) {
         float centerY = watchBounds.exactCenterY();
         Rect textBounds = new Rect();
-        firstRowPaint.getTextBounds(firstRowPaint.getText(), 0, firstRowPaint.getText().length(), textBounds);
+        firstRowPaint.getTextBounds(text, 0, text.length(), textBounds);
         int textHeight = textBounds.height();
         return centerY + (textHeight / 2.0f);
     }
