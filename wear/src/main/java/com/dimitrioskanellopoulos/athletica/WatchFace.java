@@ -18,7 +18,6 @@ import com.dimitrioskanellopoulos.athletica.paints.BatterySensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.SensorPaintFactory;
 import com.dimitrioskanellopoulos.athletica.paints.SunriseTimePaint;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -63,9 +62,11 @@ public class WatchFace {
     protected final static LinkedHashMap<String, SensorPaint> lastRowPaints = new LinkedHashMap<>();
 
     // All the rows together
-    private final static LinkedHashMap[] rows = {firstRowPaints, secondRowPaints, thirdRowPaints, forthRowPaints, lastRowPaints};
+    private final static LinkedHashMap[] sensorPaintRows = {thirdRowPaints, forthRowPaints};
 
     private final Float rowVerticalMargin;
+
+    private final Float rowHorizontalMargin;
 
     private boolean shouldShowSeconds = true;
 
@@ -82,10 +83,16 @@ public class WatchFace {
         // Create fontAwesome typeface
         fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
 
-        // Define the size of the rows for vertical
+        // Define the margin of the rows for vertical
         rowVerticalMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 resources.getDimension(R.dimen.row_vertical_margin),
+                resources.getDisplayMetrics());
+
+        // Define the margin of the rows for horizontal
+        rowHorizontalMargin = TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                resources.getDimension(R.dimen.row_horizontal_margin),
                 resources.getDisplayMetrics());
 
         // Add paint for background
@@ -165,22 +172,37 @@ public class WatchFace {
         yOffset = yOffset + rowVerticalMargin + computeRowYOffset(datePaint.getText(), datePaint);
         canvas.drawText(datePaint.getText(), computeXOffset(datePaint.getText(), datePaint, bounds), yOffset, datePaint);
 
-        // Until this gets combine look statically.
-        SensorPaint sunrisePaint = thirdRowPaints.get("sunriseTimePaint"); // get the 1st
-        SensorPaint sunsetPaint = thirdRowPaints.get("sunsetTimePaint"); // get the 2nd
-        yOffset = yOffset + rowVerticalMargin + (computeRowYOffset(sunrisePaint.getText() + "    " + sunsetPaint.getText(), sunrisePaint));
-        canvas.drawText(sunrisePaint.getText() + "   " + sunsetPaint.getText(), computeXOffset(sunrisePaint.getText() + "   " + sunsetPaint.getText(), sunrisePaint, bounds), yOffset, sunrisePaint);
+        // Draw the 3rd row
+        drawRows(canvas, yOffset, bounds);
+//        Float totalTextWidth = 0f;
+//        Float maxTextHeight = 0f;
+//        for (Map.Entry<String, SensorPaint> entry : thirdRowPaints.entrySet()) {
+//            SensorPaint sensorPaint = entry.getValue();
+//            totalTextWidth += sensorPaint.getSelfTextWidth() + rowHorizontalMargin;
+//            if (maxTextHeight < sensorPaint.getSelfTextHeight()){
+//                maxTextHeight = sensorPaint.getSelfTextHeight();
+//            }
+//        }
+//
+//        yOffset += rowVerticalMargin + maxTextHeight/2.0f;
+//        Float cursor = bounds.exactCenterX() - (totalTextWidth-rowHorizontalMargin)/2.0f;
+//        int i = 0;
+//        for (Map.Entry<String, SensorPaint> entry : thirdRowPaints.entrySet()) {
+//            SensorPaint sensorPaint = entry.getValue();
+//            canvas.drawText(sensorPaint.getText(), cursor, yOffset  , sensorPaint); // check if it needs per paint height
+//            cursor += sensorPaint.getSelfTextWidth() + rowHorizontalMargin;
+//        }
 
         // Go over the sensor paints
-        for (Map.Entry<Integer, SensorPaint> entry : forthRowPaints.entrySet()) {
-            TextPaint paint = entry.getValue();
-            if (paint.getText() == null) {
-                continue;
-            }
-            yOffset = yOffset + rowVerticalMargin + computeRowYOffset(paint.getText(), paint);
-            Float xOffset = computeXOffset(paint.getText(), paint, bounds);
-            canvas.drawText(paint.getText(), xOffset, yOffset, paint);
-        }
+//        for (Map.Entry<Integer, SensorPaint> entry : forthRowPaints.entrySet()) {
+//            TextPaint paint = entry.getValue();
+//            if (paint.getText() == null) {
+//                continue;
+//            }
+//            yOffset = yOffset + rowVerticalMargin + computeRowYOffset(paint.getText(), paint);
+//            Float xOffset = computeXOffset(paint.getText(), paint, bounds);
+//            canvas.drawText(paint.getText(), xOffset, yOffset, paint);
+//        }
 
         // Draw battery
         SensorPaint batterySensorPaint = lastRowPaints.get("batterySensorPaint");
@@ -188,6 +210,29 @@ public class WatchFace {
 
         canvas.drawText(batterySensorPaint.getIcon(), xOffsetTotal, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
         canvas.drawText(batterySensorPaint.getText(), xOffsetTotal + batterySensorPaint.measureText(batterySensorPaint.getIcon()) / 1f, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
+    }
+
+    public void drawRows(Canvas canvas, Float yOffset, Rect bounds){
+        for (LinkedHashMap<String, SensorPaint> sensorPaintRow : sensorPaintRows){
+            Float totalTextWidth = 0f;
+            Float maxTextHeight = 0f;
+            for (Map.Entry<String, SensorPaint> entry : sensorPaintRow.entrySet()) {
+                SensorPaint sensorPaint = entry.getValue();
+                totalTextWidth += sensorPaint.getSelfTextWidth() + rowHorizontalMargin;
+                if (maxTextHeight < sensorPaint.getSelfTextHeight()){
+                    maxTextHeight = sensorPaint.getSelfTextHeight();
+                }
+            }
+
+            yOffset += rowVerticalMargin + maxTextHeight/2.0f;
+            Float cursor = bounds.exactCenterX() - (totalTextWidth-rowHorizontalMargin)/2.0f;
+            int i = 0;
+            for (Map.Entry<String, SensorPaint> entry : sensorPaintRow.entrySet()) {
+                SensorPaint sensorPaint = entry.getValue();
+                canvas.drawText(sensorPaint.getText(), cursor, yOffset  , sensorPaint); // check if it needs per paint height
+                cursor += sensorPaint.getSelfTextWidth() + rowHorizontalMargin;
+            }
+        }
     }
 
     /**
