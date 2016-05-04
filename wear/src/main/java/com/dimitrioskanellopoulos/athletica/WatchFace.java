@@ -104,7 +104,6 @@ public class WatchFace {
         timePaint.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL));
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
-        timePaint.setAntiAlias(true);
         firstRowPaints.put("timePaint", timePaint);
 
         // Add paint for battery level
@@ -112,7 +111,6 @@ public class WatchFace {
         batterySensorPaint.setTypeface(fontAwesome);
         batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
-        batterySensorPaint.setAntiAlias(true);
         batterySensorPaint.setText("0");
         lastRowPaints.put("batterySensorPaint", batterySensorPaint);
 
@@ -120,7 +118,6 @@ public class WatchFace {
         TextPaint datePaint = new TextPaint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTextSize(resources.getDimension(R.dimen.date_size));
-        datePaint.setAntiAlias(true);
         datePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
 
         secondRowPaints.put("datePaint", datePaint);
@@ -130,7 +127,6 @@ public class WatchFace {
         sunriseTimePaint.setTypeface(fontAwesome);
         sunriseTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
-        sunriseTimePaint.setAntiAlias(true);
         thirdRowPaints.put("sunriseTimePaint", sunriseTimePaint);
 
         // Add paint for sunset
@@ -138,7 +134,6 @@ public class WatchFace {
         sunsetTimePaint.setTypeface(fontAwesome);
         sunsetTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunsetTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
-        sunsetTimePaint.setAntiAlias(true);
         thirdRowPaints.put("sunsetTimePaint", sunsetTimePaint);
     }
 
@@ -285,7 +280,6 @@ public class WatchFace {
         sensorPaint.setTypeface(fontAwesome);
         sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
-        sensorPaint.setAntiAlias(true);
         forthRowPaints.put(sensorType, sensorPaint);
     }
 

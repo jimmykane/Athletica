@@ -11,6 +11,10 @@ public class TextPaint extends Paint implements TextPaintInterface {
     protected String text;
     private Boolean isInAmbient = false;
 
+    public TextPaint(){
+        setAntiAlias(true);
+    }
+
     @Override
     public void setText(@NonNull String text) {
         this.text = text;
