@@ -237,7 +237,13 @@ public class WatchFace {
         for (Map.Entry<String, TextPaint> entry : secondRowPaints.entrySet()) {
             entry.getValue().inAmbientMode(inAmbientMode);
         }
+        for (Map.Entry<String, SensorPaint> entry : thirdRowPaints.entrySet()) {
+            entry.getValue().inAmbientMode(inAmbientMode);
+        }
         for (Map.Entry<Integer, SensorPaint> entry : forthRowPaints.entrySet()) {
+            entry.getValue().inAmbientMode(inAmbientMode);
+        }
+        for (Map.Entry<String, SensorPaint> entry : lastRowPaints.entrySet()) {
             entry.getValue().inAmbientMode(inAmbientMode);
         }
     }
