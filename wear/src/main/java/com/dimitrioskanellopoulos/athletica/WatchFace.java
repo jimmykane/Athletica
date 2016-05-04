@@ -155,22 +155,17 @@ public class WatchFace {
         Float yOffset = computeFirstRowYOffset(timePaint.getText(), timePaint, bounds);
         canvas.drawText(timePaint.getText(), computeXOffset(timePaint.getText(), timePaint, bounds), yOffset, timePaint);
 
-
-
-
         // Set the text of the data
         TextPaint datePaint = secondRowPaints.get("datePaint");
-        datePaint.setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH)  + 1, calendar.get(calendar.YEAR)));
+        datePaint.setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH) + 1, calendar.get(calendar.YEAR)));
         yOffset = yOffset + rowVerticalMargin + computeRowYOffset(datePaint.getText(), datePaint);
         canvas.drawText(datePaint.getText(), computeXOffset(datePaint.getText(), datePaint, bounds), yOffset, datePaint);
-
 
         // Until this gets combine look statically.
         SensorPaint sunrisePaint = thirdRowPaints.get("sunriseTimePaint");
         SensorPaint sunsetPaint = thirdRowPaints.get("sunsetTimePaint");
         yOffset = yOffset + rowVerticalMargin + (computeRowYOffset(sunrisePaint.getText() + "    " + sunsetPaint.getText(), sunrisePaint));
         canvas.drawText(sunrisePaint.getText() + "   " + sunsetPaint.getText(), computeXOffset(sunrisePaint.getText() + "    " + sunsetPaint.getText(), sunrisePaint, bounds), yOffset, sunrisePaint);
-
 
         // Go over the sensor paints
         for (Map.Entry<Integer, SensorPaint> entry : forthRowPaints.entrySet()) {
@@ -188,7 +183,7 @@ public class WatchFace {
         float xOffsetTotal = computeXOffset(batterySensorPaint.getIcon() + batterySensorPaint.getText(), batterySensorPaint, bounds);
 
         canvas.drawText(batterySensorPaint.getIcon(), xOffsetTotal, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
-        canvas.drawText(batterySensorPaint.getText(), xOffsetTotal + batterySensorPaint.measureText(batterySensorPaint.getIcon())/1f, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
+        canvas.drawText(batterySensorPaint.getText(), xOffsetTotal + batterySensorPaint.measureText(batterySensorPaint.getIcon()) / 1f, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
     }
 
     /**
