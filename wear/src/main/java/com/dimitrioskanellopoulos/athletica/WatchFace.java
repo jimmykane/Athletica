@@ -58,6 +58,9 @@ public class WatchFace {
     // Forth row
     protected final LinkedHashMap<Integer, SensorPaint> forthRowPaints = new LinkedHashMap<>();
 
+    // Last row
+    protected final LinkedHashMap<String, SensorPaint> lastRowPaints = new LinkedHashMap<>();
+
     private final Float rowVerticalMargin;
 
     private boolean shouldShowSeconds = true;
@@ -100,7 +103,7 @@ public class WatchFace {
         batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
         batterySensorPaint.setAntiAlias(true);
         batterySensorPaint.setText("0");
-        firstRowPaints.put("batterySensorPaint", batterySensorPaint);
+        lastRowPaints.put("batterySensorPaint", batterySensorPaint);
 
         // Add paint for date
         TextPaint datePaint = new TextPaint();
@@ -180,9 +183,8 @@ public class WatchFace {
             canvas.drawText(paint.getText(), xOffset, yOffset, paint);
         }
 
-
         // Draw battery
-        TextPaint batterySensorPaint = firstRowPaints.get("batterySensorPaint");
+        TextPaint batterySensorPaint = lastRowPaints.get("batterySensorPaint");
         canvas.drawText(batterySensorPaint.getText(), computeXOffset(batterySensorPaint.getText(), batterySensorPaint, bounds), computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
     }
 
@@ -272,7 +274,7 @@ public class WatchFace {
     }
 
     public void updateBatteryLevel(Integer batteryPercentage) {
-        firstRowPaints.get("batterySensorPaint").setText(batteryPercentage.toString());
+        lastRowPaints.get("batterySensorPaint").setText(batteryPercentage.toString());
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
