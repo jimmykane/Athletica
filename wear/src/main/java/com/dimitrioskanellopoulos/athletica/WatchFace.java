@@ -106,14 +106,6 @@ public class WatchFace {
         timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
         firstRowPaints.put("timePaint", timePaint);
 
-        // Add paint for battery level
-        BatterySensorPaint batterySensorPaint = new BatterySensorPaint();
-        batterySensorPaint.setTypeface(fontAwesome);
-        batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
-        batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
-        batterySensorPaint.setText("0");
-        lastRowPaints.put("batterySensorPaint", batterySensorPaint);
-
         // Add paint for date
         TextPaint datePaint = new TextPaint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
@@ -135,6 +127,14 @@ public class WatchFace {
         sunsetTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunsetTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
         thirdRowPaints.put("sunsetTimePaint", sunsetTimePaint);
+
+        // Add paint for battery level
+        BatterySensorPaint batterySensorPaint = new BatterySensorPaint();
+        batterySensorPaint.setTypeface(fontAwesome);
+        batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
+        batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
+        batterySensorPaint.setText("0");
+        lastRowPaints.put("batterySensorPaint", batterySensorPaint);
     }
 
     /**
