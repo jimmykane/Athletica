@@ -184,8 +184,11 @@ public class WatchFace {
         }
 
         // Draw battery
-        TextPaint batterySensorPaint = lastRowPaints.get("batterySensorPaint");
-        canvas.drawText(batterySensorPaint.getText(), computeXOffset(batterySensorPaint.getText(), batterySensorPaint, bounds), computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
+        SensorPaint batterySensorPaint = lastRowPaints.get("batterySensorPaint");
+        float xOffsetTotal = computeXOffset(batterySensorPaint.getIcon() + batterySensorPaint.getText(), batterySensorPaint, bounds);
+
+        canvas.drawText(batterySensorPaint.getIcon(), xOffsetTotal, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
+        canvas.drawText(batterySensorPaint.getText(), xOffsetTotal + batterySensorPaint.measureText(batterySensorPaint.getIcon())/1f, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
     }
 
     /**

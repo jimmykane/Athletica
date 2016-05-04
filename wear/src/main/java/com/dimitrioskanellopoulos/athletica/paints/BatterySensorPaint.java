@@ -13,7 +13,7 @@ public class BatterySensorPaint extends SensorPaint {
 
     @Override
     public String getText() {
-        return getIcon() + " " + super.text + "" + getUnits();
+        return super.text + "" + getUnits();
     }
 
     @Override
