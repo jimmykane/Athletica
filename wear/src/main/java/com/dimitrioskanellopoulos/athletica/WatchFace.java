@@ -62,7 +62,7 @@ public class WatchFace {
     protected final static LinkedHashMap<String, SensorPaint> lastRowPaints = new LinkedHashMap<>();
 
     // All the rows together
-    private final static LinkedHashMap[] paintsRows = {firstRowPaints, secondRowPaints, thirdRowPaints, forthRowPaints};
+    private final static LinkedHashMap[] paintsRows = {firstRowPaints, secondRowPaints, thirdRowPaints, forthRowPaints, lastRowPaints};
 
     private final Float rowVerticalMargin;
 
@@ -166,10 +166,10 @@ public class WatchFace {
         drawRows(canvas, bounds);
 
         // Draw battery
-        SensorPaint batterySensorPaint = lastRowPaints.get("batterySensorPaint");
-        float xOffsetTotal = computeXOffset(batterySensorPaint.getIcon() + batterySensorPaint.getText(), batterySensorPaint, bounds);
-        canvas.drawText(batterySensorPaint.getIcon(), xOffsetTotal, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
-        canvas.drawText(batterySensorPaint.getText(), xOffsetTotal + batterySensorPaint.measureText(batterySensorPaint.getIcon()) / 1f, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
+//        SensorPaint batterySensorPaint = lastRowPaints.get("batterySensorPaint");
+//        float xOffsetTotal = computeXOffset(batterySensorPaint.getIcon() + batterySensorPaint.getText(), batterySensorPaint, bounds);
+//        canvas.drawText(batterySensorPaint.getIcon(), xOffsetTotal, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
+//        canvas.drawText(batterySensorPaint.getText(), xOffsetTotal + batterySensorPaint.measureText(batterySensorPaint.getIcon()) / 1f, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
     }
 
     public void drawRows(Canvas canvas, Rect bounds){
@@ -188,9 +188,15 @@ public class WatchFace {
             }
 
             yOffset += rowVerticalMargin + maxTextHeight/2.0f;
+            // First row change yOffset
             if (i==0){
                 yOffset = yOffset -rowHorizontalMargin;
             }
+            // Last row change yOffset and put it as low as possible because it's the bottom row
+            if (i == paintsRows.length -1){
+                yOffset = bounds.bottom - chinSize - maxTextHeight/2.0f;
+            }
+
             Float cursor = bounds.exactCenterX() - (totalTextWidth-rowHorizontalMargin)/2.0f;
             for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
                 TextPaint sensorPaint = entry.getValue();
