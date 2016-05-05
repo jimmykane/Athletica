@@ -95,7 +95,7 @@ public class WatchFace {
                 resources.getDisplayMetrics());
 
         // Default typeface
-        defaultTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/Rationale-Regular.ttf");
+        defaultTypeface = Typeface.DEFAULT;
 
         // Add paint for background
         backgroundPaint = new Paint();
