@@ -24,7 +24,6 @@ public class BatterySensorPaint extends SensorPaint {
         Integer batteryPercentage = Integer.parseInt(super.text);
         String icon;
         setColor(Color.WHITE);
-        getIconTextPaint().setColor(Color.WHITE);
         if (batteryPercentage > 80 && batteryPercentage <= 100) {
             icon = batteryFullIcon;
         } else if (batteryPercentage > 60 && batteryPercentage <= 80) {
@@ -36,7 +35,6 @@ public class BatterySensorPaint extends SensorPaint {
         } else {
             icon = batteryEmptyIcon;
             if (!isInAmbientMode()) {
-                getIconTextPaint().setColor(Color.RED);
                 setColor(Color.RED);
             }
         }

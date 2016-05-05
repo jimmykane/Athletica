@@ -188,7 +188,7 @@ public class WatchFace {
                 totalTextWidth += textPaint.getSelfTextWidth() + rowHorizontalMargin;
                 // If it's a sensor paint add the space for the icon with its own paint
                 if (textPaint instanceof SensorPaint){
-                    totalTextWidth += ((SensorPaint) textPaint).getIconTextPaint().measureText(((SensorPaint) textPaint).getIcon());
+                    totalTextWidth += ((SensorPaint) textPaint).getIconTextPaint().measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin/2;
                 }
                 // @todo should check against the icon height as well
                 if (maxTextHeight < textPaint.getSelfTextHeight()){
@@ -199,7 +199,7 @@ public class WatchFace {
             yOffset += rowVerticalMargin + maxTextHeight/2.0f;
             // First row change yOffset
             if (i==0){
-                yOffset = yOffset -rowHorizontalMargin;
+                yOffset = yOffset - rowHorizontalMargin;
             }
             // Last row change yOffset and put it as low as possible because it's the bottom row
             if (i == paintsRows.length -1){
