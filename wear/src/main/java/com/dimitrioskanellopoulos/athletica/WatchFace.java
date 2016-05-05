@@ -95,7 +95,7 @@ public class WatchFace {
                 resources.getDisplayMetrics());
 
         // Default typeface
-        defaultTypeface = Typeface.DEFAULT;
+        defaultTypeface = Typeface.SANS_SERIF;
 
         // Add paint for background
         backgroundPaint = new Paint();
