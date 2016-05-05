@@ -226,20 +226,10 @@ public class WatchFace {
      * Toggles the ambient or not mode for all the paints
      */
     public void inAmbientMode(boolean inAmbientMode) {
-        for (Map.Entry<String, TextPaint> entry : firstRowPaints.entrySet()) {
-            entry.getValue().inAmbientMode(inAmbientMode);
-        }
-        for (Map.Entry<String, TextPaint> entry : secondRowPaints.entrySet()) {
-            entry.getValue().inAmbientMode(inAmbientMode);
-        }
-        for (Map.Entry<String, SensorPaint> entry : thirdRowPaints.entrySet()) {
-            entry.getValue().inAmbientMode(inAmbientMode);
-        }
-        for (Map.Entry<Integer, SensorPaint> entry : forthRowPaints.entrySet()) {
-            entry.getValue().inAmbientMode(inAmbientMode);
-        }
-        for (Map.Entry<String, SensorPaint> entry : lastRowPaints.entrySet()) {
-            entry.getValue().inAmbientMode(inAmbientMode);
+        for (LinkedHashMap<String, TextPaint> paintsRow : paintsRows){
+            for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
+                entry.getValue().inAmbientMode(inAmbientMode);
+            }
         }
     }
 
