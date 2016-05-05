@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
@@ -39,8 +38,6 @@ public class WatchFace {
 
     private final Resources resources;
 
-    private final Typeface fontAwesome;
-
     // The Calendar
     private static final Calendar calendar = Calendar.getInstance();
 
@@ -65,8 +62,11 @@ public class WatchFace {
     // All the rows together
     private final static LinkedHashMap[] paintsRows = {firstRowPaints, secondRowPaints, thirdRowPaints, forthRowPaints, lastRowPaints};
 
-    // Icons Paint
-    private final Paint iconsPaint;
+    // FontAwesome
+    private final IconTextPaint fontAwesomePaint;
+
+    // MaterialIcons
+    private final IconTextPaint materialIconsPaint;
 
     private final Float rowVerticalMargin;
 
@@ -84,9 +84,6 @@ public class WatchFace {
 
         resources = context.getResources();
 
-        // Create fontAwesome typeface
-        fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
-
         // Define the margin of the rows for vertical
         rowVerticalMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
@@ -103,11 +100,17 @@ public class WatchFace {
         backgroundPaint = new Paint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
 
+        // Add FontAwesome paint for icons
+        fontAwesomePaint = new IconTextPaint();
+        fontAwesomePaint.setColor(TEXT_DEFAULT_COLOUR);
+        fontAwesomePaint.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf"));
+        fontAwesomePaint.setTextSize(resources.getDimension(R.dimen.icon_size));
+
         // Add paint for icons
-        iconsPaint = new IconTextPaint();
-        iconsPaint.setColor(TEXT_DEFAULT_COLOUR);
-        iconsPaint.setTypeface(fontAwesome);
-        iconsPaint.setTextSize(resources.getDimension(R.dimen.icon_size));
+        materialIconsPaint = new IconTextPaint();
+        materialIconsPaint.setColor(TEXT_DEFAULT_COLOUR);
+        materialIconsPaint.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/MaterialIcons-Regular.ttf"));
+        materialIconsPaint.setTextSize(resources.getDimension(R.dimen.icon_size));
 
         // Add paint for time
         TextPaint timePaint = new TextPaint();
@@ -128,6 +131,7 @@ public class WatchFace {
         SensorPaint sunriseTimePaint = new SunriseTimePaint();
         sunriseTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
+        sunriseTimePaint.setIconTextPaint(fontAwesomePaint);
         thirdRowPaints.put("sunriseTimePaint", sunriseTimePaint);
 
         // Add paint for sunset
@@ -184,7 +188,7 @@ public class WatchFace {
                 totalTextWidth += textPaint.getSelfTextWidth() + rowHorizontalMargin;
                 // If it's a sensor paint add the space for the icon with its own paint
                 if (textPaint instanceof SensorPaint){
-                    totalTextWidth += iconsPaint.measureText(((SensorPaint) textPaint).getIcon());
+                    totalTextWidth += ((SensorPaint) textPaint).getIconTextPaint().measureText(((SensorPaint) textPaint).getIcon());
                 }
                 // @todo should check against the icon height as well
                 if (maxTextHeight < textPaint.getSelfTextHeight()){
@@ -207,8 +211,8 @@ public class WatchFace {
                 TextPaint textPaint = entry.getValue();
                 // Draw also the icon
                 if (textPaint instanceof SensorPaint){
-                    canvas.drawText(((SensorPaint) textPaint).getIcon(), cursor, yOffset  , iconsPaint);
-                    cursor += iconsPaint.measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin/2;
+                    canvas.drawText(((SensorPaint) textPaint).getIcon(), cursor, yOffset  , fontAwesomePaint);
+                    cursor += ((SensorPaint) textPaint).getIconTextPaint().measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin/2;
                 }
                 // Draw the paint
                 canvas.drawText(textPaint.getText(), cursor, yOffset  , textPaint); // check if it needs per paint height
@@ -274,6 +278,7 @@ public class WatchFace {
 
     public void addSensorPaint(Integer sensorType) {
         SensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(sensorType);
+        sensorPaint.setIconTextPaint(fontAwesomePaint);
         sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
         forthRowPaints.put(sensorType, sensorPaint);
