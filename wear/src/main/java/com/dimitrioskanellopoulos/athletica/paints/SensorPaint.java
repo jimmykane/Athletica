@@ -8,10 +8,10 @@ public class SensorPaint extends TextPaint implements SensorPaintInterface {
 
     private final static String icon = "\uf1db";
     private final static String units = "?";
-    private IconTextPaint iconTextPaint;
+    private TextPaint iconTextPaint;
 
     public SensorPaint(){
-        setIconTextPaint(new IconTextPaint());
+        setIconTextPaint(new TextPaint());
     }
 
     @Override
@@ -34,12 +34,12 @@ public class SensorPaint extends TextPaint implements SensorPaintInterface {
     }
 
     @Override
-    public void setIconTextPaint(IconTextPaint iconTextPaint) {
+    public void setIconTextPaint(TextPaint iconTextPaint) {
         this.iconTextPaint = iconTextPaint;
     }
 
     @Override
-    public IconTextPaint getIconTextPaint() {
+    public TextPaint getIconTextPaint() {
         return iconTextPaint;
     }
 

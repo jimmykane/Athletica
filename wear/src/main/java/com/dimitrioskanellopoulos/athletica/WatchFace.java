@@ -10,7 +10,6 @@ import android.graphics.Typeface;
 import android.util.Pair;
 import android.util.TypedValue;
 
-import com.dimitrioskanellopoulos.athletica.paints.IconTextPaint;
 import com.dimitrioskanellopoulos.athletica.paints.SensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.SunsetTimePaint;
 import com.dimitrioskanellopoulos.athletica.paints.TextPaint;
@@ -63,7 +62,7 @@ public class WatchFace {
     private final static LinkedHashMap[] paintsRows = {firstRowPaints, secondRowPaints, thirdRowPaints, forthRowPaints, lastRowPaints};
 
     // FontAwesome
-    private final IconTextPaint fontAwesomePaint;
+    private final TextPaint fontAwesomePaint;
 
     private final Typeface defaultTypeface;
 
@@ -103,7 +102,7 @@ public class WatchFace {
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
 
         // Add FontAwesome paint for icons
-        fontAwesomePaint = new IconTextPaint();
+        fontAwesomePaint = new TextPaint();
         fontAwesomePaint.setColor(TEXT_DEFAULT_COLOUR);
         fontAwesomePaint.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf"));
         fontAwesomePaint.setTextSize(resources.getDimension(R.dimen.icon_size));
