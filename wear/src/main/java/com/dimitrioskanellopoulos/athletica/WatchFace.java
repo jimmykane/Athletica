@@ -192,6 +192,11 @@ public class WatchFace {
             for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
                 TextPaint textPaint = entry.getValue();
                 totalTextWidth += textPaint.getSelfTextWidth() + rowHorizontalMargin;
+                // If it's a sensor paint add the space for the icon with its own paint
+                if (textPaint instanceof SensorPaint){
+                    totalTextWidth += iconsPaint.measureText(((SensorPaint) textPaint).getIcon());
+                }
+                // @todo should check against the icon height as well
                 if (maxTextHeight < textPaint.getSelfTextHeight()){
                     maxTextHeight = textPaint.getSelfTextHeight();
                 }
@@ -210,6 +215,12 @@ public class WatchFace {
             Float cursor = bounds.exactCenterX() - (totalTextWidth-rowHorizontalMargin)/2.0f;
             for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
                 TextPaint textPaint = entry.getValue();
+                // Draw also the icon
+                if (textPaint instanceof SensorPaint){
+                    canvas.drawText(((SensorPaint) textPaint).getIcon(), cursor, yOffset  , iconsPaint);
+                    cursor += iconsPaint.measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin/2;
+                }
+                // Draw the paint
                 canvas.drawText(textPaint.getText(), cursor, yOffset  , textPaint); // check if it needs per paint height
                 cursor += textPaint.getSelfTextWidth() + rowHorizontalMargin;
             }
