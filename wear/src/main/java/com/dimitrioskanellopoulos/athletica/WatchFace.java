@@ -73,7 +73,10 @@ public class WatchFace {
     private boolean shouldShowSeconds = true;
 
     private boolean isRound;
+    private boolean isInAmbientMode;
     private int chinSize;
+
+    private boolean shouldInterlace = true;
 
     /**
      * The WatchFace. Everything the user sees. No extra init or data manipulation
@@ -170,6 +173,8 @@ public class WatchFace {
 
         // Draw Paints
         drawRows(canvas, bounds);
+        interlaceCanvas(canvas, bounds);
+
     }
 
     public void drawRows(Canvas canvas, Rect bounds){
@@ -243,9 +248,27 @@ public class WatchFace {
     }
 
     /**
+     * Applies interlace effect
+     */
+    private void interlaceCanvas(Canvas canvas, Rect bounds){
+        Paint interlacePaint = new Paint();
+        interlacePaint.setColor(Color.BLACK);
+        interlacePaint.setAlpha(50);
+        if (isInAmbientMode){
+            interlacePaint.setAlpha(100);
+        }
+        for (int y=0; y < bounds.bottom; y++){
+            if (y%2 == 0 ) {
+                canvas.drawLine(0, y, bounds.right, y, interlacePaint);
+            }
+        }
+    }
+
+    /**
      * Toggles the ambient or not mode for all the paints
      */
     public void inAmbientMode(boolean inAmbientMode) {
+        isInAmbientMode = inAmbientMode;
         for (LinkedHashMap<String, TextPaint> paintsRow : paintsRows){
             for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
                 entry.getValue().inAmbientMode(inAmbientMode);
