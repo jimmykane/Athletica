@@ -13,7 +13,7 @@ public class SensorPaint extends TextPaint implements SensorPaintInterface {
         if (super.getText() != null){
             text = super.getText();
         }
-        return getIcon() + " " + text + " " + getUnits();
+        return text + " " + getUnits();
     }
 
     @Override
