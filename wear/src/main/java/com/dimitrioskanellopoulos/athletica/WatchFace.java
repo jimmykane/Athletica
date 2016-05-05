@@ -209,6 +209,7 @@ public class WatchFace {
                 if (col == paintsRow.size() - 1){
                     totalTextWidth -= rowHorizontalMargin;
                 }
+                col++;
             }
 
             // Add the total height to the offset
