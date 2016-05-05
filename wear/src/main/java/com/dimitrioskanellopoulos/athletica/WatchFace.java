@@ -170,12 +170,6 @@ public class WatchFace {
 
         // Draw Paints
         drawRows(canvas, bounds);
-
-        // Draw battery
-//        SensorPaint batterySensorPaint = lastRowPaints.get("batterySensorPaint");
-//        float xOffsetTotal = computeXOffset(batterySensorPaint.getIcon() + batterySensorPaint.getText(), batterySensorPaint, bounds);
-//        canvas.drawText(batterySensorPaint.getIcon(), xOffsetTotal, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
-//        canvas.drawText(batterySensorPaint.getText(), xOffsetTotal + batterySensorPaint.measureText(batterySensorPaint.getIcon()) / 1f, computeLastRowYOffset(batterySensorPaint, bounds), batterySensorPaint);
     }
 
     public void drawRows(Canvas canvas, Rect bounds){
