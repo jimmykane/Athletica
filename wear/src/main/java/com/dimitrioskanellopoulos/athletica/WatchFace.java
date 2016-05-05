@@ -44,7 +44,7 @@ public class WatchFace {
     private static final Calendar calendar = Calendar.getInstance();
 
     // Background Paint
-    private final android.graphics.Paint backgroundPaint;
+    private final Paint backgroundPaint;
 
     // First row of paints
     private final static LinkedHashMap<String, TextPaint> firstRowPaints = new LinkedHashMap<>();
@@ -63,6 +63,9 @@ public class WatchFace {
 
     // All the rows together
     private final static LinkedHashMap[] paintsRows = {firstRowPaints, secondRowPaints, thirdRowPaints, forthRowPaints, lastRowPaints};
+
+    // Icons Paint
+    private final Paint iconsPaint;
 
     private final Float rowVerticalMargin;
 
@@ -98,6 +101,12 @@ public class WatchFace {
         // Add paint for background
         backgroundPaint = new Paint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
+
+        // Add paint for icons
+        iconsPaint = new Paint();
+        iconsPaint.setColor(TEXT_DEFAULT_COLOUR);
+        iconsPaint.setTypeface(fontAwesome);
+        iconsPaint.setTextSize(resources.getDimension(R.dimen.icon_size));
 
         // Add paint for time
         TextPaint timePaint = new TextPaint();
