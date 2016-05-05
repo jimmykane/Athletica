@@ -135,9 +135,15 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private boolean isRegisteredTimeZoneReceiver = false;
 
         /**
+         * Whether tha Battery receiver is registered
+         */
+        boolean isRegisteredBatteryInfoReceiver = false;
+
+        /**
          * Whether tha location receiver is registered
          */
         boolean isRegisteredLocationReceiver = false;
+
 
         /**
          * The watchface. Used for drawing and updating the view/watchface
@@ -463,11 +469,19 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         private void unregisterBatteryInfoReceiver() {
+            if (!isRegisteredBatteryInfoReceiver) {
+                return;
+            }
             unregisterReceiver(batteryInfoReceiver);
+            isRegisteredBatteryInfoReceiver = false;
         }
 
         private void registerBatteryInfoReceiver() {
+            if (isRegisteredBatteryInfoReceiver) {
+                return;
+            }
             registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+            isRegisteredBatteryInfoReceiver = true;
         }
 
         /**
