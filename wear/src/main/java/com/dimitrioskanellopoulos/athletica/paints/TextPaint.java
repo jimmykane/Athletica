@@ -40,10 +40,16 @@ public class TextPaint extends Paint implements TextPaintInterface {
     }
 
     public float getSelfTextWidth() {
+        if (text == null){
+            return 0;
+        }
         return measureText(getText());
     }
 
     public float getSelfTextHeight(){
+        if (text == null){
+            return 0;
+        }
         Rect textBounds = new Rect();
         getTextBounds(getText(), 0, getText().length(), textBounds);
         return textBounds.height();
