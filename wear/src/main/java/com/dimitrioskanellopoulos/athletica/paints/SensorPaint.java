@@ -16,7 +16,7 @@ public class SensorPaint extends TextPaint implements SensorPaintInterface {
 
     @Override
     public String getText() {
-        String text = " -/- ";
+        String text = "-/-";
         if (super.getText() != null){
             text = super.getText();
         }

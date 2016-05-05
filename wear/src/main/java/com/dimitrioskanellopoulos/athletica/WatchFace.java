@@ -174,48 +174,71 @@ public class WatchFace {
     }
 
     public void drawRows(Canvas canvas, Rect bounds){
-        int i = 0;
-        // Start at the center
+        /**
+         * We loop over each row:
+         * 1. Find the total width of the text so we can center the text on X
+         * 2. Find the biggest height of the text so we can offset on Y
+         * 3. Take care for special cases of first and last row
+         */
+        int row = 0;
         Float yOffset = bounds.exactCenterY();
         for (LinkedHashMap<String, TextPaint> paintsRow : paintsRows){
             Float totalTextWidth = 0f;
             Float maxTextHeight = 0f;
+            // Go over the paints (columns of each row)
+            int col = 0;
             for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
                 TextPaint textPaint = entry.getValue();
-                totalTextWidth += textPaint.getSelfTextWidth() + rowHorizontalMargin;
-                // If it's a sensor paint add the space for the icon with its own paint
-                if (textPaint instanceof SensorPaint){
-                    totalTextWidth += ((SensorPaint) textPaint).getIconTextPaint().measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin/2;
-                }
-                // @todo should check against the icon height as well
-                if (maxTextHeight < textPaint.getSelfTextHeight()){
+                // If the height is bigger than the current set it to that
+                if (textPaint.getSelfTextHeight() > maxTextHeight ){
                     maxTextHeight = textPaint.getSelfTextHeight();
+                }
+                // The total width of the row increases by the paint's text with
+                totalTextWidth += textPaint.getSelfTextWidth() + rowHorizontalMargin;
+                // If it's a sensor paint add to the total width the icon width
+                if (textPaint instanceof SensorPaint){
+                    // Get's it's icon paint
+                    TextPaint iconTextPaint = ((SensorPaint) textPaint).getIconTextPaint();
+                    // Add it's width a small margin
+                    totalTextWidth += iconTextPaint.measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin/3;
+                    if (iconTextPaint.getSelfTextHeight() > maxTextHeight){
+                        maxTextHeight = iconTextPaint.getSelfTextHeight();
+                    }
+                }
+                // Remove trailing margins
+                if (col == paintsRow.size() - 1){
+                    totalTextWidth -= rowHorizontalMargin;
                 }
             }
 
+            // Add the total height to the offset
             yOffset += rowVerticalMargin + maxTextHeight/2.0f;
             // First row change yOffset
-            if (i==0){
+            if (row==0){
                 yOffset = yOffset - rowVerticalMargin;
             }
             // Last row change yOffset and put it as low as possible because it's the bottom row
-            if (i == paintsRows.length -1){
+            if (row == paintsRows.length -1){
                 yOffset = bounds.bottom - chinSize - maxTextHeight/2.0f;
             }
 
+            /**
+             * All is found and set start drawing
+             */
             Float cursor = bounds.exactCenterX() - (totalTextWidth-rowHorizontalMargin)/2.0f;
             for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
                 TextPaint textPaint = entry.getValue();
                 // Draw also the icon
                 if (textPaint instanceof SensorPaint){
-                    canvas.drawText(((SensorPaint) textPaint).getIcon(), cursor, yOffset  , ((SensorPaint) textPaint).getIconTextPaint());
-                    cursor += ((SensorPaint) textPaint).getIconTextPaint().measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin/2;
+                    TextPaint iconTextPaint = ((SensorPaint) textPaint).getIconTextPaint();
+                    canvas.drawText(((SensorPaint) textPaint).getIcon(), cursor, yOffset  , iconTextPaint);
+                    cursor += iconTextPaint.measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin/2;
                 }
                 // Draw the paint
                 canvas.drawText(textPaint.getText(), cursor, yOffset  , textPaint); // check if it needs per paint height
                 cursor += textPaint.getSelfTextWidth() + rowHorizontalMargin;
             }
-            i++;
+            row++;
         }
     }
 
