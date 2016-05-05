@@ -223,23 +223,6 @@ public class WatchFace {
     }
 
     /**
-     * Computes the X-Axis offset so that the text is horizontally centered
-     * @todo should go over array and called compute rowXOffset for paints
-     */
-    private float computeXOffset(String text, TextPaint paint, Rect watchBounds) {
-        return watchBounds.exactCenterX() - (paint.measureText(text) / 2.0f);
-    }
-
-    /**
-     * Computes the Y-Axis offset for the last row based on the bottom of the screen
-     */
-    private float computeLastRowYOffset(TextPaint lastRowPaint, Rect watchBounds) {
-        Rect textBounds = new Rect();
-        lastRowPaint.getTextBounds(lastRowPaint.getText(), 0, lastRowPaint.getText().length(), textBounds);
-        return watchBounds.bottom - chinSize - (textBounds.height() / 2.0f);
-    }
-
-    /**
      * Toggles the ambient or not mode for all the paints
      */
     public void inAmbientMode(boolean inAmbientMode) {
