@@ -11,6 +11,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
+import com.dimitrioskanellopoulos.athletica.paints.IconTextPaint;
 import com.dimitrioskanellopoulos.athletica.paints.SensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.SunsetTimePaint;
 import com.dimitrioskanellopoulos.athletica.paints.TextPaint;
@@ -103,7 +104,7 @@ public class WatchFace {
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
 
         // Add paint for icons
-        iconsPaint = new Paint();
+        iconsPaint = new IconTextPaint();
         iconsPaint.setColor(TEXT_DEFAULT_COLOUR);
         iconsPaint.setTypeface(fontAwesome);
         iconsPaint.setTextSize(resources.getDimension(R.dimen.icon_size));
