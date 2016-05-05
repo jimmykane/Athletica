@@ -35,6 +35,7 @@ public class BatterySensorPaint extends SensorPaint {
         } else {
             icon = batteryEmptyIcon;
             if (!isInAmbientMode()) {
+                getIconTextPaint().setColor(Color.RED);
                 setColor(Color.RED);
             }
         }
