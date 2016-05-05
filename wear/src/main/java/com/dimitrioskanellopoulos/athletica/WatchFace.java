@@ -65,6 +65,8 @@ public class WatchFace {
     // FontAwesome
     private final IconTextPaint fontAwesomePaint;
 
+    private final Typeface defaultTypeface;
+
     private final Float rowVerticalMargin;
 
     private final Float rowHorizontalMargin;
@@ -93,6 +95,9 @@ public class WatchFace {
                 resources.getDimension(R.dimen.row_horizontal_margin),
                 resources.getDisplayMetrics());
 
+        // Default typeface
+        defaultTypeface = Typeface.createFromAsset(context.getAssets(), "fonts/FugazOne-Regular.ttf");
+
         // Add paint for background
         backgroundPaint = new Paint();
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
@@ -105,7 +110,7 @@ public class WatchFace {
 
         // Add paint for time
         TextPaint timePaint = new TextPaint();
-        timePaint.setTypeface(Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL));
+        timePaint.setTypeface(defaultTypeface);
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
         firstRowPaints.put("timePaint", timePaint);
@@ -113,14 +118,15 @@ public class WatchFace {
         // Add paint for date
         TextPaint datePaint = new TextPaint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
+        datePaint.setTypeface(defaultTypeface);
         datePaint.setTextSize(resources.getDimension(R.dimen.date_size));
-        datePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
 
         secondRowPaints.put("datePaint", datePaint);
 
         // Add paint for sunrise
         SensorPaint sunriseTimePaint = new SunriseTimePaint();
         sunriseTimePaint.setColor(TEXT_DEFAULT_COLOUR);
+        sunriseTimePaint.setTypeface(defaultTypeface);
         sunriseTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sunriseTimePaint.setIconTextPaint(fontAwesomePaint);
         thirdRowPaints.put("sunriseTimePaint", sunriseTimePaint);
@@ -130,6 +136,7 @@ public class WatchFace {
         sunsetTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunsetTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sunsetTimePaint.setIconTextPaint(fontAwesomePaint);
+        sunsetTimePaint.setTypeface(defaultTypeface);
         thirdRowPaints.put("sunsetTimePaint", sunsetTimePaint);
 
         // Add paint for battery level
@@ -137,6 +144,7 @@ public class WatchFace {
         batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
         batterySensorPaint.setIconTextPaint(fontAwesomePaint);
+        batterySensorPaint.setTypeface(defaultTypeface);
         lastRowPaints.put("batterySensorPaint", batterySensorPaint);
     }
 
@@ -247,6 +255,7 @@ public class WatchFace {
         sensorPaint.setIconTextPaint(fontAwesomePaint);
         sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
+        sensorPaint.setTypeface(defaultTypeface);
         forthRowPaints.put(sensorType, sensorPaint);
     }
 
