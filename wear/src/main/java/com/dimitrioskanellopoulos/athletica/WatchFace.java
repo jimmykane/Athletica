@@ -190,10 +190,10 @@ public class WatchFace {
             Float totalTextWidth = 0f;
             Float maxTextHeight = 0f;
             for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
-                TextPaint sensorPaint = entry.getValue();
-                totalTextWidth += sensorPaint.getSelfTextWidth() + rowHorizontalMargin;
-                if (maxTextHeight < sensorPaint.getSelfTextHeight()){
-                    maxTextHeight = sensorPaint.getSelfTextHeight();
+                TextPaint textPaint = entry.getValue();
+                totalTextWidth += textPaint.getSelfTextWidth() + rowHorizontalMargin;
+                if (maxTextHeight < textPaint.getSelfTextHeight()){
+                    maxTextHeight = textPaint.getSelfTextHeight();
                 }
             }
 
@@ -209,9 +209,9 @@ public class WatchFace {
 
             Float cursor = bounds.exactCenterX() - (totalTextWidth-rowHorizontalMargin)/2.0f;
             for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
-                TextPaint sensorPaint = entry.getValue();
-                canvas.drawText(sensorPaint.getText(), cursor, yOffset  , sensorPaint); // check if it needs per paint height
-                cursor += sensorPaint.getSelfTextWidth() + rowHorizontalMargin;
+                TextPaint textPaint = entry.getValue();
+                canvas.drawText(textPaint.getText(), cursor, yOffset  , textPaint); // check if it needs per paint height
+                cursor += textPaint.getSelfTextWidth() + rowHorizontalMargin;
             }
             i++;
         }
