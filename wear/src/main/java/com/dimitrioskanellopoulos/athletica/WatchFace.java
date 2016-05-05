@@ -174,6 +174,7 @@ public class WatchFace {
 
     public void drawRows(Canvas canvas, Rect bounds){
         int i = 0;
+        // Start at the center
         Float yOffset = bounds.exactCenterY();
         for (LinkedHashMap<String, TextPaint> paintsRow : paintsRows){
             Float totalTextWidth = 0f;
@@ -206,26 +207,6 @@ public class WatchFace {
      */
     private float computeXOffset(String text, TextPaint paint, Rect watchBounds) {
         return watchBounds.exactCenterX() - (paint.measureText(text) / 2.0f);
-    }
-
-    /**
-     * Computes the Y-Axis offset for the first row based on the exact center of the screen
-     */
-    private float computeFirstRowYOffset(String text, TextPaint firstRowPaint, Rect watchBounds) {
-        float centerY = watchBounds.exactCenterY();
-        Rect textBounds = new Rect();
-        firstRowPaint.getTextBounds(text, 0, text.length(), textBounds);
-        int textHeight = textBounds.height();
-        return centerY + (textHeight / 2.0f);
-    }
-
-    /**
-     * Computes the Y-Axis offset for a paint, according to it's size and margin
-     */
-    private float computeRowYOffset(String Text, TextPaint paint) {
-        Rect textBounds = new Rect();
-        paint.getTextBounds(Text, 0, Text.length(), textBounds);
-        return (textBounds.height() / 2.0f);
     }
 
     /**
