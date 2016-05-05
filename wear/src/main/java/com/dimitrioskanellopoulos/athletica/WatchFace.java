@@ -138,12 +138,14 @@ public class WatchFace {
         SensorPaint sunsetTimePaint = new SunsetTimePaint();
         sunsetTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunsetTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
+        sunsetTimePaint.setIconTextPaint(fontAwesomePaint);
         thirdRowPaints.put("sunsetTimePaint", sunsetTimePaint);
 
         // Add paint for battery level
         BatterySensorPaint batterySensorPaint = new BatterySensorPaint();
         batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
+        batterySensorPaint.setIconTextPaint(fontAwesomePaint);
         lastRowPaints.put("batterySensorPaint", batterySensorPaint);
     }
 
@@ -211,7 +213,7 @@ public class WatchFace {
                 TextPaint textPaint = entry.getValue();
                 // Draw also the icon
                 if (textPaint instanceof SensorPaint){
-                    canvas.drawText(((SensorPaint) textPaint).getIcon(), cursor, yOffset  , fontAwesomePaint);
+                    canvas.drawText(((SensorPaint) textPaint).getIcon(), cursor, yOffset  , ((SensorPaint) textPaint).getIconTextPaint());
                     cursor += ((SensorPaint) textPaint).getIconTextPaint().measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin/2;
                 }
                 // Draw the paint
