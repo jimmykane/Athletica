@@ -119,7 +119,6 @@ public class WatchFace {
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTypeface(defaultTypeface);
         datePaint.setTextSize(resources.getDimension(R.dimen.date_size));
-
         secondRowPaints.put("datePaint", datePaint);
 
         // Add paint for sunrise
@@ -158,9 +157,8 @@ public class WatchFace {
         // First draw background
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
 
-        // Draw Time for now
-        TextPaint timePaint = firstRowPaints.get("timePaint");
-        timePaint.setText(String.format(
+        // Set the time
+        firstRowPaints.get("timePaint").setText(String.format(
                 shouldShowSeconds ?
                         TIME_FORMAT_WITH_SECONDS :
                         TIME_FORMAT_WITHOUT_SECONDS,
@@ -168,9 +166,8 @@ public class WatchFace {
                 calendar.get(Calendar.MINUTE),
                 calendar.get(Calendar.SECOND)));
 
-        // Set the text of the data
-        TextPaint datePaint = secondRowPaints.get("datePaint");
-        datePaint.setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH) + 1, calendar.get(calendar.YEAR)));
+        // Set the date
+        secondRowPaints.get("datePaint").setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH) + 1, calendar.get(calendar.YEAR)));
 
         // Draw Paints
         drawRows(canvas, bounds);
