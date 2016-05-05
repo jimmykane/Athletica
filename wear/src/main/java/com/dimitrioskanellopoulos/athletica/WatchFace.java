@@ -65,9 +65,6 @@ public class WatchFace {
     // FontAwesome
     private final IconTextPaint fontAwesomePaint;
 
-    // MaterialIcons
-    private final IconTextPaint materialIconsPaint;
-
     private final Float rowVerticalMargin;
 
     private final Float rowHorizontalMargin;
@@ -105,12 +102,6 @@ public class WatchFace {
         fontAwesomePaint.setColor(TEXT_DEFAULT_COLOUR);
         fontAwesomePaint.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf"));
         fontAwesomePaint.setTextSize(resources.getDimension(R.dimen.icon_size));
-
-        // Add paint for icons
-        materialIconsPaint = new IconTextPaint();
-        materialIconsPaint.setColor(TEXT_DEFAULT_COLOUR);
-        materialIconsPaint.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/MaterialIcons-Regular.ttf"));
-        materialIconsPaint.setTextSize(resources.getDimension(R.dimen.icon_size));
 
         // Add paint for time
         TextPaint timePaint = new TextPaint();
