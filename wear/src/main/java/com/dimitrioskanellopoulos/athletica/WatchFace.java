@@ -64,7 +64,7 @@ public class WatchFace {
     // FontAwesome
     private final TextPaint fontAwesomePaint;
 
-    private final Typeface defaultTypeface;
+    private Typeface defaultTypeface;
 
     private final Float rowVerticalMargin;
 
@@ -79,8 +79,7 @@ public class WatchFace {
      * The WatchFace. Everything the user sees. No extra init or data manipulation
      */
     public WatchFace(Context context) {
-
-        resources = context.getResources();
+        resources = context.getApplicationContext().getResources();
 
         // Define the margin of the rows for vertical
         rowVerticalMargin = TypedValue.applyDimension(
