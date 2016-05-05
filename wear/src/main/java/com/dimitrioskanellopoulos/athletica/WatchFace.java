@@ -199,7 +199,7 @@ public class WatchFace {
             yOffset += rowVerticalMargin + maxTextHeight/2.0f;
             // First row change yOffset
             if (i==0){
-                yOffset = yOffset - rowHorizontalMargin;
+                yOffset = yOffset - rowVerticalMargin;
             }
             // Last row change yOffset and put it as low as possible because it's the bottom row
             if (i == paintsRows.length -1){
