@@ -616,15 +616,17 @@ public class WatchFaceService extends CanvasWatchFaceService {
             int hour = rightNow.get(Calendar.HOUR_OF_DAY);
             int minute = rightNow.get(Calendar.MINUTE);
             int second = rightNow.get(Calendar.SECOND);
-            Location location = new Location("dummy");
-            location.setLatitude(11);
-            location.setLongitude(11);
-            location.setTime(System.currentTimeMillis());
-            location.setAccuracy(3.0f);
-            updateSunriseAndSunset(location);
             // Every 15 minutes
             if (minute % 15 == 0) {
                 calculateAverageForActiveSensors();
+                if (EmulatorHelper.isEmulator()){
+                    Location location = new Location("dummy");
+                    location.setLatitude(11);
+                    location.setLongitude(11);
+                    location.setTime(System.currentTimeMillis());
+                    location.setAccuracy(3.0f);
+                    updateSunriseAndSunset(location);
+                }
             }
         }
     }
