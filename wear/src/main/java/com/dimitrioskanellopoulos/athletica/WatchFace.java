@@ -126,24 +126,20 @@ public class WatchFace {
 
         // Add paint for sunrise
         SensorPaint sunriseTimePaint = new SunriseTimePaint();
-        sunriseTimePaint.setTypeface(fontAwesome);
         sunriseTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
         thirdRowPaints.put("sunriseTimePaint", sunriseTimePaint);
 
         // Add paint for sunset
         SensorPaint sunsetTimePaint = new SunsetTimePaint();
-        sunsetTimePaint.setTypeface(fontAwesome);
         sunsetTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunsetTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
         thirdRowPaints.put("sunsetTimePaint", sunsetTimePaint);
 
         // Add paint for battery level
         BatterySensorPaint batterySensorPaint = new BatterySensorPaint();
-        batterySensorPaint.setTypeface(fontAwesome);
         batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
-        batterySensorPaint.setText("0");
         lastRowPaints.put("batterySensorPaint", batterySensorPaint);
     }
 
@@ -283,9 +279,7 @@ public class WatchFace {
     }
 
     public void addSensorPaint(Integer sensorType) {
-        Log.d(TAG, "Added paint for " + sensorType);
         SensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(sensorType);
-        sensorPaint.setTypeface(fontAwesome);
         sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
         forthRowPaints.put(sensorType, sensorPaint);
