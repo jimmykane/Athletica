@@ -144,7 +144,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         boolean isRegisteredLocationReceiver = false;
 
-
         /**
          * The watchface. Used for drawing and updating the view/watchface
          */
@@ -407,7 +406,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(supportedSensorType).getStringType());
                     availableSensorTypes.add(supportedSensorType);
                     // Small hack here to add a pressure altitude sensor
-                    if (supportedSensorType == Sensor.TYPE_PRESSURE){
+                    if (supportedSensorType == Sensor.TYPE_PRESSURE) {
                         availableSensorTypes.add(CallbackSensor.TYPE_PRESSURE_ALTITUDE);
                         Log.d(TAG, "Available sensor: TYPE_PRESSURE_ALTITUDE");
                     }
@@ -619,7 +618,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Every 15 minutes
             if (minute % 15 == 0) {
                 calculateAverageForActiveSensors();
-                if (EmulatorHelper.isEmulator()){
+                if (EmulatorHelper.isEmulator()) {
                     Location location = new Location("dummy");
                     location.setLatitude(11);
                     location.setLongitude(11);
