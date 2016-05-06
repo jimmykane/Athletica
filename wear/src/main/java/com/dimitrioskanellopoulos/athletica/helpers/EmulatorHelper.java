@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.athletica;
+package com.dimitrioskanellopoulos.athletica.helpers;
 
 import android.os.Build;
 

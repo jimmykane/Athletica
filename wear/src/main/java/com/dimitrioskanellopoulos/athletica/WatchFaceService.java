@@ -25,6 +25,7 @@ import android.view.SurfaceHolder;
 import android.location.Location;
 import android.view.WindowInsets;
 
+import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
 import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;

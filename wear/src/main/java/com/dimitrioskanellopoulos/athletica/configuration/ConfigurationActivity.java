@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
 import android.view.View;
 
-import com.dimitrioskanellopoulos.athletica.EmulatorHelper;
+import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.dimitrioskanellopoulos.athletica.R;
 
 
 // @todo add antialias support
-public class WatchFaceConfigurationActivity extends WearableActivity {
+public class ConfigurationActivity extends WearableActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
