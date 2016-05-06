@@ -35,7 +35,6 @@ public class ConfigurationHelper {
         }
     };
 
-
     /**
      * When the activity ends then lets us add it as state
      */
