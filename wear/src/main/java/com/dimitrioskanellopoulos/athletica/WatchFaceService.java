@@ -80,6 +80,16 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private static final long LOCATION_UPDATE_FASTEST_INTERVAL_MS = 3600000;
 
         /**
+         * When the onTickActions were run last time in ms
+         */
+        private Calendar lastOnTimeTickTasksRun =  Calendar.getInstance();
+
+        /**
+         * How often the onTimeTick actions should run
+         */
+        private static final long RUN_ON_TICK_TAKS_EVERY_MS = 15 * 60 * 1000; // 15 Minutes
+
+        /**
          * Handler for updating the time
          */
         private final Handler mUpdateTimeHandler = new EngineHandler(this);
@@ -610,14 +620,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * Run's tasks according to the current time
          */
         private void runOnTimeTickTasks() {
-            // @todo this is wrong
-            Calendar rightNow = Calendar.getInstance();
-            int hour = rightNow.get(Calendar.HOUR_OF_DAY);
-            int minute = rightNow.get(Calendar.MINUTE);
-            int second = rightNow.get(Calendar.SECOND);
-            // Every 15 minutes
-            if (minute % 15 == 0) {
+            Calendar now = Calendar.getInstance();
+            if (now.getTimeInMillis() - lastOnTimeTickTasksRun.getTimeInMillis() > RUN_ON_TICK_TAKS_EVERY_MS){
+                Log.d(TAG, "Running onTimeTickTasks");
                 calculateAverageForActiveSensors();
+                lastOnTimeTickTasksRun = now;
                 if (EmulatorHelper.isEmulator()) {
                     Location location = new Location("dummy");
                     location.setLatitude(11);
