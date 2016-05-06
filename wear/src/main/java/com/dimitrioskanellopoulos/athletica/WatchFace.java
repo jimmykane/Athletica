@@ -253,7 +253,7 @@ public class WatchFace {
     private void interlaceCanvas(Canvas canvas, Rect bounds){
         Paint interlacePaint = new Paint();
         interlacePaint.setColor(Color.BLACK);
-        interlacePaint.setAlpha(50);
+        interlacePaint.setAlpha(60);
         if (isInAmbientMode){
             interlacePaint.setAlpha(100);
         }
