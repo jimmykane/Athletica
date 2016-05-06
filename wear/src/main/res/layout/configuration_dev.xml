@@ -10,7 +10,7 @@
     android:paddingTop="32dp"
     android:paddingLeft="36dp"
     android:paddingRight="22dp"
-    tools:context=".WatchFaceConfigurationActivity"
+    tools:context=".configuration.WatchFaceConfigurationActivity"
     tools:deviceIds="wear">
     <LinearLayout
         android:layout_width="match_parent"

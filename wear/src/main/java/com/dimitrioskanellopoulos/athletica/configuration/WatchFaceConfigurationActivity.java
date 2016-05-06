@@ -1,8 +1,11 @@
-package com.dimitrioskanellopoulos.athletica;
+package com.dimitrioskanellopoulos.athletica.configuration;
 
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
 import android.view.View;
+
+import com.dimitrioskanellopoulos.athletica.EmulatorHelper;
+import com.dimitrioskanellopoulos.athletica.R;
 
 
 // @todo add antialias support

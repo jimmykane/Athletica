@@ -52,7 +52,7 @@
 
 
     <activity
-        android:name=".WatchFaceConfigurationActivity"
+        android:name=".configuration.WatchFaceConfigurationActivity"
         android:label="@string/configuration_activity">
       <intent-filter>
         <action android:name=
