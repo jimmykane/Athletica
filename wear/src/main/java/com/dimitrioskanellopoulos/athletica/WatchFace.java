@@ -257,10 +257,8 @@ public class WatchFace {
         if (isInAmbientMode){
             interlacePaint.setAlpha(100);
         }
-        for (int y=0; y < bounds.bottom; y++){
-            if (y%2 == 0 ) {
-                canvas.drawLine(0, y, bounds.right, y, interlacePaint);
-            }
+        for (int y=0; y < bounds.bottom; y+=2){
+            canvas.drawLine(0, y, bounds.right, y, interlacePaint);
         }
     }
 
