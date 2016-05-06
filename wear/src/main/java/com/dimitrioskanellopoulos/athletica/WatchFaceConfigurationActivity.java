@@ -11,6 +11,10 @@ public class WatchFaceConfigurationActivity extends WearableActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.configuration);
+        if (EmulatorHelper.isEmulator()){
+            setContentView(R.layout.configuration_dev);
+
+        }
         setAmbientEnabled();
     }
 }
