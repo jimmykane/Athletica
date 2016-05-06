@@ -381,6 +381,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 case Sensor.TYPE_PRESSURE:
                     watchFace.updateSensorPaintText(sensorType, decimalFormat.format(eventValues[0]));
                     break;
+                case Sensor.TYPE_HEART_RATE:
+                    if (Math.round(eventValues[0]) > 180){
+                        vibrator.vibrate(new long[]{0, 250, 500, 250, 100, 250, 50, 250, 50}, -1);
+                    }
                 default:
                     watchFace.updateSensorPaintText(sensorType, decimalFormat.format(Math.round(eventValues[0])));
                     break;
