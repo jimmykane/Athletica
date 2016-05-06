@@ -33,6 +33,12 @@
           android:name="com.google.android.wearable.watchface.preview_circular"
           android:resource="@drawable/preview_circular" />
 
+      <meta-data
+          android:name=
+              "com.google.android.wearable.watchface.wearableConfigurationAction"
+          android:value=
+              "com.example.android.wearable.watchface.CONFIG_DIGITAL" />
+
       <intent-filter>
         <action android:name="android.service.wallpaper.WallpaperService" />
         <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
@@ -44,6 +50,18 @@
         android:label="@string/permissions_activity" >
     </activity>
 
+
+    <activity
+        android:name=".WatchFaceConfigurationActivity"
+        android:label="@string/configuration_activity">
+      <intent-filter>
+        <action android:name=
+            "com.example.android.wearable.watchface.CONFIG_DIGITAL" />
+        <category android:name=
+            "com.google.android.wearable.watchface.category.WEARABLE_CONFIGURATION" />
+        <category android:name="android.intent.category.DEFAULT" />
+      </intent-filter>
+    </activity>
 
   </application>
 
