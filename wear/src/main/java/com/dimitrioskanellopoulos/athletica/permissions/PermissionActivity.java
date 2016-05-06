@@ -17,7 +17,6 @@ import com.dimitrioskanellopoulos.athletica.R;
 import java.util.ArrayList;
 
 public class PermissionActivity extends WearableActivity {
-
     private static final String TAG = "PermissionActivity";
 
     /**
