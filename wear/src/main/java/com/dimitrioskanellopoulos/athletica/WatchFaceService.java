@@ -253,9 +253,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     .addApi(LocationServices.API)
                     .build();
 
-            // Connect to Google API
-            googleApiClient.connect();
-
             // Activate the "next" sensors
             activateNextSensors();
         }
@@ -297,6 +294,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 stopListeningToSensors();
                 // Unregister location receiver to save up in case of a foreground app
                 unregisterLocationReceiver();
+
+                if (googleApiClient != null && googleApiClient.isConnected()) {
+                    Wearable.DataApi.removeListener(googleApiClient, this);
+                    googleApiClient.disconnect();
+                }
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
