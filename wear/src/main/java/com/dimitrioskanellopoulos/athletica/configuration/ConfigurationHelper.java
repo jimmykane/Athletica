@@ -51,7 +51,6 @@ public final class ConfigurationHelper {
      */
     public static final String PATH_WITH_FEATURE = "/athletica_watch_face_config";
 
-
     /**
      * The default time format
      */
@@ -167,9 +166,7 @@ public final class ConfigurationHelper {
                 .setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
                     @Override
                     public void onResult(DataApi.DataItemResult dataItemResult) {
-                        if (Log.isLoggable(TAG, Log.DEBUG)) {
-                            Log.d(TAG, "putDataItem result status: " + dataItemResult.getStatus());
-                        }
+                        Log.d(TAG, "putDataItem result status: " + dataItemResult.getStatus());
                     }
                 });
     }

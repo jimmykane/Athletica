@@ -264,7 +264,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
             stopListeningToSensors();
-            unregisterLocationReceiver();
             unregisterBatteryInfoReceiver();
             unregisterTimeZoneReceiver();
             if (googleApiClient.isConnected()) {
@@ -286,8 +285,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 registerBatteryInfoReceiver();
                 // Start updating sensor values
                 startListeningToSensors();
-                // Start again listening for location requests
-                registerLocationReceiver();
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
@@ -297,11 +294,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 unregisterBatteryInfoReceiver();
                 // Stop updating sensor values
                 stopListeningToSensors();
-                // Unregister location receiver to save up in case of a foreground app
-                unregisterLocationReceiver();
 
                 if (googleApiClient != null && googleApiClient.isConnected()) {
                     Wearable.DataApi.removeListener(googleApiClient, this);
+                    // Unregister location receiver to save up in case of a foreground app
+                    unregisterLocationReceiver();
                     googleApiClient.disconnect();
                 }
             }
@@ -388,6 +385,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
             Log.d(TAG, "Google API connection failed");
         }
+
+
+
 
         @Override
         public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
@@ -506,6 +506,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
             isRegisteredLocationReceiver = true;
             LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, locationChangedReceiver);
+            Log.d(TAG, "Listening for location updates");
         }
 
         private void unregisterLocationReceiver() {
@@ -519,6 +520,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             isRegisteredLocationReceiver = false;
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, locationChangedReceiver);
+            Log.d(TAG, "Stopped listening for location updates");
         }
 
         private void updateConfigDataItemAndUiOnStartup() {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.dimitrioskanellopoulos.athletica.services;
+package com.dimitrioskanellopoulos.athletica.configuration;
 
 import android.os.Bundle;
 import android.util.Log;
