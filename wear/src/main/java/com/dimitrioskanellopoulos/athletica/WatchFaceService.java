@@ -25,6 +25,7 @@ import android.view.SurfaceHolder;
 import android.location.Location;
 import android.view.WindowInsets;
 
+import com.dimitrioskanellopoulos.athletica.configuration.ConfigurationHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
 import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
@@ -38,6 +39,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.DataEvent;
+import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.DataItem;
+import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.DataMapItem;
 
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
@@ -71,6 +78,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             OnSensorAverageEventCallbackInterface,
             OnSensorTriggerCallbackInterface,
             GoogleApiClient.ConnectionCallbacks,
+            DataApi.DataListener,
             GoogleApiClient.OnConnectionFailedListener {
         private static final String TAG = "Engine";
 
@@ -402,6 +410,29 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void handleOnSensorTriggerEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
         }
+
+        @Override // DataApi.DataListener
+        public void onDataChanged(DataEventBuffer dataEvents) {
+            for (DataEvent dataEvent : dataEvents) {
+                if (dataEvent.getType() != DataEvent.TYPE_CHANGED) {
+                    continue;
+                }
+
+                DataItem dataItem = dataEvent.getDataItem();
+                if (!dataItem.getUri().getPath().equals(
+                        ConfigurationHelper.PATH_WITH_FEATURE)) {
+                    continue;
+                }
+
+                DataMapItem dataMapItem = DataMapItem.fromDataItem(dataItem);
+                DataMap config = dataMapItem.getDataMap();
+                if (Log.isLoggable(TAG, Log.DEBUG)) {
+                    Log.d(TAG, "Config DataItem updated:" + config);
+                }
+                //updateUiForConfigDataMap(config); //here does all the actions when config changes
+            }
+        }
+
 
         /**
          * Finds and sets all the available and supported sensors
