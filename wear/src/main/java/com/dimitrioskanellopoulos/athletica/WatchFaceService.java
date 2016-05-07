@@ -34,6 +34,7 @@ import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorTriggerCallbackInterface;
+import com.dimitrioskanellopoulos.athletica.services.SunriseSunsetTimesService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -45,6 +46,7 @@ import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataItem;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.DataMapItem;
+import com.google.android.gms.wearable.Wearable;
 
 import java.lang.ref.WeakReference;
 import java.text.DecimalFormat;
@@ -250,6 +252,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             googleApiClient = new GoogleApiClient.Builder(WatchFaceService.this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
+                    .addApi(Wearable.API)
                     .addApi(LocationServices.API)
                     .build();
 
@@ -275,6 +278,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
             super.onVisibilityChanged(visible);
             Log.d(TAG, "Visibility changed: " + visible);
             if (visible) {
+                // Connect to Google API
+                googleApiClient.connect();
                 // Check for timezone changes
                 registerTimeZoneReceiver();
                 // Check for battery changes
@@ -371,6 +376,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onConnected(@Nullable Bundle bundle) {
             Log.d(TAG, "Google API connected");
             registerLocationReceiver();
+            Wearable.DataApi.addListener(googleApiClient, Engine.this);
         }
 
         @Override
@@ -513,6 +519,39 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             isRegisteredLocationReceiver = false;
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, locationChangedReceiver);
+        }
+
+        private void updateConfigDataItemAndUiOnStartup() {
+            ConfigurationHelper.fetchConfigDataMap(googleApiClient,
+                    new ConfigurationHelper.FetchConfigDataMapCallback() {
+                        @Override
+                        public void onConfigDataMapFetched(DataMap startupConfig) {
+                            // If the DataItem hasn't been created yet or some keys are missing,
+                            // use the default values.
+                            // setDefaultValuesForMissingConfigKeys(startupConfig);
+                            ConfigurationHelper.putConfigDataItem(googleApiClient, startupConfig);
+
+                            //updateUiForConfigDataMap(startupConfig);
+                        }
+                    }
+            );
+        }
+
+        private void setDefaultValuesForMissingConfigKeys(DataMap config) {
+            addIntKeyIfMissing(config, ConfigurationHelper.KEY_BACKGROUND_COLOR,
+                    ConfigurationHelper.COLOR_VALUE_DEFAULT_AND_AMBIENT_BACKGROUND);
+            addIntKeyIfMissing(config, ConfigurationHelper.KEY_HOURS_COLOR,
+                    ConfigurationHelper.COLOR_VALUE_DEFAULT_AND_AMBIENT_HOUR_DIGITS);
+            addIntKeyIfMissing(config, ConfigurationHelper.KEY_MINUTES_COLOR,
+                    ConfigurationHelper.COLOR_VALUE_DEFAULT_AND_AMBIENT_MINUTE_DIGITS);
+            addIntKeyIfMissing(config, ConfigurationHelper.KEY_SECONDS_COLOR,
+                    ConfigurationHelper.COLOR_VALUE_DEFAULT_AND_AMBIENT_SECOND_DIGITS);
+        }
+
+        private void addIntKeyIfMissing(DataMap config, String key, int color) {
+            if (!config.containsKey(key)) {
+                config.putInt(key, color);
+            }
         }
 
         private void unregisterBatteryInfoReceiver() {

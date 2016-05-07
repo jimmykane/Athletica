@@ -19,6 +19,7 @@ package com.dimitrioskanellopoulos.athletica.services;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.configuration.ConfigurationHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataMap;
@@ -29,14 +30,14 @@ import com.google.android.gms.wearable.WearableListenerService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A {@link WearableListenerService} listening for {@link DigitalWatchFaceService} config messages
+ * A {@link WearableListenerService} listening for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} config messages
  * and updating the config {@link com.google.android.gms.wearable.DataItem} accordingly.
  */
 public class ConfigurationListenerService extends WearableListenerService
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-    private static final String TAG = "DigitalListenerService";
+    private static final String TAG = "ConfigurationService";
 
-    private GoogleApiClient mGoogleApiClient;
+    private GoogleApiClient googleApiClient;
 
     @Override // WearableListenerService
     public void onMessageReceived(MessageEvent messageEvent) {
@@ -45,7 +46,7 @@ public class ConfigurationListenerService extends WearableListenerService
             Log.d(TAG, "onMessageReceived: " + messageEvent);
         }
 
-        if (!messageEvent.getPath().equals(DigitalWatchFaceUtil.PATH_WITH_FEATURE)) {
+        if (!messageEvent.getPath().equals(ConfigurationHelper.PATH_WITH_FEATURE)) {
             return;
         }
         byte[] rawData = messageEvent.getData();
@@ -56,13 +57,13 @@ public class ConfigurationListenerService extends WearableListenerService
             Log.d(TAG, "Received watch face config message: " + configKeysToOverwrite);
         }
 
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
+        if (googleApiClient == null) {
+            googleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this).addApi(Wearable.API).build();
         }
-        if (!mGoogleApiClient.isConnected()) {
+        if (!googleApiClient.isConnected()) {
             ConnectionResult connectionResult =
-                    mGoogleApiClient.blockingConnect(30, TimeUnit.SECONDS);
+                    googleApiClient.blockingConnect(30, TimeUnit.SECONDS);
 
             if (!connectionResult.isSuccess()) {
                 Log.e(TAG, "Failed to connect to GoogleApiClient.");
@@ -70,7 +71,7 @@ public class ConfigurationListenerService extends WearableListenerService
             }
         }
 
-        DigitalWatchFaceUtil.overwriteKeysInConfigDataMap(mGoogleApiClient, configKeysToOverwrite);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
     }
 
     @Override // GoogleApiClient.ConnectionCallbacks

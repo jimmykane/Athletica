@@ -18,6 +18,11 @@ public final class ConfigurationHelper {
     private static final String TAG = "ConfigurationHelper";
 
     /**
+     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} time format.
+     */
+    public static final String KEY_TIME_FORMAT = "TIME_FORMAT";
+
+    /**
      * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} background color name.
      * The color name must be a {@link String} recognized by {@link Color#parseColor}.
      */
@@ -44,7 +49,13 @@ public final class ConfigurationHelper {
     /**
      * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
      */
-    public static final String PATH_WITH_FEATURE = "/watch_face_config/Digital";
+    public static final String PATH_WITH_FEATURE = "/athletica_watch_face_config";
+
+
+    /**
+     * The default time format
+     */
+    public static final Boolean TIME_FORMAT_DEFAULT = true;
 
     /**
      * Name of the default interactive mode background color and the ambient mode background color.
