@@ -17,6 +17,7 @@ import com.dimitrioskanellopoulos.athletica.paints.BatterySensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.SensorPaintFactory;
 import com.dimitrioskanellopoulos.athletica.paints.SunriseTimePaint;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,6 +31,10 @@ public class WatchFace {
      */
     private static final String TIME_FORMAT_WITHOUT_SECONDS = "%02d:%02d";
     private static final String TIME_FORMAT_WITH_SECONDS = TIME_FORMAT_WITHOUT_SECONDS + ":%02d";
+
+
+
+
     private static final String DATE_FORMAT = "%02d.%02d.%d";
     private static final int DATE_AND_TIME_DEFAULT_COLOUR = Color.WHITE;
     private static final int TEXT_DEFAULT_COLOUR = Color.WHITE;
@@ -71,6 +76,10 @@ public class WatchFace {
     private final Float rowHorizontalMargin;
 
     private boolean shouldShowSeconds = true;
+
+    private boolean timeFormat24 = true;
+
+
 
     private boolean isRound;
     private boolean isInAmbientMode;
@@ -160,13 +169,7 @@ public class WatchFace {
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
 
         // Set the time
-        firstRowPaints.get("timePaint").setText(String.format(
-                shouldShowSeconds ?
-                        TIME_FORMAT_WITH_SECONDS :
-                        TIME_FORMAT_WITHOUT_SECONDS,
-                calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE),
-                calendar.get(Calendar.SECOND)));
+        firstRowPaints.get("timePaint").setText(getTimeFormat().format(calendar.getTime()));
 
         // Set the date
         secondRowPaints.get("datePaint").setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH) + 1, calendar.get(calendar.YEAR)));
@@ -275,6 +278,28 @@ public class WatchFace {
                 entry.getValue().inAmbientMode(inAmbientMode);
             }
         }
+    }
+
+    // @todo optimize
+    private SimpleDateFormat getTimeFormat(){
+        if (timeFormat24){
+            if (shouldShowSeconds){
+                return new SimpleDateFormat("hh:mm:ss");
+            }else{
+                return new SimpleDateFormat("hh:mm");
+            }
+
+        }else{
+            if (shouldShowSeconds){
+                return new SimpleDateFormat("hh:mm:ss a");
+            }else {
+                return new SimpleDateFormat("hh:mm a");
+            }
+        }
+    }
+
+    public void setTimeFormat24(Boolean timeFormat24){
+        this.timeFormat24 = timeFormat24;
     }
 
     public void updateTimeZoneWith(TimeZone timeZone) {
