@@ -33,9 +33,6 @@ public class WatchFace {
     private static final String TIME_FORMAT_WITHOUT_SECONDS = "%02d:%02d";
     private static final String TIME_FORMAT_WITH_SECONDS = TIME_FORMAT_WITHOUT_SECONDS + ":%02d";
 
-
-
-
     private static final String DATE_FORMAT = "%02d.%02d.%d";
     private static final int DATE_AND_TIME_DEFAULT_COLOUR = Color.WHITE;
     private static final int TEXT_DEFAULT_COLOUR = Color.WHITE;

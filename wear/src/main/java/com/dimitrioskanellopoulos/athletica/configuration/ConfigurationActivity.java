@@ -40,6 +40,7 @@ public class ConfigurationActivity extends WearableActivity {
                     @Override
                     public void onConnected(Bundle connectionHint) {
                         Log.d(TAG, "onConnected: " + connectionHint);
+                        updateConfigDataOnStartup();
                     }
 
                     @Override
@@ -73,8 +74,6 @@ public class ConfigurationActivity extends WearableActivity {
 
             }
         });
-
-
     }
 
     @Override
@@ -100,5 +99,56 @@ public class ConfigurationActivity extends WearableActivity {
         configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_TIME_FORMAT,
                 format24);
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
+    }
+
+    private void updateConfigDataOnStartup() {
+        ConfigurationHelper.fetchConfigDataMap(googleApiClient,
+                new ConfigurationHelper.FetchConfigDataMapCallback() {
+                    @Override
+                    public void onConfigDataMapFetched(DataMap startupConfig) {
+                        // If the DataItem hasn't been created yet or some keys are missing,
+                        // use the default values.
+                        setDefaultValuesForMissingConfigKeys(startupConfig);
+                        ConfigurationHelper.putConfigDataItem(googleApiClient, startupConfig);
+
+                        updateUiForConfigDataMap(startupConfig);
+                    }
+                }
+        );
+    }
+
+    private void setDefaultValuesForMissingConfigKeys(DataMap config) {
+        addBooleanKeyIfMissing(config, ConfigurationHelper.KEY_TIME_FORMAT,
+                ConfigurationHelper.TIME_FORMAT_DEFAULT);
+    }
+
+    private void addBooleanKeyIfMissing(DataMap config, String key, Boolean value) {
+        if (!config.containsKey(key)) {
+            config.putBoolean(key, value);
+        }
+    }
+
+    private void updateUiForConfigDataMap(final DataMap config) {
+        for (String configKey : config.keySet()) {
+            if (!config.containsKey(configKey)) {
+                continue;
+            }
+            Boolean value = config.getBoolean(configKey);
+            if (Log.isLoggable(TAG, Log.DEBUG)) {
+                Log.d(TAG, "Found watch face config key: " + configKey + " -> "
+                        + Boolean.toString(value));
+            }
+            updateUiForKey(configKey, value);
+        }
+    }
+
+    private boolean updateUiForKey(String configKey, Boolean value) {
+        if (configKey.equals(ConfigurationHelper.KEY_TIME_FORMAT)) {
+            switchTimeFormat.setChecked(value);
+        } else {
+            Log.w(TAG, "Ignoring unknown config key: " + configKey);
+            return false;
+        }
+        return true;
     }
 }
