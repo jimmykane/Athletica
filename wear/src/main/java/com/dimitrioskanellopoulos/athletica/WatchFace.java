@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
@@ -168,6 +169,10 @@ public class WatchFace {
 
         // Set the time
         firstRowPaints.get("timePaint").setText(getTimeFormat().format(calendar.getTime()));
+        if (firstRowPaints.containsKey("amPmPaint")){
+            SimpleDateFormat amPmFormat = new SimpleDateFormat("a");
+            firstRowPaints.get("amPmPaint").setText(amPmFormat.format(calendar.getTime()));
+        }
 
         // Set the date
         secondRowPaints.get("datePaint").setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH) + 1, calendar.get(calendar.YEAR)));
@@ -280,24 +285,28 @@ public class WatchFace {
 
     // @todo optimize
     private SimpleDateFormat getTimeFormat(){
-        if (timeFormat24){
-            if (!isInAmbientMode){
-                return new SimpleDateFormat("hh:mm:ss");
-            }else{
-                return new SimpleDateFormat("hh:mm");
-            }
-
+        if (!isInAmbientMode){
+            return new SimpleDateFormat("hh:mm:ss");
         }else{
-            if (!isInAmbientMode){
-                return new SimpleDateFormat("hh:mm:ss a");
-            }else {
-                return new SimpleDateFormat("hh:mm a");
-            }
+            return new SimpleDateFormat("hh:mm");
         }
     }
 
     public void setTimeFormat24(Boolean timeFormat24){
-        this.timeFormat24 = timeFormat24;
+        if (timeFormat24){
+            if (firstRowPaints.containsKey("amPmPaint")){
+                firstRowPaints.remove("amPmPaint");
+            }
+            Log.d(TAG, "Time in 24h");
+            return;
+        }
+        // Add paint for Am/Pm
+        TextPaint amPmPaint = new TextPaint();
+        amPmPaint.setTypeface(defaultTypeface);
+        amPmPaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
+        amPmPaint.setTextSize(resources.getDimension(R.dimen.time_am_pm_size));
+        firstRowPaints.put("amPmPaint", amPmPaint);
+        Log.d(TAG, "Time in AM/PM");
     }
 
     public void updateTimeZoneWith(TimeZone timeZone) {

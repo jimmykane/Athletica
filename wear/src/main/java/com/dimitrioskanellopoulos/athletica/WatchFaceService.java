@@ -437,7 +437,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 if (Log.isLoggable(TAG, Log.DEBUG)) {
                     Log.d(TAG, "Config DataItem updated:" + config);
                 }
-                //updateUiForConfigDataMap(config); //here does all the actions when config changes
+                // This can happen from this method more often when phone changes
+                updateUiForConfigDataMap(config);
             }
         }
 
