@@ -374,6 +374,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             Log.d(TAG, "Google API connected");
             registerLocationReceiver();
             Wearable.DataApi.addListener(googleApiClient, Engine.this);
+            updateConfigDataItemAndUiOnStartup();
         }
 
         @Override
@@ -530,30 +531,60 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         public void onConfigDataMapFetched(DataMap startupConfig) {
                             // If the DataItem hasn't been created yet or some keys are missing,
                             // use the default values.
-                            // setDefaultValuesForMissingConfigKeys(startupConfig);
+                            setDefaultValuesForMissingConfigKeys(startupConfig);
                             ConfigurationHelper.putConfigDataItem(googleApiClient, startupConfig);
 
-                            //updateUiForConfigDataMap(startupConfig);
+                            updateUiForConfigDataMap(startupConfig);
                         }
                     }
             );
         }
 
         private void setDefaultValuesForMissingConfigKeys(DataMap config) {
-            addIntKeyIfMissing(config, ConfigurationHelper.KEY_BACKGROUND_COLOR,
-                    ConfigurationHelper.COLOR_VALUE_DEFAULT_AND_AMBIENT_BACKGROUND);
-            addIntKeyIfMissing(config, ConfigurationHelper.KEY_HOURS_COLOR,
-                    ConfigurationHelper.COLOR_VALUE_DEFAULT_AND_AMBIENT_HOUR_DIGITS);
-            addIntKeyIfMissing(config, ConfigurationHelper.KEY_MINUTES_COLOR,
-                    ConfigurationHelper.COLOR_VALUE_DEFAULT_AND_AMBIENT_MINUTE_DIGITS);
-            addIntKeyIfMissing(config, ConfigurationHelper.KEY_SECONDS_COLOR,
-                    ConfigurationHelper.COLOR_VALUE_DEFAULT_AND_AMBIENT_SECOND_DIGITS);
+            addBooleanKeyIfMissing(config, ConfigurationHelper.KEY_TIME_FORMAT,
+                    ConfigurationHelper.TIME_FORMAT_DEFAULT);
         }
 
-        private void addIntKeyIfMissing(DataMap config, String key, int color) {
+        private void addBooleanKeyIfMissing(DataMap config, String key, Boolean value) {
             if (!config.containsKey(key)) {
-                config.putInt(key, color);
+                config.putBoolean(key, value);
             }
+        }
+
+        private void updateUiForConfigDataMap(final DataMap config) {
+            boolean uiUpdated = false;
+            for (String configKey : config.keySet()) {
+                if (!config.containsKey(configKey)) {
+                    continue;
+                }
+                Boolean value = config.getBoolean(configKey);
+                if (Log.isLoggable(TAG, Log.DEBUG)) {
+                    Log.d(TAG, "Found watch face config key: " + configKey + " -> "
+                            + Boolean.toString(value));
+                }
+                if (updateUiForKey(configKey, value)) {
+                    uiUpdated = true;
+                }
+            }
+            if (uiUpdated) {
+                invalidate();
+            }
+        }
+
+        /**
+         * Updates the color of a UI item according to the given {@code configKey}. Does nothing if
+         * {@code configKey} isn't recognized.
+         *
+         * @return whether UI has been updated
+         */
+        private boolean updateUiForKey(String configKey, Boolean value) {
+            if (configKey.equals(ConfigurationHelper.KEY_TIME_FORMAT)) {
+                watchFace.setTimeFormat24(value);
+            } else {
+                Log.w(TAG, "Ignoring unknown config key: " + configKey);
+                return false;
+            }
+            return true;
         }
 
         private void unregisterBatteryInfoReceiver() {
