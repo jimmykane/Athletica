@@ -2,6 +2,7 @@ package com.dimitrioskanellopoulos.athletica.configuration;
 
 import android.graphics.Color;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,69 +24,14 @@ public final class ConfigurationHelper {
     public static final String KEY_TIME_FORMAT = "TIME_FORMAT";
 
     /**
-     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} background color name.
-     * The color name must be a {@link String} recognized by {@link Color#parseColor}.
-     */
-    public static final String KEY_BACKGROUND_COLOR = "BACKGROUND_COLOR";
-
-    /**
-     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} hour digits color name.
-     * The color name must be a {@link String} recognized by {@link Color#parseColor}.
-     */
-    public static final String KEY_HOURS_COLOR = "HOURS_COLOR";
-
-    /**
-     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} minute digits color name.
-     * The color name must be a {@link String} recognized by {@link Color#parseColor}.
-     */
-    public static final String KEY_MINUTES_COLOR = "MINUTES_COLOR";
-
-    /**
-     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} second digits color name.
-     * The color name must be a {@link String} recognized by {@link Color#parseColor}.
-     */
-    public static final String KEY_SECONDS_COLOR = "SECONDS_COLOR";
-
-    /**
-     * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
-     */
-    public static final String PATH_WITH_FEATURE = "/athletica/config";
-
-    /**
      * The default time format
      */
     public static final Boolean TIME_FORMAT_DEFAULT = true;
 
     /**
-     * Name of the default interactive mode background color and the ambient mode background color.
+     * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
      */
-    public static final String COLOR_NAME_DEFAULT_AND_AMBIENT_BACKGROUND = "Black";
-    public static final int COLOR_VALUE_DEFAULT_AND_AMBIENT_BACKGROUND =
-            parseColor(COLOR_NAME_DEFAULT_AND_AMBIENT_BACKGROUND);
-
-    /**
-     * Name of the default interactive mode hour digits color and the ambient mode hour digits
-     * color.
-     */
-    public static final String COLOR_NAME_DEFAULT_AND_AMBIENT_HOUR_DIGITS = "White";
-    public static final int COLOR_VALUE_DEFAULT_AND_AMBIENT_HOUR_DIGITS =
-            parseColor(COLOR_NAME_DEFAULT_AND_AMBIENT_HOUR_DIGITS);
-
-    /**
-     * Name of the default interactive mode minute digits color and the ambient mode minute digits
-     * color.
-     */
-    public static final String COLOR_NAME_DEFAULT_AND_AMBIENT_MINUTE_DIGITS = "White";
-    public static final int COLOR_VALUE_DEFAULT_AND_AMBIENT_MINUTE_DIGITS =
-            parseColor(COLOR_NAME_DEFAULT_AND_AMBIENT_MINUTE_DIGITS);
-
-    /**
-     * Name of the default interactive mode second digits color and the ambient mode second digits
-     * color.
-     */
-    public static final String COLOR_NAME_DEFAULT_AND_AMBIENT_SECOND_DIGITS = "Gray";
-    public static final int COLOR_VALUE_DEFAULT_AND_AMBIENT_SECOND_DIGITS =
-            parseColor(COLOR_NAME_DEFAULT_AND_AMBIENT_SECOND_DIGITS);
+    public static final String PATH_WITH_FEATURE = "/athletica/config";
 
     /**
      * Callback interface to perform an action with the current config {@link DataMap} for
@@ -97,10 +43,6 @@ public final class ConfigurationHelper {
          * {@link com.dimitrioskanellopoulos.athletica.WatchFaceService}.
          */
         void onConfigDataMapFetched(DataMap config);
-    }
-
-    private static int parseColor(String colorName) {
-        return Color.parseColor(colorName.toLowerCase());
     }
 
     /**
@@ -115,7 +57,7 @@ public final class ConfigurationHelper {
         Wearable.NodeApi.getLocalNode(client).setResultCallback(
                 new ResultCallback<NodeApi.GetLocalNodeResult>() {
                     @Override
-                    public void onResult(NodeApi.GetLocalNodeResult getLocalNodeResult) {
+                    public void onResult(@NonNull NodeApi.GetLocalNodeResult getLocalNodeResult) {
                         String localNode = getLocalNodeResult.getNode().getId();
                         Uri uri = new Uri.Builder()
                                 .scheme("wear")
@@ -165,7 +107,7 @@ public final class ConfigurationHelper {
         Wearable.DataApi.putDataItem(googleApiClient, putDataMapRequest.asPutDataRequest())
                 .setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
                     @Override
-                    public void onResult(DataApi.DataItemResult dataItemResult) {
+                    public void onResult(@NonNull DataApi.DataItemResult dataItemResult) {
                         Log.d(TAG, "putDataItem result status: " + dataItemResult.getStatus());
                     }
                 });
@@ -180,7 +122,7 @@ public final class ConfigurationHelper {
         }
 
         @Override
-        public void onResult(DataApi.DataItemResult dataItemResult) {
+        public void onResult(@NonNull DataApi.DataItemResult dataItemResult) {
             if (dataItemResult.getStatus().isSuccess()) {
                 if (dataItemResult.getDataItem() != null) {
                     DataItem configDataItem = dataItemResult.getDataItem();
