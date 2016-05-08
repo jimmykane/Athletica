@@ -49,7 +49,7 @@ public final class ConfigurationHelper {
     /**
      * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
      */
-    public static final String PATH_WITH_FEATURE = "/athletica_watch_face_config";
+    public static final String PATH_WITH_FEATURE = "/athletica/config";
 
     /**
      * The default time format
