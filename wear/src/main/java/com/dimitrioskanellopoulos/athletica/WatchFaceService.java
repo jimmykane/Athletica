@@ -312,7 +312,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             super.onAmbientModeChanged(inAmbientMode);
             // Obvious
             watchFace.inAmbientMode(inAmbientMode);
-            watchFace.setShowSeconds(!isInAmbientMode());
 
             // When we are active show realtime data from the sensors. Start listening
             if (inAmbientMode) {

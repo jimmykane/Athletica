@@ -75,8 +75,6 @@ public class WatchFace {
 
     private final Float rowHorizontalMargin;
 
-    private boolean shouldShowSeconds = true;
-
     private boolean timeFormat24 = true;
 
 
@@ -283,14 +281,14 @@ public class WatchFace {
     // @todo optimize
     private SimpleDateFormat getTimeFormat(){
         if (timeFormat24){
-            if (shouldShowSeconds){
+            if (!isInAmbientMode){
                 return new SimpleDateFormat("hh:mm:ss");
             }else{
                 return new SimpleDateFormat("hh:mm");
             }
 
         }else{
-            if (shouldShowSeconds){
+            if (!isInAmbientMode){
                 return new SimpleDateFormat("hh:mm:ss a");
             }else {
                 return new SimpleDateFormat("hh:mm a");
@@ -304,10 +302,6 @@ public class WatchFace {
 
     public void updateTimeZoneWith(TimeZone timeZone) {
         calendar.setTimeZone(timeZone);
-    }
-
-    public void setShowSeconds(boolean showSeconds) {
-        shouldShowSeconds = showSeconds;
     }
 
     public void setIsRound(boolean round) {
