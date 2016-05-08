@@ -65,10 +65,8 @@ public class ConfigurationActivity extends WearableActivity {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 if(isChecked){
-                    Toast.makeText(getApplicationContext(), "Time will set in 24h format", Toast.LENGTH_SHORT).show();
                     updateConfigDataItemTimeFormat(true);
                 }else{
-                    Toast.makeText(getApplicationContext(), "Time will set 12h format", Toast.LENGTH_SHORT).show();
                     updateConfigDataItemTimeFormat(false);
                 }
 
