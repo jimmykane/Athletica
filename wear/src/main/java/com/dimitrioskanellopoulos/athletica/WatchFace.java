@@ -27,13 +27,6 @@ import java.util.TimeZone;
 public class WatchFace {
     private static final String TAG = "Watchface";
 
-    /**
-     * Standard String formats for time, date and color
-     */
-    private static final String TIME_FORMAT_WITHOUT_SECONDS = "%02d:%02d";
-    private static final String TIME_FORMAT_WITH_SECONDS = TIME_FORMAT_WITHOUT_SECONDS + ":%02d";
-
-    private static final String DATE_FORMAT = "%02d.%02d.%d";
     private static final int DATE_AND_TIME_DEFAULT_COLOUR = Color.WHITE;
     private static final int TEXT_DEFAULT_COLOUR = Color.WHITE;
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
@@ -80,6 +73,8 @@ public class WatchFace {
     private boolean isRound;
     private boolean isInAmbientMode;
     private int chinSize;
+
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     private boolean shouldInterlace = true;
 
@@ -172,7 +167,7 @@ public class WatchFace {
         }
 
         // Set the date
-        secondRowPaints.get("datePaint").setText(String.format(DATE_FORMAT, calendar.get(calendar.DAY_OF_MONTH), calendar.get(calendar.MONTH) + 1, calendar.get(calendar.YEAR)));
+        secondRowPaints.get("datePaint").setText(dateFormat.format(calendar.getTime()));
 
         // Draw Paints
         drawRows(canvas, bounds);
@@ -293,6 +288,7 @@ public class WatchFace {
         if (timeFormat24){
             if (firstRowPaints.containsKey("amPmPaint")){
                 firstRowPaints.remove("amPmPaint");
+                firstRowPaints.get("timePaint").setTextSize(44.0f);
             }
             Log.d(TAG, "Time in 24h");
             return;
