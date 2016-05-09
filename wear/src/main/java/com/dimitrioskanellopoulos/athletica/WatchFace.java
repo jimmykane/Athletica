@@ -17,6 +17,7 @@ import com.dimitrioskanellopoulos.athletica.paints.TextPaint;
 import com.dimitrioskanellopoulos.athletica.paints.BatterySensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.SensorPaintFactory;
 import com.dimitrioskanellopoulos.athletica.paints.SunriseTimePaint;
+import com.dimitrioskanellopoulos.athletica.paints.TimePaint;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -75,6 +76,7 @@ public class WatchFace {
     private int chinSize;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
 
     private boolean shouldInterlace = true;
 
@@ -275,7 +277,6 @@ public class WatchFace {
         }
     }
 
-    // @todo optimize
     private SimpleDateFormat getTimeFormat(){
         if (!isInAmbientMode){
             return new SimpleDateFormat("hh:mm:ss");
@@ -285,10 +286,12 @@ public class WatchFace {
     }
 
     public void setTimeFormat24(Boolean timeFormat24){
+        TimePaint timePaint = (TimePaint) firstRowPaints.get("timePaint");
+        timePaint.setTimeFormat24(timeFormat24);
+        float textSize = timeFormat24 ? resources.getDimension(R.dimen.time_size) : resources.getDimension(R.dimen.time_size) - resources.getDimension(R.dimen.time_am_pm_size);
         if (timeFormat24){
             if (firstRowPaints.containsKey("amPmPaint")){
                 firstRowPaints.remove("amPmPaint");
-                firstRowPaints.get("timePaint").setTextSize(resources.getDimension(R.dimen.time_size));
             }
             Log.d(TAG, "Time in 24h");
             return;
@@ -298,9 +301,8 @@ public class WatchFace {
         amPmPaint.setTypeface(defaultTypeface);
         amPmPaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         amPmPaint.setTextSize(resources.getDimension(R.dimen.time_am_pm_size));
-        firstRowPaints.get("timePaint").setTextSize(resources.getDimension(R.dimen.time_size) - resources.getDimension(R.dimen.time_am_pm_size));
-
         firstRowPaints.put("amPmPaint", amPmPaint);
+        timePaint.setTextSize(textSize);
         Log.d(TAG, "Time in AM/PM");
     }
 
