@@ -288,7 +288,7 @@ public class WatchFace {
         if (timeFormat24){
             if (firstRowPaints.containsKey("amPmPaint")){
                 firstRowPaints.remove("amPmPaint");
-                firstRowPaints.get("timePaint").setTextSize(44.0f);
+                firstRowPaints.get("timePaint").setTextSize(resources.getDimension(R.dimen.time_size));
             }
             Log.d(TAG, "Time in 24h");
             return;
@@ -298,6 +298,8 @@ public class WatchFace {
         amPmPaint.setTypeface(defaultTypeface);
         amPmPaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         amPmPaint.setTextSize(resources.getDimension(R.dimen.time_am_pm_size));
+        firstRowPaints.get("timePaint").setTextSize(resources.getDimension(R.dimen.time_size) - resources.getDimension(R.dimen.time_am_pm_size));
+
         firstRowPaints.put("amPmPaint", amPmPaint);
         Log.d(TAG, "Time in AM/PM");
     }
