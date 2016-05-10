@@ -183,9 +183,6 @@ public class WatchFace {
         fifthRow.addColumn("battery", batteryColumn);
     }
 
-    /**
-     * @todo maybe cache calculations
-     */
     public void draw(Canvas canvas, Rect bounds) {
 
         // First draw background
@@ -193,12 +190,9 @@ public class WatchFace {
 
         secondRow.getColumn("date").setText(dateFormat.format(calendar.getTime()));
 
-        // Draw Paints
-//        drawRows(canvas, bounds);
         drawMatrix(canvas, bounds);
 
         interlaceCanvas(canvas, bounds);
-
     }
 
 
