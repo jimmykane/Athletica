@@ -14,19 +14,9 @@ import android.util.TypedValue;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.Column;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.rows.Row;
-import com.dimitrioskanellopoulos.athletica.paints.SensorPaint;
-import com.dimitrioskanellopoulos.athletica.paints.SunsetTimePaint;
-import com.dimitrioskanellopoulos.athletica.paints.TextPaint;
-import com.dimitrioskanellopoulos.athletica.paints.BatterySensorPaint;
-import com.dimitrioskanellopoulos.athletica.paints.SensorPaintFactory;
-import com.dimitrioskanellopoulos.athletica.paints.SunriseTimePaint;
-import com.dimitrioskanellopoulos.athletica.paints.TimePaint;
 
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.TimeZone;
 
 public class WatchFace {
@@ -87,23 +77,23 @@ public class WatchFace {
         resources = context.getApplicationContext().getResources();
 
         // Define the margin of the rows for vertical
-        Float rowVerticalMargin = TypedValue.applyDimension(
+        Float verticalMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 resources.getDimension(R.dimen.row_vertical_margin),
                 resources.getDisplayMetrics());
 
         // Define the margin of the rows for horizontal
-        Float rowHorizontalMargin = TypedValue.applyDimension(
+        Float horizontalMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 resources.getDimension(R.dimen.row_horizontal_margin),
                 resources.getDisplayMetrics());
 
         // Set margins to the rows
         firstRow.setVerticalMargin(0.0f);
-        secondRow.setVerticalMargin(rowVerticalMargin);
-        thirdRow.setVerticalMargin(rowVerticalMargin);
-        forthRow.setVerticalMargin(rowVerticalMargin);
-        fifthRow.setVerticalMargin(rowVerticalMargin);
+        secondRow.setVerticalMargin(verticalMargin);
+        thirdRow.setVerticalMargin(verticalMargin);
+        forthRow.setVerticalMargin(verticalMargin);
+        fifthRow.setVerticalMargin(verticalMargin);
 
 
         // Default typeface
@@ -148,6 +138,7 @@ public class WatchFace {
         sunriseIconColumn.setPaint(sunriseTimeIconPaint);
         sunriseIconColumn.getPaint().setTextSize(resources.getDimension(R.dimen.icon_size));
         sunriseIconColumn.setText("\uF185");
+        sunriseIconColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
 
         Paint sunriseTimePaint = new Paint();
@@ -157,7 +148,7 @@ public class WatchFace {
 
         Column sunriseColumn = new Column();
         sunriseColumn.setPaint(sunriseTimePaint);
-        sunriseColumn.setHorizontalMargin(rowHorizontalMargin);
+        sunriseColumn.setHorizontalMargin(horizontalMargin);
         sunriseColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
         thirdRow.addColumn("sunrise", sunriseColumn);
 
@@ -170,6 +161,7 @@ public class WatchFace {
         Column sunsetIconColumn = new Column();
         sunsetIconColumn.setPaint(sunsetIconPaint);
         sunsetIconColumn.getPaint().setTextSize(resources.getDimension(R.dimen.icon_size));
+        sunsetIconColumn.setHorizontalMargin(horizontalMargin);
         sunsetIconColumn.setText("\uF186");
         thirdRow.addColumn("sunset_icon", sunsetIconColumn);
 
@@ -180,8 +172,8 @@ public class WatchFace {
 
         Column sunsetColumn = new Column();
         sunsetColumn.setPaint(sunsetTimePaint);
-        sunriseColumn.setHorizontalMargin(rowHorizontalMargin);
-        sunriseColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
+        sunsetColumn.setHorizontalMargin(horizontalMargin);
+        sunsetColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
         thirdRow.addColumn("sunset", sunsetColumn);
 
         // Add paint for battery level
@@ -223,7 +215,6 @@ public class WatchFace {
             Float maxTextHeight = 0f;
             // Go over the paints (columns of each row)
             for (Column column : row.getAllColumns()) {
-                Log.d(TAG, "Column: " + column.getText());
                 // If the height is bigger than the current set it to that
                 if (column.getHeight() > maxTextHeight) {
                     maxTextHeight = column.getHeight();
@@ -242,7 +233,7 @@ public class WatchFace {
             /**
              * All is found and set start drawing
              */
-            Float cursor = bounds.exactCenterX() - (totalTextWidth - row.getVerticalMargin()) / 2.0f;
+            Float cursor = bounds.exactCenterX() - totalTextWidth / 2.0f;
             for (Column column : row.getAllColumns()) {
                 // Draw the paint
                 canvas.drawText(column.getText(), cursor, yOffset, column.getPaint()); // check if it needs per paint height
