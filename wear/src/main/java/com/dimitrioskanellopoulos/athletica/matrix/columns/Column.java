@@ -34,13 +34,13 @@ public class Column implements ColumnInterface {
     }
 
     @Override
-    public Integer getHeight() {
+    public Float getHeight() {
         // If no text no height for now
         if (getText() == null){
-            return 0;
+            return 0.0f;
         }
         Rect textBounds = new Rect();
         getPaint().getTextBounds(getText(), 0, getText().length(), textBounds);
-        return textBounds.height();
+        return (float) textBounds.height();
     }
 }
