@@ -11,6 +11,8 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
+import com.dimitrioskanellopoulos.athletica.matrix.columns.Column;
+import com.dimitrioskanellopoulos.athletica.matrix.rows.Row;
 import com.dimitrioskanellopoulos.athletica.paints.SensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.SunsetTimePaint;
 import com.dimitrioskanellopoulos.athletica.paints.TextPaint;
@@ -43,17 +45,28 @@ public class WatchFace {
     // First row of paints
     private final static LinkedHashMap<String, TimePaint> firstRowPaints = new LinkedHashMap<>();
 
+    private final static Row firstRow = new Row();
+
     // Second row
     private final static LinkedHashMap<String, TextPaint> secondRowPaints = new LinkedHashMap<>();
+
+    private final static Row secondRow = new Row();
 
     // Third row
     private final static LinkedHashMap<String, SensorPaint> thirdRowPaints = new LinkedHashMap<>();
 
+    private final static Row thirdRow = new Row();
+
+
     // Forth row
     protected final static LinkedHashMap<Integer, SensorPaint> forthRowPaints = new LinkedHashMap<>();
 
+    private final static Row forthRow = new Row();
+
     // Last row
     protected final static LinkedHashMap<String, SensorPaint> lastRowPaints = new LinkedHashMap<>();
+
+    private final static Row fifthRow = new Row();
 
     // All the rows together
     private final static LinkedHashMap[] paintsRows = {firstRowPaints, secondRowPaints, thirdRowPaints, forthRowPaints, lastRowPaints};
@@ -113,12 +126,20 @@ public class WatchFace {
         timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
         firstRowPaints.put("timePaint", timePaint);
 
+        Column timeColumn = new Column();
+        timeColumn.setPaint(timePaint);
+        firstRow.addColumn("time", timeColumn);
+
         // Add paint for date
         TextPaint datePaint = new TextPaint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTypeface(defaultTypeface);
         datePaint.setTextSize(resources.getDimension(R.dimen.date_size));
         secondRowPaints.put("datePaint", datePaint);
+
+        Column dateColumn = new Column();
+        dateColumn.setPaint(datePaint);
+        secondRow.addColumn("date", dateColumn);
 
         // Add paint for sunrise
         SensorPaint sunriseTimePaint = new SunriseTimePaint();
@@ -128,6 +149,10 @@ public class WatchFace {
         sunriseTimePaint.setIconTextPaint(fontAwesomePaint);
         thirdRowPaints.put("sunriseTimePaint", sunriseTimePaint);
 
+        Column sunriseColumn = new Column();
+        sunriseColumn.setPaint(sunriseTimePaint);
+        thirdRow.addColumn("sunrise", sunriseColumn);
+
         // Add paint for sunset
         SensorPaint sunsetTimePaint = new SunsetTimePaint();
         sunsetTimePaint.setColor(TEXT_DEFAULT_COLOUR);
@@ -136,6 +161,10 @@ public class WatchFace {
         sunsetTimePaint.setTypeface(defaultTypeface);
         thirdRowPaints.put("sunsetTimePaint", sunsetTimePaint);
 
+        Column sunsetColumn = new Column();
+        sunsetColumn.setPaint(sunsetTimePaint);
+        thirdRow.addColumn("sunset", sunsetColumn);
+
         // Add paint for battery level
         BatterySensorPaint batterySensorPaint = new BatterySensorPaint();
         batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
@@ -143,6 +172,10 @@ public class WatchFace {
         batterySensorPaint.setIconTextPaint(fontAwesomePaint);
         batterySensorPaint.setTypeface(defaultTypeface);
         lastRowPaints.put("batterySensorPaint", batterySensorPaint);
+
+        Column batteryColumn = new Column();
+        batteryColumn.setPaint(batterySensorPaint);
+        fifthRow.addColumn("battery", batteryColumn);
     }
 
     /**
@@ -291,23 +324,32 @@ public class WatchFace {
         sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sensorPaint.setTypeface(defaultTypeface);
         forthRowPaints.put(sensorType, sensorPaint);
+
+        Column sensorColumn = new Column();
+        sensorColumn.setPaint(sensorPaint);
+        forthRow.addColumn(sensorType.toString(), sensorColumn);
     }
 
-    public void removeSensorPaint(Integer key) {
-        forthRowPaints.remove(key);
+    public void removeSensorPaint(Integer sensorType) {
+        forthRowPaints.remove(sensorType);
+        forthRow.removeColumn(sensorType.toString());
     }
 
-    public void updateSensorPaintText(Integer key, String value) {
-        forthRowPaints.get(key).setText(value);
+    public void updateSensorPaintText(Integer sensorType, String value) {
+        forthRowPaints.get(sensorType).setText(value);
+        forthRow.getColumn(sensorType.toString()).setText(value);
     }
 
     public void updateBatteryLevel(Integer batteryPercentage) {
         lastRowPaints.get("batterySensorPaint").setText(batteryPercentage.toString());
+        fifthRow.getColumn("battery").setText(batteryPercentage.toString());
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
         thirdRowPaints.get("sunriseTimePaint").setText(sunriseSunset.first);
         thirdRowPaints.get("sunsetTimePaint").setText(sunriseSunset.second);
+        thirdRow.getColumn("sunrise").setText(sunriseSunset.first);
+        thirdRow.getColumn("sunset").setText(sunriseSunset.second);
     }
 
 }
