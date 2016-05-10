@@ -1,5 +1,6 @@
 package com.dimitrioskanellopoulos.athletica.matrix.columns;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -26,6 +27,8 @@ public class Column implements ColumnInterface {
 
     @Override
     public void setAmbientMode(Boolean ambientMode) {
+        getPaint().setColor(Color.WHITE);
+        getPaint().setAntiAlias(!ambientMode);
         this.ambientMode = ambientMode;
     }
 
