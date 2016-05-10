@@ -45,32 +45,26 @@ public class WatchFace {
     private final Paint backgroundPaint;
 
     // First row of paints
-    private final static LinkedHashMap<String, TimePaint> firstRowPaints = new LinkedHashMap<>();
 
     private final static Row firstRow = new Row();
 
     // Second row
-    private final static LinkedHashMap<String, TextPaint> secondRowPaints = new LinkedHashMap<>();
 
     private final static Row secondRow = new Row();
 
     // Third row
-    private final static LinkedHashMap<String, SensorPaint> thirdRowPaints = new LinkedHashMap<>();
 
     private final static Row thirdRow = new Row();
 
     // Forth row
-    protected final static LinkedHashMap<Integer, SensorPaint> forthRowPaints = new LinkedHashMap<>();
 
     private final static Row forthRow = new Row();
 
     // Last row
-    protected final static LinkedHashMap<String, SensorPaint> lastRowPaints = new LinkedHashMap<>();
 
     private final static Row fifthRow = new Row();
 
     // All the rows together
-    private final static LinkedHashMap[] paintsRows = {firstRowPaints, secondRowPaints, thirdRowPaints, forthRowPaints, lastRowPaints};
 
     // Convert to rows
     private final static Row[] rows = {firstRow, secondRow, thirdRow, forthRow, fifthRow};
@@ -79,10 +73,6 @@ public class WatchFace {
     private final TextPaint fontAwesomePaint;
 
     private Typeface defaultTypeface;
-
-    private final Float rowVerticalMargin;
-
-    private final Float rowHorizontalMargin;
 
     private boolean isRound;
     private boolean isInAmbientMode;
@@ -100,13 +90,13 @@ public class WatchFace {
         resources = context.getApplicationContext().getResources();
 
         // Define the margin of the rows for vertical
-        rowVerticalMargin = TypedValue.applyDimension(
+        Float rowVerticalMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 resources.getDimension(R.dimen.row_vertical_margin),
                 resources.getDisplayMetrics());
 
         // Define the margin of the rows for horizontal
-        rowHorizontalMargin = TypedValue.applyDimension(
+        Float rowHorizontalMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 resources.getDimension(R.dimen.row_horizontal_margin),
                 resources.getDisplayMetrics());
@@ -137,7 +127,6 @@ public class WatchFace {
         timePaint.setTypeface(defaultTypeface);
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
-        firstRowPaints.put("timePaint", timePaint);
 
         TimeColumn timeColumn = new TimeColumn();
         timeColumn.setPaint(timePaint);
@@ -149,7 +138,6 @@ public class WatchFace {
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTypeface(defaultTypeface);
         datePaint.setTextSize(resources.getDimension(R.dimen.date_size));
-        secondRowPaints.put("datePaint", datePaint);
 
         Column dateColumn = new Column();
         dateColumn.setPaint(datePaint);
@@ -162,7 +150,6 @@ public class WatchFace {
         sunriseTimePaint.setTypeface(defaultTypeface);
         sunriseTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sunriseTimePaint.setIconTextPaint(fontAwesomePaint);
-        thirdRowPaints.put("sunriseTimePaint", sunriseTimePaint);
 
         Column sunriseColumn = new Column();
         sunriseColumn.setPaint(sunriseTimePaint);
@@ -176,7 +163,6 @@ public class WatchFace {
         sunsetTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sunsetTimePaint.setIconTextPaint(fontAwesomePaint);
         sunsetTimePaint.setTypeface(defaultTypeface);
-        thirdRowPaints.put("sunsetTimePaint", sunsetTimePaint);
 
         Column sunsetColumn = new Column();
         sunsetColumn.setPaint(sunsetTimePaint);
@@ -190,7 +176,6 @@ public class WatchFace {
         batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
         batterySensorPaint.setIconTextPaint(fontAwesomePaint);
         batterySensorPaint.setTypeface(defaultTypeface);
-        lastRowPaints.put("batterySensorPaint", batterySensorPaint);
 
         Column batteryColumn = new Column();
         batteryColumn.setPaint(batterySensorPaint);
@@ -205,9 +190,6 @@ public class WatchFace {
 
         // First draw background
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
-
-        // Set the date
-        secondRowPaints.get("datePaint").setText(dateFormat.format(calendar.getTime()));
 
         secondRow.getColumn("date").setText(dateFormat.format(calendar.getTime()));
 
@@ -246,7 +228,7 @@ public class WatchFace {
             // Add the total height to the offset
             yOffset += row.getVerticalMargin() + maxTextHeight / 2.0f;
             // Last row change yOffset and put it as low as possible because it's the bottom row
-            if (rowCount == paintsRows.length - 1) {
+            if (rowCount == rows.length - 1) {
                 yOffset = bounds.bottom - chinSize - maxTextHeight / 2.0f;
             }
 
@@ -260,76 +242,6 @@ public class WatchFace {
                 cursor += column.getWidth() + column.getHorizontalMargin();
             }
             rowCount++;
-        }
-    }
-
-    public void drawRows(Canvas canvas, Rect bounds) {
-        /**
-         * We loop over each row:
-         * 1. Find the total width of the text so we can center the text on X
-         * 2. Find the biggest height of the text so we can offset on Y
-         * 3. Take care for special cases of first and last row
-         */
-        int row = 0;
-        Float yOffset = bounds.exactCenterY();
-        for (LinkedHashMap<String, TextPaint> paintsRow : paintsRows) {
-            Float totalTextWidth = 0f;
-            Float maxTextHeight = 0f;
-            // Go over the paints (columns of each row)
-            int col = 0;
-            for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
-                TextPaint textPaint = entry.getValue();
-                // If the height is bigger than the current set it to that
-                if (textPaint.getSelfTextHeight() > maxTextHeight) {
-                    maxTextHeight = textPaint.getSelfTextHeight();
-                }
-                // The total width of the row increases by the paint's text with
-                totalTextWidth += textPaint.getSelfTextWidth() + rowHorizontalMargin;
-                // If it's a sensor paint add to the total width the icon width
-                if (textPaint instanceof SensorPaint) {
-                    // Get's it's icon paint
-                    TextPaint iconTextPaint = ((SensorPaint) textPaint).getIconTextPaint();
-                    // Add it's width a small margin
-                    totalTextWidth += iconTextPaint.measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin / 3;
-                    if (iconTextPaint.getSelfTextHeight() > maxTextHeight) {
-                        maxTextHeight = iconTextPaint.getSelfTextHeight();
-                    }
-                }
-                // Remove trailing margins
-                if (col == paintsRow.size() - 1) {
-                    totalTextWidth -= rowHorizontalMargin;
-                }
-                col++;
-            }
-
-            // Add the total height to the offset
-            yOffset += rowVerticalMargin + maxTextHeight / 2.0f;
-            // First row change yOffset
-            if (row == 0) {
-                yOffset = yOffset - rowVerticalMargin;
-            }
-            // Last row change yOffset and put it as low as possible because it's the bottom row
-            if (row == paintsRows.length - 1) {
-                yOffset = bounds.bottom - chinSize - maxTextHeight / 2.0f;
-            }
-
-            /**
-             * All is found and set start drawing
-             */
-            Float cursor = bounds.exactCenterX() - (totalTextWidth - rowHorizontalMargin) / 2.0f;
-            for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
-                TextPaint textPaint = entry.getValue();
-                // Draw also the icon
-                if (textPaint instanceof SensorPaint) {
-                    TextPaint iconTextPaint = ((SensorPaint) textPaint).getIconTextPaint();
-                    canvas.drawText(((SensorPaint) textPaint).getIcon(), cursor, yOffset, iconTextPaint);
-                    cursor += iconTextPaint.measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin / 2;
-                }
-                // Draw the paint
-                canvas.drawText(textPaint.getText(), cursor, yOffset, textPaint); // check if it needs per paint height
-                cursor += textPaint.getSelfTextWidth() + rowHorizontalMargin;
-            }
-            row++;
         }
     }
 
@@ -356,11 +268,6 @@ public class WatchFace {
      */
     public void inAmbientMode(boolean inAmbientMode) {
         isInAmbientMode = inAmbientMode;
-        for (LinkedHashMap<String, TextPaint> paintsRow : paintsRows) {
-            for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
-                entry.getValue().inAmbientMode(inAmbientMode);
-            }
-        }
         for (Row row: rows){
             for (Column column: row.getAllColumns()){
                 column.setAmbientMode(inAmbientMode);
@@ -369,13 +276,6 @@ public class WatchFace {
     }
 
     public void setTimeFormat24(Boolean timeFormat24) {
-        TimePaint timePaint = firstRowPaints.get("timePaint");
-        timePaint.setTimeFormat24(timeFormat24);
-        float textSize = timeFormat24 ?
-                resources.getDimension(R.dimen.time_size) :
-                resources.getDimension(R.dimen.time_size) - resources.getDimension(R.dimen.time_am_pm_size);
-        // Add paint for Am/Pm
-        timePaint.setTextSize(textSize);
         TimeColumn timeColumn = (TimeColumn) firstRow.getColumn("time");
         timeColumn.setTimeFormat24(timeFormat24);
         timeColumn.getPaint().setTextSize( timeFormat24 ?
@@ -402,7 +302,6 @@ public class WatchFace {
         sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sensorPaint.setTypeface(defaultTypeface);
-        forthRowPaints.put(sensorType, sensorPaint);
 
         Column sensorColumn = new Column();
         sensorColumn.setPaint(sensorPaint);
@@ -411,25 +310,19 @@ public class WatchFace {
     }
 
     public void removeSensorPaint(Integer sensorType) {
-        forthRowPaints.remove(sensorType);
         forthRow.removeColumn(sensorType.toString());
     }
 
     public void updateSensorPaintText(Integer sensorType, String value) {
-        forthRowPaints.get(sensorType).setText(value);
         forthRow.getColumn(sensorType.toString()).setText(value);
     }
 
     public void updateBatteryLevel(Integer batteryPercentage) {
-        lastRowPaints.get("batterySensorPaint").setText(batteryPercentage.toString());
         fifthRow.getColumn("battery").setText(batteryPercentage.toString());
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
-        thirdRowPaints.get("sunriseTimePaint").setText(sunriseSunset.first);
-        thirdRowPaints.get("sunsetTimePaint").setText(sunriseSunset.second);
         thirdRow.getColumn("sunrise").setText(sunriseSunset.first);
         thirdRow.getColumn("sunset").setText(sunriseSunset.second);
     }
-
 }
