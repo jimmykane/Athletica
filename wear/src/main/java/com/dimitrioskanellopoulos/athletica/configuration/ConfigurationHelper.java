@@ -48,7 +48,7 @@ public final class ConfigurationHelper {
     /**
      * Asynchronously fetches the current config {@link DataMap} for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService}
      * and passes it to the given callback.
-     * <p>
+     * <p/>
      * If the current config {@link DataItem} doesn't exist, it isn't created and the callback
      * receives an empty DataMap.
      */
@@ -75,7 +75,7 @@ public final class ConfigurationHelper {
      * Overwrites (or sets, if not present) the keys in the current config {@link DataItem} with
      * the ones appearing in the given {@link DataMap}. If the config DataItem doesn't exist,
      * it's created.
-     * <p>
+     * <p/>
      * It is allowed that only some of the keys used in the config DataItem appear in
      * {@code configKeysToOverwrite}. The rest of the keys remains unmodified in this case.
      */
@@ -113,6 +113,16 @@ public final class ConfigurationHelper {
                 });
     }
 
+    public static void setDefaultValuesForMissingConfigKeys(DataMap config) {
+        addBooleanKeyIfMissing(config, KEY_TIME_FORMAT, TIME_FORMAT_DEFAULT);
+    }
+
+    private static void addBooleanKeyIfMissing(DataMap config, String key, Boolean value) {
+        if (!config.containsKey(key)) {
+            config.putBoolean(key, value);
+        }
+    }
+
     private static class DataItemResultCallback implements ResultCallback<DataApi.DataItemResult> {
 
         private final FetchConfigDataMapCallback mCallback;
@@ -136,5 +146,6 @@ public final class ConfigurationHelper {
         }
     }
 
-    private ConfigurationHelper() { }
+    private ConfigurationHelper() {
+    }
 }

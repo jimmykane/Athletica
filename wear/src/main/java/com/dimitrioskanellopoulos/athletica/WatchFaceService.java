@@ -531,24 +531,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         public void onConfigDataMapFetched(DataMap startupConfig) {
                             // If the DataItem hasn't been created yet or some keys are missing,
                             // use the default values.
-                            setDefaultValuesForMissingConfigKeys(startupConfig);
+                            ConfigurationHelper.setDefaultValuesForMissingConfigKeys(startupConfig);
                             ConfigurationHelper.putConfigDataItem(googleApiClient, startupConfig);
-
                             updateUiForConfigDataMap(startupConfig);
                         }
                     }
             );
-        }
-
-        private void setDefaultValuesForMissingConfigKeys(DataMap config) {
-            addBooleanKeyIfMissing(config, ConfigurationHelper.KEY_TIME_FORMAT,
-                    ConfigurationHelper.TIME_FORMAT_DEFAULT);
-        }
-
-        private void addBooleanKeyIfMissing(DataMap config, String key, Boolean value) {
-            if (!config.containsKey(key)) {
-                config.putBoolean(key, value);
-            }
         }
 
         private void updateUiForConfigDataMap(final DataMap config) {

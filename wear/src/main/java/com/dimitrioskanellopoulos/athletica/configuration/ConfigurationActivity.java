@@ -29,10 +29,11 @@ public class ConfigurationActivity extends WearableActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.configuration);
-        if (EmulatorHelper.isEmulator()){
+        if (EmulatorHelper.isEmulator()) {
             setContentView(R.layout.configuration_dev);
 
         }
+
         setAmbientEnabled();
 
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -64,9 +65,9 @@ public class ConfigurationActivity extends WearableActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     updateConfigDataItemTimeFormat(true);
-                }else{
+                } else {
                     updateConfigDataItemTimeFormat(false);
                 }
 
@@ -106,24 +107,12 @@ public class ConfigurationActivity extends WearableActivity {
                     public void onConfigDataMapFetched(DataMap startupConfig) {
                         // If the DataItem hasn't been created yet or some keys are missing,
                         // use the default values.
-                        setDefaultValuesForMissingConfigKeys(startupConfig);
+                        ConfigurationHelper.setDefaultValuesForMissingConfigKeys(startupConfig);
                         ConfigurationHelper.putConfigDataItem(googleApiClient, startupConfig);
-
                         updateUiForConfigDataMap(startupConfig);
                     }
                 }
         );
-    }
-
-    private void setDefaultValuesForMissingConfigKeys(DataMap config) {
-        addBooleanKeyIfMissing(config, ConfigurationHelper.KEY_TIME_FORMAT,
-                ConfigurationHelper.TIME_FORMAT_DEFAULT);
-    }
-
-    private void addBooleanKeyIfMissing(DataMap config, String key, Boolean value) {
-        if (!config.containsKey(key)) {
-            config.putBoolean(key, value);
-        }
     }
 
     private void updateUiForConfigDataMap(final DataMap config) {
