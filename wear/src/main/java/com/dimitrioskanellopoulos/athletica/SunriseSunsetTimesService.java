@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.athletica.configuration;
+package com.dimitrioskanellopoulos.athletica;
 
 import android.location.Location;
 import android.util.Pair;
