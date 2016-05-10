@@ -153,6 +153,7 @@ public class WatchFace {
 
         Column sunriseColumn = new Column();
         sunriseColumn.setPaint(sunriseTimePaint);
+        sunriseColumn.setHorizontalMargin(rowHorizontalMargin);
         sunriseColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
         thirdRow.addColumn("sunrise", sunriseColumn);
 
@@ -166,6 +167,7 @@ public class WatchFace {
 
         Column sunsetColumn = new Column();
         sunsetColumn.setPaint(sunsetTimePaint);
+        sunriseColumn.setHorizontalMargin(rowHorizontalMargin);
         sunriseColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
         thirdRow.addColumn("sunset", sunsetColumn);
 
