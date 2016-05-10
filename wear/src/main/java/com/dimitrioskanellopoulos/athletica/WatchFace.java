@@ -22,6 +22,7 @@ import com.dimitrioskanellopoulos.athletica.paints.SensorPaintFactory;
 import com.dimitrioskanellopoulos.athletica.paints.SunriseTimePaint;
 import com.dimitrioskanellopoulos.athletica.paints.TimePaint;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
@@ -375,6 +376,12 @@ public class WatchFace {
                 resources.getDimension(R.dimen.time_size) - resources.getDimension(R.dimen.time_am_pm_size);
         // Add paint for Am/Pm
         timePaint.setTextSize(textSize);
+        TimeColumn timeColumn = (TimeColumn) firstRow.getColumn("time");
+        timeColumn.setTimeFormat24(timeFormat24);
+        timeColumn.getPaint().setTextSize( timeFormat24 ?
+                resources.getDimension(R.dimen.time_size) :
+                resources.getDimension(R.dimen.time_size) - resources.getDimension(R.dimen.time_am_pm_size));
+
     }
 
     public void updateTimeZoneWith(TimeZone timeZone) {
