@@ -12,6 +12,7 @@ import android.util.Pair;
 import android.util.TypedValue;
 
 import com.dimitrioskanellopoulos.athletica.matrix.columns.Column;
+import com.dimitrioskanellopoulos.athletica.matrix.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.rows.Row;
 import com.dimitrioskanellopoulos.athletica.paints.SensorPaint;
 import com.dimitrioskanellopoulos.athletica.paints.SunsetTimePaint;
@@ -137,7 +138,7 @@ public class WatchFace {
         timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
         firstRowPaints.put("timePaint", timePaint);
 
-        Column timeColumn = new Column();
+        TimeColumn timeColumn = new TimeColumn();
         timeColumn.setPaint(timePaint);
         timeColumn.getPaint().setTextSize(resources.getDimension(R.dimen.time_size));
         firstRow.addColumn("time", timeColumn);
