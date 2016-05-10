@@ -2,11 +2,13 @@ package com.dimitrioskanellopoulos.athletica.matrix.rows;
 
 import com.dimitrioskanellopoulos.athletica.matrix.columns.Column;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class Row implements RowInterface {
     private LinkedHashMap<String, Column> columns = new LinkedHashMap<>();
-    private Float verticalMargin;
+    private Float verticalMargin = 0.0f;
 
     @Override
     public void addColumn(String name, Column column) {
@@ -30,6 +32,11 @@ public class Row implements RowInterface {
 
     @Override
     public Column[] getAllColumns() {
-        return (Column[]) columns.values().toArray();
+        return columns.values().toArray(new Column[0]);
+    }
+
+    @Override
+    public Float getVerticalMargin() {
+         return verticalMargin;
     }
 }

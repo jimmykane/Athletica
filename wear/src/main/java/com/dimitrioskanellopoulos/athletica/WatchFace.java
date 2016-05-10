@@ -207,14 +207,58 @@ public class WatchFace {
         // Set the date
         secondRowPaints.get("datePaint").setText(dateFormat.format(calendar.getTime()));
 
-
         secondRow.getColumn("date").setText(dateFormat.format(calendar.getTime()));
 
         // Draw Paints
 //        drawRows(canvas, bounds);
+        drawMatrix(canvas, bounds);
 
         interlaceCanvas(canvas, bounds);
 
+    }
+
+
+    public void drawMatrix(Canvas canvas, Rect bounds) {
+        /**
+         * We loop over each row:
+         * 1. Find the total width of the text so we can center the text on X
+         * 2. Find the biggest height of the text so we can offset on Y
+         * 3. Take care for special cases of first and last row
+         */
+        Float yOffset = bounds.exactCenterY();
+        int rowCount = 0;
+        for (Row row : matrix) {
+            Float totalTextWidth = 0f;
+            Float maxTextHeight = 0f;
+            // Go over the paints (columns of each row)
+            for (Column column : row.getAllColumns()) {
+                Paint columnPaint = column.getPaint();
+                // If the height is bigger than the current set it to that
+                if (column.getHeight() > maxTextHeight) {
+                    maxTextHeight = column.getHeight();
+                }
+                // The total width of the row increases by the paint's text with
+                totalTextWidth += column.getWidth() + column.getHorizontalMargin();
+            }
+
+            // Add the total height to the offset
+            yOffset += row.getVerticalMargin() + maxTextHeight / 2.0f;
+            // Last row change yOffset and put it as low as possible because it's the bottom row
+            if (rowCount == paintsRows.length - 1) {
+                yOffset = bounds.bottom - chinSize - maxTextHeight / 2.0f;
+            }
+
+            /**
+             * All is found and set start drawing
+             */
+            Float cursor = bounds.exactCenterX() - (totalTextWidth - row.getVerticalMargin()) / 2.0f;
+            for (Column column : row.getAllColumns()) {
+                // Draw the paint
+                canvas.drawText(column.getText(), cursor, yOffset, column.getPaint()); // check if it needs per paint height
+                cursor += column.getWidth() + column.getHorizontalMargin();
+            }
+            rowCount++;
+        }
     }
 
     public void drawRows(Canvas canvas, Rect bounds) {

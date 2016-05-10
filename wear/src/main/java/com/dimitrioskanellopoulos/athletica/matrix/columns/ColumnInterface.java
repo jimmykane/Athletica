@@ -9,4 +9,6 @@ public interface ColumnInterface {
     String getText();
     Paint getPaint();
     Float getHeight();
+    Float getWidth();
+    Float getHorizontalMargin();
 }
