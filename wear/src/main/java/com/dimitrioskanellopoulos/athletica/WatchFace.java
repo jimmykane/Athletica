@@ -69,9 +69,6 @@ public class WatchFace {
     // Convert to rows
     private final static Row[] rows = {firstRow, secondRow, thirdRow, forthRow, fifthRow};
 
-    // FontAwesome
-    private final TextPaint fontAwesomePaint;
-
     private Typeface defaultTypeface;
 
     private boolean isRound;
@@ -117,10 +114,7 @@ public class WatchFace {
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
 
         // Add FontAwesome paint for icons
-        fontAwesomePaint = new TextPaint();
-        fontAwesomePaint.setColor(TEXT_DEFAULT_COLOUR);
-        fontAwesomePaint.setTypeface(Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf"));
-        fontAwesomePaint.setTextSize(resources.getDimension(R.dimen.icon_size));
+        Typeface fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
 
         // Add paint for time
         TimePaint timePaint = new TimePaint();
@@ -145,11 +139,22 @@ public class WatchFace {
         secondRow.addColumn("date", dateColumn);
 
         // Add paint for sunrise
+        SensorPaint sunriseTimeIconPaint = new SunriseTimePaint();
+        sunriseTimeIconPaint.setColor(TEXT_DEFAULT_COLOUR);
+        sunriseTimeIconPaint.setTypeface(fontAwesome);
+        sunriseTimeIconPaint.setTextSize(resources.getDimension(R.dimen.text_size));
+
+        Column sunriseIconColumn = new Column();
+        sunriseIconColumn.setPaint(sunriseTimeIconPaint);
+        sunriseIconColumn.setHorizontalMargin(0.0f);
+        sunriseIconColumn.getPaint().setTextSize(resources.getDimension(R.dimen.icon_size));
+        sunriseIconColumn.setText("\uF185");
+        thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
+
         SensorPaint sunriseTimePaint = new SunriseTimePaint();
         sunriseTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseTimePaint.setTypeface(defaultTypeface);
         sunriseTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
-        sunriseTimePaint.setIconTextPaint(fontAwesomePaint);
 
         Column sunriseColumn = new Column();
         sunriseColumn.setPaint(sunriseTimePaint);
@@ -161,7 +166,6 @@ public class WatchFace {
         SensorPaint sunsetTimePaint = new SunsetTimePaint();
         sunsetTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunsetTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
-        sunsetTimePaint.setIconTextPaint(fontAwesomePaint);
         sunsetTimePaint.setTypeface(defaultTypeface);
 
         Column sunsetColumn = new Column();
@@ -174,7 +178,6 @@ public class WatchFace {
         BatterySensorPaint batterySensorPaint = new BatterySensorPaint();
         batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
-        batterySensorPaint.setIconTextPaint(fontAwesomePaint);
         batterySensorPaint.setTypeface(defaultTypeface);
 
         Column batteryColumn = new Column();
@@ -292,7 +295,6 @@ public class WatchFace {
 
     public void addSensorPaint(Integer sensorType) {
         SensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(sensorType);
-        sensorPaint.setIconTextPaint(fontAwesomePaint);
         sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sensorPaint.setTypeface(defaultTypeface);
