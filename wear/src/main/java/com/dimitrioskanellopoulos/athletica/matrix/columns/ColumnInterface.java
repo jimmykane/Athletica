@@ -8,4 +8,5 @@ public interface ColumnInterface {
     void setHorizontalMargin(Float horizontalMargin);
     String getText();
     Paint getPaint();
+    Integer getHeight();
 }

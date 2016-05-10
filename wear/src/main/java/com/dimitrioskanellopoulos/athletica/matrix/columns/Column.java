@@ -1,6 +1,7 @@
 package com.dimitrioskanellopoulos.athletica.matrix.columns;
 
 import android.graphics.Paint;
+import android.graphics.Rect;
 
 public class Column implements ColumnInterface {
     private String text;
@@ -30,5 +31,16 @@ public class Column implements ColumnInterface {
     @Override
     public Paint getPaint() {
         return paint;
+    }
+
+    @Override
+    public Integer getHeight() {
+        // If no text no height for now
+        if (getText() == null){
+            return 0;
+        }
+        Rect textBounds = new Rect();
+        getPaint().getTextBounds(getText(), 0, getText().length(), textBounds);
+        return textBounds.height();
     }
 }
