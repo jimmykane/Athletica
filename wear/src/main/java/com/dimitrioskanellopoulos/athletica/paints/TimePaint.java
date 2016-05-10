@@ -13,23 +13,22 @@ public class TimePaint extends TextPaint {
 
     private static final Calendar calendar = Calendar.getInstance();
 
-    public void setTimeFormat24 (Boolean timeFormat24){
+    public void setTimeFormat24(Boolean timeFormat24) {
         this.isIn24hourFormat = timeFormat24;
     }
 
     @Override
     public String getText() {
         calendar.setTimeInMillis(System.currentTimeMillis());
-        if (isInAmbientMode() && isIn24hourFormat){
+        if (isInAmbientMode() && isIn24hourFormat) {
             return timeFormat24.format(calendar.getTime());
-        }else if(isInAmbientMode() && !isIn24hourFormat){
+        } else if (isInAmbientMode() && !isIn24hourFormat) {
             return timeFormat.format(calendar.getTime());
-        }else if (!isInAmbientMode() && isIn24hourFormat){
+        } else if (!isInAmbientMode() && isIn24hourFormat) {
             return timeFormat24WithSeconds.format(calendar.getTime());
-        }else //(!isInAmbientMode() && !isIn24hourFormat)
+        } else //(!isInAmbientMode() && !isIn24hourFormat)
         {
             return timeFormatWithSeconds.format(calendar.getTime());
         }
     }
-
 }

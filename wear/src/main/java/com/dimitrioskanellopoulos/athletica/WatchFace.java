@@ -162,7 +162,7 @@ public class WatchFace {
 
     }
 
-    public void drawRows(Canvas canvas, Rect bounds){
+    public void drawRows(Canvas canvas, Rect bounds) {
         /**
          * We loop over each row:
          * 1. Find the total width of the text so we can center the text on X
@@ -171,7 +171,7 @@ public class WatchFace {
          */
         int row = 0;
         Float yOffset = bounds.exactCenterY();
-        for (LinkedHashMap<String, TextPaint> paintsRow : paintsRows){
+        for (LinkedHashMap<String, TextPaint> paintsRow : paintsRows) {
             Float totalTextWidth = 0f;
             Float maxTextHeight = 0f;
             // Go over the paints (columns of each row)
@@ -179,53 +179,53 @@ public class WatchFace {
             for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
                 TextPaint textPaint = entry.getValue();
                 // If the height is bigger than the current set it to that
-                if (textPaint.getSelfTextHeight() > maxTextHeight ){
+                if (textPaint.getSelfTextHeight() > maxTextHeight) {
                     maxTextHeight = textPaint.getSelfTextHeight();
                 }
                 // The total width of the row increases by the paint's text with
                 totalTextWidth += textPaint.getSelfTextWidth() + rowHorizontalMargin;
                 // If it's a sensor paint add to the total width the icon width
-                if (textPaint instanceof SensorPaint){
+                if (textPaint instanceof SensorPaint) {
                     // Get's it's icon paint
                     TextPaint iconTextPaint = ((SensorPaint) textPaint).getIconTextPaint();
                     // Add it's width a small margin
-                    totalTextWidth += iconTextPaint.measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin/3;
-                    if (iconTextPaint.getSelfTextHeight() > maxTextHeight){
+                    totalTextWidth += iconTextPaint.measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin / 3;
+                    if (iconTextPaint.getSelfTextHeight() > maxTextHeight) {
                         maxTextHeight = iconTextPaint.getSelfTextHeight();
                     }
                 }
                 // Remove trailing margins
-                if (col == paintsRow.size() - 1){
+                if (col == paintsRow.size() - 1) {
                     totalTextWidth -= rowHorizontalMargin;
                 }
                 col++;
             }
 
             // Add the total height to the offset
-            yOffset += rowVerticalMargin + maxTextHeight/2.0f;
+            yOffset += rowVerticalMargin + maxTextHeight / 2.0f;
             // First row change yOffset
-            if (row==0){
+            if (row == 0) {
                 yOffset = yOffset - rowVerticalMargin;
             }
             // Last row change yOffset and put it as low as possible because it's the bottom row
-            if (row == paintsRows.length -1){
-                yOffset = bounds.bottom - chinSize - maxTextHeight/2.0f;
+            if (row == paintsRows.length - 1) {
+                yOffset = bounds.bottom - chinSize - maxTextHeight / 2.0f;
             }
 
             /**
              * All is found and set start drawing
              */
-            Float cursor = bounds.exactCenterX() - (totalTextWidth-rowHorizontalMargin)/2.0f;
+            Float cursor = bounds.exactCenterX() - (totalTextWidth - rowHorizontalMargin) / 2.0f;
             for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
                 TextPaint textPaint = entry.getValue();
                 // Draw also the icon
-                if (textPaint instanceof SensorPaint){
+                if (textPaint instanceof SensorPaint) {
                     TextPaint iconTextPaint = ((SensorPaint) textPaint).getIconTextPaint();
-                    canvas.drawText(((SensorPaint) textPaint).getIcon(), cursor, yOffset  , iconTextPaint);
-                    cursor += iconTextPaint.measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin/2;
+                    canvas.drawText(((SensorPaint) textPaint).getIcon(), cursor, yOffset, iconTextPaint);
+                    cursor += iconTextPaint.measureText(((SensorPaint) textPaint).getIcon()) + rowHorizontalMargin / 2;
                 }
                 // Draw the paint
-                canvas.drawText(textPaint.getText(), cursor, yOffset  , textPaint); // check if it needs per paint height
+                canvas.drawText(textPaint.getText(), cursor, yOffset, textPaint); // check if it needs per paint height
                 cursor += textPaint.getSelfTextWidth() + rowHorizontalMargin;
             }
             row++;
@@ -235,17 +235,17 @@ public class WatchFace {
     /**
      * Applies interlace effect
      */
-    private void interlaceCanvas(Canvas canvas, Rect bounds){
+    private void interlaceCanvas(Canvas canvas, Rect bounds) {
         Paint interlacePaint = new Paint();
         interlacePaint.setColor(Color.BLACK);
         interlacePaint.setAlpha(60);
-        if (isInAmbientMode){
+        if (isInAmbientMode) {
             interlacePaint.setAlpha(100);
         }
-        for (int y=0; y < bounds.bottom; y+=2){
+        for (int y = 0; y < bounds.bottom; y += 2) {
             canvas.drawLine(0, y, bounds.right, y, interlacePaint);
         }
-        for (int x=0; x < bounds.right; x+=2){
+        for (int x = 0; x < bounds.right; x += 2) {
             canvas.drawLine(x, 0, x, bounds.bottom, interlacePaint);
         }
     }
@@ -255,14 +255,14 @@ public class WatchFace {
      */
     public void inAmbientMode(boolean inAmbientMode) {
         isInAmbientMode = inAmbientMode;
-        for (LinkedHashMap<String, TextPaint> paintsRow : paintsRows){
+        for (LinkedHashMap<String, TextPaint> paintsRow : paintsRows) {
             for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
                 entry.getValue().inAmbientMode(inAmbientMode);
             }
         }
     }
 
-    public void setTimeFormat24(Boolean timeFormat24){
+    public void setTimeFormat24(Boolean timeFormat24) {
         TimePaint timePaint = firstRowPaints.get("timePaint");
         timePaint.setTimeFormat24(timeFormat24);
         float textSize = timeFormat24 ?
