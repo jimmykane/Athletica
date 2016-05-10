@@ -128,6 +128,7 @@ public class WatchFace {
 
         Column timeColumn = new Column();
         timeColumn.setPaint(timePaint);
+        timeColumn.getPaint().setTextSize(resources.getDimension(R.dimen.time_size));
         firstRow.addColumn("time", timeColumn);
 
         // Add paint for date
@@ -139,6 +140,7 @@ public class WatchFace {
 
         Column dateColumn = new Column();
         dateColumn.setPaint(datePaint);
+        dateColumn.getPaint().setTextSize(resources.getDimension(R.dimen.date_size));
         secondRow.addColumn("date", dateColumn);
 
         // Add paint for sunrise
@@ -151,6 +153,7 @@ public class WatchFace {
 
         Column sunriseColumn = new Column();
         sunriseColumn.setPaint(sunriseTimePaint);
+        sunriseColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
         thirdRow.addColumn("sunrise", sunriseColumn);
 
         // Add paint for sunset
@@ -163,6 +166,7 @@ public class WatchFace {
 
         Column sunsetColumn = new Column();
         sunsetColumn.setPaint(sunsetTimePaint);
+        sunriseColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
         thirdRow.addColumn("sunset", sunsetColumn);
 
         // Add paint for battery level
@@ -175,6 +179,7 @@ public class WatchFace {
 
         Column batteryColumn = new Column();
         batteryColumn.setPaint(batterySensorPaint);
+        batteryColumn.getPaint().setTextSize(resources.getDimension(R.dimen.battery_text_size));
         fifthRow.addColumn("battery", batteryColumn);
     }
 
@@ -327,6 +332,7 @@ public class WatchFace {
 
         Column sensorColumn = new Column();
         sensorColumn.setPaint(sensorPaint);
+        sensorColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
         forthRow.addColumn(sensorType.toString(), sensorColumn);
     }
 
