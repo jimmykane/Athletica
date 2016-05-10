@@ -14,6 +14,11 @@ public class Column implements ColumnInterface {
     }
 
     @Override
+    public void setTextForAmbientMode(String text) {
+        this.text = text;
+    }
+
+    @Override
     public void setPaint(Paint paint) {
         this.paint = paint;
     }
@@ -26,6 +31,11 @@ public class Column implements ColumnInterface {
     @Override
     public String getText() {
         return text;
+    }
+
+    @Override
+    public String getTextForAmbientMode() {
+        return this.text;
     }
 
     @Override
