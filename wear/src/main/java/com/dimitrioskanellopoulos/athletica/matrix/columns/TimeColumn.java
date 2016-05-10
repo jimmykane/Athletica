@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class TimeColumn extends Column {
-    private final static SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
-    private final static SimpleDateFormat timeFormatWithSeconds = new SimpleDateFormat("hh:mm:ss");
+    private final static SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm");
+    private final static SimpleDateFormat timeFormatWithSeconds = new SimpleDateFormat("h:mm:ss");
     private final static SimpleDateFormat timeFormat24 = new SimpleDateFormat("k:mm");
     private final static SimpleDateFormat timeFormat24WithSeconds = new SimpleDateFormat("k:mm:ss");
 
