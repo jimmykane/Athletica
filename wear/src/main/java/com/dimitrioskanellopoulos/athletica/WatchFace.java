@@ -71,8 +71,8 @@ public class WatchFace {
     // All the rows together
     private final static LinkedHashMap[] paintsRows = {firstRowPaints, secondRowPaints, thirdRowPaints, forthRowPaints, lastRowPaints};
 
-    // Convert to matrix
-    private final static Row[] matrix = {firstRow, secondRow, thirdRow, forthRow, fifthRow};
+    // Convert to rows
+    private final static Row[] rows = {firstRow, secondRow, thirdRow, forthRow, fifthRow};
 
     // FontAwesome
     private final TextPaint fontAwesomePaint;
@@ -228,7 +228,7 @@ public class WatchFace {
          */
         Float yOffset = bounds.exactCenterY();
         int rowCount = 0;
-        for (Row row : matrix) {
+        for (Row row : rows) {
             Float totalTextWidth = 0f;
             Float maxTextHeight = 0f;
             // Go over the paints (columns of each row)
@@ -358,6 +358,11 @@ public class WatchFace {
         for (LinkedHashMap<String, TextPaint> paintsRow : paintsRows) {
             for (Map.Entry<String, TextPaint> entry : paintsRow.entrySet()) {
                 entry.getValue().inAmbientMode(inAmbientMode);
+            }
+        }
+        for (Row row: rows){
+            for (Column column: row.getAllColumns()){
+                column.setAmbientMode(inAmbientMode);
             }
         }
     }
