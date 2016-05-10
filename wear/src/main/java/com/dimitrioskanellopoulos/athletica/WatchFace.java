@@ -232,7 +232,7 @@ public class WatchFace {
             Float maxTextHeight = 0f;
             // Go over the paints (columns of each row)
             for (Column column : row.getAllColumns()) {
-                Paint columnPaint = column.getPaint();
+                Log.d(TAG, "Column: " + column.getText());
                 // If the height is bigger than the current set it to that
                 if (column.getHeight() > maxTextHeight) {
                     maxTextHeight = column.getHeight();
