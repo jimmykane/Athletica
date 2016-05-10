@@ -205,6 +205,9 @@ public class WatchFace {
         // Set the date
         secondRowPaints.get("datePaint").setText(dateFormat.format(calendar.getTime()));
 
+        
+        secondRow.getColumn("date").setText(dateFormat.format(calendar.getTime()));
+
         // Draw Paints
         drawRows(canvas, bounds);
         interlaceCanvas(canvas, bounds);
