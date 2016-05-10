@@ -4,6 +4,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 public class Column implements ColumnInterface {
+    private Boolean ambientMode = false;
     private String text = "";
     private Paint paint;
     private Float horizontalMargin = 0.0f;
@@ -21,6 +22,11 @@ public class Column implements ColumnInterface {
     @Override
     public void setHorizontalMargin(Float horizontalMargin) {
         this.horizontalMargin = horizontalMargin;
+    }
+
+    @Override
+    public void setAmbientMode(Boolean ambientMode) {
+        this.ambientMode = ambientMode;
     }
 
     @Override
@@ -56,5 +62,10 @@ public class Column implements ColumnInterface {
     @Override
     public Float getHorizontalMargin() {
         return horizontalMargin;
+    }
+
+    @Override
+    public Boolean isInAmbientMode() {
+        return ambientMode;
     }
 }
