@@ -26,9 +26,7 @@ public class TimeColumn extends Column {
             return timeFormat.format(calendar.getTime());
         } else if (!isInAmbientMode() && isIn24hourFormat) {
             return timeFormat24WithSeconds.format(calendar.getTime());
-        } else //(!isInAmbientMode() && !isIn24hourFormat)
-        {
-            return timeFormatWithSeconds.format(calendar.getTime());
         }
+        return timeFormatWithSeconds.format(calendar.getTime());
     }
 }
