@@ -41,7 +41,7 @@ public class WatchFace {
     private final Paint backgroundPaint;
 
     // First row of paints
-    private final static LinkedHashMap<String, TextPaint> firstRowPaints = new LinkedHashMap<>();
+    private final static LinkedHashMap<String, TimePaint> firstRowPaints = new LinkedHashMap<>();
 
     // Second row
     private final static LinkedHashMap<String, TextPaint> secondRowPaints = new LinkedHashMap<>();
@@ -67,16 +67,11 @@ public class WatchFace {
 
     private final Float rowHorizontalMargin;
 
-    private boolean timeFormat24 = true;
-
-
-
     private boolean isRound;
     private boolean isInAmbientMode;
     private int chinSize;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-
 
     private boolean shouldInterlace = true;
 
@@ -112,7 +107,7 @@ public class WatchFace {
         fontAwesomePaint.setTextSize(resources.getDimension(R.dimen.icon_size));
 
         // Add paint for time
-        TextPaint timePaint = new TextPaint();
+        TimePaint timePaint = new TimePaint();
         timePaint.setTypeface(defaultTypeface);
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
@@ -155,18 +150,8 @@ public class WatchFace {
      */
     public void draw(Canvas canvas, Rect bounds) {
 
-        // Update time
-        calendar.setTimeInMillis(System.currentTimeMillis());
-
         // First draw background
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
-
-        // Set the time
-        firstRowPaints.get("timePaint").setText(getTimeFormat().format(calendar.getTime()));
-        if (firstRowPaints.containsKey("amPmPaint")){
-            SimpleDateFormat amPmFormat = new SimpleDateFormat("a");
-            firstRowPaints.get("amPmPaint").setText(amPmFormat.format(calendar.getTime()));
-        }
 
         // Set the date
         secondRowPaints.get("datePaint").setText(dateFormat.format(calendar.getTime()));
@@ -277,33 +262,14 @@ public class WatchFace {
         }
     }
 
-    private SimpleDateFormat getTimeFormat(){
-        if (!isInAmbientMode){
-            return new SimpleDateFormat("hh:mm:ss");
-        }else{
-            return new SimpleDateFormat("hh:mm");
-        }
-    }
-
     public void setTimeFormat24(Boolean timeFormat24){
-        TimePaint timePaint = (TimePaint) firstRowPaints.get("timePaint");
+        TimePaint timePaint = firstRowPaints.get("timePaint");
         timePaint.setTimeFormat24(timeFormat24);
-        float textSize = timeFormat24 ? resources.getDimension(R.dimen.time_size) : resources.getDimension(R.dimen.time_size) - resources.getDimension(R.dimen.time_am_pm_size);
-        if (timeFormat24){
-            if (firstRowPaints.containsKey("amPmPaint")){
-                firstRowPaints.remove("amPmPaint");
-            }
-            Log.d(TAG, "Time in 24h");
-            return;
-        }
+        float textSize = timeFormat24 ?
+                resources.getDimension(R.dimen.time_size) :
+                resources.getDimension(R.dimen.time_size) - resources.getDimension(R.dimen.time_am_pm_size);
         // Add paint for Am/Pm
-        TextPaint amPmPaint = new TextPaint();
-        amPmPaint.setTypeface(defaultTypeface);
-        amPmPaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
-        amPmPaint.setTextSize(resources.getDimension(R.dimen.time_am_pm_size));
-        firstRowPaints.put("amPmPaint", amPmPaint);
         timePaint.setTextSize(textSize);
-        Log.d(TAG, "Time in AM/PM");
     }
 
     public void updateTimeZoneWith(TimeZone timeZone) {

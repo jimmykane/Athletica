@@ -6,12 +6,10 @@ import java.util.Calendar;
 public class TimePaint extends TextPaint {
     private final static SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
     private final static SimpleDateFormat timeFormatWithSeconds = new SimpleDateFormat("hh:mm:ss");
-    private final static SimpleDateFormat timeFormat24 = new SimpleDateFormat("kk:mm");
-    private final static SimpleDateFormat timeFormat24WithSeconds = new SimpleDateFormat("kk:mm:ss");
+    private final static SimpleDateFormat timeFormat24 = new SimpleDateFormat("k:mm");
+    private final static SimpleDateFormat timeFormat24WithSeconds = new SimpleDateFormat("k:mm:ss");
 
     private Boolean isIn24hourFormat = true;
-    private SimpleDateFormat dateFormat;
-
 
     private static final Calendar calendar = Calendar.getInstance();
 
@@ -21,6 +19,7 @@ public class TimePaint extends TextPaint {
 
     @Override
     public String getText() {
+        calendar.setTimeInMillis(System.currentTimeMillis());
         if (isInAmbientMode() && isIn24hourFormat){
             return timeFormat24.format(calendar.getTime());
         }else if(isInAmbientMode() && !isIn24hourFormat){
