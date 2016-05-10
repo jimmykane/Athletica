@@ -57,7 +57,6 @@ public class WatchFace {
 
     private final static Row thirdRow = new Row();
 
-
     // Forth row
     protected final static LinkedHashMap<Integer, SensorPaint> forthRowPaints = new LinkedHashMap<>();
 
@@ -70,6 +69,9 @@ public class WatchFace {
 
     // All the rows together
     private final static LinkedHashMap[] paintsRows = {firstRowPaints, secondRowPaints, thirdRowPaints, forthRowPaints, lastRowPaints};
+
+    // Convert to matrix
+    private final static Row[] matrix = {firstRow, secondRow, thirdRow, forthRow, fifthRow};
 
     // FontAwesome
     private final TextPaint fontAwesomePaint;
@@ -205,11 +207,12 @@ public class WatchFace {
         // Set the date
         secondRowPaints.get("datePaint").setText(dateFormat.format(calendar.getTime()));
 
-        
+
         secondRow.getColumn("date").setText(dateFormat.format(calendar.getTime()));
 
         // Draw Paints
-        drawRows(canvas, bounds);
+//        drawRows(canvas, bounds);
+
         interlaceCanvas(canvas, bounds);
 
     }
