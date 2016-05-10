@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 
 public class Row implements RowInterface {
     private LinkedHashMap<String, Column> columns = new LinkedHashMap<>();
+    private Float verticalMargin;
 
     @Override
     public void addColumn(String name, Column column) {
@@ -15,6 +16,11 @@ public class Row implements RowInterface {
     @Override
     public void removeColumn(String name) {
         columns.remove(name);
+    }
+
+    @Override
+    public void setVerticalMargin(Float verticalMargin) {
+        this.verticalMargin = verticalMargin;
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.graphics.Paint;
 public class Column implements ColumnInterface {
     private String text;
     private Paint paint;
+    private Float horizontalMargin;
 
     @Override
     public void setText(String text) {
@@ -14,6 +15,11 @@ public class Column implements ColumnInterface {
     @Override
     public void setPaint(Paint paint) {
         this.paint = paint;
+    }
+
+    @Override
+    public void setHorizontalMargin(Float horizontalMargin) {
+        this.horizontalMargin = horizontalMargin;
     }
 
     @Override
