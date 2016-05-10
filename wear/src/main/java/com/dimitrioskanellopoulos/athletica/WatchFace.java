@@ -92,6 +92,7 @@ public class WatchFace {
      * The WatchFace. Everything the user sees. No extra init or data manipulation
      */
     public WatchFace(Context context) {
+
         resources = context.getApplicationContext().getResources();
 
         // Define the margin of the rows for vertical
@@ -105,6 +106,14 @@ public class WatchFace {
                 TypedValue.COMPLEX_UNIT_DIP,
                 resources.getDimension(R.dimen.row_horizontal_margin),
                 resources.getDisplayMetrics());
+
+        // Set margins to the rows
+        firstRow.setVerticalMargin(0.0f);
+        secondRow.setVerticalMargin(rowVerticalMargin);
+        thirdRow.setVerticalMargin(rowVerticalMargin);
+        forthRow.setVerticalMargin(rowVerticalMargin);
+        fifthRow.setVerticalMargin(rowVerticalMargin);
+
 
         // Default typeface
         defaultTypeface = Typeface.SANS_SERIF;
