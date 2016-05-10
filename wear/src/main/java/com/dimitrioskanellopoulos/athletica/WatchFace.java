@@ -117,7 +117,7 @@ public class WatchFace {
         Typeface fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
 
         // Add paint for time
-        TimePaint timePaint = new TimePaint();
+        Paint timePaint = new Paint();
         timePaint.setTypeface(defaultTypeface);
         timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
@@ -128,7 +128,7 @@ public class WatchFace {
         firstRow.addColumn("time", timeColumn);
 
         // Add paint for date
-        TextPaint datePaint = new TextPaint();
+        Paint datePaint = new Paint();
         datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
         datePaint.setTypeface(defaultTypeface);
         datePaint.setTextSize(resources.getDimension(R.dimen.date_size));
@@ -139,19 +139,18 @@ public class WatchFace {
         secondRow.addColumn("date", dateColumn);
 
         // Add paint for sunrise
-        SensorPaint sunriseTimeIconPaint = new SunriseTimePaint();
+        Paint sunriseTimeIconPaint = new Paint();
         sunriseTimeIconPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseTimeIconPaint.setTypeface(fontAwesome);
         sunriseTimeIconPaint.setTextSize(resources.getDimension(R.dimen.text_size));
 
         Column sunriseIconColumn = new Column();
         sunriseIconColumn.setPaint(sunriseTimeIconPaint);
-        sunriseIconColumn.setHorizontalMargin(0.0f);
         sunriseIconColumn.getPaint().setTextSize(resources.getDimension(R.dimen.icon_size));
         sunriseIconColumn.setText("\uF185");
         thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
 
-        SensorPaint sunriseTimePaint = new SunriseTimePaint();
+        Paint sunriseTimePaint = new Paint();
         sunriseTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseTimePaint.setTypeface(defaultTypeface);
         sunriseTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
@@ -163,7 +162,18 @@ public class WatchFace {
         thirdRow.addColumn("sunrise", sunriseColumn);
 
         // Add paint for sunset
-        SensorPaint sunsetTimePaint = new SunsetTimePaint();
+        Paint sunsetIconPaint = new Paint();
+        sunsetIconPaint.setColor(TEXT_DEFAULT_COLOUR);
+        sunsetIconPaint.setTypeface(fontAwesome);
+        sunsetIconPaint.setTextSize(resources.getDimension(R.dimen.text_size));
+
+        Column sunsetIconColumn = new Column();
+        sunsetIconColumn.setPaint(sunsetIconPaint);
+        sunsetIconColumn.getPaint().setTextSize(resources.getDimension(R.dimen.icon_size));
+        sunsetIconColumn.setText("\uF186");
+        thirdRow.addColumn("sunset_icon", sunsetIconColumn);
+
+        Paint sunsetTimePaint = new Paint();
         sunsetTimePaint.setColor(TEXT_DEFAULT_COLOUR);
         sunsetTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
         sunsetTimePaint.setTypeface(defaultTypeface);
@@ -175,7 +185,7 @@ public class WatchFace {
         thirdRow.addColumn("sunset", sunsetColumn);
 
         // Add paint for battery level
-        BatterySensorPaint batterySensorPaint = new BatterySensorPaint();
+        Paint batterySensorPaint = new Paint();
         batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
         batterySensorPaint.setTypeface(defaultTypeface);
@@ -294,11 +304,7 @@ public class WatchFace {
     }
 
     public void addSensorPaint(Integer sensorType) {
-        SensorPaint sensorPaint = SensorPaintFactory.getPaintForSensorType(sensorType);
-        sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
-        sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
-        sensorPaint.setTypeface(defaultTypeface);
-
+        Paint sensorPaint = new Paint();
         Column sensorColumn = new Column();
         sensorColumn.setPaint(sensorPaint);
         sensorColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
@@ -318,6 +324,7 @@ public class WatchFace {
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
+        Log.d(TAG, "sunrise / sunset");
         thirdRow.getColumn("sunrise").setText(sunriseSunset.first);
         thirdRow.getColumn("sunset").setText(sunriseSunset.second);
     }

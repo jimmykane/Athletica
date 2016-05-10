@@ -717,20 +717,21 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * Run's tasks according to the current time
          */
         private void runOnTimeTickTasks() {
-            Calendar now = Calendar.getInstance();
-            if (now.getTimeInMillis() - lastOnTimeTickTasksRun.getTimeInMillis() > RUN_ON_TICK_TAKS_EVERY_MS){
-                Log.d(TAG, "Running onTimeTickTasks");
-                calculateAverageForActiveSensors();
-                lastOnTimeTickTasksRun = now;
-                if (EmulatorHelper.isEmulator()) {
-                    Location location = new Location("dummy");
-                    location.setLatitude(11);
-                    location.setLongitude(11);
-                    location.setTime(System.currentTimeMillis());
-                    location.setAccuracy(3.0f);
-                    updateSunriseAndSunset(location);
-                }
+            if (EmulatorHelper.isEmulator()) {
+                Location location = new Location("dummy");
+                location.setLatitude(11);
+                location.setLongitude(11);
+                location.setTime(System.currentTimeMillis());
+                location.setAccuracy(3.0f);
+                updateSunriseAndSunset(location);
             }
+            Calendar now = Calendar.getInstance();
+            if (now.getTimeInMillis() - lastOnTimeTickTasksRun.getTimeInMillis() < RUN_ON_TICK_TAKS_EVERY_MS) {
+                return;
+            }
+            Log.d(TAG, "Running onTimeTickTasks");
+            calculateAverageForActiveSensors();
+            lastOnTimeTickTasksRun = now;
         }
     }
 
