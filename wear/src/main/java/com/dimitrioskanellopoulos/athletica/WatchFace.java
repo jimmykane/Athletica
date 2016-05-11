@@ -264,6 +264,11 @@ public class WatchFace {
         }
     }
 
+    public void setShowDateNamesFormat(Boolean showDateNamesFormat){
+        DateColumn dateColumn = (DateColumn) secondRow.getColumn("date");
+        dateColumn.setShowDateNamesFormat(showDateNamesFormat);
+    }
+
     public void updateTimeZoneWith(TimeZone timeZone) {
         calendar.setTimeZone(timeZone);
     }

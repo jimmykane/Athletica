@@ -9,6 +9,9 @@ public class DateColumn extends Column {
 
     private static final Calendar calendar = Calendar.getInstance();
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static final SimpleDateFormat dateNamesFormat = new SimpleDateFormat("E L yy");
+
+    private Boolean showDateNamesFormat = false;
 
     public DateColumn(Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(paintTypeface, paintTextSize, paintColor);
@@ -17,6 +20,13 @@ public class DateColumn extends Column {
     @Override
     public String getText() {
         calendar.setTimeInMillis(System.currentTimeMillis());
+        if (showDateNamesFormat){
+            return dateNamesFormat.format(calendar.getTime());
+        }
         return dateFormat.format(calendar.getTime());
+    }
+
+    public void setShowDateNamesFormat(Boolean showDateNamesFormat){
+        this.showDateNamesFormat = showDateNamesFormat;
     }
 }
