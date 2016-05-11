@@ -303,7 +303,7 @@ public class WatchFace {
         sensorIconColumn.setHorizontalMargin(horizontalMargin);
         forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
-        Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), DEFAULT_COLOUR);
+        Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), getDefaultColor());
         forthRow.addColumn(sensorType.toString(), sensorColumn);
 
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), getDefaultColor());

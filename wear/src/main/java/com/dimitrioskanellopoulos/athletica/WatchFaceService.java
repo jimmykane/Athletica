@@ -724,6 +724,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 return;
             }
             Log.d(TAG, "Running onTimeTickTasks");
+            lastOnTimeTickTasksRun = now;
             if (EmulatorHelper.isEmulator()) {
                 Location location = new Location("dummy");
                 location.setLatitude(41);
@@ -733,7 +734,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 updateSunriseAndSunset(location);
             }
             calculateAverageForActiveSensors();
-            lastOnTimeTickTasksRun = now;
         }
     }
 
