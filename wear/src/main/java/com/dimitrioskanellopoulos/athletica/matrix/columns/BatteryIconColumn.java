@@ -1,6 +1,7 @@
 package com.dimitrioskanellopoulos.athletica.matrix.columns;
 
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Typeface;
 
 import com.dimitrioskanellopoulos.athletica.R;
@@ -27,6 +28,7 @@ public class BatteryIconColumn extends Column {
     @Override
     public String getText() {
         String icon;
+        getPaint().setColor(Color.WHITE);
         if (batteryLevel > 80 && batteryLevel <= 100) {
             icon = batteryFullIcon;
         } else if (batteryLevel > 60 && batteryLevel <= 80) {
@@ -36,6 +38,7 @@ public class BatteryIconColumn extends Column {
         } else if (batteryLevel >= 20 && batteryLevel <= 40) {
             icon = batteryQuarterIcon;
         } else {
+            getPaint().setColor(Color.RED);
             icon = batteryEmptyIcon;
         }
         return icon;
