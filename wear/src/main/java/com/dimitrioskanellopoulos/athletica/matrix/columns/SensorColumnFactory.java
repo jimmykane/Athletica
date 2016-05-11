@@ -1,12 +1,13 @@
 package com.dimitrioskanellopoulos.athletica.matrix.columns;
 
+import android.graphics.Typeface;
 import android.hardware.Sensor;
 
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 
 public class SensorColumnFactory {
-    public static Column getIconColumnForSensorType(Integer sensorType) {
-        Column sensorIconColumn = new Column();
+    public static Column getIconColumnForSensorType(Integer sensorType, Typeface paintTypeface, Float paintTextSize ,int paintColor) {
+        Column sensorIconColumn = new Column(paintTypeface, paintTextSize, paintColor);
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
                 sensorIconColumn.setText("\uF0C3");
@@ -36,8 +37,8 @@ public class SensorColumnFactory {
         return sensorIconColumn;
     }
 
-    public static Column getUnitsColumnForSensorType(Integer sensorType) {
-        Column sensorUnitsColumn = new Column();
+    public static Column getUnitsColumnForSensorType(Integer sensorType, Typeface paintTypeface, Float paintTextSize ,int paintColor) {
+        Column sensorUnitsColumn = new Column(paintTypeface, paintTextSize, paintColor);
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
                 sensorUnitsColumn.setText("hPa");

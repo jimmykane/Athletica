@@ -3,21 +3,25 @@ package com.dimitrioskanellopoulos.athletica.matrix.columns;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 
 public class Column implements ColumnInterface {
+    private final Paint paint = new Paint();
     private Boolean ambientMode = false;
+    // @todo fix this
     private String text = "";
-    private Paint paint;
     private Float horizontalMargin = 0.0f;
+
+    public Column(Typeface paintTypeface, Float paintTextSize ,int paintColor){
+        getPaint().setTypeface(paintTypeface);
+        getPaint().setTextSize(paintTextSize);
+        getPaint().setColor(paintColor);
+        setAmbientMode(false);
+    }
 
     @Override
     public void setText(String text) {
         this.text = text;
-    }
-
-    @Override
-    public void setPaint(Paint paint) {
-        this.paint = paint;
     }
 
     @Override

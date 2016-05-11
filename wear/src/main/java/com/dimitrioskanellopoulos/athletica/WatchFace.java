@@ -24,7 +24,6 @@ import java.util.TimeZone;
 public class WatchFace {
     private static final String TAG = "Watchface";
 
-    private static final int DATE_AND_TIME_DEFAULT_COLOUR = Color.WHITE;
     private static final int TEXT_DEFAULT_COLOUR = Color.WHITE;
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
 
@@ -120,93 +119,45 @@ public class WatchFace {
         addColumnForBattery();
     }
 
-    private void addColumnForBattery() {
-        Paint batteryIconPaint = new Paint();
-        batteryIconPaint.setColor(TEXT_DEFAULT_COLOUR);
-        batteryIconPaint.setTypeface(fontAwesome);
-        batteryIconPaint.setTextSize(resources.getDimension(R.dimen.icon_size));
+    private void addColumnForTime() {
+        TimeColumn timeColumn = new TimeColumn(defaultTypeface, resources.getDimension(R.dimen.time_size), TEXT_DEFAULT_COLOUR);
+        firstRow.addColumn("time", timeColumn);
+    }
 
-        Column batteryIconColumn = new Column();
-        batteryIconColumn.setPaint(batteryIconPaint);
+    private void addColumnForDate() {
+        DateColumn dateColumn = new DateColumn(defaultTypeface, resources.getDimension(R.dimen.date_size), TEXT_DEFAULT_COLOUR);
+        secondRow.addColumn("date", dateColumn);
+    }
+
+    private void addColumnForBattery() {
+        Column batteryIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
         batteryIconColumn.setHorizontalMargin(horizontalMargin);
         fifthRow.addColumn("battery_icon", batteryIconColumn);
 
-        Paint batterySensorPaint = new Paint();
-        batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
-        batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
-        batterySensorPaint.setTypeface(defaultTypeface);
-
-        Column batteryColumn = new Column();
-        batteryColumn.setPaint(batterySensorPaint);
+        Column batteryColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.battery_text_size), TEXT_DEFAULT_COLOUR);
         fifthRow.addColumn("battery", batteryColumn);
     }
 
     private void addColumnForSunset() {
-        Paint sunsetIconPaint = new Paint();
-        sunsetIconPaint.setColor(TEXT_DEFAULT_COLOUR);
-        sunsetIconPaint.setTypeface(fontAwesome);
-        sunsetIconPaint.setTextSize(resources.getDimension(R.dimen.icon_size));
-
-        Column sunsetIconColumn = new Column();
-        sunsetIconColumn.setPaint(sunsetIconPaint);
+        Column sunsetIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
         sunsetIconColumn.setHorizontalMargin(horizontalMargin);
         sunsetIconColumn.setText("\uF186");
         thirdRow.addColumn("sunset_icon", sunsetIconColumn);
 
-        Paint sunsetTimePaint = new Paint();
-        sunsetTimePaint.setColor(TEXT_DEFAULT_COLOUR);
-        sunsetTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
-        sunsetTimePaint.setTypeface(defaultTypeface);
-
-        Column sunsetColumn = new Column();
-        sunsetColumn.setPaint(sunsetTimePaint);
+        Column sunsetColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
         sunsetColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunset", sunsetColumn);
     }
 
     private void addColumnForSunrise() {
-        Paint sunriseTimeIconPaint = new Paint();
-        sunriseTimeIconPaint.setColor(TEXT_DEFAULT_COLOUR);
-        sunriseTimeIconPaint.setTypeface(fontAwesome);
-        sunriseTimeIconPaint.setTextSize(resources.getDimension(R.dimen.icon_size));
-
-        Column sunriseIconColumn = new Column();
-        sunriseIconColumn.setPaint(sunriseTimeIconPaint);
+        Column sunriseIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
         sunriseIconColumn.setText("\uF185");
         sunriseIconColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
 
-        Paint sunriseTimePaint = new Paint();
-        sunriseTimePaint.setColor(TEXT_DEFAULT_COLOUR);
-        sunriseTimePaint.setTypeface(defaultTypeface);
-        sunriseTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
-
-        Column sunriseColumn = new Column();
-        sunriseColumn.setPaint(sunriseTimePaint);
+        Column sunriseColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
         sunriseColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunrise", sunriseColumn);
-    }
-
-    private void addColumnForDate() {
-        Paint datePaint = new Paint();
-        datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
-        datePaint.setTypeface(defaultTypeface);
-        datePaint.setTextSize(resources.getDimension(R.dimen.date_size));
-
-        DateColumn dateColumn = new DateColumn();
-        dateColumn.setPaint(datePaint);
-        secondRow.addColumn("date", dateColumn);
-    }
-
-    private void addColumnForTime() {
-        Paint timePaint = new Paint();
-        timePaint.setTypeface(defaultTypeface);
-        timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
-        timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
-
-        TimeColumn timeColumn = new TimeColumn();
-        timeColumn.setPaint(timePaint);
-        firstRow.addColumn("time", timeColumn);
     }
 
     public void draw(Canvas canvas, Rect bounds) {
@@ -303,15 +254,9 @@ public class WatchFace {
             firstRow.removeColumn("amPm");
         }else {
             Paint amPmPaint = new Paint();
-            amPmPaint.setColor(TEXT_DEFAULT_COLOUR);
-            amPmPaint.setTypeface(defaultTypeface);
-            amPmPaint.setTextSize(resources.getDimension(R.dimen.time_am_pm_size));
-
-            AmPmColumn amPmColumn = new AmPmColumn();
-            amPmColumn.setPaint(amPmPaint);
+            AmPmColumn amPmColumn = new AmPmColumn(defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), TEXT_DEFAULT_COLOUR);
             firstRow.addColumn("amPm", amPmColumn);
         }
-
     }
 
     public void updateTimeZoneWith(TimeZone timeZone) {
@@ -327,30 +272,14 @@ public class WatchFace {
     }
 
     public void addSensorColumn(Integer sensorType) {
-        Paint sensorIconPaint = new Paint();
-        sensorIconPaint.setColor(TEXT_DEFAULT_COLOUR);
-        sensorIconPaint.setTypeface(fontAwesome);
-        sensorIconPaint.setTextSize(resources.getDimension(R.dimen.icon_size));
-
-        Column sensorIconColumn = SensorColumnFactory.getIconColumnForSensorType(sensorType);
-        sensorIconColumn.setPaint(sensorIconPaint);
+        Column sensorIconColumn = SensorColumnFactory.getIconColumnForSensorType(sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
         sensorIconColumn.setHorizontalMargin(horizontalMargin);
         forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
-        Paint sensorPaint = new Paint();
-        sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
-        sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
-
-        Column sensorColumn = new Column();
-        sensorColumn.setPaint(sensorPaint);
+        Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
         forthRow.addColumn(sensorType.toString(), sensorColumn);
 
-        Paint sensorUnitsPaint = new Paint();
-        sensorUnitsPaint.setColor(TEXT_DEFAULT_COLOUR);
-        sensorUnitsPaint.setTextSize(resources.getDimension(R.dimen.text_size));
-
-        Column sensorUnitsColumn = SensorColumnFactory.getUnitsColumnForSensorType(sensorType);
-        sensorUnitsColumn.setPaint(sensorUnitsPaint);
+        Column sensorUnitsColumn = SensorColumnFactory.getUnitsColumnForSensorType(sensorType, defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
         forthRow.addColumn(sensorType.toString() + "_units", sensorUnitsColumn);
     }
 

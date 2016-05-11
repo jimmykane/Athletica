@@ -1,5 +1,7 @@
 package com.dimitrioskanellopoulos.athletica.matrix.columns;
 
+import android.graphics.Typeface;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -12,6 +14,10 @@ public class TimeColumn extends Column {
     private Boolean isIn24hourFormat = true;
 
     private static final Calendar calendar = Calendar.getInstance();
+
+    public TimeColumn(Typeface paintTypeface, Float paintTextSize, int paintColor) {
+        super(paintTypeface, paintTextSize, paintColor);
+    }
 
     public void setTimeFormat24(Boolean timeFormat24) {
         this.isIn24hourFormat = timeFormat24;
