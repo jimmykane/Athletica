@@ -118,10 +118,20 @@ public class WatchFace {
         addColumnForSunset(horizontalMargin, fontAwesome);
 
         // Add column for battery level
-        addColumnForBattery();
+        addColumnForBattery(horizontalMargin, fontAwesome);
     }
 
-    private void addColumnForBattery() {
+    private void addColumnForBattery(Float horizontalMargin, Typeface fontAwesome) {
+        Paint batteryIconPaint = new Paint();
+        batteryIconPaint.setColor(TEXT_DEFAULT_COLOUR);
+        batteryIconPaint.setTypeface(fontAwesome);
+        batteryIconPaint.setTextSize(resources.getDimension(R.dimen.icon_size));
+
+        Column batteryIconColumn = new Column();
+        batteryIconColumn.setPaint(batteryIconPaint);
+        batteryIconColumn.setHorizontalMargin(horizontalMargin);
+        fifthRow.addColumn("battery_icon", batteryIconColumn);
+
         Paint batterySensorPaint = new Paint();
         batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
@@ -326,7 +336,27 @@ public class WatchFace {
     }
 
     public void updateBatteryLevel(Integer batteryPercentage) {
-        fifthRow.getColumn("battery").setText(batteryPercentage.toString());
+        String batteryEmptyIcon = "\uf244";
+        String batteryQuarterIcon = "\uf243";
+        String batteryHalfIcon = "\uf242";
+        String batteryThreeQuartersIcon = "\uf241";
+        String batteryFullIcon = "\uf240";
+
+        String icon;
+        if (batteryPercentage > 80 && batteryPercentage <= 100) {
+            icon = batteryFullIcon;
+        } else if (batteryPercentage > 60 && batteryPercentage <= 80) {
+            icon = batteryThreeQuartersIcon;
+        } else if (batteryPercentage > 40 && batteryPercentage <= 60) {
+            icon = batteryHalfIcon;
+        } else if (batteryPercentage >= 20 && batteryPercentage <= 40) {
+            icon = batteryQuarterIcon;
+        } else {
+            icon = batteryEmptyIcon;
+        }
+
+        fifthRow.getColumn("battery_icon").setText(icon);
+        fifthRow.getColumn("battery").setText(batteryPercentage.toString() + "%");
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
