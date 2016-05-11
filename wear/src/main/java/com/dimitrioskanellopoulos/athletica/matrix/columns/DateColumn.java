@@ -9,7 +9,7 @@ public class DateColumn extends Column {
 
     private static final Calendar calendar = Calendar.getInstance();
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    private static final SimpleDateFormat dateNamesFormat = new SimpleDateFormat("E L yy");
+    private static final SimpleDateFormat dateNamesFormat = new SimpleDateFormat("E d LLL yyyy");
 
     private Boolean showDateNamesFormat = false;
 
@@ -28,5 +28,6 @@ public class DateColumn extends Column {
 
     public void setShowDateNamesFormat(Boolean showDateNamesFormat){
         this.showDateNamesFormat = showDateNamesFormat;
+        getPaint().setTextSize(getPaint().getTextSize()*1f);
     }
 }

@@ -1,18 +1,12 @@
 package com.dimitrioskanellopoulos.athletica.configuration;
 
 import android.os.Bundle;
-import android.support.wearable.activity.WearableActivity;
-import android.text.Layout;
 import android.util.Log;
-import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dimitrioskanellopoulos.athletica.activities.AmbientAwareWearableActivity;
-import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.dimitrioskanellopoulos.athletica.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -25,7 +19,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     private final static String TAG = "ConfigurationActivity";
 
     private Switch switchTimeFormat;
-    private Switch switchDayName;
+    private Switch switchDateNames;
     private Switch switchInterlace;
 
     private GoogleApiClient googleApiClient;
@@ -61,7 +55,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
 
         switchTimeFormat = (Switch) findViewById(R.id.switch_24_hour_clock);
 
-        switchDayName = (Switch) findViewById(R.id.switch_day_name);
+        switchDateNames = (Switch) findViewById(R.id.switch_date_names);
 
         switchInterlace = (Switch) findViewById(R.id.switch_interlace);
 
@@ -77,14 +71,14 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             }
         });
 
-        switchDayName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        switchDateNames.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 if (isChecked) {
-                    updateConfigDataItemDayName(true);
+                    updateConfigDataItemDateNames(true);
                 } else {
-                    updateConfigDataItemDayName(false);
+                    updateConfigDataItemDateNames(false);
                 }
             }
         });
@@ -128,9 +122,9 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
     }
 
-    private void updateConfigDataItemDayName(boolean interlace) {
+    private void updateConfigDataItemDateNames(boolean interlace) {
         DataMap configKeysToOverwrite = new DataMap();
-        configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_DAY_NAME,
+        configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_DATE_NAMES,
                 interlace);
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
     }
@@ -174,8 +168,8 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     private boolean updateUiForKey(String configKey, Boolean value) {
         if (configKey.equals(ConfigurationHelper.KEY_TIME_FORMAT)) {
             switchTimeFormat.setChecked(value);
-        }if(configKey.equals(ConfigurationHelper.KEY_DAY_NAME)){
-            switchDayName.setChecked(value);
+        }if(configKey.equals(ConfigurationHelper.KEY_DATE_NAMES)){
+            switchDateNames.setChecked(value);
         } else if(configKey.equals(ConfigurationHelper.KEY_INTERLACE)){
             switchInterlace.setChecked(value);
         }else {

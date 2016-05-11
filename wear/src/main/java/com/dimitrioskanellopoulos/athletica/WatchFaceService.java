@@ -563,6 +563,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private boolean updateUiForKey(String configKey, Boolean value) {
             if (configKey.equals(ConfigurationHelper.KEY_TIME_FORMAT)) {
                 watchFace.setTimeFormat24(value);
+            }else if (configKey.equals(ConfigurationHelper.KEY_DATE_NAMES)){
+                watchFace.setShowDateNamesFormat(value);
             }else if (configKey.equals(ConfigurationHelper.KEY_INTERLACE)){
                 watchFace.shouldInterlace(value);
             } else {

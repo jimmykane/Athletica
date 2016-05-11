@@ -1,6 +1,5 @@
 package com.dimitrioskanellopoulos.athletica.configuration;
 
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -31,7 +30,7 @@ public final class ConfigurationHelper {
     /**
      * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} day_name.
      */
-    public static final String KEY_DAY_NAME = "DAY_NAME";
+    public static final String KEY_DATE_NAMES = "DATE_NAMES";
 
     /**
      * The default time format
@@ -46,7 +45,7 @@ public final class ConfigurationHelper {
     /**
      * The default if to show the name
      */
-    public static final Boolean DAY_NAME_DEFAULT = false;
+    public static final Boolean DATE_NAMES_DEFAULT = false;
 
     /**
      * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
@@ -135,7 +134,7 @@ public final class ConfigurationHelper {
 
     public static void setDefaultValuesForMissingConfigKeys(DataMap config) {
         addBooleanKeyIfMissing(config, KEY_TIME_FORMAT, TIME_FORMAT_DEFAULT);
-        addBooleanKeyIfMissing(config, KEY_DAY_NAME, DAY_NAME_DEFAULT);
+        addBooleanKeyIfMissing(config, KEY_DATE_NAMES, DATE_NAMES_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INTERLACE, INTERLACE_DEFAULT);
     }
 

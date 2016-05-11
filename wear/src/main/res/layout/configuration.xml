@@ -44,7 +44,7 @@
             android:textSize="12sp"
             android:paddingBottom="4dp"
             android:text="@string/configuration_switch_show_day_name"
-            android:id="@+id/switch_day_name"
+            android:id="@+id/switch_date_names"
             android:layout_gravity="end"
             android:textAlignment="center" />
 
