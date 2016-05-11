@@ -21,9 +21,6 @@ public class ColumnFactory {
             case Sensor.TYPE_AMBIENT_TEMPERATURE:
                 sensorIconColumn.setText("\uF080");
                 break;
-            case Sensor.TYPE_ACCELEROMETER:
-                sensorIconColumn.setText("\uF00A");
-                break;
             case Sensor.TYPE_MAGNETIC_FIELD:
                 sensorIconColumn.setText("\uF076");
                 break;
