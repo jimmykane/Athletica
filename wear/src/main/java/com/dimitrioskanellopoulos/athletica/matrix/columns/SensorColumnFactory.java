@@ -35,4 +35,35 @@ public class SensorColumnFactory {
         }
         return sensorIconColumn;
     }
+
+    public static Column getUnitsColumnForSensorType(Integer sensorType) {
+        Column sensorUnitsColumn = new Column();
+        switch (sensorType) {
+            case Sensor.TYPE_PRESSURE:
+                sensorUnitsColumn.setText("hPa");
+                break;
+            case CallbackSensor.TYPE_PRESSURE_ALTITUDE:
+                sensorUnitsColumn.setText("m");
+                break;
+            case Sensor.TYPE_HEART_RATE:
+                sensorUnitsColumn.setText("bpm");
+                break;
+            case Sensor.TYPE_TEMPERATURE:
+            case Sensor.TYPE_AMBIENT_TEMPERATURE:
+                sensorUnitsColumn.setText("C");
+                break;
+            case Sensor.TYPE_ACCELEROMETER:
+                sensorUnitsColumn.setText("m/s^2");
+                break;
+            case Sensor.TYPE_MAGNETIC_FIELD:
+                sensorUnitsColumn.setText("uT");
+                break;
+            case Sensor.TYPE_LIGHT:
+                sensorUnitsColumn.setText("lux");
+                break;
+            default:
+                sensorUnitsColumn.setText("?");
+        }
+        return sensorUnitsColumn;
+    }
 }

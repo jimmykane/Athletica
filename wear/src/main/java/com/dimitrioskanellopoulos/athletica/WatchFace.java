@@ -324,15 +324,24 @@ public class WatchFace {
         forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
         Paint sensorPaint = new Paint();
+        sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
+
         Column sensorColumn = new Column();
         sensorColumn.setPaint(sensorPaint);
-        sensorColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
         forthRow.addColumn(sensorType.toString(), sensorColumn);
+
+        Paint sensorUnitsPaint = new Paint();
+        sensorUnitsPaint.setTextSize(resources.getDimension(R.dimen.text_size));
+
+        Column sensorUnitsColumn = SensorColumnFactory.getUnitsColumnForSensorType(sensorType);
+        sensorUnitsColumn.setPaint(sensorUnitsPaint);
+        forthRow.addColumn(sensorType.toString() + "_units", sensorUnitsColumn);
     }
 
     public void removeSensorPaint(Integer sensorType) {
         forthRow.removeColumn(sensorType.toString() + "_icon");
         forthRow.removeColumn(sensorType.toString());
+        forthRow.removeColumn(sensorType.toString() + "_units");
     }
 
     public void updateSensorPaintText(Integer sensorType, String value) {
