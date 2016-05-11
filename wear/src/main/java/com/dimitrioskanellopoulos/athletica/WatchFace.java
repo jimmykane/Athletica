@@ -7,14 +7,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
 import com.dimitrioskanellopoulos.athletica.matrix.columns.AmPmColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.Column;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.DateColumn;
-import com.dimitrioskanellopoulos.athletica.matrix.columns.SensorColumnFactory;
+import com.dimitrioskanellopoulos.athletica.matrix.columns.ColumnFactory;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.rows.Row;
 
@@ -279,14 +278,14 @@ public class WatchFace {
     }
 
     public void addSensorColumn(Integer sensorType) {
-        Column sensorIconColumn = SensorColumnFactory.getIconColumnForSensorType(sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
+        Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
         sensorIconColumn.setHorizontalMargin(horizontalMargin);
         forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
         Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
         forthRow.addColumn(sensorType.toString(), sensorColumn);
 
-        Column sensorUnitsColumn = SensorColumnFactory.getUnitsColumnForSensorType(sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), TEXT_DEFAULT_COLOUR);
+        Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), TEXT_DEFAULT_COLOUR);
         forthRow.addColumn(sensorType.toString() + "_units", sensorUnitsColumn);
     }
 

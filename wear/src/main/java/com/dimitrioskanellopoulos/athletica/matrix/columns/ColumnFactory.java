@@ -5,7 +5,7 @@ import android.hardware.Sensor;
 
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 
-public class SensorColumnFactory {
+public class ColumnFactory {
     public static Column getIconColumnForSensorType(Integer sensorType, Typeface paintTypeface, Float paintTextSize ,int paintColor) {
         Column sensorIconColumn = new Column(paintTypeface, paintTextSize, paintColor);
         switch (sensorType) {
