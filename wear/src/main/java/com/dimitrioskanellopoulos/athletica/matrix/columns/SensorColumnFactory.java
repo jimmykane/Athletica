@@ -52,9 +52,6 @@ public class SensorColumnFactory {
             case Sensor.TYPE_AMBIENT_TEMPERATURE:
                 sensorUnitsColumn.setText("c");
                 break;
-            case Sensor.TYPE_ACCELEROMETER:
-                sensorUnitsColumn.setText("m/s^2");
-                break;
             case Sensor.TYPE_MAGNETIC_FIELD:
                 sensorUnitsColumn.setText("uT");
                 break;
