@@ -259,7 +259,6 @@ public class WatchFace {
         if (timeFormat24){
             firstRow.removeColumn("amPm");
         }else {
-            Paint amPmPaint = new Paint();
             AmPmColumn amPmColumn = new AmPmColumn(defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), TEXT_DEFAULT_COLOUR);
             firstRow.addColumn("amPm", amPmColumn);
         }
