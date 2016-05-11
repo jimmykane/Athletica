@@ -13,6 +13,7 @@ import android.util.TypedValue;
 
 import com.dimitrioskanellopoulos.athletica.matrix.columns.Column;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.DateColumn;
+import com.dimitrioskanellopoulos.athletica.matrix.columns.SensorColumnFactory;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.rows.Row;
 
@@ -52,7 +53,12 @@ public class WatchFace {
     // All the rows together
     private final static Row[] rows = {firstRow, secondRow, thirdRow, forthRow, fifthRow};
 
+    private final Float verticalMargin;
+    private final Float horizontalMargin;
+
     private Typeface defaultTypeface;
+
+    private final Typeface fontAwesome;
 
     private boolean isRound;
     private boolean isInAmbientMode;
@@ -69,13 +75,13 @@ public class WatchFace {
         resources = context.getApplicationContext().getResources();
 
         // Define the margin of the rows for vertical
-        Float verticalMargin = TypedValue.applyDimension(
+        verticalMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 resources.getDimension(R.dimen.row_vertical_margin),
                 resources.getDisplayMetrics());
 
         // Define the margin of the rows for horizontal
-        Float horizontalMargin = TypedValue.applyDimension(
+        horizontalMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 resources.getDimension(R.dimen.row_horizontal_margin),
                 resources.getDisplayMetrics());
@@ -95,7 +101,7 @@ public class WatchFace {
         backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
 
         // Add FontAwesome paint for icons
-        Typeface fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
+        fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
 
         // Add column for time
         addColumnForTime();
@@ -104,16 +110,16 @@ public class WatchFace {
         addColumnForDate();
 
         // Add column for sunrise
-        addColumnForSunrise(horizontalMargin, fontAwesome);
+        addColumnForSunrise();
 
         // Add column for sunset
-        addColumnForSunset(horizontalMargin, fontAwesome);
+        addColumnForSunset();
 
         // Add column for battery level
-        addColumnForBattery(horizontalMargin, fontAwesome);
+        addColumnForBattery();
     }
 
-    private void addColumnForBattery(Float horizontalMargin, Typeface fontAwesome) {
+    private void addColumnForBattery() {
         Paint batteryIconPaint = new Paint();
         batteryIconPaint.setColor(TEXT_DEFAULT_COLOUR);
         batteryIconPaint.setTypeface(fontAwesome);
@@ -134,7 +140,7 @@ public class WatchFace {
         fifthRow.addColumn("battery", batteryColumn);
     }
 
-    private void addColumnForSunset(Float horizontalMargin, Typeface fontAwesome) {
+    private void addColumnForSunset() {
         Paint sunsetIconPaint = new Paint();
         sunsetIconPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunsetIconPaint.setTypeface(fontAwesome);
@@ -157,7 +163,7 @@ public class WatchFace {
         thirdRow.addColumn("sunset", sunsetColumn);
     }
 
-    private void addColumnForSunrise(Float horizontalMargin, Typeface fontAwesome) {
+    private void addColumnForSunrise() {
         Paint sunriseTimeIconPaint = new Paint();
         sunriseTimeIconPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseTimeIconPaint.setTypeface(fontAwesome);
@@ -307,6 +313,16 @@ public class WatchFace {
     }
 
     public void addSensorColumn(Integer sensorType) {
+        Paint sensorIconPaint = new Paint();
+        sensorIconPaint.setColor(TEXT_DEFAULT_COLOUR);
+        sensorIconPaint.setTypeface(fontAwesome);
+        sensorIconPaint.setTextSize(resources.getDimension(R.dimen.icon_size));
+
+        Column sensorIconColumn = SensorColumnFactory.getIconColumnForSensorType(sensorType);
+        sensorIconColumn.setPaint(sensorIconPaint);
+        sensorIconColumn.setHorizontalMargin(horizontalMargin);
+        forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
+
         Paint sensorPaint = new Paint();
         Column sensorColumn = new Column();
         sensorColumn.setPaint(sensorPaint);
@@ -315,6 +331,7 @@ public class WatchFace {
     }
 
     public void removeSensorPaint(Integer sensorType) {
+        forthRow.removeColumn(sensorType.toString() + "_icon");
         forthRow.removeColumn(sensorType.toString());
     }
 
