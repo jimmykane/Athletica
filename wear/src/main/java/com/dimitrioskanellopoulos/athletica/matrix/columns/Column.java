@@ -31,7 +31,7 @@ public class Column implements ColumnInterface {
 
     @Override
     public void setAmbientMode(Boolean ambientMode) {
-        getPaint().setColor(Color.WHITE);
+        //getPaint().setColor();
         getPaint().setAntiAlias(!ambientMode);
         this.ambientMode = ambientMode;
     }
