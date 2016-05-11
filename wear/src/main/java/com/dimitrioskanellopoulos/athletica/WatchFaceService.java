@@ -719,7 +719,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private void runOnTimeTickTasks() {
             if (EmulatorHelper.isEmulator()) {
                 Location location = new Location("dummy");
-                location.setLatitude(11);
+                location.setLatitude(41);
                 location.setLongitude(11);
                 location.setTime(System.currentTimeMillis());
                 location.setAccuracy(3.0f);
