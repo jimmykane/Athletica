@@ -16,7 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:onClick="onClickAtLayout"
         app:layout_box="all">
 
         <TextView
@@ -26,6 +25,15 @@
             android:paddingBottom="2dp"
             android:textColor="@color/white"
             android:text="@string/configuration_tba"/>
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:text="@string/switch_24_hour_clock"
+            android:id="@+id/switch_24_hour_clock"
+            android:layout_gravity="end"
+            android:textAlignment="center" />
 
     </LinearLayout>
 </android.support.wearable.view.BoxInsetLayout>

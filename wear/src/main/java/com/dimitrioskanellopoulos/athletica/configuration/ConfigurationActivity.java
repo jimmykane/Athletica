@@ -21,19 +21,12 @@ public class ConfigurationActivity extends WearableActivity {
     private final static String TAG = "ConfigurationActivity";
 
     private GoogleApiClient googleApiClient;
-
-
     private Switch switchTimeFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.configuration);
-        if (EmulatorHelper.isEmulator()) {
-            setContentView(R.layout.configuration_dev);
-
-        }
-
         setAmbientEnabled();
 
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -61,7 +54,6 @@ public class ConfigurationActivity extends WearableActivity {
         switchTimeFormat = (Switch) findViewById(R.id.switch_24_hour_clock);
 
         switchTimeFormat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
@@ -70,7 +62,6 @@ public class ConfigurationActivity extends WearableActivity {
                 } else {
                     updateConfigDataItemTimeFormat(false);
                 }
-
             }
         });
     }
@@ -87,10 +78,6 @@ public class ConfigurationActivity extends WearableActivity {
             googleApiClient.disconnect();
         }
         super.onStop();
-    }
-
-    public void onClickAtLayout(View view) {
-        finish();
     }
 
     private void updateConfigDataItemTimeFormat(boolean format24) {
