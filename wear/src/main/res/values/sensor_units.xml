@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="android.sensor.pressure_units">hPa;</string>
-    <string name="android.sensor.pressure_altitude_units">m</string>
-    <string name="android.sensor.heart_rate">bmp</string>
-    <string name="android.sensor.ambient_temperature">c</string>
-    <string name="android.sensor.magnetic_field">uT</string>
-    <string name="android.sensor.light">lux</string>
+    <string name="units_android.sensor.pressure">hPa;</string>
+    <string name="units_android.sensor.pressure_altitude">m</string>
+    <string name="units_android.sensor.heart_rate">bmp</string>
+    <string name="units_android.sensor.ambient_temperature">c</string>
+    <string name="units_android.sensor.magnetic_field">uT</string>
+    <string name="units_android.sensor.light">lux</string>
 </resources>
