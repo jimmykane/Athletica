@@ -20,8 +20,10 @@ import com.google.android.gms.wearable.Wearable;
 public class ConfigurationActivity extends WearableActivity {
     private final static String TAG = "ConfigurationActivity";
 
-    private GoogleApiClient googleApiClient;
     private Switch switchTimeFormat;
+    private Switch switchInterlace;
+
+    private GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class ConfigurationActivity extends WearableActivity {
 
         switchTimeFormat = (Switch) findViewById(R.id.switch_24_hour_clock);
 
+        switchInterlace = (Switch) findViewById(R.id.switch_interlace);
+
         switchTimeFormat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
@@ -61,6 +65,18 @@ public class ConfigurationActivity extends WearableActivity {
                     updateConfigDataItemTimeFormat(true);
                 } else {
                     updateConfigDataItemTimeFormat(false);
+                }
+            }
+        });
+
+        switchInterlace.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                if (isChecked) {
+                    updateConfigDataItemInterlace(true);
+                } else {
+                    updateConfigDataItemInterlace(false);
                 }
             }
         });
@@ -86,6 +102,14 @@ public class ConfigurationActivity extends WearableActivity {
                 format24);
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
     }
+
+    private void updateConfigDataItemInterlace(boolean interlace) {
+        DataMap configKeysToOverwrite = new DataMap();
+        configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_INTERLACE,
+                interlace);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
+    }
+
 
     private void updateConfigDataOnStartup() {
         ConfigurationHelper.fetchConfigDataMap(googleApiClient,
@@ -119,6 +143,8 @@ public class ConfigurationActivity extends WearableActivity {
     private boolean updateUiForKey(String configKey, Boolean value) {
         if (configKey.equals(ConfigurationHelper.KEY_TIME_FORMAT)) {
             switchTimeFormat.setChecked(value);
+        }if(configKey.equals(ConfigurationHelper.KEY_INTERLACE)){
+            switchInterlace.setChecked(value);
         } else {
             Log.w(TAG, "Ignoring unknown config key: " + configKey);
             return false;

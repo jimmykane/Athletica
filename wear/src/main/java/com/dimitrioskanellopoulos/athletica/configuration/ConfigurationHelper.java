@@ -24,9 +24,19 @@ public final class ConfigurationHelper {
     public static final String KEY_TIME_FORMAT = "TIME_FORMAT";
 
     /**
+     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} interlace.
+     */
+    public static final String KEY_INTERLACE = "INTERLACE";
+
+    /**
      * The default time format
      */
     public static final Boolean TIME_FORMAT_DEFAULT = true;
+
+    /**
+     * The default interlace
+     */
+    public static final Boolean INTERLACE_DEFAULT = true;
 
     /**
      * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
@@ -115,6 +125,7 @@ public final class ConfigurationHelper {
 
     public static void setDefaultValuesForMissingConfigKeys(DataMap config) {
         addBooleanKeyIfMissing(config, KEY_TIME_FORMAT, TIME_FORMAT_DEFAULT);
+        addBooleanKeyIfMissing(config, KEY_INTERLACE, INTERLACE_DEFAULT);
     }
 
     private static void addBooleanKeyIfMissing(DataMap config, String key, Boolean value) {
