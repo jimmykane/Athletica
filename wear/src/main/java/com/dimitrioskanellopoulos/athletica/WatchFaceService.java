@@ -664,7 +664,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         private void activateSensor(Integer sensorType) {
             activeSensors.put(sensorType, CallbackSensorFactory.getCallbackSensor(getApplicationContext(), sensorType, this, this));
-            watchFace.addSensorPaint(sensorType);
+            watchFace.addSensorColumn(sensorType);
         }
 
         /**

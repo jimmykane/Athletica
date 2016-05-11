@@ -231,7 +231,7 @@ public class WatchFace {
                 if (column.getHeight() > maxTextHeight) {
                     maxTextHeight = column.getHeight();
                 }
-                // The total width of the row increases by the paint's text with
+                // The total width of the row increases by the Column's text with
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
             }
 
@@ -247,8 +247,8 @@ public class WatchFace {
              */
             Float cursor = bounds.exactCenterX() - totalTextWidth / 2.0f;
             for (Column column : row.getAllColumns()) {
-                // Draw the paint
-                canvas.drawText(column.getText(), cursor, yOffset, column.getPaint()); // check if it needs per paint height
+                // Draw the column
+                canvas.drawText(column.getText(), cursor, yOffset, column.getPaint()); // check if it needs per column height
                 cursor += column.getWidth() + column.getHorizontalMargin();
             }
             rowCount++;
@@ -306,7 +306,7 @@ public class WatchFace {
         this.chinSize = chinSize;
     }
 
-    public void addSensorPaint(Integer sensorType) {
+    public void addSensorColumn(Integer sensorType) {
         Paint sensorPaint = new Paint();
         Column sensorColumn = new Column();
         sensorColumn.setPaint(sensorPaint);
