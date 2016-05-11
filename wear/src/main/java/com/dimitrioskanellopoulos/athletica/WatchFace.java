@@ -11,6 +11,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
+import com.dimitrioskanellopoulos.athletica.matrix.columns.AmPmColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.Column;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.DateColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.SensorColumnFactory;
@@ -297,6 +298,19 @@ public class WatchFace {
         timeColumn.getPaint().setTextSize(timeFormat24 ?
                 resources.getDimension(R.dimen.time_size) :
                 resources.getDimension(R.dimen.time_size) - resources.getDimension(R.dimen.time_am_pm_size));
+
+        if (timeFormat24){
+            firstRow.removeColumn("amPm");
+        }else {
+            Paint amPmPaint = new Paint();
+            amPmPaint.setColor(TEXT_DEFAULT_COLOUR);
+            amPmPaint.setTypeface(defaultTypeface);
+            amPmPaint.setTextSize(resources.getDimension(R.dimen.time_am_pm_size));
+
+            AmPmColumn amPmColumn = new AmPmColumn();
+            amPmColumn.setPaint(amPmPaint);
+            firstRow.addColumn("amPm", amPmColumn);
+        }
 
     }
 
