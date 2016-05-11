@@ -12,6 +12,7 @@ import android.util.Pair;
 import android.util.TypedValue;
 
 import com.dimitrioskanellopoulos.athletica.matrix.columns.Column;
+import com.dimitrioskanellopoulos.athletica.matrix.columns.DateColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.rows.Row;
 
@@ -58,7 +59,6 @@ public class WatchFace {
     private boolean isInAmbientMode;
     private int chinSize;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     private boolean shouldInterlace = true;
 
@@ -132,7 +132,6 @@ public class WatchFace {
 
         Column batteryColumn = new Column();
         batteryColumn.setPaint(batterySensorPaint);
-        batteryColumn.getPaint().setTextSize(resources.getDimension(R.dimen.battery_text_size));
         fifthRow.addColumn("battery", batteryColumn);
     }
 
@@ -188,9 +187,8 @@ public class WatchFace {
         datePaint.setTypeface(defaultTypeface);
         datePaint.setTextSize(resources.getDimension(R.dimen.date_size));
 
-        Column dateColumn = new Column();
+        DateColumn dateColumn = new DateColumn();
         dateColumn.setPaint(datePaint);
-        dateColumn.getPaint().setTextSize(resources.getDimension(R.dimen.date_size));
         secondRow.addColumn("date", dateColumn);
     }
 
@@ -202,7 +200,6 @@ public class WatchFace {
 
         TimeColumn timeColumn = new TimeColumn();
         timeColumn.setPaint(timePaint);
-        timeColumn.getPaint().setTextSize(resources.getDimension(R.dimen.time_size));
         firstRow.addColumn("time", timeColumn);
     }
 
@@ -210,8 +207,6 @@ public class WatchFace {
 
         // First draw background
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
-
-        secondRow.getColumn("date").setText(dateFormat.format(calendar.getTime()));
 
         drawMatrix(canvas, bounds);
 
