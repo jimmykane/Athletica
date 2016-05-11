@@ -35,28 +35,21 @@ public class WatchFace {
     private final Paint backgroundPaint;
 
     // First row of paints
-
     private final static Row firstRow = new Row();
 
     // Second row
-
     private final static Row secondRow = new Row();
 
     // Third row
-
     private final static Row thirdRow = new Row();
 
     // Forth row
-
     private final static Row forthRow = new Row();
 
     // Last row
-
     private final static Row fifthRow = new Row();
 
     // All the rows together
-
-    // Convert to rows
     private final static Row[] rows = {firstRow, secondRow, thirdRow, forthRow, fifthRow};
 
     private Typeface defaultTypeface;
