@@ -178,6 +178,8 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             switchDateNames.setChecked(value);
         } else if(configKey.equals(ConfigurationHelper.KEY_INTERLACE)){
             switchInterlace.setChecked(value);
+        }else if(configKey.equals(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE)){
+            switchInvertBlackAndWhite.setChecked(value);
         }else {
             Log.w(TAG, "Ignoring unknown config key: " + configKey);
             return false;
