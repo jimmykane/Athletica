@@ -16,7 +16,6 @@ import com.dimitrioskanellopoulos.athletica.matrix.columns.DateColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.rows.Row;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
