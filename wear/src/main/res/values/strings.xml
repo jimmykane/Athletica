@@ -4,5 +4,5 @@
     <string name="app_name">Athletica</string>
     <string name="permissions_activity">Permissions Activity</string>
     <string name="configuration_activity">Configuration Activity</string>
-    <string name="configuration_tba">Configuration is coming in the next version! :-)</string>
+    <string name="configuration">Setting for Athletica</string>
 </resources>

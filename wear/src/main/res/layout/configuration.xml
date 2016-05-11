@@ -24,7 +24,7 @@
             android:textSize="13sp"
             android:paddingBottom="2dp"
             android:textColor="@color/white"
-            android:text="@string/configuration_tba"/>
+            android:text="@string/configuration"/>
 
         <Switch
             android:layout_width="match_parent"
