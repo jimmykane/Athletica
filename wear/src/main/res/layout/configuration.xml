@@ -22,8 +22,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
-            android:paddingBottom="2dp"
+            android:textSize="16sp"
+            android:paddingBottom="4dp"
             android:textColor="@color/white"
             android:text="@string/configuration_activity_title"
             android:textAlignment="center" />
@@ -31,7 +31,8 @@
         <Switch
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="12sp"
+            android:paddingBottom="4dp"
             android:text="@string/configuration_switch_24_hour_clock"
             android:id="@+id/switch_24_hour_clock"
             android:layout_gravity="end"
@@ -40,7 +41,18 @@
         <Switch
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="12sp"
+            android:paddingBottom="4dp"
+            android:text="@string/configuration_switch_show_day_name"
+            android:id="@+id/switch_day_name"
+            android:layout_gravity="end"
+            android:textAlignment="center" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:paddingBottom="4dp"
             android:text="@string/configuration_interlace"
             android:id="@+id/switch_interlace"
             android:layout_gravity="end"
