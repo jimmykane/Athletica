@@ -137,17 +137,6 @@ public class WatchFace {
         fifthRow.addColumn("battery", batteryColumn);
     }
 
-    private void addColumnForSunset() {
-        Column sunsetIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
-        sunsetIconColumn.setHorizontalMargin(horizontalMargin);
-        sunsetIconColumn.setText("\uF186");
-        thirdRow.addColumn("sunset_icon", sunsetIconColumn);
-
-        Column sunsetColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
-        sunsetColumn.setHorizontalMargin(horizontalMargin);
-        thirdRow.addColumn("sunset", sunsetColumn);
-    }
-
     private void addColumnForSunrise() {
         Column sunriseIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
         sunriseIconColumn.setText("\uF185");
@@ -157,6 +146,17 @@ public class WatchFace {
         Column sunriseColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
         sunriseColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunrise", sunriseColumn);
+    }
+
+    private void addColumnForSunset() {
+        Column sunsetIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
+        sunsetIconColumn.setHorizontalMargin(horizontalMargin);
+        sunsetIconColumn.setText("\uF186");
+        thirdRow.addColumn("sunset_icon", sunsetIconColumn);
+
+        Column sunsetColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
+        sunsetColumn.setHorizontalMargin(horizontalMargin);
+        thirdRow.addColumn("sunset", sunsetColumn);
     }
 
     public void draw(Canvas canvas, Rect bounds) {
