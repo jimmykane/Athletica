@@ -66,11 +66,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                if (isChecked) {
-                    updateConfigDataItemTimeFormat(true);
-                } else {
-                    updateConfigDataItemTimeFormat(false);
-                }
+            updateConfigDataItemTimeFormat(isChecked);
             }
         });
 
@@ -78,11 +74,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                if (isChecked) {
-                    updateConfigDataItemDateNames(true);
-                } else {
-                    updateConfigDataItemDateNames(false);
-                }
+            updateConfigDataItemDateNames(isChecked);
             }
         });
 
@@ -90,11 +82,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                if (isChecked) {
-                    updateConfigDataItemInterlace(true);
-                } else {
-                    updateConfigDataItemInterlace(false);
-                }
+            updateConfigDataItemInterlace(isChecked);
             }
         });
 
@@ -102,11 +90,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                if (isChecked) {
-                    updateConfigDataItemInterlace(true);
-                } else {
-                    updateConfigDataItemInterlace(false);
-                }
+            updateConfigDataItemInvertBlackAndWhite(isChecked);
             }
         });
     }
@@ -153,7 +137,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
 
     private void updateConfigDataItemInvertBlackAndWhite(boolean interlace) {
         DataMap configKeysToOverwrite = new DataMap();
-        configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_INTERLACE,
+        configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE,
                 interlace);
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
     }
