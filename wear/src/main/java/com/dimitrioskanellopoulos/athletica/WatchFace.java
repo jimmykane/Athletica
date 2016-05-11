@@ -95,7 +95,6 @@ public class WatchFace {
         forthRow.setVerticalMargin(verticalMargin);
         fifthRow.setVerticalMargin(verticalMargin);
 
-
         // Default typeface
         defaultTypeface = Typeface.SANS_SERIF;
 
@@ -286,8 +285,8 @@ public class WatchFace {
      */
     public void inAmbientMode(boolean inAmbientMode) {
         isInAmbientMode = inAmbientMode;
-        for (Row row: rows){
-            for (Column column: row.getAllColumns()){
+        for (Row row : rows) {
+            for (Column column : row.getAllColumns()) {
                 column.setAmbientMode(inAmbientMode);
             }
         }
@@ -296,7 +295,7 @@ public class WatchFace {
     public void setTimeFormat24(Boolean timeFormat24) {
         TimeColumn timeColumn = (TimeColumn) firstRow.getColumn("time");
         timeColumn.setTimeFormat24(timeFormat24);
-        timeColumn.getPaint().setTextSize( timeFormat24 ?
+        timeColumn.getPaint().setTextSize(timeFormat24 ?
                 resources.getDimension(R.dimen.time_size) :
                 resources.getDimension(R.dimen.time_size) - resources.getDimension(R.dimen.time_am_pm_size));
 
