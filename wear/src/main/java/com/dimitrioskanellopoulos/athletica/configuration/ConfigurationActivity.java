@@ -21,6 +21,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     private Switch switchTimeFormat;
     private Switch switchDateNames;
     private Switch switchInterlace;
+    private Switch switchInvertBlackAndWhite;
 
     private GoogleApiClient googleApiClient;
 
@@ -59,6 +60,8 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
 
         switchInterlace = (Switch) findViewById(R.id.switch_interlace);
 
+        switchInvertBlackAndWhite = (Switch) findViewById(R.id.switch_invert_black_and_white);
+
         switchTimeFormat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
@@ -84,6 +87,18 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
         });
 
         switchInterlace.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                if (isChecked) {
+                    updateConfigDataItemInterlace(true);
+                } else {
+                    updateConfigDataItemInterlace(false);
+                }
+            }
+        });
+
+        switchInvertBlackAndWhite.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
@@ -130,6 +145,13 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     }
 
     private void updateConfigDataItemInterlace(boolean interlace) {
+        DataMap configKeysToOverwrite = new DataMap();
+        configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_INTERLACE,
+                interlace);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
+    }
+
+    private void updateConfigDataItemInvertBlackAndWhite(boolean interlace) {
         DataMap configKeysToOverwrite = new DataMap();
         configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_INTERLACE,
                 interlace);

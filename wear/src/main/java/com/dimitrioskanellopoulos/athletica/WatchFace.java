@@ -24,7 +24,7 @@ import java.util.TimeZone;
 public class WatchFace {
     private static final String TAG = "Watchface";
 
-    private static final int TEXT_DEFAULT_COLOUR = Color.WHITE;
+    private static final int DEFAULT_COLOUR = Color.WHITE;
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
 
     private final Resources resources;
@@ -63,6 +63,7 @@ public class WatchFace {
     private boolean isRound;
     private boolean isInAmbientMode = false;
     private boolean interlace = true;
+    private boolean invertBlackAndWhite = false;
 
     private int chinSize;
 
@@ -119,43 +120,43 @@ public class WatchFace {
     }
 
     private void addColumnForTime() {
-        TimeColumn timeColumn = new TimeColumn(defaultTypeface, resources.getDimension(R.dimen.time_size), TEXT_DEFAULT_COLOUR);
+        TimeColumn timeColumn = new TimeColumn(defaultTypeface, resources.getDimension(R.dimen.time_size), DEFAULT_COLOUR);
         firstRow.addColumn("time", timeColumn);
     }
 
     private void addColumnForDate() {
-        DateColumn dateColumn = new DateColumn(defaultTypeface, resources.getDimension(R.dimen.date_size), TEXT_DEFAULT_COLOUR);
+        DateColumn dateColumn = new DateColumn(defaultTypeface, resources.getDimension(R.dimen.date_size), DEFAULT_COLOUR);
         secondRow.addColumn("date", dateColumn);
     }
 
     private void addColumnForSunrise() {
-        Column sunriseIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
+        Column sunriseIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), DEFAULT_COLOUR);
         sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
         sunriseIconColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
 
-        Column sunriseColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
+        Column sunriseColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), DEFAULT_COLOUR);
         sunriseColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunrise", sunriseColumn);
     }
 
     private void addColumnForSunset() {
-        Column sunsetIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
+        Column sunsetIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), DEFAULT_COLOUR);
         sunsetIconColumn.setHorizontalMargin(horizontalMargin);
         sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
         thirdRow.addColumn("sunset_icon", sunsetIconColumn);
 
-        Column sunsetColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
+        Column sunsetColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), DEFAULT_COLOUR);
         sunsetColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunset", sunsetColumn);
     }
 
     private void addColumnForBattery() {
-        BatteryIconColumn batteryIconColumn = new BatteryIconColumn(resources, fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
+        BatteryIconColumn batteryIconColumn = new BatteryIconColumn(resources, fontAwesome, resources.getDimension(R.dimen.icon_size), DEFAULT_COLOUR);
         batteryIconColumn.setHorizontalMargin(horizontalMargin);
         fifthRow.addColumn("battery_icon", batteryIconColumn);
 
-        Column batteryColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.battery_text_size), TEXT_DEFAULT_COLOUR);
+        Column batteryColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.battery_text_size), DEFAULT_COLOUR);
         fifthRow.addColumn("battery", batteryColumn);
     }
 
@@ -246,9 +247,6 @@ public class WatchFace {
         }
     }
 
-    public void shouldInterlace(Boolean shouldInterlace){
-        this.interlace = shouldInterlace;
-    }
 
     public void setTimeFormat24(Boolean timeFormat24) {
         TimeColumn timeColumn = (TimeColumn) firstRow.getColumn("time");
@@ -260,7 +258,7 @@ public class WatchFace {
         if (timeFormat24){
             firstRow.removeColumn("amPm");
         }else {
-            AmPmColumn amPmColumn = new AmPmColumn(defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), TEXT_DEFAULT_COLOUR);
+            AmPmColumn amPmColumn = new AmPmColumn(defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), DEFAULT_COLOUR);
             firstRow.addColumn("amPm", amPmColumn);
         }
     }
@@ -268,6 +266,20 @@ public class WatchFace {
     public void setShowDateNamesFormat(Boolean showDateNamesFormat){
         DateColumn dateColumn = (DateColumn) secondRow.getColumn("date");
         dateColumn.setShowDateNamesFormat(showDateNamesFormat);
+    }
+
+    public void shouldInterlace(Boolean shouldInterlace){
+        this.interlace = shouldInterlace;
+    }
+
+    public void setInvertBlackAndWhite(Boolean invertBlackAndWhite){
+        backgroundPaint.setColor(!invertBlackAndWhite ? BACKGROUND_DEFAULT_COLOUR : DEFAULT_COLOUR);
+        for (Row row : rows) {
+            for (Column column : row.getAllColumns()) {
+                column.getPaint().setColor(!invertBlackAndWhite? DEFAULT_COLOUR: BACKGROUND_DEFAULT_COLOUR);
+            }
+        }
+        this.invertBlackAndWhite = invertBlackAndWhite;
     }
 
     public void updateTimeZoneWith(TimeZone timeZone) {
@@ -283,14 +295,14 @@ public class WatchFace {
     }
 
     public void addSensorColumn(Integer sensorType) {
-        Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(resources, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
+        Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(resources, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), DEFAULT_COLOUR);
         sensorIconColumn.setHorizontalMargin(horizontalMargin);
         forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
-        Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
+        Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), DEFAULT_COLOUR);
         forthRow.addColumn(sensorType.toString(), sensorColumn);
 
-        Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), TEXT_DEFAULT_COLOUR);
+        Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), DEFAULT_COLOUR);
         forthRow.addColumn(sensorType.toString() + "_units", sensorUnitsColumn);
     }
 

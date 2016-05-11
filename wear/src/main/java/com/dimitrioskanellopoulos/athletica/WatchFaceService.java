@@ -567,6 +567,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 watchFace.setShowDateNamesFormat(value);
             }else if (configKey.equals(ConfigurationHelper.KEY_INTERLACE)){
                 watchFace.shouldInterlace(value);
+            }else if (configKey.equals(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE)){
+                watchFace.setInvertBlackAndWhite(value);
             } else {
                 Log.w(TAG, "Ignoring unknown config key: " + configKey);
                 return false;

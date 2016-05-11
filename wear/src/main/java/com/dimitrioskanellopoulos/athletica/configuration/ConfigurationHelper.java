@@ -23,14 +23,19 @@ public final class ConfigurationHelper {
     public static final String KEY_TIME_FORMAT = "TIME_FORMAT";
 
     /**
+     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} day_name.
+     */
+    public static final String KEY_DATE_NAMES = "DATE_NAMES";
+
+    /**
      * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} interlace.
      */
     public static final String KEY_INTERLACE = "INTERLACE";
 
     /**
-     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} day_name.
+     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} invert black and white.
      */
-    public static final String KEY_DATE_NAMES = "DATE_NAMES";
+    public static final String KEY_INVERT_BLACK_AND_WHITE= "KEY_INVERT_BLACK_AND_WHITE";
 
     /**
      * The default time format
@@ -38,14 +43,19 @@ public final class ConfigurationHelper {
     public static final Boolean TIME_FORMAT_DEFAULT = true;
 
     /**
+     * The default if to show the name
+     */
+    public static final Boolean DATE_NAMES_DEFAULT = false;
+
+    /**
      * The default interlace
      */
     public static final Boolean INTERLACE_DEFAULT = true;
 
     /**
-     * The default if to show the name
+     * The default to invert black and white
      */
-    public static final Boolean DATE_NAMES_DEFAULT = false;
+    public static final Boolean INVERT_BLACK_AND_WHITE = false;
 
     /**
      * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
@@ -136,6 +146,7 @@ public final class ConfigurationHelper {
         addBooleanKeyIfMissing(config, KEY_TIME_FORMAT, TIME_FORMAT_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_DATE_NAMES, DATE_NAMES_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INTERLACE, INTERLACE_DEFAULT);
+        addBooleanKeyIfMissing(config, KEY_INVERT_BLACK_AND_WHITE, INVERT_BLACK_AND_WHITE);
     }
 
     private static void addBooleanKeyIfMissing(DataMap config, String key, Boolean value) {
