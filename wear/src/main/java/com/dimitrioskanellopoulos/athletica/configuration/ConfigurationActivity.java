@@ -25,6 +25,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     private final static String TAG = "ConfigurationActivity";
 
     private Switch switchTimeFormat;
+    private Switch switchDayName;
     private Switch switchInterlace;
 
     private GoogleApiClient googleApiClient;
@@ -60,6 +61,8 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
 
         switchTimeFormat = (Switch) findViewById(R.id.switch_24_hour_clock);
 
+        switchDayName = (Switch) findViewById(R.id.switch_day_name);
+
         switchInterlace = (Switch) findViewById(R.id.switch_interlace);
 
         switchTimeFormat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -70,6 +73,18 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                     updateConfigDataItemTimeFormat(true);
                 } else {
                     updateConfigDataItemTimeFormat(false);
+                }
+            }
+        });
+
+        switchDayName.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                if (isChecked) {
+                    updateConfigDataItemDayName(true);
+                } else {
+                    updateConfigDataItemDayName(false);
                 }
             }
         });
@@ -113,13 +128,19 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
     }
 
+    private void updateConfigDataItemDayName(boolean interlace) {
+        DataMap configKeysToOverwrite = new DataMap();
+        configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_DAY_NAME,
+                interlace);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
+    }
+
     private void updateConfigDataItemInterlace(boolean interlace) {
         DataMap configKeysToOverwrite = new DataMap();
         configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_INTERLACE,
                 interlace);
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
     }
-
 
     private void updateConfigDataOnStartup() {
         ConfigurationHelper.fetchConfigDataMap(googleApiClient,
@@ -153,9 +174,11 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     private boolean updateUiForKey(String configKey, Boolean value) {
         if (configKey.equals(ConfigurationHelper.KEY_TIME_FORMAT)) {
             switchTimeFormat.setChecked(value);
-        }if(configKey.equals(ConfigurationHelper.KEY_INTERLACE)){
+        }if(configKey.equals(ConfigurationHelper.KEY_DAY_NAME)){
+            switchDayName.setChecked(value);
+        } else if(configKey.equals(ConfigurationHelper.KEY_INTERLACE)){
             switchInterlace.setChecked(value);
-        } else {
+        }else {
             Log.w(TAG, "Ignoring unknown config key: " + configKey);
             return false;
         }

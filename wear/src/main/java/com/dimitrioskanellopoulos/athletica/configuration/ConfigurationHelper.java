@@ -29,6 +29,11 @@ public final class ConfigurationHelper {
     public static final String KEY_INTERLACE = "INTERLACE";
 
     /**
+     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} day_name.
+     */
+    public static final String KEY_DAY_NAME = "DAY_NAME";
+
+    /**
      * The default time format
      */
     public static final Boolean TIME_FORMAT_DEFAULT = true;
@@ -37,6 +42,11 @@ public final class ConfigurationHelper {
      * The default interlace
      */
     public static final Boolean INTERLACE_DEFAULT = true;
+
+    /**
+     * The default if to show the name
+     */
+    public static final Boolean DAY_NAME_DEFAULT = false;
 
     /**
      * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
@@ -125,6 +135,7 @@ public final class ConfigurationHelper {
 
     public static void setDefaultValuesForMissingConfigKeys(DataMap config) {
         addBooleanKeyIfMissing(config, KEY_TIME_FORMAT, TIME_FORMAT_DEFAULT);
+        addBooleanKeyIfMissing(config, KEY_DAY_NAME, DAY_NAME_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INTERLACE, INTERLACE_DEFAULT);
     }
 
