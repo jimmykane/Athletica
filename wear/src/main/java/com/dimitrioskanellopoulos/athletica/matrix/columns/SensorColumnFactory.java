@@ -50,7 +50,7 @@ public class SensorColumnFactory {
                 break;
             case Sensor.TYPE_TEMPERATURE:
             case Sensor.TYPE_AMBIENT_TEMPERATURE:
-                sensorUnitsColumn.setText("C");
+                sensorUnitsColumn.setText("c");
                 break;
             case Sensor.TYPE_ACCELEROMETER:
                 sensorUnitsColumn.setText("m/s^2");
