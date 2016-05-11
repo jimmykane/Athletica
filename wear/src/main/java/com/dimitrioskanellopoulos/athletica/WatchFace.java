@@ -300,11 +300,11 @@ public class WatchFace {
     }
 
     public void updateBatteryLevel(Integer batteryPercentage) {
-        String batteryEmptyIcon = "\uf244";
-        String batteryQuarterIcon = "\uf243";
-        String batteryHalfIcon = "\uf242";
-        String batteryThreeQuartersIcon = "\uf241";
-        String batteryFullIcon = "\uf240";
+        String batteryEmptyIcon = resources.getString(R.string.icon_battery_empty);
+        String batteryQuarterIcon =  resources.getString(R.string.icon_battery_one_quarter);
+        String batteryHalfIcon =  resources.getString(R.string.icon_battery_half);
+        String batteryThreeQuartersIcon =  resources.getString(R.string.icon_battery_three_quarters);
+        String batteryFullIcon =  resources.getString(R.string.icon_battery_full);
 
         String icon;
         if (batteryPercentage > 80 && batteryPercentage <= 100) {
