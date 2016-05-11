@@ -386,9 +386,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             Log.d(TAG, "Google API connection failed");
         }
 
-
-
-
         @Override
         public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
             // Special cases for special sensors :-)
