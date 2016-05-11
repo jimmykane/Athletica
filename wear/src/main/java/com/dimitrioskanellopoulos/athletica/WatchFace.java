@@ -194,7 +194,7 @@ public class WatchFace {
                 }
                 // The total width of the row increases by the Column's text with
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
-                Log.d(TAG, "Row " + rowCount + " Column " + columnCount + " height "+ column.getHeight());
+                // Log.d(TAG, "Row " + rowCount + " Column " + columnCount + " height "+ column.getHeight());
             }
             // Add the total height to the offset
             yOffset += row.getVerticalMargin() + maxColumnHeight / 2.0f;
