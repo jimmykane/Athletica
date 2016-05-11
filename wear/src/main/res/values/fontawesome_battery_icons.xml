@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="battery_full">&#xf0c3;</string>
-    <string name="battery_three_quarters">&#xf241;</string>
-    <string name="battery_half">&#xf242;</string>
-    <string name="battery_one_quarter">&#xf243;</string>
-    <string name="battery_empty">&#xf240;</string>
+    <string name="icon_battery_full">&#xf0c3;</string>
+    <string name="icon_battery_three_quarters">&#xf241;</string>
+    <string name="icon_battery_half">&#xf242;</string>
+    <string name="icon_battery_one_quarter">&#xf243;</string>
+    <string name="icon_battery_empty">&#xf240;</string>
 </resources>

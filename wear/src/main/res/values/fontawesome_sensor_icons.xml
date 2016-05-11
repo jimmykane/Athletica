@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="android.sensor.pressure">&#xf0c3;</string>
-    <string name="android.sensor.pressure_altitude">&#xf1fe;</string>
-    <string name="android.sensor.heart_rate">&#xF21E;</string>
-    <string name="android.sensor.ambient_temperature">&#xF080;</string>
-    <string name="android.sensor.accelerometer">&#xF00A;</string>
-    <string name="android.sensor.magnetic_field">&#xF076;</string>
-    <string name="android.sensor.light">&#xF042;</string>
+    <string name="icon_android.sensor.pressure">&#xf0c3;</string>
+    <string name="icon_android.sensor.pressure_altitude">&#xf1fe;</string>
+    <string name="icon_android.sensor.heart_rate">&#xF21E;</string>
+    <string name="icon_android.sensor.ambient_temperature">&#xF080;</string>
+    <string name="icon_android.sensor.accelerometer">&#xF00A;</string>
+    <string name="icon_android.sensor.magnetic_field">&#xF076;</string>
+    <string name="icon_android.sensor.light">&#xF042;</string>
 </resources>
