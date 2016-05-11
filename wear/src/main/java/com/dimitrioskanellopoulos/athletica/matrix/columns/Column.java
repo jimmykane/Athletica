@@ -49,9 +49,6 @@ public class Column implements ColumnInterface {
     @Override
     public Float getHeight() {
         // If no text no height for now
-        if (getText() == null) {
-            return 0.0f;
-        }
         Rect textBounds = new Rect();
         getPaint().getTextBounds(getText(), 0, getText().length(), textBounds);
         return (float) textBounds.height();
@@ -60,9 +57,6 @@ public class Column implements ColumnInterface {
     @Override
     public Float getWidth() {
         // If not text no width;
-        if (getText() == null) {
-            return 0.0f;
-        }
         return getPaint().measureText(getText());
     }
 
