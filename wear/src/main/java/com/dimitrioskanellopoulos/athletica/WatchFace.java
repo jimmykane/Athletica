@@ -278,14 +278,14 @@ public class WatchFace {
     }
 
     public void addSensorColumn(Integer sensorType) {
-        Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
+        Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(resources, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
         sensorIconColumn.setHorizontalMargin(horizontalMargin);
         forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
         Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
         forthRow.addColumn(sensorType.toString(), sensorColumn);
 
-        Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), TEXT_DEFAULT_COLOUR);
+        Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), TEXT_DEFAULT_COLOUR);
         forthRow.addColumn(sensorType.toString() + "_units", sensorUnitsColumn);
     }
 

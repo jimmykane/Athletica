@@ -1,61 +1,63 @@
 package com.dimitrioskanellopoulos.athletica.matrix.columns;
 
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
 
+import com.dimitrioskanellopoulos.athletica.R;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 
 public class ColumnFactory {
-    public static Column getIconColumnForSensorType(Integer sensorType, Typeface paintTypeface, Float paintTextSize ,int paintColor) {
+    public static Column getIconColumnForSensorType(Resources resources, Integer sensorType, Typeface paintTypeface, Float paintTextSize , int paintColor) {
         Column sensorIconColumn = new Column(paintTypeface, paintTextSize, paintColor);
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
-                sensorIconColumn.setText("\uF0C3");
+                sensorIconColumn.setText(resources.getString(R.string.icon_android_sensor_pressure));
                 break;
             case CallbackSensor.TYPE_PRESSURE_ALTITUDE:
-                sensorIconColumn.setText("\uF1FE");
+                sensorIconColumn.setText(resources.getString(R.string.icon_android_sensor_pressure_altitude));
                 break;
             case Sensor.TYPE_HEART_RATE:
-                sensorIconColumn.setText("\uF21E");
+                sensorIconColumn.setText(resources.getString(R.string.icon_android_sensor_heart_rate));
                 break;
             case Sensor.TYPE_AMBIENT_TEMPERATURE:
-                sensorIconColumn.setText("\uF080");
+                sensorIconColumn.setText(resources.getString(R.string.icon_android_sensor_ambient_temperature));
                 break;
             case Sensor.TYPE_MAGNETIC_FIELD:
-                sensorIconColumn.setText("\uF076");
+                sensorIconColumn.setText(resources.getString(R.string.icon_android_sensor_magnetic_field));
                 break;
             case Sensor.TYPE_LIGHT:
-                sensorIconColumn.setText("\uF042");
+                sensorIconColumn.setText(resources.getString(R.string.icon_android_sensor_light));
                 break;
             default:
-                sensorIconColumn.setText("?");
+                sensorIconColumn.setText("-/-");
         }
         return sensorIconColumn;
     }
 
-    public static Column getUnitsColumnForSensorType(Integer sensorType, Typeface paintTypeface, Float paintTextSize ,int paintColor) {
+    public static Column getUnitsColumnForSensorType(Resources resources, Integer sensorType, Typeface paintTypeface, Float paintTextSize ,int paintColor) {
         Column sensorUnitsColumn = new Column(paintTypeface, paintTextSize, paintColor);
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
-                sensorUnitsColumn.setText("hPa");
+                sensorUnitsColumn.setText(resources.getString(R.string.units_android_sensor_pressure));
                 break;
             case CallbackSensor.TYPE_PRESSURE_ALTITUDE:
-                sensorUnitsColumn.setText("m");
+                sensorUnitsColumn.setText(resources.getString(R.string.units_android_sensor_pressure_altitude));
                 break;
             case Sensor.TYPE_HEART_RATE:
-                sensorUnitsColumn.setText("bpm");
+                sensorUnitsColumn.setText(resources.getString(R.string.units_android_sensor_heart_rate));
                 break;
             case Sensor.TYPE_AMBIENT_TEMPERATURE:
-                sensorUnitsColumn.setText("c");
+                sensorUnitsColumn.setText(resources.getString(R.string.units_android_sensor_ambient_temperature));
                 break;
             case Sensor.TYPE_MAGNETIC_FIELD:
-                sensorUnitsColumn.setText("uT");
+                sensorUnitsColumn.setText(resources.getString(R.string.units_android_sensor_magnetic_field));
                 break;
             case Sensor.TYPE_LIGHT:
-                sensorUnitsColumn.setText("lux");
+                sensorUnitsColumn.setText(resources.getString(R.string.units_android_sensor_light));
                 break;
             default:
-                sensorUnitsColumn.setText("?");
+                sensorUnitsColumn.setText("-/-");
         }
         return sensorUnitsColumn;
     }
