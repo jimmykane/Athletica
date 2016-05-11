@@ -61,7 +61,7 @@ public class WatchFace {
     private final Typeface fontAwesome;
 
     private boolean isRound;
-    private boolean isInAmbientMode;
+    private boolean isInAmbientMode = false;
     private int chinSize;
 
 
@@ -324,6 +324,7 @@ public class WatchFace {
         forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
         Paint sensorPaint = new Paint();
+        sensorPaint.setColor(TEXT_DEFAULT_COLOUR);
         sensorPaint.setTextSize(resources.getDimension(R.dimen.text_size));
 
         Column sensorColumn = new Column();
@@ -331,6 +332,7 @@ public class WatchFace {
         forthRow.addColumn(sensorType.toString(), sensorColumn);
 
         Paint sensorUnitsPaint = new Paint();
+        sensorUnitsPaint.setColor(TEXT_DEFAULT_COLOUR);
         sensorUnitsPaint.setTextSize(resources.getDimension(R.dimen.text_size));
 
         Column sensorUnitsColumn = SensorColumnFactory.getUnitsColumnForSensorType(sensorType);
