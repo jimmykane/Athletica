@@ -97,7 +97,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * How often the onTimeTick actions should run
          */
-        private static final long RUN_ON_TICK_TAKS_EVERY_MS = 15 * 60 * 1000; // 15 Minutes
+        private static final long RUN_ON_TICK_TASKS_EVERY_MS = 15 * 60 * 1000; // 15 Minutes
 
         /**
          * Handler for updating the time
@@ -726,7 +726,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 updateSunriseAndSunset(location);
             }
             Calendar now = Calendar.getInstance();
-            if (now.getTimeInMillis() - lastOnTimeTickTasksRun.getTimeInMillis() < RUN_ON_TICK_TAKS_EVERY_MS) {
+            if (now.getTimeInMillis() - lastOnTimeTickTasksRun.getTimeInMillis() < RUN_ON_TICK_TASKS_EVERY_MS) {
                 return;
             }
             Log.d(TAG, "Running onTimeTickTasks");
