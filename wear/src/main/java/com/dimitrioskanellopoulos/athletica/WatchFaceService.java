@@ -719,6 +719,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * Run's tasks according to the current time
          */
         private void runOnTimeTickTasks() {
+            Calendar now = Calendar.getInstance();
+            if (now.getTimeInMillis() - lastOnTimeTickTasksRun.getTimeInMillis() < RUN_ON_TICK_TASKS_EVERY_MS) {
+                return;
+            }
+            Log.d(TAG, "Running onTimeTickTasks");
             if (EmulatorHelper.isEmulator()) {
                 Location location = new Location("dummy");
                 location.setLatitude(41);
@@ -727,11 +732,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 location.setAccuracy(3.0f);
                 updateSunriseAndSunset(location);
             }
-            Calendar now = Calendar.getInstance();
-            if (now.getTimeInMillis() - lastOnTimeTickTasksRun.getTimeInMillis() < RUN_ON_TICK_TASKS_EVERY_MS) {
-                return;
-            }
-            Log.d(TAG, "Running onTimeTickTasks");
             calculateAverageForActiveSensors();
             lastOnTimeTickTasksRun = now;
         }
