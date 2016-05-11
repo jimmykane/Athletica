@@ -330,7 +330,6 @@ public class WatchFace {
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
-        Log.d(TAG, "sunrise / sunset");
         thirdRow.getColumn("sunrise").setText(sunriseSunset.first);
         thirdRow.getColumn("sunset").setText(sunriseSunset.second);
     }
