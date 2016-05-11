@@ -38,7 +38,9 @@ public class BatteryIconColumn extends Column {
         } else if (batteryLevel >= 20 && batteryLevel <= 40) {
             icon = batteryQuarterIcon;
         } else {
-            getPaint().setColor(Color.RED);
+            if (!isInAmbientMode()) {
+                getPaint().setColor(Color.RED);
+            }
             icon = batteryEmptyIcon;
         }
         return icon;
