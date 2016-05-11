@@ -106,53 +106,35 @@ public class WatchFace {
         // Add FontAwesome paint for icons
         Typeface fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
 
-        // Add paint for time
-        Paint timePaint = new Paint();
-        timePaint.setTypeface(defaultTypeface);
-        timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
-        timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
+        // Add column for time
+        addColumnForTime();
 
-        TimeColumn timeColumn = new TimeColumn();
-        timeColumn.setPaint(timePaint);
-        timeColumn.getPaint().setTextSize(resources.getDimension(R.dimen.time_size));
-        firstRow.addColumn("time", timeColumn);
+        // Add column for date
+        addColumnForDate();
 
-        // Add paint for date
-        Paint datePaint = new Paint();
-        datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
-        datePaint.setTypeface(defaultTypeface);
-        datePaint.setTextSize(resources.getDimension(R.dimen.date_size));
+        // Add column for sunrise
+        addColumnForSunrise(horizontalMargin, fontAwesome);
 
-        Column dateColumn = new Column();
-        dateColumn.setPaint(datePaint);
-        dateColumn.getPaint().setTextSize(resources.getDimension(R.dimen.date_size));
-        secondRow.addColumn("date", dateColumn);
+        // Add column for sunset
+        addColumnForSunset(horizontalMargin, fontAwesome);
 
-        // Add paint for sunrise
-        Paint sunriseTimeIconPaint = new Paint();
-        sunriseTimeIconPaint.setColor(TEXT_DEFAULT_COLOUR);
-        sunriseTimeIconPaint.setTypeface(fontAwesome);
-        sunriseTimeIconPaint.setTextSize(resources.getDimension(R.dimen.text_size));
+        // Add column for battery level
+        addColumnForBattery();
+    }
 
-        Column sunriseIconColumn = new Column();
-        sunriseIconColumn.setPaint(sunriseTimeIconPaint);
-        sunriseIconColumn.getPaint().setTextSize(resources.getDimension(R.dimen.icon_size));
-        sunriseIconColumn.setText("\uF185");
-        sunriseIconColumn.setHorizontalMargin(horizontalMargin);
-        thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
+    private void addColumnForBattery() {
+        Paint batterySensorPaint = new Paint();
+        batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
+        batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
+        batterySensorPaint.setTypeface(defaultTypeface);
 
-        Paint sunriseTimePaint = new Paint();
-        sunriseTimePaint.setColor(TEXT_DEFAULT_COLOUR);
-        sunriseTimePaint.setTypeface(defaultTypeface);
-        sunriseTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
+        Column batteryColumn = new Column();
+        batteryColumn.setPaint(batterySensorPaint);
+        batteryColumn.getPaint().setTextSize(resources.getDimension(R.dimen.battery_text_size));
+        fifthRow.addColumn("battery", batteryColumn);
+    }
 
-        Column sunriseColumn = new Column();
-        sunriseColumn.setPaint(sunriseTimePaint);
-        sunriseColumn.setHorizontalMargin(horizontalMargin);
-        sunriseColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
-        thirdRow.addColumn("sunrise", sunriseColumn);
-
-        // Add paint for sunset
+    private void addColumnForSunset(Float horizontalMargin, Typeface fontAwesome) {
         Paint sunsetIconPaint = new Paint();
         sunsetIconPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunsetIconPaint.setTypeface(fontAwesome);
@@ -175,17 +157,55 @@ public class WatchFace {
         sunsetColumn.setHorizontalMargin(horizontalMargin);
         sunsetColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
         thirdRow.addColumn("sunset", sunsetColumn);
+    }
 
-        // Add paint for battery level
-        Paint batterySensorPaint = new Paint();
-        batterySensorPaint.setColor(TEXT_DEFAULT_COLOUR);
-        batterySensorPaint.setTextSize(resources.getDimension(R.dimen.battery_text_size));
-        batterySensorPaint.setTypeface(defaultTypeface);
+    private void addColumnForSunrise(Float horizontalMargin, Typeface fontAwesome) {
+        Paint sunriseTimeIconPaint = new Paint();
+        sunriseTimeIconPaint.setColor(TEXT_DEFAULT_COLOUR);
+        sunriseTimeIconPaint.setTypeface(fontAwesome);
+        sunriseTimeIconPaint.setTextSize(resources.getDimension(R.dimen.text_size));
 
-        Column batteryColumn = new Column();
-        batteryColumn.setPaint(batterySensorPaint);
-        batteryColumn.getPaint().setTextSize(resources.getDimension(R.dimen.battery_text_size));
-        fifthRow.addColumn("battery", batteryColumn);
+        Column sunriseIconColumn = new Column();
+        sunriseIconColumn.setPaint(sunriseTimeIconPaint);
+        sunriseIconColumn.getPaint().setTextSize(resources.getDimension(R.dimen.icon_size));
+        sunriseIconColumn.setText("\uF185");
+        sunriseIconColumn.setHorizontalMargin(horizontalMargin);
+        thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
+
+        Paint sunriseTimePaint = new Paint();
+        sunriseTimePaint.setColor(TEXT_DEFAULT_COLOUR);
+        sunriseTimePaint.setTypeface(defaultTypeface);
+        sunriseTimePaint.setTextSize(resources.getDimension(R.dimen.text_size));
+
+        Column sunriseColumn = new Column();
+        sunriseColumn.setPaint(sunriseTimePaint);
+        sunriseColumn.setHorizontalMargin(horizontalMargin);
+        sunriseColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
+        thirdRow.addColumn("sunrise", sunriseColumn);
+    }
+
+    private void addColumnForDate() {
+        Paint datePaint = new Paint();
+        datePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
+        datePaint.setTypeface(defaultTypeface);
+        datePaint.setTextSize(resources.getDimension(R.dimen.date_size));
+
+        Column dateColumn = new Column();
+        dateColumn.setPaint(datePaint);
+        dateColumn.getPaint().setTextSize(resources.getDimension(R.dimen.date_size));
+        secondRow.addColumn("date", dateColumn);
+    }
+
+    private void addColumnForTime() {
+        Paint timePaint = new Paint();
+        timePaint.setTypeface(defaultTypeface);
+        timePaint.setColor(DATE_AND_TIME_DEFAULT_COLOUR);
+        timePaint.setTextSize(resources.getDimension(R.dimen.time_size));
+
+        TimeColumn timeColumn = new TimeColumn();
+        timeColumn.setPaint(timePaint);
+        timeColumn.getPaint().setTextSize(resources.getDimension(R.dimen.time_size));
+        firstRow.addColumn("time", timeColumn);
     }
 
     public void draw(Canvas canvas, Rect bounds) {
