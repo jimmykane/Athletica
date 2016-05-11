@@ -26,14 +26,10 @@ public abstract class AmbientAwareWearableActivity extends WearableActivity impl
     private void setAntialiasToLayoutChildren(Boolean antialias){
         LinearLayout layout = getLayout();
         int childCount = layout.getChildCount();
-        Log.d("TEST", ""+ childCount);
         for (int i=0; i < childCount; i++){
             View view =  layout.getChildAt(i);
-            if (view instanceof TextView){
-                ((TextView) view).getPaint().setAntiAlias(antialias);
-            }else if (view instanceof Switch){
-                ((Switch) view).getPaint().setAntiAlias(antialias);
-            }
+            ((TextView) view).getPaint().setAntiAlias(antialias);
+            view.invalidate();
         }
     }
 }
