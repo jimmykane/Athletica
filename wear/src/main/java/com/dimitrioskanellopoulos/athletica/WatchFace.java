@@ -11,6 +11,7 @@ import android.util.Pair;
 import android.util.TypedValue;
 
 import com.dimitrioskanellopoulos.athletica.matrix.columns.AmPmColumn;
+import com.dimitrioskanellopoulos.athletica.matrix.columns.BatteryIconColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.Column;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.DateColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.ColumnFactory;
@@ -127,15 +128,6 @@ public class WatchFace {
         secondRow.addColumn("date", dateColumn);
     }
 
-    private void addColumnForBattery() {
-        Column batteryIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
-        batteryIconColumn.setHorizontalMargin(horizontalMargin);
-        fifthRow.addColumn("battery_icon", batteryIconColumn);
-
-        Column batteryColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.battery_text_size), TEXT_DEFAULT_COLOUR);
-        fifthRow.addColumn("battery", batteryColumn);
-    }
-
     private void addColumnForSunrise() {
         Column sunriseIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
         sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
@@ -156,6 +148,15 @@ public class WatchFace {
         Column sunsetColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
         sunsetColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunset", sunsetColumn);
+    }
+
+    private void addColumnForBattery() {
+        BatteryIconColumn batteryIconColumn = new BatteryIconColumn(resources, fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
+        batteryIconColumn.setHorizontalMargin(horizontalMargin);
+        fifthRow.addColumn("battery_icon", batteryIconColumn);
+
+        Column batteryColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.battery_text_size), TEXT_DEFAULT_COLOUR);
+        fifthRow.addColumn("battery", batteryColumn);
     }
 
     public void draw(Canvas canvas, Rect bounds) {
@@ -304,26 +305,7 @@ public class WatchFace {
     }
 
     public void updateBatteryLevel(Integer batteryPercentage) {
-        String batteryEmptyIcon = resources.getString(R.string.icon_battery_empty);
-        String batteryQuarterIcon =  resources.getString(R.string.icon_battery_one_quarter);
-        String batteryHalfIcon =  resources.getString(R.string.icon_battery_half);
-        String batteryThreeQuartersIcon =  resources.getString(R.string.icon_battery_three_quarters);
-        String batteryFullIcon =  resources.getString(R.string.icon_battery_full);
-
-        String icon;
-        if (batteryPercentage > 80 && batteryPercentage <= 100) {
-            icon = batteryFullIcon;
-        } else if (batteryPercentage > 60 && batteryPercentage <= 80) {
-            icon = batteryThreeQuartersIcon;
-        } else if (batteryPercentage > 40 && batteryPercentage <= 60) {
-            icon = batteryHalfIcon;
-        } else if (batteryPercentage >= 20 && batteryPercentage <= 40) {
-            icon = batteryQuarterIcon;
-        } else {
-            icon = batteryEmptyIcon;
-        }
-
-        fifthRow.getColumn("battery_icon").setText(icon);
+        ((BatteryIconColumn) fifthRow.getColumn("battery_icon")).setBatteryLevel(batteryPercentage);
         fifthRow.getColumn("battery").setText(batteryPercentage.toString() + "%");
     }
 
