@@ -24,7 +24,8 @@
             android:textSize="13sp"
             android:paddingBottom="2dp"
             android:textColor="@color/white"
-            android:text="@string/configuration"/>
+            android:text="@string/configuration_activity_title"
+            android:textAlignment="center" />
 
         <Switch
             android:layout_width="match_parent"
