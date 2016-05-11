@@ -138,7 +138,7 @@ public class WatchFace {
 
     private void addColumnForSunrise() {
         Column sunriseIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
-        sunriseIconColumn.setText("\uF185");
+        sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
         sunriseIconColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
 
@@ -150,7 +150,7 @@ public class WatchFace {
     private void addColumnForSunset() {
         Column sunsetIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), TEXT_DEFAULT_COLOUR);
         sunsetIconColumn.setHorizontalMargin(horizontalMargin);
-        sunsetIconColumn.setText("\uF186");
+        sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
         thirdRow.addColumn("sunset_icon", sunsetIconColumn);
 
         Column sunsetColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), TEXT_DEFAULT_COLOUR);
