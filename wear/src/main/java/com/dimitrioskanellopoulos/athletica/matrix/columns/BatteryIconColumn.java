@@ -16,8 +16,6 @@ public class BatteryIconColumn extends Column {
     private String batteryThreeQuartersIcon;
     private String batteryFullIcon;
 
-    private int iconDefaultColor;
-
     public BatteryIconColumn(Resources resources, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(paintTypeface, paintTextSize, paintColor);
         batteryEmptyIcon = resources.getString(R.string.icon_battery_empty);
@@ -25,13 +23,12 @@ public class BatteryIconColumn extends Column {
         batteryHalfIcon =  resources.getString(R.string.icon_battery_half);
         batteryThreeQuartersIcon =  resources.getString(R.string.icon_battery_three_quarters);
         batteryFullIcon =  resources.getString(R.string.icon_battery_full);
-        iconDefaultColor = paintColor;
     }
 
     @Override
     public String getText() {
         String icon;
-        getPaint().setColor(iconDefaultColor);
+        getPaint().setColor(getTextDefaultColor());
         if (batteryLevel > 80 && batteryLevel <= 100) {
             icon = batteryFullIcon;
         } else if (batteryLevel > 60 && batteryLevel <= 80) {
@@ -42,10 +39,7 @@ public class BatteryIconColumn extends Column {
             icon = batteryQuarterIcon;
         } else {
             if (!isInAmbientMode()) {
-                if (getPaint().getColor() != Color.RED){
-                    iconDefaultColor = getPaint().getColor();
-                    getPaint().setColor(Color.RED);
-                }
+                getPaint().setColor(Color.RED);
             }
             icon = batteryEmptyIcon;
         }

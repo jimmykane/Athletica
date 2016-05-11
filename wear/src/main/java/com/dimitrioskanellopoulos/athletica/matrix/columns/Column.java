@@ -11,17 +11,24 @@ public class Column implements ColumnInterface {
     // @todo fix this
     private String text = "";
     private Float horizontalMargin = 0.0f;
+    private Integer textDefaultColor;
 
     public Column(Typeface paintTypeface, Float paintTextSize ,int paintColor){
         getPaint().setTypeface(paintTypeface);
         getPaint().setTextSize(paintTextSize);
-        getPaint().setColor(paintColor);
+        setTextDefaultColor(paintColor);
         setAmbientMode(false);
     }
 
     @Override
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public void setTextDefaultColor(Integer color) {
+        this.textDefaultColor = color;
+        getPaint().setColor(textDefaultColor);
     }
 
     @Override
@@ -39,6 +46,11 @@ public class Column implements ColumnInterface {
     @Override
     public String getText() {
         return text;
+    }
+
+    @Override
+    public Integer getTextDefaultColor() {
+        return textDefaultColor;
     }
 
     @Override
