@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
@@ -165,13 +164,13 @@ public class WatchFace {
         // First draw background
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
 
-        drawMatrix(canvas, bounds);
+        drawRows(canvas, bounds);
 
         interlaceCanvas(canvas, bounds);
     }
 
 
-    public void drawMatrix(Canvas canvas, Rect bounds) {
+    public void drawRows(Canvas canvas, Rect bounds) {
         /**
          * We loop over each row:
          * 1. Find the total width of the text so we can center the text on X
