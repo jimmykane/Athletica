@@ -137,11 +137,10 @@ public class WatchFace {
         Paint sunsetIconPaint = new Paint();
         sunsetIconPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunsetIconPaint.setTypeface(fontAwesome);
-        sunsetIconPaint.setTextSize(resources.getDimension(R.dimen.text_size));
+        sunsetIconPaint.setTextSize(resources.getDimension(R.dimen.icon_size));
 
         Column sunsetIconColumn = new Column();
         sunsetIconColumn.setPaint(sunsetIconPaint);
-        sunsetIconColumn.getPaint().setTextSize(resources.getDimension(R.dimen.icon_size));
         sunsetIconColumn.setHorizontalMargin(horizontalMargin);
         sunsetIconColumn.setText("\uF186");
         thirdRow.addColumn("sunset_icon", sunsetIconColumn);
@@ -154,7 +153,6 @@ public class WatchFace {
         Column sunsetColumn = new Column();
         sunsetColumn.setPaint(sunsetTimePaint);
         sunsetColumn.setHorizontalMargin(horizontalMargin);
-        sunsetColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
         thirdRow.addColumn("sunset", sunsetColumn);
     }
 
@@ -162,11 +160,10 @@ public class WatchFace {
         Paint sunriseTimeIconPaint = new Paint();
         sunriseTimeIconPaint.setColor(TEXT_DEFAULT_COLOUR);
         sunriseTimeIconPaint.setTypeface(fontAwesome);
-        sunriseTimeIconPaint.setTextSize(resources.getDimension(R.dimen.text_size));
+        sunriseTimeIconPaint.setTextSize(resources.getDimension(R.dimen.icon_size));
 
         Column sunriseIconColumn = new Column();
         sunriseIconColumn.setPaint(sunriseTimeIconPaint);
-        sunriseIconColumn.getPaint().setTextSize(resources.getDimension(R.dimen.icon_size));
         sunriseIconColumn.setText("\uF185");
         sunriseIconColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
@@ -179,7 +176,6 @@ public class WatchFace {
         Column sunriseColumn = new Column();
         sunriseColumn.setPaint(sunriseTimePaint);
         sunriseColumn.setHorizontalMargin(horizontalMargin);
-        sunriseColumn.getPaint().setTextSize(resources.getDimension(R.dimen.text_size));
         thirdRow.addColumn("sunrise", sunriseColumn);
     }
 
