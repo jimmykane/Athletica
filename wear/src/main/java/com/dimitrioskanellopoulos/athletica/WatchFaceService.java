@@ -186,11 +186,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private int[] supportedSensorTypes = {
                 Sensor.TYPE_PRESSURE,
                 Sensor.TYPE_HEART_RATE,
-                Sensor.TYPE_TEMPERATURE,
                 Sensor.TYPE_AMBIENT_TEMPERATURE,
                 Sensor.TYPE_LIGHT,
                 Sensor.TYPE_MAGNETIC_FIELD,
-                //Sensor.TYPE_ACCELEROMETER,
         };
 
         /**

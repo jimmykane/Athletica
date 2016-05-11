@@ -18,7 +18,6 @@ public class ColumnFactory {
             case Sensor.TYPE_HEART_RATE:
                 sensorIconColumn.setText("\uF21E");
                 break;
-            case Sensor.TYPE_TEMPERATURE:
             case Sensor.TYPE_AMBIENT_TEMPERATURE:
                 sensorIconColumn.setText("\uF080");
                 break;
@@ -49,7 +48,6 @@ public class ColumnFactory {
             case Sensor.TYPE_HEART_RATE:
                 sensorUnitsColumn.setText("bpm");
                 break;
-            case Sensor.TYPE_TEMPERATURE:
             case Sensor.TYPE_AMBIENT_TEMPERATURE:
                 sensorUnitsColumn.setText("c");
                 break;
