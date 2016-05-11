@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
@@ -181,22 +182,24 @@ public class WatchFace {
         int rowCount = 0;
         for (Row row : rows) {
             Float totalTextWidth = 0f;
-            Float maxTextHeight = 0f;
+            Float maxColumnHeight = 0f;
             // Go over the paints (columns of each row)
+            int columnCount = 0;
             for (Column column : row.getAllColumns()) {
+                columnCount++;
                 // If the height is bigger than the current set it to that
-                if (column.getHeight() > maxTextHeight) {
-                    maxTextHeight = column.getHeight();
+                if (column.getHeight() > maxColumnHeight) {
+                    maxColumnHeight = column.getHeight();
                 }
                 // The total width of the row increases by the Column's text with
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
+                Log.d(TAG, "Row " + rowCount + " Column " + columnCount + " height "+ column.getHeight());
             }
-
             // Add the total height to the offset
-            yOffset += row.getVerticalMargin() + maxTextHeight / 2.0f;
+            yOffset += row.getVerticalMargin() + maxColumnHeight / 2.0f;
             // Last row change yOffset and put it as low as possible because it's the bottom row
             if (rowCount == rows.length - 1) {
-                yOffset = bounds.bottom - chinSize - maxTextHeight / 2.0f;
+                yOffset = bounds.bottom - chinSize - maxColumnHeight / 2.0f;
             }
 
             /**
