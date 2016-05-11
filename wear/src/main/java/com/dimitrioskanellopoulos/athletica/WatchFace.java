@@ -62,10 +62,9 @@ public class WatchFace {
 
     private boolean isRound;
     private boolean isInAmbientMode = false;
+    private boolean interlace = true;
+
     private int chinSize;
-
-
-    private boolean shouldInterlace = true;
 
     /**
      * The WatchFace. Everything the user sees. No extra init or data manipulation
@@ -167,7 +166,9 @@ public class WatchFace {
 
         drawRows(canvas, bounds);
 
-        interlaceCanvas(canvas, bounds);
+        if (interlace) {
+            interlaceCanvas(canvas, bounds);
+        }
     }
 
 
@@ -243,6 +244,10 @@ public class WatchFace {
                 column.setAmbientMode(inAmbientMode);
             }
         }
+    }
+
+    public void shouldInterlace(Boolean shouldInterlace){
+        this.interlace = shouldInterlace;
     }
 
     public void setTimeFormat24(Boolean timeFormat24) {

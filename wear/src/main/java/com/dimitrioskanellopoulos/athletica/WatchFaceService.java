@@ -568,6 +568,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private boolean updateUiForKey(String configKey, Boolean value) {
             if (configKey.equals(ConfigurationHelper.KEY_TIME_FORMAT)) {
                 watchFace.setTimeFormat24(value);
+            }else if (configKey.equals(ConfigurationHelper.KEY_INTERLACE)){
+                watchFace.shouldInterlace(value);
             } else {
                 Log.w(TAG, "Ignoring unknown config key: " + configKey);
                 return false;
