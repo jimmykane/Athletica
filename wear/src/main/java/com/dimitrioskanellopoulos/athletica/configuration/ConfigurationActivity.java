@@ -2,12 +2,16 @@ package com.dimitrioskanellopoulos.athletica.configuration;
 
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.dimitrioskanellopoulos.athletica.activities.AmbientAwareWearableActivity;
 import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.dimitrioskanellopoulos.athletica.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -17,7 +21,7 @@ import com.google.android.gms.wearable.Wearable;
 
 
 // @todo add antialias support
-public class ConfigurationActivity extends WearableActivity {
+public class ConfigurationActivity extends AmbientAwareWearableActivity {
     private final static String TAG = "ConfigurationActivity";
 
     private Switch switchTimeFormat;
@@ -52,6 +56,7 @@ public class ConfigurationActivity extends WearableActivity {
                 })
                 .addApi(Wearable.API)
                 .build();
+
 
         switchTimeFormat = (Switch) findViewById(R.id.switch_24_hour_clock);
 
@@ -94,6 +99,11 @@ public class ConfigurationActivity extends WearableActivity {
             googleApiClient.disconnect();
         }
         super.onStop();
+    }
+
+    @Override
+    public LinearLayout getLayout(){
+        return (LinearLayout) findViewById(R.id.configuration_layout);
     }
 
     private void updateConfigDataItemTimeFormat(boolean format24) {

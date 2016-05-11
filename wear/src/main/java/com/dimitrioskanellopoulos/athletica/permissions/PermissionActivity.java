@@ -9,14 +9,16 @@ import android.support.v4.app.ActivityCompat;
 import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dimitrioskanellopoulos.athletica.R;
+import com.dimitrioskanellopoulos.athletica.activities.AmbientAwareWearableActivity;
 
 import java.util.ArrayList;
 
-public class PermissionActivity extends WearableActivity {
+public class PermissionActivity extends AmbientAwareWearableActivity {
     private static final String TAG = "PermissionActivity";
 
     /**
@@ -62,6 +64,11 @@ public class PermissionActivity extends WearableActivity {
     protected void onDestroy() {
         super.onDestroy();
         sendFinishedBroadcast();
+    }
+
+    @Override
+    public LinearLayout getLayout(){
+        return (LinearLayout) findViewById(R.id.permission_layout);
     }
 
     /**
