@@ -243,6 +243,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
             // Create a watch face
             watchFace = new WatchFace(WatchFaceService.this);
+            watchFace.inAmbientMode(false);
 
             // Add the helper
             permissionsHelper = new PermissionsHelper(getApplicationContext(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS});
