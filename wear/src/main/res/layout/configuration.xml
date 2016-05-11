@@ -31,8 +31,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="13sp"
-            android:text="@string/switch_24_hour_clock"
+            android:text="@string/configuration_switch_24_hour_clock"
             android:id="@+id/switch_24_hour_clock"
+            android:layout_gravity="end"
+            android:textAlignment="center" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:text="@string/configuration_interlace"
+            android:id="@+id/switch_interlace"
             android:layout_gravity="end"
             android:textAlignment="center" />
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="configuration_activity_title">Customize Athletica</string>
-    <string name="switch_24_hour_clock">24 hour format</string>
+    <string name="configuration_switch_24_hour_clock">Use 24 hour format</string>
+    <string name="configuration_interlace">Interlacing to save battery</string>
 </resources>
