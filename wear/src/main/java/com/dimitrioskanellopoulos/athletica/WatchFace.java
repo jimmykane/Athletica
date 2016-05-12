@@ -213,6 +213,7 @@ public class WatchFace {
 
     /**
      * Applies interlace effect
+     * @todo optimize
      */
     private void interlaceCanvas(Canvas canvas, Rect bounds) {
         Paint interlacePaint = new Paint();
