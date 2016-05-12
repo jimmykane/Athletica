@@ -23,11 +23,11 @@ public abstract class AmbientAwareWearableActivity extends WearableActivity impl
         super.onExitAmbient();
     }
 
-    private void setAntialiasToLayoutChildren(Boolean antialias){
+    private void setAntialiasToLayoutChildren(Boolean antialias) {
         LinearLayout layout = getLayout();
         int childCount = layout.getChildCount();
-        for (int i=0; i < childCount; i++){
-            View view =  layout.getChildAt(i);
+        for (int i = 0; i < childCount; i++) {
+            View view = layout.getChildAt(i);
             ((TextView) view).getPaint().setAntiAlias(antialias);
             view.invalidate();
         }

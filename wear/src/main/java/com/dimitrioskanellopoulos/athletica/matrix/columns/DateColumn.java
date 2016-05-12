@@ -20,14 +20,14 @@ public class DateColumn extends Column {
     @Override
     public String getText() {
         calendar.setTimeInMillis(System.currentTimeMillis());
-        if (showDateNamesFormat){
+        if (showDateNamesFormat) {
             return dateNamesFormat.format(calendar.getTime());
         }
         return dateFormat.format(calendar.getTime());
     }
 
-    public void setShowDateNamesFormat(Boolean showDateNamesFormat){
+    public void setShowDateNamesFormat(Boolean showDateNamesFormat) {
         this.showDateNamesFormat = showDateNamesFormat;
-        getPaint().setTextSize(getPaint().getTextSize()*1f);
+        getPaint().setTextSize(getPaint().getTextSize() * 1f);
     }
 }

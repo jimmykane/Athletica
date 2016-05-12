@@ -66,7 +66,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-            updateConfigDataItemTimeFormat(isChecked);
+                updateConfigDataItemTimeFormat(isChecked);
             }
         });
 
@@ -74,7 +74,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-            updateConfigDataItemDateNames(isChecked);
+                updateConfigDataItemDateNames(isChecked);
             }
         });
 
@@ -82,7 +82,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-            updateConfigDataItemInterlace(isChecked);
+                updateConfigDataItemInterlace(isChecked);
             }
         });
 
@@ -90,7 +90,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-            updateConfigDataItemInvertBlackAndWhite(isChecked);
+                updateConfigDataItemInvertBlackAndWhite(isChecked);
             }
         });
     }
@@ -110,7 +110,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     }
 
     @Override
-    public LinearLayout getLayout(){
+    public LinearLayout getLayout() {
         return (LinearLayout) findViewById(R.id.configuration_layout);
     }
 

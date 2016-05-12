@@ -19,10 +19,10 @@ public class BatteryIconColumn extends Column {
     public BatteryIconColumn(Resources resources, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(paintTypeface, paintTextSize, paintColor);
         batteryEmptyIcon = resources.getString(R.string.icon_battery_empty);
-        batteryQuarterIcon =  resources.getString(R.string.icon_battery_one_quarter);
-        batteryHalfIcon =  resources.getString(R.string.icon_battery_half);
-        batteryThreeQuartersIcon =  resources.getString(R.string.icon_battery_three_quarters);
-        batteryFullIcon =  resources.getString(R.string.icon_battery_full);
+        batteryQuarterIcon = resources.getString(R.string.icon_battery_one_quarter);
+        batteryHalfIcon = resources.getString(R.string.icon_battery_half);
+        batteryThreeQuartersIcon = resources.getString(R.string.icon_battery_three_quarters);
+        batteryFullIcon = resources.getString(R.string.icon_battery_full);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class BatteryIconColumn extends Column {
         return icon;
     }
 
-    public void setBatteryLevel(float batteryLevel){
+    public void setBatteryLevel(float batteryLevel) {
         this.batteryLevel = batteryLevel;
     }
 }

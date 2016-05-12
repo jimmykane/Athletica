@@ -13,7 +13,7 @@ public class Column implements ColumnInterface {
     private Float horizontalMargin = 0.0f;
     private Integer textDefaultColor;
 
-    public Column(Typeface paintTypeface, Float paintTextSize ,int paintColor){
+    public Column(Typeface paintTypeface, Float paintTextSize, int paintColor) {
         getPaint().setTypeface(paintTypeface);
         getPaint().setTextSize(paintTextSize);
         setTextDefaultColor(paintColor);

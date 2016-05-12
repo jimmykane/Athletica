@@ -18,7 +18,7 @@ public class PressureAltitudeSensor extends AveragingCallbackSensor {
 
     public PressureAltitudeSensor(@NonNull Context context,
                                   @NonNull OnSensorEventCallbackInterface changeCallback,
-                                    @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
+                                  @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
         super(context, PressureAltitudeSensor.sensorOriginalType, changeCallback, averageChangeCallback);
     }
 

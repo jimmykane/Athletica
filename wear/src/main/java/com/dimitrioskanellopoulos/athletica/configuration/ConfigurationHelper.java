@@ -35,7 +35,7 @@ public final class ConfigurationHelper {
     /**
      * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} invert black and white.
      */
-    public static final String KEY_INVERT_BLACK_AND_WHITE= "KEY_INVERT_BLACK_AND_WHITE";
+    public static final String KEY_INVERT_BLACK_AND_WHITE = "KEY_INVERT_BLACK_AND_WHITE";
 
     /**
      * The default time format

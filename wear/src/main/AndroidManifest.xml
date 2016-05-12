@@ -57,7 +57,7 @@
 
         <activity
             android:name=".permissions.PermissionActivity"
-            android:label="@string/permissions_activity"/>
+            android:label="@string/permissions_activity" />
 
 
         <activity

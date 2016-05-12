@@ -125,7 +125,7 @@ public class WatchFace {
     }
 
     private int getDefaultColor() {
-        return !invertBlackAndWhite? DEFAULT_COLOUR : BACKGROUND_DEFAULT_COLOUR;
+        return !invertBlackAndWhite ? DEFAULT_COLOUR : BACKGROUND_DEFAULT_COLOUR;
     }
 
     private void addColumnForDate() {
@@ -176,7 +176,7 @@ public class WatchFace {
     }
 
     /**
-     *  @todo document more and make it faster
+     * @todo document more and make it faster
      */
     public void drawRows(Canvas canvas, Rect bounds) {
         /**
@@ -201,7 +201,7 @@ public class WatchFace {
                 // The total width of the row increases by the Column's text with
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
                 // Remove the horizontal margin if it's the last column
-                if (columnCount >= row.getAllColumns().length){
+                if (columnCount >= row.getAllColumns().length) {
                     // Log.d(TAG, "Removing last column margin " + column.getHorizontalMargin());
                     totalTextWidth -= column.getHorizontalMargin();
                 }
@@ -265,28 +265,28 @@ public class WatchFace {
                 resources.getDimension(R.dimen.time_size) :
                 resources.getDimension(R.dimen.time_size) - resources.getDimension(R.dimen.time_am_pm_size));
 
-        if (timeFormat24){
+        if (timeFormat24) {
             firstRow.removeColumn("amPm");
-        }else {
+        } else {
             AmPmColumn amPmColumn = new AmPmColumn(defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), getDefaultColor());
             firstRow.addColumn("amPm", amPmColumn);
         }
     }
 
-    public void setShowDateNamesFormat(Boolean showDateNamesFormat){
+    public void setShowDateNamesFormat(Boolean showDateNamesFormat) {
         DateColumn dateColumn = (DateColumn) secondRow.getColumn("date");
         dateColumn.setShowDateNamesFormat(showDateNamesFormat);
     }
 
-    public void shouldInterlace(Boolean shouldInterlace){
+    public void shouldInterlace(Boolean shouldInterlace) {
         this.interlace = shouldInterlace;
     }
 
-    public void setInvertBlackAndWhite(Boolean invertBlackAndWhite){
+    public void setInvertBlackAndWhite(Boolean invertBlackAndWhite) {
         backgroundPaint.setColor(!invertBlackAndWhite ? BACKGROUND_DEFAULT_COLOUR : DEFAULT_COLOUR);
         for (Row row : rows) {
             for (Column column : row.getAllColumns()) {
-                column.setTextDefaultColor(!invertBlackAndWhite? DEFAULT_COLOUR: BACKGROUND_DEFAULT_COLOUR);
+                column.setTextDefaultColor(!invertBlackAndWhite ? DEFAULT_COLOUR : BACKGROUND_DEFAULT_COLOUR);
             }
         }
         this.invertBlackAndWhite = invertBlackAndWhite;

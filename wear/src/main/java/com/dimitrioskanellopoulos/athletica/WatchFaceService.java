@@ -92,7 +92,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * When the onTickActions were run last time in ms
          */
-        private Calendar lastOnTimeTickTasksRun =  Calendar.getInstance();
+        private Calendar lastOnTimeTickTasksRun = Calendar.getInstance();
 
         /**
          * How often the onTimeTick actions should run
@@ -393,7 +393,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     watchFace.updateSensorPaintText(sensorType, decimalFormat.format(eventValues[0]));
                     break;
                 case Sensor.TYPE_HEART_RATE:
-                    if (Math.round(eventValues[0]) > 180){
+                    if (Math.round(eventValues[0]) > 180) {
                         vibrator.vibrate(new long[]{0, 250, 500, 250, 100, 250, 50, 250, 50}, -1);
                     }
                 default:
@@ -563,11 +563,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private boolean updateUiForKey(String configKey, Boolean value) {
             if (configKey.equals(ConfigurationHelper.KEY_TIME_FORMAT)) {
                 watchFace.setTimeFormat24(value);
-            }else if (configKey.equals(ConfigurationHelper.KEY_DATE_NAMES)){
+            } else if (configKey.equals(ConfigurationHelper.KEY_DATE_NAMES)) {
                 watchFace.setShowDateNamesFormat(value);
-            }else if (configKey.equals(ConfigurationHelper.KEY_INTERLACE)){
+            } else if (configKey.equals(ConfigurationHelper.KEY_INTERLACE)) {
                 watchFace.shouldInterlace(value);
-            }else if (configKey.equals(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE)){
+            } else if (configKey.equals(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE)) {
                 watchFace.setInvertBlackAndWhite(value);
             } else {
                 Log.w(TAG, "Ignoring unknown config key: " + configKey);
@@ -630,7 +630,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private void activateNextSensors() {
             findAndSetAvailableSensorTypes();
             // If there are no sensors to activate exit
-            if (availableSensorTypes.size() == 0){
+            if (availableSensorTypes.size() == 0) {
                 return;
             }
             // Find the active sensors position in the available sensors

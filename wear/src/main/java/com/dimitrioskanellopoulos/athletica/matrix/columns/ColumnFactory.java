@@ -8,7 +8,7 @@ import com.dimitrioskanellopoulos.athletica.R;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 
 public class ColumnFactory {
-    public static Column getIconColumnForSensorType(Resources resources, Integer sensorType, Typeface paintTypeface, Float paintTextSize , int paintColor) {
+    public static Column getIconColumnForSensorType(Resources resources, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         Column sensorIconColumn = new Column(paintTypeface, paintTextSize, paintColor);
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
@@ -35,7 +35,7 @@ public class ColumnFactory {
         return sensorIconColumn;
     }
 
-    public static Column getUnitsColumnForSensorType(Resources resources, Integer sensorType, Typeface paintTypeface, Float paintTextSize ,int paintColor) {
+    public static Column getUnitsColumnForSensorType(Resources resources, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         Column sensorUnitsColumn = new Column(paintTypeface, paintTextSize, paintColor);
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:

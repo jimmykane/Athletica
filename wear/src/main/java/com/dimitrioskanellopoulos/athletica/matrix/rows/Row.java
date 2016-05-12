@@ -37,6 +37,6 @@ public class Row implements RowInterface {
 
     @Override
     public Float getVerticalMargin() {
-         return verticalMargin;
+        return verticalMargin;
     }
 }

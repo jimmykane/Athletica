@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="time_size">44dp</dimen>
-  <dimen name="time_am_pm_size">12dp</dimen>
-  <dimen name="date_size">18dp</dimen>
-  <dimen name="text_size">14dp</dimen>
-  <dimen name="icon_size">12dp</dimen>
-  <dimen name="icon_margin">1dp</dimen>
-  <dimen name="units_size">12dp</dimen>
-  <dimen name="units_margin">1dp</dimen>
-  <dimen name="battery_text_size">12dp</dimen>
-  <dimen name="row_vertical_margin">5.5dp</dimen>
-  <dimen name="row_horizontal_margin">3dp</dimen>
+    <dimen name="time_size">44dp</dimen>
+    <dimen name="time_am_pm_size">12dp</dimen>
+    <dimen name="date_size">18dp</dimen>
+    <dimen name="text_size">14dp</dimen>
+    <dimen name="icon_size">12dp</dimen>
+    <dimen name="icon_margin">1dp</dimen>
+    <dimen name="units_size">12dp</dimen>
+    <dimen name="units_margin">1dp</dimen>
+    <dimen name="battery_text_size">12dp</dimen>
+    <dimen name="row_vertical_margin">5.5dp</dimen>
+    <dimen name="row_horizontal_margin">3dp</dimen>
 </resources>

@@ -19,7 +19,7 @@ public class HeartRateSensor extends AveragingCallbackSensor {
 
     @Override
     public Boolean isEventValuesAcceptable(float[] eventValues) {
-        if (eventValues[0] == 0.0f){
+        if (eventValues[0] == 0.0f) {
             Log.d(TAG, "Event value was 0 thus not accepted");
             return false;
         }

@@ -101,7 +101,7 @@ public class PermissionsHelper {
      * Another wrapper for firing an intent
      */
     public void askForPermission(String permission) {
-        if (isRegisteredPermissionsActivityIntentFinishedReceiver){
+        if (isRegisteredPermissionsActivityIntentFinishedReceiver) {
             Log.d(TAG, "Cannot ask for permission: " + permission + " - a permission activity has not finished");
             return;
         }
@@ -126,7 +126,7 @@ public class PermissionsHelper {
 
     private void unregisterPermissionsChangedReceiver() {
         Log.d(TAG, "unregisterPermissionsChangedReceiver");
-        if (!isRegisteredPermissionsChangedReceiver){
+        if (!isRegisteredPermissionsChangedReceiver) {
             return;
         }
         context.unregisterReceiver(permissionsChangedReceiver);
@@ -135,7 +135,7 @@ public class PermissionsHelper {
 
     private void registerPermissionActivityIntentFinishedReceiver() {
         Log.d(TAG, "registerPermissionActivityIntentFinishedReceiver");
-        if (isRegisteredPermissionsActivityIntentFinishedReceiver){
+        if (isRegisteredPermissionsActivityIntentFinishedReceiver) {
             return;
         }
         context.registerReceiver(permissionsActivityIntentFinishedReceiver, new IntentFilter(PERMISSIONS_ACTIVITY_INTENT_FINISHED));
@@ -144,7 +144,7 @@ public class PermissionsHelper {
 
     private void unregisterPermissionActivityIntentFinishedReceiver() {
         Log.d(TAG, "unregisterPermissionActivityIntentFinishedReceiver");
-        if (!isRegisteredPermissionsActivityIntentFinishedReceiver){
+        if (!isRegisteredPermissionsActivityIntentFinishedReceiver) {
             return;
         }
         context.unregisterReceiver(permissionsActivityIntentFinishedReceiver);

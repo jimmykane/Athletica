@@ -46,9 +46,9 @@ public class PermissionActivity extends AmbientAwareWearableActivity {
         }
 
         setContentView(R.layout.activity_watch_face_permissions);
-        TextView permissionExplanationTextView = (TextView)findViewById(R.id.permission_explanation);
+        TextView permissionExplanationTextView = (TextView) findViewById(R.id.permission_explanation);
 
-        switch (permission){
+        switch (permission) {
             case Manifest.permission.ACCESS_COARSE_LOCATION:
                 permissionExplanationTextView.setText(R.string.permission_explanation_coarse_location);
                 break;
@@ -67,7 +67,7 @@ public class PermissionActivity extends AmbientAwareWearableActivity {
     }
 
     @Override
-    public LinearLayout getLayout(){
+    public LinearLayout getLayout() {
         return (LinearLayout) findViewById(R.id.permission_layout);
     }
 
