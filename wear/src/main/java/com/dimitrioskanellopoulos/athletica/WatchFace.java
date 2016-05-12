@@ -201,7 +201,7 @@ public class WatchFace {
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
                 // Remove the horizontal margin if it's the last column
                 if (columnCount >= row.getAllColumns().length){
-                    Log.d(TAG, "Removing last column margin " + column.getHorizontalMargin());
+                    // Log.d(TAG, "Removing last column margin " + column.getHorizontalMargin());
                     totalTextWidth -= column.getHorizontalMargin();
                 }
                 // Log.d(TAG, "Row " + rowCount + " Column " + columnCount + " height "+ column.getHeight());
