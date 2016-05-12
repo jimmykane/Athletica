@@ -98,46 +98,42 @@ public class WatchFace {
     }
 
     private void addColumnForTime() {
-        TimeColumn timeColumn = new TimeColumn(defaultTypeface, resources.getDimension(R.dimen.time_size), getDefaultColor());
+        TimeColumn timeColumn = new TimeColumn(defaultTypeface, resources.getDimension(R.dimen.time_size), textColor);
         firstRow.addColumn("time", timeColumn);
     }
 
-    private int getDefaultColor() {
-        return !invertBlackAndWhite ? textColor : backgroundColor;
-    }
-
     private void addColumnForDate() {
-        DateColumn dateColumn = new DateColumn(defaultTypeface, resources.getDimension(R.dimen.date_size), getDefaultColor());
+        DateColumn dateColumn = new DateColumn(defaultTypeface, resources.getDimension(R.dimen.date_size), textColor);
         secondRow.addColumn("date", dateColumn);
     }
 
     private void addColumnForSunrise() {
-        Column sunriseIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), getDefaultColor());
+        Column sunriseIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
         sunriseIconColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
 
-        Column sunriseColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), getDefaultColor());
+        Column sunriseColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
         sunriseColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunrise", sunriseColumn);
     }
 
     private void addColumnForSunset() {
-        Column sunsetIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), getDefaultColor());
+        Column sunsetIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sunsetIconColumn.setHorizontalMargin(horizontalMargin);
         sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
         thirdRow.addColumn("sunset_icon", sunsetIconColumn);
 
-        Column sunsetColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), getDefaultColor());
+        Column sunsetColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
         thirdRow.addColumn("sunset", sunsetColumn);
     }
 
     private void addColumnForBattery() {
-        BatteryIconColumn batteryIconColumn = new BatteryIconColumn(resources, fontAwesome, resources.getDimension(R.dimen.icon_size), getDefaultColor());
+        BatteryIconColumn batteryIconColumn = new BatteryIconColumn(resources, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         batteryIconColumn.setHorizontalMargin(horizontalMargin);
         fifthRow.addColumn("battery_icon", batteryIconColumn);
 
-        Column batteryColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.battery_text_size), getDefaultColor());
+        Column batteryColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.battery_text_size), textColor);
         fifthRow.addColumn("battery", batteryColumn);
     }
 
@@ -175,7 +171,7 @@ public class WatchFace {
         if (timeFormat24) {
             firstRow.removeColumn("amPm");
         } else {
-            AmPmColumn amPmColumn = new AmPmColumn(defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), getDefaultColor());
+            AmPmColumn amPmColumn = new AmPmColumn(defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), textColor);
             firstRow.addColumn("amPm", amPmColumn);
         }
     }
@@ -215,21 +211,21 @@ public class WatchFace {
     }
 
     public void addSensorColumn(Integer sensorType) {
-        Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(resources, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), getDefaultColor());
+        Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(resources, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sensorIconColumn.setHorizontalMargin(TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 resources.getDimension(R.dimen.icon_margin),
                 resources.getDisplayMetrics()));
         forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
-        Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), getDefaultColor());
+        Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
         sensorColumn.setHorizontalMargin(TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 resources.getDimension(R.dimen.units_margin),
                 resources.getDisplayMetrics()));
         forthRow.addColumn(sensorType.toString(), sensorColumn);
 
-        Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), getDefaultColor());
+        Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), textColor);
         forthRow.addColumn(sensorType.toString() + "_units", sensorUnitsColumn);
         // Add margin to the previous one
         forthRow.getAllColumns()[Math.max(0, forthRow.getAllColumns().length - 2)].setHorizontalMargin(horizontalMargin);
