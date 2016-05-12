@@ -1,9 +1,8 @@
-package com.dimitrioskanellopoulos.athletica.matrix.columns;
+package com.dimitrioskanellopoulos.athletica.grid.columns;
 
 import android.graphics.Typeface;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
 

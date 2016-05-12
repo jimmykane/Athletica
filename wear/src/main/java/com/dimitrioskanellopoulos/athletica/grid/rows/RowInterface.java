@@ -1,6 +1,6 @@
-package com.dimitrioskanellopoulos.athletica.matrix.rows;
+package com.dimitrioskanellopoulos.athletica.grid.rows;
 
-import com.dimitrioskanellopoulos.athletica.matrix.columns.Column;
+import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 
 public interface RowInterface {
     void addColumn(String name, Column column);

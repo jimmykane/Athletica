@@ -11,13 +11,13 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
-import com.dimitrioskanellopoulos.athletica.matrix.columns.AmPmColumn;
-import com.dimitrioskanellopoulos.athletica.matrix.columns.BatteryIconColumn;
-import com.dimitrioskanellopoulos.athletica.matrix.columns.Column;
-import com.dimitrioskanellopoulos.athletica.matrix.columns.ColumnFactory;
-import com.dimitrioskanellopoulos.athletica.matrix.columns.DateColumn;
-import com.dimitrioskanellopoulos.athletica.matrix.columns.TimeColumn;
-import com.dimitrioskanellopoulos.athletica.matrix.rows.Row;
+import com.dimitrioskanellopoulos.athletica.grid.columns.AmPmColumn;
+import com.dimitrioskanellopoulos.athletica.grid.columns.BatteryIconColumn;
+import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
+import com.dimitrioskanellopoulos.athletica.grid.columns.ColumnFactory;
+import com.dimitrioskanellopoulos.athletica.grid.columns.DateColumn;
+import com.dimitrioskanellopoulos.athletica.grid.columns.TimeColumn;
+import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
 import java.util.TimeZone;
 

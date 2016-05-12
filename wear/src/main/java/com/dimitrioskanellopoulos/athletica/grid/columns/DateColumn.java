@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.athletica.matrix.columns;
+package com.dimitrioskanellopoulos.athletica.grid.columns;
 
 import android.graphics.Typeface;
 
