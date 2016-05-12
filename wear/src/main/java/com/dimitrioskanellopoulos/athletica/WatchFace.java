@@ -11,6 +11,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
+import com.dimitrioskanellopoulos.athletica.grid.GridRenderer;
 import com.dimitrioskanellopoulos.athletica.grid.columns.AmPmColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.BatteryIconColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
@@ -155,7 +156,7 @@ public class WatchFace {
         drawRows(canvas, bounds);
 
         if (interlace) {
-            interlaceCanvas(canvas, bounds);
+            GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, isInAmbientMode ? 100: 70);
         }
     }
 
@@ -208,25 +209,6 @@ public class WatchFace {
                 cursor += column.getWidth() + column.getHorizontalMargin();
             }
             rowCount++;
-        }
-    }
-
-    /**
-     * Applies interlace effect
-     * @todo optimize
-     */
-    private void interlaceCanvas(Canvas canvas, Rect bounds) {
-        Paint interlacePaint = new Paint();
-        interlacePaint.setColor(Color.BLACK);
-        interlacePaint.setAlpha(60);
-        if (isInAmbientMode) {
-            interlacePaint.setAlpha(100);
-        }
-        for (int y = 0; y < bounds.bottom; y += 2) {
-            canvas.drawLine(0, y, bounds.right, y, interlacePaint);
-        }
-        for (int x = 0; x < bounds.right; x += 2) {
-            canvas.drawLine(x, 0, x, bounds.bottom, interlacePaint);
         }
     }
 
