@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.Log;
@@ -24,9 +23,6 @@ import java.util.TimeZone;
 
 public class WatchFace {
     private static final String TAG = "Watchface";
-
-    private static final int DEFAULT_COLOUR = Color.WHITE;
-    private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
     // First row of paints
     private final static Row firstRow = new Row();
     // Second row
@@ -41,9 +37,10 @@ public class WatchFace {
     private final static Row[] rows = {firstRow, secondRow, thirdRow, forthRow, fifthRow};
     private final Resources resources;
     // Background Paint
-    private final Paint backgroundPaint;
     private final Float horizontalMargin;
     private final Typeface fontAwesome;
+    private int textColor;
+    private int backgroundColor;
     private Typeface defaultTypeface;
     private boolean isRound;
     private boolean isInAmbientMode = false;
@@ -81,10 +78,6 @@ public class WatchFace {
         // Default typeface
         defaultTypeface = Typeface.SANS_SERIF;
 
-        // Add paint for background
-        backgroundPaint = new Paint();
-        backgroundPaint.setColor(BACKGROUND_DEFAULT_COLOUR);
-
         // Add FontAwesome paint for icons
         fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
 
@@ -110,7 +103,7 @@ public class WatchFace {
     }
 
     private int getDefaultColor() {
-        return !invertBlackAndWhite ? DEFAULT_COLOUR : BACKGROUND_DEFAULT_COLOUR;
+        return !invertBlackAndWhite ? textColor : backgroundColor;
     }
 
     private void addColumnForDate() {
@@ -150,8 +143,7 @@ public class WatchFace {
 
     public void draw(Canvas canvas, Rect bounds) {
 
-        // First draw background
-        canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
+        GridRenderer.drawBackground(canvas, bounds, backgroundColor);
 
         GridRenderer.drawRows(canvas, bounds, rows, chinSize);
 
@@ -198,10 +190,11 @@ public class WatchFace {
     }
 
     public void setInvertBlackAndWhite(Boolean invertBlackAndWhite) {
-        backgroundPaint.setColor(!invertBlackAndWhite ? BACKGROUND_DEFAULT_COLOUR : DEFAULT_COLOUR);
+        textColor = invertBlackAndWhite ? Color.BLACK : Color.WHITE;
+        backgroundColor = invertBlackAndWhite? Color.WHITE : Color.BLACK;
         for (Row row : rows) {
             for (Column column : row.getAllColumns()) {
-                column.setTextDefaultColor(!invertBlackAndWhite ? DEFAULT_COLOUR : BACKGROUND_DEFAULT_COLOUR);
+                column.setTextDefaultColor(textColor);
             }
         }
         this.invertBlackAndWhite = invertBlackAndWhite;
