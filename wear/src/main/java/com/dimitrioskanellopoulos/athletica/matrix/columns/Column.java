@@ -1,6 +1,5 @@
 package com.dimitrioskanellopoulos.athletica.matrix.columns;
 
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -21,22 +20,6 @@ public class Column implements ColumnInterface {
     }
 
     @Override
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    @Override
-    public void setTextDefaultColor(Integer color) {
-        this.textDefaultColor = color;
-        getPaint().setColor(textDefaultColor);
-    }
-
-    @Override
-    public void setHorizontalMargin(Float horizontalMargin) {
-        this.horizontalMargin = horizontalMargin;
-    }
-
-    @Override
     public void setAmbientMode(Boolean ambientMode) {
         //getPaint().setColor();
         getPaint().setAntiAlias(!ambientMode);
@@ -49,8 +32,19 @@ public class Column implements ColumnInterface {
     }
 
     @Override
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    @Override
     public Integer getTextDefaultColor() {
         return textDefaultColor;
+    }
+
+    @Override
+    public void setTextDefaultColor(Integer color) {
+        this.textDefaultColor = color;
+        getPaint().setColor(textDefaultColor);
     }
 
     @Override
@@ -75,6 +69,11 @@ public class Column implements ColumnInterface {
     @Override
     public Float getHorizontalMargin() {
         return horizontalMargin;
+    }
+
+    @Override
+    public void setHorizontalMargin(Float horizontalMargin) {
+        this.horizontalMargin = horizontalMargin;
     }
 
     @Override

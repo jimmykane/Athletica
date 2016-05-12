@@ -7,15 +7,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
 import com.dimitrioskanellopoulos.athletica.matrix.columns.AmPmColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.BatteryIconColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.Column;
-import com.dimitrioskanellopoulos.athletica.matrix.columns.DateColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.ColumnFactory;
+import com.dimitrioskanellopoulos.athletica.matrix.columns.DateColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.rows.Row;
 
@@ -27,39 +26,26 @@ public class WatchFace {
 
     private static final int DEFAULT_COLOUR = Color.WHITE;
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
-
-    private final Resources resources;
-
     // The Calendar
     private static final Calendar calendar = Calendar.getInstance();
-
-    // Background Paint
-    private final Paint backgroundPaint;
-
     // First row of paints
     private final static Row firstRow = new Row();
-
     // Second row
     private final static Row secondRow = new Row();
-
     // Third row
     private final static Row thirdRow = new Row();
-
     // Forth row
     private final static Row forthRow = new Row();
-
     // Last row
     private final static Row fifthRow = new Row();
-
     // All the rows together
     private final static Row[] rows = {firstRow, secondRow, thirdRow, forthRow, fifthRow};
-
+    private final Resources resources;
+    // Background Paint
+    private final Paint backgroundPaint;
     private final Float horizontalMargin;
-
-    private Typeface defaultTypeface;
-
     private final Typeface fontAwesome;
-
+    private Typeface defaultTypeface;
     private boolean isRound;
     private boolean isInAmbientMode = false;
     private boolean interlace = true;

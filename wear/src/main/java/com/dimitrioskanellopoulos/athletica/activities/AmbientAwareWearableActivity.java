@@ -2,13 +2,9 @@ package com.dimitrioskanellopoulos.athletica.activities;
 
 import android.os.Bundle;
 import android.support.wearable.activity.WearableActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
-
-import com.dimitrioskanellopoulos.athletica.R;
 
 public abstract class AmbientAwareWearableActivity extends WearableActivity implements AmbientAwareWearableActivityInterface {
     @Override

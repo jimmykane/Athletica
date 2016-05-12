@@ -19,7 +19,6 @@ package com.dimitrioskanellopoulos.athletica.configuration;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.dimitrioskanellopoulos.athletica.configuration.ConfigurationHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataMap;

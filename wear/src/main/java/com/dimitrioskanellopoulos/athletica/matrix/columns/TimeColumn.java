@@ -10,10 +10,8 @@ public class TimeColumn extends Column {
     private final static SimpleDateFormat timeFormatWithSeconds = new SimpleDateFormat("h:mm:ss");
     private final static SimpleDateFormat timeFormat24 = new SimpleDateFormat("k:mm");
     private final static SimpleDateFormat timeFormat24WithSeconds = new SimpleDateFormat("k:mm:ss");
-
-    private Boolean isIn24hourFormat = true;
-
     private static final Calendar calendar = Calendar.getInstance();
+    private Boolean isIn24hourFormat = true;
 
     public TimeColumn(Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(paintTypeface, paintTextSize, paintColor);

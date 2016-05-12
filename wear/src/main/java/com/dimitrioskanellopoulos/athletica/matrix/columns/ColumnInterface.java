@@ -3,17 +3,15 @@ package com.dimitrioskanellopoulos.athletica.matrix.columns;
 import android.graphics.Paint;
 
 public interface ColumnInterface {
-    void setText(String text);
-
-    void setTextDefaultColor(Integer color);
-
-    void setHorizontalMargin(Float horizontalMargin);
-
     void setAmbientMode(Boolean ambientMode);
 
     String getText();
 
+    void setText(String text);
+
     Integer getTextDefaultColor();
+
+    void setTextDefaultColor(Integer color);
 
     Paint getPaint();
 
@@ -22,6 +20,8 @@ public interface ColumnInterface {
     Float getWidth();
 
     Float getHorizontalMargin();
+
+    void setHorizontalMargin(Float horizontalMargin);
 
     Boolean isInAmbientMode();
 }

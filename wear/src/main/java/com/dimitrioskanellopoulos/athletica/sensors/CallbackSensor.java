@@ -11,21 +11,15 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.SensorListenerInt
 import com.dimitrioskanellopoulos.athletica.sensors.listeners.ContinuousSensorEventListener;
 
 public class CallbackSensor implements SensorListenerInterface, OnSensorEventCallbackInterface {
+    public final static int TYPE_PRESSURE_ALTITUDE = 10000;
+    public final static Integer samplingPeriodUs = 1000000;
+    public final static Integer maxReportLatencyUs = 1000000;
     protected final String TAG;
-
     protected final SensorManager sensorManager;
     protected final Sensor sensor;
-
-    protected Boolean isListening = false;
     private final OnSensorEventCallbackInterface changeCallback;
-
     private final ContinuousSensorEventListener continuousSensorEventListener = new ContinuousSensorEventListener(this);
-
-    public final static int TYPE_PRESSURE_ALTITUDE = 10000;
-
-    public final static Integer samplingPeriodUs = 1000000;
-
-    public final static Integer maxReportLatencyUs = 1000000;
+    protected Boolean isListening = false;
 
     public CallbackSensor(@NonNull Context context, Integer sensorType,
                           @NonNull OnSensorEventCallbackInterface changeCallback) {

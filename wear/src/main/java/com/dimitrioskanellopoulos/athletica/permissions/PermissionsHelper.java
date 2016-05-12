@@ -17,23 +17,18 @@ import java.util.LinkedHashMap;
 import java.util.Objects;
 
 public class PermissionsHelper {
+    public static final String PERMISSIONS_CHANGED_BROADCAST = "PERMISSIONS_CHANGED_BROADCAST";
+    public static final String PERMISSIONS_ACTIVITY_INTENT_FINISHED = "PERMISSIONS_ACTIVITY_INTENT_FINISHED";
+    public static final String PERMISSION_STATUS_UNKNOWN = "PERMISSION_STATUS_UNKNOWN";
+    public static final String PERMISSION_STATUS_GRANTED = "PERMISSION_STATUS_GRANTED";
+    public static final String PERMISSION_STATUS_DENIED = "PERMISSION_STATUS_DENIED";
+    public static final String PERMISSION_STATUS_DENIED_DO_NOT_ASK_AGAIN = "PERMISSION_STATUS_DENIED_DO_NOT_ASK_AGAIN";
     private final static String TAG = "PermissionsHelper";
     /**
      * Whether we are on Marshmallow and permissions checks are needed
      */
     private final static Boolean requiresRuntimePermissions = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
-
     private final Context context;
-
-    public static final String PERMISSIONS_CHANGED_BROADCAST = "PERMISSIONS_CHANGED_BROADCAST";
-
-    public static final String PERMISSIONS_ACTIVITY_INTENT_FINISHED = "PERMISSIONS_ACTIVITY_INTENT_FINISHED";
-
-    public static final String PERMISSION_STATUS_UNKNOWN = "PERMISSION_STATUS_UNKNOWN";
-    public static final String PERMISSION_STATUS_GRANTED = "PERMISSION_STATUS_GRANTED";
-    public static final String PERMISSION_STATUS_DENIED = "PERMISSION_STATUS_DENIED";
-    public static final String PERMISSION_STATUS_DENIED_DO_NOT_ASK_AGAIN = "PERMISSION_STATUS_DENIED_DO_NOT_ASK_AGAIN";
-
     private final LinkedHashMap<String, String> permissions = new LinkedHashMap<>();
 
     private Boolean isRegisteredPermissionsChangedReceiver = false;

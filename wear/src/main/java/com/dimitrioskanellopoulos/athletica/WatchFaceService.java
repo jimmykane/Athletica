@@ -2,13 +2,14 @@ package com.dimitrioskanellopoulos.athletica;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
-import android.content.Intent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.location.Location;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,8 +22,6 @@ import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
-
-import android.location.Location;
 import android.view.WindowInsets;
 
 import com.dimitrioskanellopoulos.athletica.configuration.ConfigurationHelper;
@@ -74,6 +73,29 @@ public class WatchFaceService extends CanvasWatchFaceService {
         return new Engine();
     }
 
+    /**
+     * Handler for various messages
+     */
+    private static class EngineHandler extends Handler {
+        private final WeakReference<WatchFaceService.Engine> mWeakReference;
+
+        public EngineHandler(WatchFaceService.Engine reference) {
+            mWeakReference = new WeakReference<>(reference);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            WatchFaceService.Engine engine = mWeakReference.get();
+            if (engine != null) {
+                switch (msg.what) {
+                    case MSG_UPDATE_TIME:
+                        engine.handleUpdateTimeMessage();
+                        break;
+                }
+            }
+        }
+    }
+
     private class Engine extends CanvasWatchFaceService.Engine implements
             OnSensorEventCallbackInterface,
             OnSensorAverageEventCallbackInterface,
@@ -88,22 +110,58 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         private static final long LOCATION_UPDATE_INTERVAL_MS = 3600000;
         private static final long LOCATION_UPDATE_FASTEST_INTERVAL_MS = 3600000;
-
-        /**
-         * When the onTickActions were run last time in ms
-         */
-        private Calendar lastOnTimeTickTasksRun = Calendar.getInstance();
-
         /**
          * How often the onTimeTick actions should run
          */
         private final long RUN_ON_TICK_TASKS_EVERY_MS = !EmulatorHelper.isEmulator() ? 15 * 60 * 1000 : 1 * 60 * 1000; // 15 Minutes
-
         /**
          * Handler for updating the time
          */
         private final Handler mUpdateTimeHandler = new EngineHandler(this);
+        /**
+         * How many sensors we want to utilize concurrently
+         */
+        private final Integer maxActiveSensors = 1;
+        /**
+         * The active sensors list. These sensors are the active ones at runtime
+         */
+        private final LinkedHashMap<Integer, AveragingCallbackSensor> activeSensors = new LinkedHashMap<Integer, AveragingCallbackSensor>();
+        /**
+         * Don't be kinky on this. It's the vibrating system service. Useful for haptic feedback
+         */
+        private final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        /**
+         * The sensor manager service
+         */
+        private final SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        /**
+         * The location request we will be making
+         */
+        private final LocationRequest locationRequest = new LocationRequest()
+                .setInterval(LOCATION_UPDATE_INTERVAL_MS)
+                .setFastestInterval(LOCATION_UPDATE_FASTEST_INTERVAL_MS)
+                .setPriority(LocationRequest.PRIORITY_LOW_POWER);
+        /**
+         * Whether tha Battery receiver is registered
+         */
+        boolean isRegisteredBatteryInfoReceiver = false;
 
+        /**
+         * Whether tha location receiver is registered
+         */
+        boolean isRegisteredLocationReceiver = false;
+        /**
+         * When the onTickActions were run last time in ms
+         */
+        private Calendar lastOnTimeTickTasksRun = Calendar.getInstance();
+        /**
+         * Whether tha timezone receiver is registered
+         */
+        private boolean isRegisteredTimeZoneReceiver = false;
+        /**
+         * The watchface. Used for drawing and updating the view/watchface
+         */
+        private WatchFace watchFace;
         /**
          * Broadcast receiver for updating the timezone
          */
@@ -113,7 +171,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 watchFace.updateTimeZoneWith(TimeZone.getTimeZone(intent.getStringExtra("time-zone")));
             }
         };
-
         /**
          * Broadcast receiver for updating the battery level
          */
@@ -132,7 +189,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 watchFace.updateBatteryLevel(level);
             }
         };
-
         /**
          * Broadcast receiver for location intent
          */
@@ -148,38 +204,15 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 updateSunriseAndSunset(location);
             }
         };
-
-        /**
-         * Whether tha timezone receiver is registered
-         */
-        private boolean isRegisteredTimeZoneReceiver = false;
-
-        /**
-         * Whether tha Battery receiver is registered
-         */
-        boolean isRegisteredBatteryInfoReceiver = false;
-
-        /**
-         * Whether tha location receiver is registered
-         */
-        boolean isRegisteredLocationReceiver = false;
-
-        /**
-         * The watchface. Used for drawing and updating the view/watchface
-         */
-        private WatchFace watchFace;
-
         /**
          * A helper for google api that can be shared within the app
          */
         private GoogleApiClient googleApiClient;
-
         /**
          * Whether the display supports fewer bits for each color in ambient mode. When true, we
          * disable anti-aliasing in ambient mode.
          */
         private boolean mLowBitAmbient;
-
         /**
          * The supported sensor types for this watch face. Not the supported ones by the device
          */
@@ -190,40 +223,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 Sensor.TYPE_LIGHT,
                 Sensor.TYPE_MAGNETIC_FIELD,
         };
-
         /**
          * The available sensors. Cross of supported by the app sensors and supported by the device
          */
         private ArrayList<Integer> availableSensorTypes = new ArrayList<Integer>();
-
-        /**
-         * How many sensors we want to utilize concurrently
-         */
-        private final Integer maxActiveSensors = 1;
-
-        /**
-         * The active sensors list. These sensors are the active ones at runtime
-         */
-        private final LinkedHashMap<Integer, AveragingCallbackSensor> activeSensors = new LinkedHashMap<Integer, AveragingCallbackSensor>();
-
-        /**
-         * Don't be kinky on this. It's the vibrating system service. Useful for haptic feedback
-         */
-        private final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-        /**
-         * The sensor manager service
-         */
-        private final SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-
-        /**
-         * The location request we will be making
-         */
-        private final LocationRequest locationRequest = new LocationRequest()
-                .setInterval(LOCATION_UPDATE_INTERVAL_MS)
-                .setFastestInterval(LOCATION_UPDATE_FASTEST_INTERVAL_MS)
-                .setPriority(LocationRequest.PRIORITY_LOW_POWER);
-
         private PermissionsHelper permissionsHelper;
 
         @Override
@@ -743,29 +746,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
 
             calculateAverageForActiveSensors();
-        }
-    }
-
-    /**
-     * Handler for various messages
-     */
-    private static class EngineHandler extends Handler {
-        private final WeakReference<WatchFaceService.Engine> mWeakReference;
-
-        public EngineHandler(WatchFaceService.Engine reference) {
-            mWeakReference = new WeakReference<>(reference);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            WatchFaceService.Engine engine = mWeakReference.get();
-            if (engine != null) {
-                switch (msg.what) {
-                    case MSG_UPDATE_TIME:
-                        engine.handleUpdateTimeMessage();
-                        break;
-                }
-            }
         }
     }
 }

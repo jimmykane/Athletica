@@ -6,12 +6,10 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.wearable.activity.WearableActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dimitrioskanellopoulos.athletica.R;
 import com.dimitrioskanellopoulos.athletica.activities.AmbientAwareWearableActivity;
@@ -20,16 +18,14 @@ import java.util.ArrayList;
 
 public class PermissionActivity extends AmbientAwareWearableActivity {
     private static final String TAG = "PermissionActivity";
-
-    /**
-     * The permissions we would like to have. Wanted because they are not actually needed
-     */
-    private final ArrayList<String> wantedPermissions = new ArrayList<>();
-
     /**
      * The broadcast signal for our permission request
      */
     private static final int PERMISSION_REQUEST = 1;
+    /**
+     * The permissions we would like to have. Wanted because they are not actually needed
+     */
+    private final ArrayList<String> wantedPermissions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

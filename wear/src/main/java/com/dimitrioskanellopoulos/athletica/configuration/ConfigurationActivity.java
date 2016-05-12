@@ -6,8 +6,8 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 
-import com.dimitrioskanellopoulos.athletica.activities.AmbientAwareWearableActivity;
 import com.dimitrioskanellopoulos.athletica.R;
+import com.dimitrioskanellopoulos.athletica.activities.AmbientAwareWearableActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataMap;

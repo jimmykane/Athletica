@@ -7,11 +7,11 @@ public interface RowInterface {
 
     void removeColumn(String name);
 
-    void setVerticalMargin(Float verticalMargin);
-
     Column getColumn(String name);
 
     Column[] getAllColumns();
 
     Float getVerticalMargin();
+
+    void setVerticalMargin(Float verticalMargin);
 }
