@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
@@ -198,6 +199,11 @@ public class WatchFace {
                 }
                 // The total width of the row increases by the Column's text with
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
+                // Remove the horizontal margin if it's the last column
+                if (columnCount >= row.getAllColumns().length){
+                    Log.d(TAG, "Removing last column margin " + column.getHorizontalMargin());
+                    totalTextWidth -= column.getHorizontalMargin();
+                }
                 // Log.d(TAG, "Row " + rowCount + " Column " + columnCount + " height "+ column.getHeight());
             }
             // Add the total height to the offset
