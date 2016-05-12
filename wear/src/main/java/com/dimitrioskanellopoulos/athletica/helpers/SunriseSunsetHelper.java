@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.athletica;
+package com.dimitrioskanellopoulos.athletica.helpers;
 
 import android.location.Location;
 import android.util.Pair;
@@ -7,7 +7,7 @@ import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
 
 import java.util.Calendar;
 
-public class SunriseSunsetTimesService {
+public class SunriseSunsetHelper {
 
     public static Pair<String, String> getSunriseAndSunset(Location location, String timezone) {
         SunriseSunsetCalculator calculator = new SunriseSunsetCalculator(

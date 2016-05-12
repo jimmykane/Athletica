@@ -26,6 +26,7 @@ import android.view.WindowInsets;
 
 import com.dimitrioskanellopoulos.athletica.configuration.ConfigurationHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
+import com.dimitrioskanellopoulos.athletica.helpers.SunriseSunsetHelper;
 import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
 import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
@@ -698,7 +699,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * Updates the sunrise and sunset according to a location if possible
          */
         private void updateSunriseAndSunset(@NonNull Location location) {
-            Pair<String, String> sunriseSunset = SunriseSunsetTimesService.getSunriseAndSunset(location, TimeZone.getDefault().getID());
+            Pair<String, String> sunriseSunset = SunriseSunsetHelper.getSunriseAndSunset(location, TimeZone.getDefault().getID());
             watchFace.updateSunriseSunset(sunriseSunset);
             invalidate();
             Log.d(TAG, "Successfully updated sunrise");
