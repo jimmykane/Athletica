@@ -629,6 +629,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         private void activateNextSensors() {
             findAndSetAvailableSensorTypes();
+            // If there are no sensors to activate exit
+            if (availableSensorTypes.size() == 0){
+                return;
+            }
             // Find the active sensors position in the available sensors
             int countFound = 0;
             int lastFoundIndex = 0;
@@ -652,7 +656,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             for (int i = 0; i < maxActiveSensors; i++) {
                 // Check if we hit the last
                 lastFoundIndex += 1;
-                if (lastFoundIndex == availableSensorTypes.size()) {
+                if (lastFoundIndex >= availableSensorTypes.size()) {
                     // Reset the index to start
                     lastFoundIndex = 0;
                 }
