@@ -151,7 +151,6 @@ public class WatchFace {
         thirdRow.addColumn("sunset_icon", sunsetIconColumn);
 
         Column sunsetColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), getDefaultColor());
-        sunsetColumn.setHorizontalMargin(horizontalMargin);
         thirdRow.addColumn("sunset", sunsetColumn);
     }
 
@@ -318,6 +317,8 @@ public class WatchFace {
         forthRow.addColumn(sensorType.toString(), sensorColumn);
 
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), getDefaultColor());
+        // @todo should remove the margin here if it detects it's the last
+        sensorUnitsColumn.setHorizontalMargin(horizontalMargin);
         forthRow.addColumn(sensorType.toString() + "_units", sensorUnitsColumn);
     }
 
