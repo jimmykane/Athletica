@@ -172,17 +172,22 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     }
 
     private boolean updateUiForKey(String configKey, Boolean value) {
-        if (configKey.equals(ConfigurationHelper.KEY_TIME_FORMAT)) {
-            switchTimeFormat.setChecked(value);
-        }if(configKey.equals(ConfigurationHelper.KEY_DATE_NAMES)){
-            switchDateNames.setChecked(value);
-        } else if(configKey.equals(ConfigurationHelper.KEY_INTERLACE)){
-            switchInterlace.setChecked(value);
-        }else if(configKey.equals(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE)){
-            switchInvertBlackAndWhite.setChecked(value);
-        }else {
-            Log.w(TAG, "Ignoring unknown config key: " + configKey);
-            return false;
+        switch (configKey) {
+            case ConfigurationHelper.KEY_TIME_FORMAT:
+                switchTimeFormat.setChecked(value);
+                break;
+            case ConfigurationHelper.KEY_DATE_NAMES:
+                switchDateNames.setChecked(value);
+                break;
+            case ConfigurationHelper.KEY_INTERLACE:
+                switchInterlace.setChecked(value);
+                break;
+            case ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE:
+                switchInvertBlackAndWhite.setChecked(value);
+                break;
+            default:
+                Log.w(TAG, "Ignoring unknown config key: " + configKey);
+                return false;
         }
         return true;
     }
