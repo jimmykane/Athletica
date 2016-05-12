@@ -167,7 +167,7 @@ public class WatchFace {
          * We loop over each row:
          * 1. Find the total width of the text so we can center the text on X
          * 2. Find the biggest height of the text so we can offset on Y
-         * 3. Take care for special cases of first and last row
+         * 3. Take care for special case of last row
          */
         Float yOffset = bounds.exactCenterY();
         int rowCount = 0;
@@ -185,10 +185,10 @@ public class WatchFace {
                 // The total width of the row increases by the Column's text with
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
                 // Remove the horizontal margin if it's the last column
-                if (columnCount >= row.getAllColumns().length) {
-                    // Log.d(TAG, "Removing last column margin " + column.getHorizontalMargin());
-                    totalTextWidth -= column.getHorizontalMargin();
-                }
+                // if (columnCount >= row.getAllColumns().length) {
+                    //Log.d(TAG, "Removing last column margin " + column.getHorizontalMargin());
+                    //totalTextWidth -= column.getHorizontalMargin();
+                //}
                 // Log.d(TAG, "Row " + rowCount + " Column " + columnCount + " height "+ column.getHeight());
             }
             // Add the total height to the offset
@@ -306,9 +306,9 @@ public class WatchFace {
         forthRow.addColumn(sensorType.toString(), sensorColumn);
 
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), getDefaultColor());
-        // @todo should remove the margin here if it detects it's the last
-        sensorUnitsColumn.setHorizontalMargin(horizontalMargin);
         forthRow.addColumn(sensorType.toString() + "_units", sensorUnitsColumn);
+        // Add margin to the previous one
+        forthRow.getAllColumns()[Math.max(0, forthRow.getAllColumns().length - 2)].setHorizontalMargin(horizontalMargin);
     }
 
     public void removeSensorPaint(Integer sensorType) {
