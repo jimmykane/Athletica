@@ -4,13 +4,14 @@ import android.graphics.Typeface;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class DateColumn extends CalendarColumn {
 
     private static final Calendar calendar = Calendar.getInstance();
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    private static final SimpleDateFormat dateNamesFormat = new SimpleDateFormat("E d LLL yyyy");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+    private static final SimpleDateFormat dateNamesFormat = new SimpleDateFormat("E d LLL yyyy", Locale.getDefault());
 
     private Boolean showDateNamesFormat = false;
 

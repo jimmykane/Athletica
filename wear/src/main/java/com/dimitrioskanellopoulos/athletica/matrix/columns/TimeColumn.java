@@ -4,13 +4,14 @@ import android.graphics.Typeface;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class TimeColumn extends CalendarColumn {
-    private final static SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm");
-    private final static SimpleDateFormat timeFormatWithSeconds = new SimpleDateFormat("h:mm:ss");
-    private final static SimpleDateFormat timeFormat24 = new SimpleDateFormat("k:mm");
-    private final static SimpleDateFormat timeFormat24WithSeconds = new SimpleDateFormat("k:mm:ss");
+    private final static SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm", Locale.getDefault());
+    private final static SimpleDateFormat timeFormatWithSeconds = new SimpleDateFormat("h:mm:ss", Locale.getDefault());
+    private final static SimpleDateFormat timeFormat24 = new SimpleDateFormat("k:mm", Locale.getDefault());
+    private final static SimpleDateFormat timeFormat24WithSeconds = new SimpleDateFormat("k:mm:ss", Locale.getDefault());
     private Boolean isIn24hourFormat = true;
 
     public TimeColumn(Typeface paintTypeface, Float paintTextSize, int paintColor) {
