@@ -61,7 +61,7 @@ public class GridRenderer {
         }
     }
 
-    public static void interlaceCanvas(Canvas canvas, Rect bounds, Integer color, Integer alpha){
+    public static void interlaceCanvas(Canvas canvas, Rect bounds, Integer color, Integer alpha) {
         Paint interlacePaint = new Paint();
         interlacePaint.setColor(color);
         interlacePaint.setAlpha(alpha);
