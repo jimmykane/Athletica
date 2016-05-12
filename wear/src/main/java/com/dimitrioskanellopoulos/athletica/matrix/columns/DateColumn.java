@@ -4,8 +4,9 @@ import android.graphics.Typeface;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.TimeZone;
 
-public class DateColumn extends Column {
+public class DateColumn extends CalendarColumn {
 
     private static final Calendar calendar = Calendar.getInstance();
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
@@ -15,6 +16,13 @@ public class DateColumn extends Column {
 
     public DateColumn(Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(paintTypeface, paintTextSize, paintColor);
+    }
+
+    @Override
+    public void setTimezone(TimeZone timeZone) {
+        super.setTimezone(timeZone);
+        dateFormat.setTimeZone(calendar.getTimeZone());
+        dateNamesFormat.setTimeZone(calendar.getTimeZone());
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 
@@ -18,7 +19,6 @@ import com.dimitrioskanellopoulos.athletica.matrix.columns.DateColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.matrix.rows.Row;
 
-import java.util.Calendar;
 import java.util.TimeZone;
 
 public class WatchFace {
@@ -26,8 +26,6 @@ public class WatchFace {
 
     private static final int DEFAULT_COLOUR = Color.WHITE;
     private static final int BACKGROUND_DEFAULT_COLOUR = Color.BLACK;
-    // The Calendar
-    private static final Calendar calendar = Calendar.getInstance();
     // First row of paints
     private final static Row firstRow = new Row();
     // Second row
@@ -279,7 +277,9 @@ public class WatchFace {
     }
 
     public void updateTimeZoneWith(TimeZone timeZone) {
-        calendar.setTimeZone(timeZone);
+        Log.d(TAG, "Updating timezone to " + timeZone.getDisplayName());
+        ((TimeColumn) firstRow.getColumn("time")).setTimezone(timeZone);
+        ((DateColumn) secondRow.getColumn("date")).setTimezone(timeZone);
     }
 
     public void setIsRound(boolean round) {

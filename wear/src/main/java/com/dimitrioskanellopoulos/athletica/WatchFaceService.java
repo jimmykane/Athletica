@@ -474,7 +474,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             isRegisteredTimeZoneReceiver = true;
             IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
-            WatchFaceService.this.registerReceiver(mTimeZoneReceiver, filter);
+            registerReceiver(mTimeZoneReceiver, filter);
         }
 
         private void unregisterTimeZoneReceiver() {
@@ -482,7 +482,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 return;
             }
             isRegisteredTimeZoneReceiver = false;
-            WatchFaceService.this.unregisterReceiver(mTimeZoneReceiver);
+            unregisterReceiver(mTimeZoneReceiver);
         }
 
         private void registerLocationReceiver() {
