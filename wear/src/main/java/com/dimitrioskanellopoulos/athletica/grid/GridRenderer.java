@@ -61,6 +61,12 @@ public class GridRenderer {
         }
     }
 
+    public static void drawBackground(Canvas canvas, Rect bounds, Integer color){
+        Paint backgroundPaint = new Paint();
+        backgroundPaint.setColor(color);
+        canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
+    }
+
     public static void interlaceCanvas(Canvas canvas, Rect bounds, Integer color, Integer alpha) {
         Paint interlacePaint = new Paint();
         interlacePaint.setColor(color);
