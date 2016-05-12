@@ -176,7 +176,9 @@ public class WatchFace {
         }
     }
 
-
+    /**
+     *  @todo document more and make it faster
+     */
     public void drawRows(Canvas canvas, Rect bounds) {
         /**
          * We loop over each row:
