@@ -729,6 +729,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             Log.d(TAG, "Running onTimeTickTasks");
             lastOnTimeTickTasksRun = now;
+
             if (EmulatorHelper.isEmulator()) {
                 Location location = new Location("dummy");
                 location.setLatitude(41);
@@ -736,7 +737,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 location.setTime(System.currentTimeMillis());
                 location.setAccuracy(3.0f);
                 updateSunriseAndSunset(location);
+                //watchFace.addSensorColumn(supportedSensorType);
+                // watchFace.updateSensorPaintText(supportedSensorType, "50");
             }
+
             calculateAverageForActiveSensors();
         }
     }
