@@ -58,14 +58,6 @@ public class GridRenderer {
             for (Column column : row.getAllColumns()) {
                 // Draw the column
                 canvas.drawText(column.getText(), cursor, yOffset, column.getPaint()); // check if it needs per column height
-                Log.d(TAG, "Row: "
-                        + rowCount +
-                        " column: " +columnCount +
-                        " width: " + column.getWidth() +
-                        " margin: " + column.getHorizontalMargin() +
-                        " text: " + column.getText() +
-                        " cursor: " +cursor
-                );
                 cursor += column.getWidth() + column.getHorizontalMargin();
                 columnCount++;
             }
