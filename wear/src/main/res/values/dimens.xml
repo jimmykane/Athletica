@@ -10,5 +10,5 @@
     <dimen name="units_margin">1dp</dimen>
     <dimen name="battery_text_size">12dp</dimen>
     <dimen name="row_vertical_margin">5.5dp</dimen>
-    <dimen name="row_horizontal_margin">1dp</dimen>
+    <dimen name="column_margin">1.5dp</dimen>
 </resources>

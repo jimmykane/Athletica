@@ -65,7 +65,7 @@ public class WatchFace {
         // Define the margin of the rows for horizontal
         horizontalMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.row_horizontal_margin),
+                resources.getDimension(R.dimen.column_margin),
                 resources.getDisplayMetrics());
 
         // Set margins to the rows
@@ -95,6 +95,17 @@ public class WatchFace {
 
         // Add column for battery level
         addColumnForBattery();
+    }
+
+    public void draw(Canvas canvas, Rect bounds) {
+
+        GridRenderer.drawBackground(canvas, bounds, backgroundColor);
+
+        GridRenderer.drawRows(canvas, bounds, rows, chinSize);
+
+        if (interlace) {
+            GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, isInAmbientMode ? 100: 70);
+        }
     }
 
     private void addColumnForTime() {
@@ -137,15 +148,25 @@ public class WatchFace {
         fifthRow.addColumn("battery", batteryColumn);
     }
 
-    public void draw(Canvas canvas, Rect bounds) {
+    public void addSensorColumn(Integer sensorType) {
+        Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(resources, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
+        sensorIconColumn.setHorizontalMargin(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                resources.getDimension(R.dimen.icon_margin),
+                resources.getDisplayMetrics()));
+        forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
-        GridRenderer.drawBackground(canvas, bounds, backgroundColor);
+        Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
+        sensorColumn.setHorizontalMargin(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                resources.getDimension(R.dimen.units_margin),
+                resources.getDisplayMetrics()));
+        forthRow.addColumn(sensorType.toString(), sensorColumn);
 
-        GridRenderer.drawRows(canvas, bounds, rows, chinSize);
-
-        if (interlace) {
-            GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, isInAmbientMode ? 100: 70);
-        }
+        Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), textColor);
+        forthRow.addColumn(sensorType.toString() + "_units", sensorUnitsColumn);
+        // Add margin to the previous one
+        forthRow.getAllColumns()[Math.max(0, forthRow.getAllColumns().length - 2)].setHorizontalMargin(horizontalMargin);
     }
 
     /**
@@ -159,7 +180,6 @@ public class WatchFace {
             }
         }
     }
-
 
     public void setTimeFormat24(Boolean timeFormat24) {
         TimeColumn timeColumn = (TimeColumn) firstRow.getColumn("time");
@@ -208,27 +228,6 @@ public class WatchFace {
 
     public void setChinSize(Integer chinSize) {
         this.chinSize = chinSize;
-    }
-
-    public void addSensorColumn(Integer sensorType) {
-        Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(resources, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
-        sensorIconColumn.setHorizontalMargin(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.icon_margin),
-                resources.getDisplayMetrics()));
-        forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
-
-        Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
-        sensorColumn.setHorizontalMargin(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.units_margin),
-                resources.getDisplayMetrics()));
-        forthRow.addColumn(sensorType.toString(), sensorColumn);
-
-        Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), textColor);
-        forthRow.addColumn(sensorType.toString() + "_units", sensorUnitsColumn);
-        // Add margin to the previous one
-        forthRow.getAllColumns()[Math.max(0, forthRow.getAllColumns().length - 2)].setHorizontalMargin(horizontalMargin);
     }
 
     public void removeSensorPaint(Integer sensorType) {
