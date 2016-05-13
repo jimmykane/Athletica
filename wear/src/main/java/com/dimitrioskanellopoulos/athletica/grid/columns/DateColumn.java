@@ -37,6 +37,6 @@ public class DateColumn extends CalendarColumn {
 
     public void setShowDateNamesFormat(Boolean showDateNamesFormat) {
         this.showDateNamesFormat = showDateNamesFormat;
-        getPaint().setTextSize(getPaint().getTextSize() * 1f);
+        getPaint().setTextSize(getPaint().getTextSize());
     }
 }
