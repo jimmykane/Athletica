@@ -117,7 +117,7 @@ public class WatchFace {
         sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
         sunriseIconColumn.setHorizontalMargin(TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.column_margin),
+                resources.getDimension(R.dimen.icon_margin),
                 resources.getDisplayMetrics()));
         thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
 
@@ -133,7 +133,7 @@ public class WatchFace {
         Column sunsetIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sunsetIconColumn.setHorizontalMargin(TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.column_margin),
+                resources.getDimension(R.dimen.icon_margin),
                 resources.getDisplayMetrics()));
         sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
         thirdRow.addColumn("sunset_icon", sunsetIconColumn);
@@ -146,7 +146,7 @@ public class WatchFace {
         BatteryIconColumn batteryIconColumn = new BatteryIconColumn(resources, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         batteryIconColumn.setHorizontalMargin(TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.column_margin),
+                resources.getDimension(R.dimen.icon_margin),
                 resources.getDisplayMetrics()));
         fifthRow.addColumn("battery_icon", batteryIconColumn);
 
@@ -171,11 +171,7 @@ public class WatchFace {
 
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), textColor);
         forthRow.addColumn(sensorType.toString() + "_units", sensorUnitsColumn);
-        // Add margin to the previous one
-        forthRow.getAllColumns()[Math.max(0, forthRow.getAllColumns().length - 2)].setHorizontalMargin(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.column_margin),
-                resources.getDisplayMetrics()));
+        // @todo  When using more than one sensors should add the margin to the previous one
     }
 
     /**
