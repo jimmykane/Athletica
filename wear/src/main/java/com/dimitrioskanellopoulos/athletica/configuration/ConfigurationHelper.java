@@ -53,9 +53,6 @@ public final class ConfigurationHelper {
     public static final String PATH_WITH_FEATURE = "/athletica/config";
     private static final String TAG = "ConfigurationHelper";
 
-    private ConfigurationHelper() {
-    }
-
     /**
      * Asynchronously fetches the current config {@link DataMap} for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService}
      * and passes it to the given callback.

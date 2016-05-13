@@ -237,10 +237,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Set the style
             setWatchFaceStyle(new WatchFaceStyle.Builder(WatchFaceService.this)
                     .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
-                    .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
+                    .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_VISIBLE)
                     .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
                     .setAcceptsTapEvents(true)
                     .setShowSystemUiTime(false)
+                    .setViewProtectionMode(WatchFaceStyle.PROGRESS_MODE_NONE)
                     .build());
 
             // Create a watch face
@@ -573,6 +574,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 watchFace.shouldInterlace(value);
             } else if (configKey.equals(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE)) {
                 watchFace.setInvertBlackAndWhite(value);
+                setWatchFaceStyle(new WatchFaceStyle.Builder(WatchFaceService.this)
+                        .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
+                        .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_VISIBLE)
+                        .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
+                        .setAcceptsTapEvents(true)
+                        .setShowSystemUiTime(false)
+                        .setViewProtectionMode(!value ? WatchFaceStyle.PROGRESS_MODE_NONE : WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR)
+                        .build());
             } else {
                 Log.w(TAG, "Ignoring unknown config key: " + configKey);
                 return false;
