@@ -4,11 +4,11 @@
     <dimen name="time_am_pm_size">12dp</dimen>
     <dimen name="date_size">18dp</dimen>
     <dimen name="text_size">14dp</dimen>
-    <dimen name="icon_size">12dp</dimen>
+    <dimen name="icon_size">13dp</dimen>
     <dimen name="icon_margin">1dp</dimen>
     <dimen name="units_size">12dp</dimen>
-    <dimen name="units_margin">1dp</dimen>
+    <dimen name="units_margin">0.5dp</dimen>
     <dimen name="battery_text_size">12dp</dimen>
     <dimen name="row_vertical_margin">5.5dp</dimen>
-    <dimen name="column_margin">1.5dp</dimen>
+    <dimen name="column_margin">2dp</dimen>
 </resources>
