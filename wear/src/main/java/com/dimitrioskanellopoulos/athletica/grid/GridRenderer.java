@@ -3,11 +3,13 @@ package com.dimitrioskanellopoulos.athletica.grid;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
 public class GridRenderer {
+    private static final String TAG = "GridRenderer";
 
     /**
      * @todo document more and make it faster
@@ -27,7 +29,6 @@ public class GridRenderer {
             // Go over the paints (columns of each row)
             int columnCount = 0;
             for (Column column : row.getAllColumns()) {
-                columnCount++;
                 // If the height is bigger than the current set it to that
                 if (column.getHeight() > maxColumnHeight) {
                     maxColumnHeight = column.getHeight();
@@ -40,6 +41,7 @@ public class GridRenderer {
                 //totalTextWidth -= column.getHorizontalMargin();
                 //}
                 // Log.d(TAG, "Row " + rowCount + " Column " + columnCount + " height "+ column.getHeight());
+                columnCount++;
             }
             // Add the total height to the offset
             yOffset += row.getVerticalMargin() + maxColumnHeight / 2.0f;
@@ -52,10 +54,12 @@ public class GridRenderer {
              * All is found and set start drawing
              */
             Float cursor = bounds.exactCenterX() - totalTextWidth / 2.0f;
+            columnCount = 0;
             for (Column column : row.getAllColumns()) {
                 // Draw the column
                 canvas.drawText(column.getText(), cursor, yOffset, column.getPaint()); // check if it needs per column height
                 cursor += column.getWidth() + column.getHorizontalMargin();
+                columnCount++;
             }
             rowCount++;
         }
