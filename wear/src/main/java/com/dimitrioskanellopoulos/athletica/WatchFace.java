@@ -36,8 +36,8 @@ public class WatchFace {
     // All the rows together
     private final static Row[] rows = {firstRow, secondRow, thirdRow, forthRow, fifthRow};
     private final Resources resources;
-    // Background Paint
-    private final Float horizontalMargin;
+
+
     private final Typeface fontAwesome;
     private int textColor;
     private int backgroundColor;
@@ -60,12 +60,6 @@ public class WatchFace {
         Float verticalMargin = TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
                 resources.getDimension(R.dimen.row_vertical_margin),
-                resources.getDisplayMetrics());
-
-        // Define the margin of the rows for horizontal
-        horizontalMargin = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.column_margin),
                 resources.getDisplayMetrics());
 
         // Set margins to the rows
@@ -121,17 +115,26 @@ public class WatchFace {
     private void addColumnForSunrise() {
         Column sunriseIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
-        sunriseIconColumn.setHorizontalMargin(horizontalMargin);
+        sunriseIconColumn.setHorizontalMargin(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                resources.getDimension(R.dimen.column_margin),
+                resources.getDisplayMetrics()));
         thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
 
         Column sunriseColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
-        sunriseColumn.setHorizontalMargin(horizontalMargin);
+        sunriseColumn.setHorizontalMargin(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                resources.getDimension(R.dimen.column_margin),
+                resources.getDisplayMetrics()));
         thirdRow.addColumn("sunrise", sunriseColumn);
     }
 
     private void addColumnForSunset() {
         Column sunsetIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
-        sunsetIconColumn.setHorizontalMargin(horizontalMargin);
+        sunsetIconColumn.setHorizontalMargin(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                resources.getDimension(R.dimen.column_margin),
+                resources.getDisplayMetrics()));
         sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
         thirdRow.addColumn("sunset_icon", sunsetIconColumn);
 
@@ -141,7 +144,10 @@ public class WatchFace {
 
     private void addColumnForBattery() {
         BatteryIconColumn batteryIconColumn = new BatteryIconColumn(resources, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
-        batteryIconColumn.setHorizontalMargin(horizontalMargin);
+        batteryIconColumn.setHorizontalMargin(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                resources.getDimension(R.dimen.column_margin),
+                resources.getDisplayMetrics()));
         fifthRow.addColumn("battery_icon", batteryIconColumn);
 
         Column batteryColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.battery_text_size), textColor);
@@ -166,7 +172,10 @@ public class WatchFace {
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), textColor);
         forthRow.addColumn(sensorType.toString() + "_units", sensorUnitsColumn);
         // Add margin to the previous one
-        forthRow.getAllColumns()[Math.max(0, forthRow.getAllColumns().length - 2)].setHorizontalMargin(horizontalMargin);
+        forthRow.getAllColumns()[Math.max(0, forthRow.getAllColumns().length - 2)].setHorizontalMargin(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                resources.getDimension(R.dimen.column_margin),
+                resources.getDisplayMetrics()));
     }
 
     /**
