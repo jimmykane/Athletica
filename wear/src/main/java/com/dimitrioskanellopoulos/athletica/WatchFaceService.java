@@ -265,8 +265,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         @Override
         public void onDestroy() {
+            Log.d(TAG, "onDestroy");
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
-            stopListeningToSensors();
+            deactivateAllSensors();
             unregisterBatteryInfoReceiver();
             unregisterTimeZoneReceiver();
             if (googleApiClient.isConnected()) {
@@ -688,21 +689,22 @@ public class WatchFaceService extends CanvasWatchFaceService {
         }
 
         /**
-         * Deactivate a specific type of sensor
-         */
-        private void deactivateSensor(Integer sensorType) {
-            activeSensors.get(sensorType).stopListening();
-            activeSensors.remove(sensorType);
-            watchFace.removeSensor(sensorType);
-        }
-
-        /**
          * Deactivate all types of active sensors
          */
         private void deactivateAllSensors() {
             for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
                 deactivateSensor(entry.getKey());
             }
+        }
+
+        /**
+         * Deactivate a specific type of sensor
+         */
+        private void deactivateSensor(Integer sensorType) {
+            Log.d(TAG, "Deactivating sensor: " + sensorType);
+            activeSensors.get(sensorType).stopListening();
+            activeSensors.remove(sensorType);
+            watchFace.removeSensor(sensorType);
         }
 
         /**
