@@ -395,14 +395,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
             DecimalFormat decimalFormat = new DecimalFormat("#.#");
             switch (sensorType) {
                 case Sensor.TYPE_PRESSURE:
-                    watchFace.updateSensorPaintText(sensorType, decimalFormat.format(eventValues[0]));
+                    watchFace.updateSensorText(sensorType, decimalFormat.format(eventValues[0]));
                     break;
                 case Sensor.TYPE_HEART_RATE:
                     if (Math.round(eventValues[0]) > 180) {
                         vibrator.vibrate(new long[]{0, 250, 500, 250, 100, 250, 50, 250, 50}, -1);
                     }
                 default:
-                    watchFace.updateSensorPaintText(sensorType, decimalFormat.format(Math.round(eventValues[0])));
+                    watchFace.updateSensorText(sensorType, decimalFormat.format(Math.round(eventValues[0])));
                     break;
             }
             Log.d(TAG, "Updated value for sensor: " + sensorType);
@@ -641,6 +641,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * Activates the next sensors
          */
         private void activateNextSensors() {
+            Log.d(TAG, "Activating next available sensor(s)");
             findAndSetAvailableSensorTypes();
             // If there are no sensors to activate exit
             if (availableSensorTypes.size() == 0) {
@@ -692,7 +693,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private void deactivateSensor(Integer sensorType) {
             activeSensors.get(sensorType).stopListening();
             activeSensors.remove(sensorType);
-            watchFace.removeSensorPaint(sensorType);
+            watchFace.removeSensor(sensorType);
         }
 
         /**
@@ -752,7 +753,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 updateSunriseAndSunset(location);
                 deactivateAllSensors();
                 watchFace.addSensorColumn(Sensor.TYPE_HEART_RATE);
-                watchFace.updateSensorPaintText(Sensor.TYPE_HEART_RATE, "128");
+                watchFace.updateSensorText(Sensor.TYPE_HEART_RATE, "128");
             }
 
             calculateAverageForActiveSensors();

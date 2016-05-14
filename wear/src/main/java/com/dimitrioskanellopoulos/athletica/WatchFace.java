@@ -235,13 +235,13 @@ public class WatchFace {
         this.chinSize = chinSize;
     }
 
-    public void removeSensorPaint(Integer sensorType) {
+    public void removeSensor(Integer sensorType) {
         forthRow.removeColumn(sensorType.toString() + "_icon");
         forthRow.removeColumn(sensorType.toString());
         forthRow.removeColumn(sensorType.toString() + "_units");
     }
 
-    public void updateSensorPaintText(Integer sensorType, String value) {
+    public void updateSensorText(Integer sensorType, String value) {
         forthRow.getColumn(sensorType.toString()).setText(value);
     }
 
