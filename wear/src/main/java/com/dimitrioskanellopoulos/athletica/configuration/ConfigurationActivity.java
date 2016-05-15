@@ -1,5 +1,7 @@
 package com.dimitrioskanellopoulos.athletica.configuration;
 
+import android.content.pm.PackageManager;
+import android.hardware.Sensor;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.CompoundButton;
@@ -8,6 +10,8 @@ import android.widget.Switch;
 
 import com.dimitrioskanellopoulos.athletica.R;
 import com.dimitrioskanellopoulos.athletica.activities.AmbientAwareWearableActivity;
+import com.dimitrioskanellopoulos.athletica.helpers.SensorHelper;
+import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataMap;
@@ -93,6 +97,11 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                 updateConfigDataItemInvertBlackAndWhite(isChecked);
             }
         });
+
+        /**
+         * Add the switches for the sensors
+         */
+        addSwitchesForSensors();
     }
 
     @Override
@@ -114,6 +123,35 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
         return (LinearLayout) findViewById(R.id.configuration_layout);
     }
 
+    private void addSwitchesForSensors(){
+        Switch sensorSwitch = new Switch(this);
+        for (Integer applicationDeviceSupportedSensor: SensorHelper.getApplicationDeviceSupportedSensors(getApplicationContext())){
+            switch (applicationDeviceSupportedSensor) {
+                case Sensor.TYPE_PRESSURE:
+                    sensorSwitch.setText(R.string.configuration_activity_android_sensor_pressure);
+                    // @todo add extra
+                    break;
+                case Sensor.TYPE_HEART_RATE:
+                    sensorSwitch.setText(R.string.configuration_activity_android_sensor_heart_rate);
+                    break;
+                case Sensor.TYPE_AMBIENT_TEMPERATURE:
+                    sensorSwitch.setText(R.string.configuration_activity_android_sensor_ambient_temperature);
+                    break;
+                case Sensor.TYPE_LIGHT:
+                    sensorSwitch.setText(R.string.configuration_activity_android_sensor_light);
+                    break;
+                case Sensor.TYPE_MAGNETIC_FIELD:
+                    sensorSwitch.setText(R.string.configuration_activity_android_sensor_magnetic_field);
+                    break;
+                default:
+                    continue;
+            }
+            sensorSwitch.setId(applicationDeviceSupportedSensor);
+            getLayout().addView(sensorSwitch);
+        }
+    }
+
+
     private void updateConfigDataItemTimeFormat(boolean format24) {
         DataMap configKeysToOverwrite = new DataMap();
         configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_TIME_FORMAT,
@@ -121,10 +159,10 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
     }
 
-    private void updateConfigDataItemDateNames(boolean interlace) {
+    private void updateConfigDataItemDateNames(boolean date_names) {
         DataMap configKeysToOverwrite = new DataMap();
         configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_DATE_NAMES,
-                interlace);
+                date_names);
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
     }
 
@@ -135,10 +173,10 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
     }
 
-    private void updateConfigDataItemInvertBlackAndWhite(boolean interlace) {
+    private void updateConfigDataItemInvertBlackAndWhite(boolean invertBlackAndWhite) {
         DataMap configKeysToOverwrite = new DataMap();
         configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE,
-                interlace);
+                invertBlackAndWhite);
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
     }
 
