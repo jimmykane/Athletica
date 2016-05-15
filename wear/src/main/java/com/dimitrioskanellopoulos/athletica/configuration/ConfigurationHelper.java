@@ -1,5 +1,6 @@
 package com.dimitrioskanellopoulos.athletica.configuration;
 
+import android.hardware.Sensor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.Wearable;
 
 public final class ConfigurationHelper {
+    private static final String TAG = "ConfigurationHelper";
     /**
      * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} time format.
      */
@@ -32,6 +34,10 @@ public final class ConfigurationHelper {
      */
     public static final String KEY_INVERT_BLACK_AND_WHITE = "KEY_INVERT_BLACK_AND_WHITE";
     /**
+     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} sensors.
+     */
+    public static final String KEY_SENSORS = "KEY_SENSORS";
+    /**
      * The default time format
      */
     public static final Boolean TIME_FORMAT_DEFAULT = true;
@@ -48,10 +54,15 @@ public final class ConfigurationHelper {
      */
     public static final Boolean INVERT_BLACK_AND_WHITE = false;
     /**
+     * The default sensors
+     * @todo fix
+     */
+    public static final Integer[] SENSORS = {};
+
+    /**
      * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
      */
     public static final String PATH_WITH_FEATURE = "/athletica/config";
-    private static final String TAG = "ConfigurationHelper";
 
     /**
      * Asynchronously fetches the current config {@link DataMap} for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService}

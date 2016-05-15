@@ -29,7 +29,7 @@
                 android:textSize="16sp"
                 android:paddingBottom="4dp"
                 android:textColor="@color/white"
-                android:text="@string/configuration_activity_title"
+                android:text="@string/configuration_activity_general"
                 android:textAlignment="center" />
 
             <Switch
@@ -60,6 +60,25 @@
                 android:text="@string/configuration_interlace"
                 android:id="@+id/switch_interlace"
                 android:layout_gravity="end"
+                android:textAlignment="center" />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:paddingBottom="4dp"
+                android:text="@string/configuration_invert_black_and_white"
+                android:id="@+id/switch_invert_black_and_white"
+                android:layout_gravity="end"
+                android:textAlignment="center" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:paddingBottom="4dp"
+                android:textColor="@color/white"
+                android:text="@string/configuration_activity_sensors"
                 android:textAlignment="center" />
 
             <Switch
