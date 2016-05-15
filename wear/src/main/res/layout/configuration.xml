@@ -81,16 +81,6 @@
                 android:text="@string/configuration_activity_sensors"
                 android:textAlignment="center" />
 
-            <Switch
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:paddingBottom="4dp"
-                android:text="@string/configuration_invert_black_and_white"
-                android:id="@+id/switch_invert_black_and_white"
-                android:layout_gravity="end"
-                android:textAlignment="center" />
-
         </LinearLayout>
 
     </ScrollView>
