@@ -1,6 +1,5 @@
 package com.dimitrioskanellopoulos.athletica.configuration;
 
-import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +10,6 @@ import android.widget.Switch;
 import com.dimitrioskanellopoulos.athletica.R;
 import com.dimitrioskanellopoulos.athletica.activities.AmbientAwareWearableActivity;
 import com.dimitrioskanellopoulos.athletica.helpers.SensorHelper;
-import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataMap;
@@ -101,7 +99,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
         /**
          * Add the switches for the sensors
          */
-        addSwitchesForSensors();
+        createSwitchesForApplicationDeviceSupportedSensors();
     }
 
     @Override
@@ -112,6 +110,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
 
     @Override
     protected void onStop() {
+        Log.d(TAG, "onStop");
         if (googleApiClient != null && googleApiClient.isConnected()) {
             googleApiClient.disconnect();
         }
@@ -119,11 +118,17 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        Log.d(TAG, "onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
     public LinearLayout getLayout() {
         return (LinearLayout) findViewById(R.id.configuration_layout);
     }
 
-    private void addSwitchesForSensors(){
+    private void createSwitchesForApplicationDeviceSupportedSensors(){
         Switch sensorSwitch = new Switch(this);
         for (Integer applicationDeviceSupportedSensor: SensorHelper.getApplicationDeviceSupportedSensors(getApplicationContext())){
             switch (applicationDeviceSupportedSensor) {
