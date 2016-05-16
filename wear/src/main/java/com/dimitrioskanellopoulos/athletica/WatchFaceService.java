@@ -259,8 +259,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     .addApi(LocationServices.API)
                     .build();
 
-            // Activate the "next" sensors
-            activateNextSensors();
+
         }
 
         @Override
@@ -486,8 +485,15 @@ public class WatchFaceService extends CanvasWatchFaceService {
                                 .setViewProtectionMode(!config.getBoolean(key) ? WatchFaceStyle.PROGRESS_MODE_NONE : WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR)
                                 .build());
                         break;
+                    case ConfigurationHelper.KEY_SENSORS:
+                        Log.d(TAG, "" +config.getIntegerArrayList(key).toString());
+                        findAndSetAvailableSensorTypes(config.getIntegerArrayList(key));
+                        // Activate the "next" sensors
+                        activateNextSensors();
+                        break;
                     default:
                         Log.w(TAG, "Ignoring unknown config key: " + key);
+                        break;
                 }
                 uiUpdated = true;
             }
@@ -500,27 +506,30 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * Finds and sets all the available and supported sensors
          */
-        private void findAndSetAvailableSensorTypes() {
+        private void findAndSetAvailableSensorTypes(ArrayList<Integer> sensors) {
             // Clear all enabled
             availableSensorTypes.clear();
-            // Add the ones supported by the device and the app
-            for (int supportedSensorType : supportedSensorTypes) {
-                // If the sensor is heart rate we need to ask permissions
-                if (supportedSensorType == Sensor.TYPE_HEART_RATE) {
-                    if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
-                        permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
-                    }
-                }
-                if (sensorManager.getDefaultSensor(supportedSensorType) != null) {
-                    Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(supportedSensorType).getStringType());
-                    availableSensorTypes.add(supportedSensorType);
-                    // Small hack here to add a pressure altitude sensor
-                    if (supportedSensorType == Sensor.TYPE_PRESSURE) {
-                        availableSensorTypes.add(CallbackSensor.TYPE_PRESSURE_ALTITUDE);
-                        Log.d(TAG, "Available sensor: TYPE_PRESSURE_ALTITUDE");
-                    }
+            for (int sensor : sensors) {
 
-                }
+                availableSensorTypes.add(sensor);
+                Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(sensor).getStringType());
+
+                // If the sensor is heart rate we need to ask permissions
+//                if (supportedSensorType == Sensor.TYPE_HEART_RATE) {
+//                    if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
+//                        permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
+//                    }
+//                }
+//                if (sensorManager.getDefaultSensor(supportedSensorType) != null) {
+//                    Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(supportedSensorType).getStringType());
+//                    availableSensorTypes.add(supportedSensorType);
+//                    // Small hack here to add a pressure altitude sensor
+//                    if (supportedSensorType == Sensor.TYPE_PRESSURE) {
+//                        availableSensorTypes.add(CallbackSensor.TYPE_PRESSURE_ALTITUDE);
+//                        Log.d(TAG, "Available sensor: TYPE_PRESSURE_ALTITUDE");
+//                    }
+//
+//                }
             }
         }
 
@@ -631,7 +640,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         private void activateNextSensors() {
             Log.d(TAG, "Activating next available sensor(s)");
-            findAndSetAvailableSensorTypes();
             // If there are no sensors to activate exit
             if (availableSensorTypes.size() == 0) {
                 return;

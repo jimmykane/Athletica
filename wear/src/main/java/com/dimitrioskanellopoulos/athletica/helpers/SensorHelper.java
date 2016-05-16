@@ -19,7 +19,7 @@ public class SensorHelper {
             Sensor.TYPE_MAGNETIC_FIELD,
     };
 
-    public static Integer[] getApplicationDeviceSupportedSensors(Context context) {
+    public static ArrayList<Integer> getApplicationDeviceSupportedSensors(Context context) {
         PackageManager packageManager = context.getApplicationContext().getPackageManager();
         ArrayList<Integer> applicationDeviceSupportedSensors = new ArrayList<>();
         for (Integer applicationSupportedSensor : APPLICATION_SUPPORTED_SENSORS) {
@@ -56,6 +56,6 @@ public class SensorHelper {
             }
             applicationDeviceSupportedSensors.add(applicationSupportedSensor);
         }
-        return applicationDeviceSupportedSensors.toArray(new Integer[0]);
+        return applicationDeviceSupportedSensors;
     }
 }

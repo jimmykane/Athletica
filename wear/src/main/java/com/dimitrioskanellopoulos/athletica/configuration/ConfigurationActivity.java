@@ -222,6 +222,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                     createSwitchesForSensors(sensors);
                 default:
                     Log.w(TAG, "Ignoring unknown config key: " + key);
+                    break;
             }
         }
     }

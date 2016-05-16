@@ -1,7 +1,6 @@
 package com.dimitrioskanellopoulos.athletica.configuration;
 
 import android.content.Context;
-import android.hardware.Sensor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -142,7 +141,7 @@ public final class ConfigurationHelper {
         addBooleanKeyIfMissing(config, KEY_DATE_NAMES, DATE_NAMES_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INTERLACE, INTERLACE_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INVERT_BLACK_AND_WHITE, INVERT_BLACK_AND_WHITE);
-        addArrayKeyIfMissing(config, KEY_SENSORS, new ArrayList<>(Arrays.asList(SensorHelper.getApplicationDeviceSupportedSensors(context))));
+        addIntegerArrayListKeyIfMissing(config, KEY_SENSORS, SensorHelper.getApplicationDeviceSupportedSensors(context));
     }
 
     private static void addBooleanKeyIfMissing(DataMap config, String key, Boolean value) {
@@ -151,8 +150,8 @@ public final class ConfigurationHelper {
         }
     }
 
-    private static void addArrayKeyIfMissing(DataMap config, String key, ArrayList<Integer> value) {
-        if (!config.containsKey(key)) {
+    private static void addIntegerArrayListKeyIfMissing(DataMap config, String key, ArrayList<Integer> value) {
+        if (!config.containsKey(key) || config.getIntegerArrayList(key) == null) {
             config.putIntegerArrayList(key, value);
         }
     }
