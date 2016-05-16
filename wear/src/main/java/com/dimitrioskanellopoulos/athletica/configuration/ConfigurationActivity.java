@@ -15,6 +15,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.Wearable;
 
+import java.util.ArrayList;
+
 
 // @todo add antialias support
 public class ConfigurationActivity extends AmbientAwareWearableActivity {
@@ -95,11 +97,6 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                 updateConfigDataItemInvertBlackAndWhite(isChecked);
             }
         });
-
-        /**
-         * Add the switches for the sensors
-         */
-        createSwitchesForApplicationDeviceSupportedSensors();
     }
 
     @Override
@@ -128,9 +125,9 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
         return (LinearLayout) findViewById(R.id.configuration_layout);
     }
 
-    private void createSwitchesForApplicationDeviceSupportedSensors(){
+    private void createSwitchesForSensors(ArrayList<Integer> sensors){
         Switch sensorSwitch = new Switch(this);
-        for (Integer applicationDeviceSupportedSensor: SensorHelper.getApplicationDeviceSupportedSensors(getApplicationContext())){
+        for (Integer applicationDeviceSupportedSensor: sensors){
             switch (applicationDeviceSupportedSensor) {
                 case Sensor.TYPE_PRESSURE:
                     sensorSwitch.setText(R.string.configuration_activity_android_sensor_pressure);
@@ -152,6 +149,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                     continue;
             }
             sensorSwitch.setId(applicationDeviceSupportedSensor);
+            sensorSwitch.setChecked(false);
             getLayout().addView(sensorSwitch);
         }
     }
@@ -208,7 +206,6 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             }
             switch (key) {
                 case ConfigurationHelper.KEY_TIME_FORMAT:
-                    Boolean value = config.get(key);
                     switchTimeFormat.setChecked(config.getBoolean(key));
                     break;
                 case ConfigurationHelper.KEY_DATE_NAMES:
@@ -220,6 +217,9 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                 case ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE:
                     switchInvertBlackAndWhite.setChecked(config.getBoolean(key));
                     break;
+                case ConfigurationHelper.KEY_SENSORS:
+                    ArrayList<Integer> sensors = config.getIntegerArrayList(key);
+                    createSwitchesForSensors(sensors);
                 default:
                     Log.w(TAG, "Ignoring unknown config key: " + key);
             }
