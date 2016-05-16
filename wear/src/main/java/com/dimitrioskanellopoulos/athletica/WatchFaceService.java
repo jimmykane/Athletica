@@ -443,6 +443,59 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
+        private void updateConfigDataItemAndUiOnStartup() {
+            ConfigurationHelper.fetchConfigDataMap(googleApiClient,
+                    new ConfigurationHelper.FetchConfigDataMapCallback() {
+                        @Override
+                        public void onConfigDataMapFetched(DataMap startupConfig) {
+                            // If the DataItem hasn't been created yet or some keys are missing,
+                            // use the default values.
+                            ConfigurationHelper.setDefaultValuesForMissingConfigKeys(getApplicationContext(), startupConfig);
+                            ConfigurationHelper.putConfigDataItem(googleApiClient, startupConfig);
+                            updateUiForConfigDataMap(startupConfig);
+                        }
+                    }
+            );
+        }
+
+        private void updateUiForConfigDataMap(final DataMap config) {
+            boolean uiUpdated = false;
+            for (String key : config.keySet()) {
+                if (!config.containsKey(key)) {
+                    Log.w(TAG, "No value found for config key:" + key);
+                    continue;
+                }
+                switch (key) {
+                    case ConfigurationHelper.KEY_TIME_FORMAT:
+                        watchFace.setTimeFormat24(config.getBoolean(key));
+                        break;
+                    case ConfigurationHelper.KEY_DATE_NAMES:
+                        watchFace.setShowDateNamesFormat(config.getBoolean(key));
+                        break;
+                    case ConfigurationHelper.KEY_INTERLACE:
+                        watchFace.shouldInterlace(config.getBoolean(key));
+                        break;
+                    case ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE:
+                        watchFace.setInvertBlackAndWhite(config.getBoolean(key));
+                        setWatchFaceStyle(new WatchFaceStyle.Builder(WatchFaceService.this)
+                                .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
+                                .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_VISIBLE)
+                                .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
+                                .setAcceptsTapEvents(true)
+                                .setShowSystemUiTime(false)
+                                .setViewProtectionMode(!config.getBoolean(key) ? WatchFaceStyle.PROGRESS_MODE_NONE : WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR)
+                                .build());
+                        break;
+                    default:
+                        Log.w(TAG, "Ignoring unknown config key: " + key);
+                }
+                uiUpdated = true;
+            }
+            if (uiUpdated) {
+                invalidate();
+            }
+        }
+
 
         /**
          * Finds and sets all the available and supported sensors
@@ -523,71 +576,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             isRegisteredLocationReceiver = false;
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, locationChangedReceiver);
             Log.d(TAG, "Stopped listening for location updates");
-        }
-
-        private void updateConfigDataItemAndUiOnStartup() {
-            ConfigurationHelper.fetchConfigDataMap(googleApiClient,
-                    new ConfigurationHelper.FetchConfigDataMapCallback() {
-                        @Override
-                        public void onConfigDataMapFetched(DataMap startupConfig) {
-                            // If the DataItem hasn't been created yet or some keys are missing,
-                            // use the default values.
-                            ConfigurationHelper.setDefaultValuesForMissingConfigKeys(startupConfig);
-                            ConfigurationHelper.putConfigDataItem(googleApiClient, startupConfig);
-                            updateUiForConfigDataMap(startupConfig);
-                        }
-                    }
-            );
-        }
-
-        private void updateUiForConfigDataMap(final DataMap config) {
-            boolean uiUpdated = false;
-            for (String configKey : config.keySet()) {
-                if (!config.containsKey(configKey)) {
-                    continue;
-                }
-                Boolean value = config.getBoolean(configKey);
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Found watch face config key: " + configKey + " -> "
-                            + Boolean.toString(value));
-                }
-                if (updateUiForKey(configKey, value)) {
-                    uiUpdated = true;
-                }
-            }
-            if (uiUpdated) {
-                invalidate();
-            }
-        }
-
-        /**
-         * Updates the color of a UI item according to the given {@code configKey}. Does nothing if
-         * {@code configKey} isn't recognized.
-         *
-         * @return whether UI has been updated
-         */
-        private boolean updateUiForKey(String configKey, Boolean value) {
-            if (configKey.equals(ConfigurationHelper.KEY_TIME_FORMAT)) {
-                watchFace.setTimeFormat24(value);
-            } else if (configKey.equals(ConfigurationHelper.KEY_DATE_NAMES)) {
-                watchFace.setShowDateNamesFormat(value);
-            } else if (configKey.equals(ConfigurationHelper.KEY_INTERLACE)) {
-                watchFace.shouldInterlace(value);
-            } else if (configKey.equals(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE)) {
-                watchFace.setInvertBlackAndWhite(value);
-                setWatchFaceStyle(new WatchFaceStyle.Builder(WatchFaceService.this)
-                        .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
-                        .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_VISIBLE)
-                        .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
-                        .setAcceptsTapEvents(true)
-                        .setShowSystemUiTime(false)
-                        .setViewProtectionMode(!value ? WatchFaceStyle.PROGRESS_MODE_NONE : WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR)
-                        .build());
-            } else {
-                Log.w(TAG, "Ignoring unknown config key: " + configKey);
-                return false;
-            }
-            return true;
         }
 
         private void unregisterBatteryInfoReceiver() {

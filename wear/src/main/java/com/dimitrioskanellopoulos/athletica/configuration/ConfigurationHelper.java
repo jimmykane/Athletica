@@ -1,10 +1,12 @@
 package com.dimitrioskanellopoulos.athletica.configuration;
 
+import android.content.Context;
 import android.hardware.Sensor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.helpers.SensorHelper;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.DataApi;
@@ -14,6 +16,9 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.Wearable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public final class ConfigurationHelper {
     private static final String TAG = "ConfigurationHelper";
@@ -57,7 +62,7 @@ public final class ConfigurationHelper {
      * The default sensors
      * @todo fix
      */
-    public static final Integer[] SENSORS = {};
+    public static final Integer[] SENSORS_DEFAULT = {};
 
     /**
      * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
@@ -132,16 +137,23 @@ public final class ConfigurationHelper {
                 });
     }
 
-    public static void setDefaultValuesForMissingConfigKeys(DataMap config) {
+    public static void setDefaultValuesForMissingConfigKeys(Context context, DataMap config) {
         addBooleanKeyIfMissing(config, KEY_TIME_FORMAT, TIME_FORMAT_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_DATE_NAMES, DATE_NAMES_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INTERLACE, INTERLACE_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INVERT_BLACK_AND_WHITE, INVERT_BLACK_AND_WHITE);
+        addArrayKeyIfMissing(config, KEY_SENSORS, new ArrayList<>(Arrays.asList(SensorHelper.getApplicationDeviceSupportedSensors(context))));
     }
 
     private static void addBooleanKeyIfMissing(DataMap config, String key, Boolean value) {
         if (!config.containsKey(key)) {
             config.putBoolean(key, value);
+        }
+    }
+
+    private static void addArrayKeyIfMissing(DataMap config, String key, ArrayList<Integer> value) {
+        if (!config.containsKey(key)) {
+            config.putIntegerArrayList(key, value);
         }
     }
 

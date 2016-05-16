@@ -192,7 +192,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                     public void onConfigDataMapFetched(DataMap startupConfig) {
                         // If the DataItem hasn't been created yet or some keys are missing,
                         // use the default values.
-                        ConfigurationHelper.setDefaultValuesForMissingConfigKeys(startupConfig);
+                        ConfigurationHelper.setDefaultValuesForMissingConfigKeys(getApplicationContext(), startupConfig);
                         ConfigurationHelper.putConfigDataItem(googleApiClient, startupConfig);
                         updateUiForConfigDataMap(startupConfig);
                     }
@@ -201,37 +201,28 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     }
 
     private void updateUiForConfigDataMap(final DataMap config) {
-        for (String configKey : config.keySet()) {
-            if (!config.containsKey(configKey)) {
+        for (String key : config.keySet()) {
+            if (!config.containsKey(key)) {
+                Log.w(TAG, "No value found for config key:" + key);
                 continue;
             }
-            Boolean value = config.getBoolean(configKey);
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Found watch face config key: " + configKey + " -> "
-                        + Boolean.toString(value));
+            switch (key) {
+                case ConfigurationHelper.KEY_TIME_FORMAT:
+                    Boolean value = config.get(key);
+                    switchTimeFormat.setChecked(config.getBoolean(key));
+                    break;
+                case ConfigurationHelper.KEY_DATE_NAMES:
+                    switchDateNames.setChecked(config.getBoolean(key));
+                    break;
+                case ConfigurationHelper.KEY_INTERLACE:
+                    switchInterlace.setChecked(config.getBoolean(key));
+                    break;
+                case ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE:
+                    switchInvertBlackAndWhite.setChecked(config.getBoolean(key));
+                    break;
+                default:
+                    Log.w(TAG, "Ignoring unknown config key: " + key);
             }
-            updateUiForKey(configKey, value);
         }
-    }
-
-    private boolean updateUiForKey(String configKey, Boolean value) {
-        switch (configKey) {
-            case ConfigurationHelper.KEY_TIME_FORMAT:
-                switchTimeFormat.setChecked(value);
-                break;
-            case ConfigurationHelper.KEY_DATE_NAMES:
-                switchDateNames.setChecked(value);
-                break;
-            case ConfigurationHelper.KEY_INTERLACE:
-                switchInterlace.setChecked(value);
-                break;
-            case ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE:
-                switchInvertBlackAndWhite.setChecked(value);
-                break;
-            default:
-                Log.w(TAG, "Ignoring unknown config key: " + configKey);
-                return false;
-        }
-        return true;
     }
 }
