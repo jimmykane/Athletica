@@ -26,6 +26,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     private Switch switchDateNames;
     private Switch switchInterlace;
     private Switch switchInvertBlackAndWhite;
+    private ArrayList<Integer> sensors;
 
     private GoogleApiClient googleApiClient;
 
@@ -97,6 +98,10 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                 updateConfigDataItemInvertBlackAndWhite(isChecked);
             }
         });
+
+        // Get the available sensors
+        sensors = SensorHelper.getApplicationDeviceSupportedSensors(getApplicationContext());
+        createSwitchesForSensorTypes(sensors);
     }
 
     @Override
@@ -125,62 +130,94 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
         return (LinearLayout) findViewById(R.id.configuration_layout);
     }
 
-    private void createSwitchesForSensors(ArrayList<Integer> sensors){
-        Switch sensorSwitch = new Switch(this);
-        for (Integer applicationDeviceSupportedSensor: sensors){
-            switch (applicationDeviceSupportedSensor) {
-                case Sensor.TYPE_PRESSURE:
-                    sensorSwitch.setText(R.string.configuration_activity_android_sensor_pressure);
-                    // @todo add extra
-                    break;
-                case Sensor.TYPE_HEART_RATE:
-                    sensorSwitch.setText(R.string.configuration_activity_android_sensor_heart_rate);
-                    break;
-                case Sensor.TYPE_AMBIENT_TEMPERATURE:
-                    sensorSwitch.setText(R.string.configuration_activity_android_sensor_ambient_temperature);
-                    break;
-                case Sensor.TYPE_LIGHT:
-                    sensorSwitch.setText(R.string.configuration_activity_android_sensor_light);
-                    break;
-                case Sensor.TYPE_MAGNETIC_FIELD:
-                    sensorSwitch.setText(R.string.configuration_activity_android_sensor_magnetic_field);
-                    break;
-                default:
-                    continue;
-            }
-            sensorSwitch.setId(applicationDeviceSupportedSensor);
-            sensorSwitch.setChecked(false);
-            getLayout().addView(sensorSwitch);
+    private void createSwitchesForSensorTypes(ArrayList<Integer> sensorTypes){
+        for (Integer sensorType : sensorTypes){
+            createSwitchesForSensorType(sensorType, false);
         }
     }
+    private void createSwitchesForSensorType(final Integer sensorType, Boolean checked) {
+        Switch sensorSwitch = new Switch(this);
+        switch (sensorType) {
+            case Sensor.TYPE_PRESSURE:
+                sensorSwitch.setText(R.string.configuration_activity_android_sensor_pressure);
+                // @todo add extra
+                break;
+            case Sensor.TYPE_HEART_RATE:
+                sensorSwitch.setText(R.string.configuration_activity_android_sensor_heart_rate);
+                break;
+            case Sensor.TYPE_AMBIENT_TEMPERATURE:
+                sensorSwitch.setText(R.string.configuration_activity_android_sensor_ambient_temperature);
+                break;
+            case Sensor.TYPE_LIGHT:
+                sensorSwitch.setText(R.string.configuration_activity_android_sensor_light);
+                break;
+            case Sensor.TYPE_MAGNETIC_FIELD:
+                sensorSwitch.setText(R.string.configuration_activity_android_sensor_magnetic_field);
+                break;
+            default:
+                return;
+        }
+        sensorSwitch.setId(sensorType);
+        sensorSwitch.setChecked(checked);
+        sensorSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                ArrayList<Integer> enabledSensors = new ArrayList<>();
+                for (Integer sensor : sensors){
+                    Switch sensorSwitch = (Switch) findViewById(sensor);
+                    if (sensorSwitch.isChecked()){
+                        enabledSensors.add(sensor);
+                    }
+                }
+                updateConfigDataItemSensors(enabledSensors);
+            }
+        });
+        getLayout().addView(sensorSwitch);
+    }
 
+    private void setSensorSwitchChecked(Integer sensorType, Boolean checked) {
+        Switch sensorSwitch = (Switch) findViewById(sensorType);
+        if (sensorSwitch == null) {
+            Log.w(TAG, "Now switch found for sensor type " + sensorSwitch);
+            return;
+        }
+        sensorSwitch.setChecked(checked);
+    }
 
     private void updateConfigDataItemTimeFormat(boolean format24) {
-        DataMap configKeysToOverwrite = new DataMap();
-        configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_TIME_FORMAT,
+        DataMap configMap = new DataMap();
+        configMap.putBoolean(ConfigurationHelper.KEY_TIME_FORMAT,
                 format24);
-        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
     }
 
     private void updateConfigDataItemDateNames(boolean date_names) {
-        DataMap configKeysToOverwrite = new DataMap();
-        configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_DATE_NAMES,
+        DataMap configMap = new DataMap();
+        configMap.putBoolean(ConfigurationHelper.KEY_DATE_NAMES,
                 date_names);
-        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
     }
 
     private void updateConfigDataItemInterlace(boolean interlace) {
-        DataMap configKeysToOverwrite = new DataMap();
-        configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_INTERLACE,
+        DataMap configMap = new DataMap();
+        configMap.putBoolean(ConfigurationHelper.KEY_INTERLACE,
                 interlace);
-        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
     }
 
     private void updateConfigDataItemInvertBlackAndWhite(boolean invertBlackAndWhite) {
-        DataMap configKeysToOverwrite = new DataMap();
-        configKeysToOverwrite.putBoolean(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE,
+        DataMap configMap = new DataMap();
+        configMap.putBoolean(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE,
                 invertBlackAndWhite);
-        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configKeysToOverwrite);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
+    }
+
+    private void updateConfigDataItemSensors(ArrayList<Integer> enabledSensors) {
+        DataMap configMap = new DataMap();
+        configMap.putIntegerArrayList(ConfigurationHelper.KEY_ENABLED_SENSORS,
+                enabledSensors);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
     }
 
     private void updateConfigDataOnStartup() {
@@ -217,9 +254,11 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                 case ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE:
                     switchInvertBlackAndWhite.setChecked(config.getBoolean(key));
                     break;
-                case ConfigurationHelper.KEY_SENSORS:
-                    ArrayList<Integer> sensors = config.getIntegerArrayList(key);
-                    createSwitchesForSensors(sensors);
+                case ConfigurationHelper.KEY_ENABLED_SENSORS:
+                    ArrayList<Integer> enabledSensors = config.getIntegerArrayList(key);
+                    for (Integer enabledSensor : enabledSensors) {
+                        setSensorSwitchChecked(enabledSensor, true);
+                    }
                 default:
                     Log.w(TAG, "Ignoring unknown config key: " + key);
                     break;
