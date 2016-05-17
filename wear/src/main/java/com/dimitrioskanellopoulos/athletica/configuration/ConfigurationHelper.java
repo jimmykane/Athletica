@@ -17,7 +17,6 @@ import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public final class ConfigurationHelper {
     private static final String TAG = "ConfigurationHelper";
@@ -40,7 +39,7 @@ public final class ConfigurationHelper {
     /**
      * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} sensors.
      */
-    public static final String KEY_SENSORS = "KEY_SENSORS";
+    public static final String KEY_ENABLED_SENSORS = "KEY_ENABLED_SENSORS";
     /**
      * The default time format
      */
@@ -141,7 +140,7 @@ public final class ConfigurationHelper {
         addBooleanKeyIfMissing(config, KEY_DATE_NAMES, DATE_NAMES_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INTERLACE, INTERLACE_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INVERT_BLACK_AND_WHITE, INVERT_BLACK_AND_WHITE);
-        addIntegerArrayListKeyIfMissing(config, KEY_SENSORS, SensorHelper.getApplicationDeviceSupportedSensors(context));
+        addIntegerArrayListKeyIfMissing(config, KEY_ENABLED_SENSORS, SensorHelper.getApplicationDeviceSupportedSensors(context));
     }
 
     private static void addBooleanKeyIfMissing(DataMap config, String key, Boolean value) {
