@@ -214,16 +214,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         private boolean mLowBitAmbient;
         /**
-         * The supported sensor types for this watch face. Not the supported ones by the device
-         */
-        private int[] supportedSensorTypes = {
-                Sensor.TYPE_PRESSURE,
-                Sensor.TYPE_HEART_RATE,
-                Sensor.TYPE_AMBIENT_TEMPERATURE,
-                Sensor.TYPE_LIGHT,
-                Sensor.TYPE_MAGNETIC_FIELD,
-        };
-        /**
          * The available sensors. Cross of supported by the app sensors and supported by the device
          */
         private ArrayList<Integer> availableSensorTypes = new ArrayList<Integer>();
@@ -257,8 +247,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     .addApi(Wearable.API)
                     .addApi(LocationServices.API)
                     .build();
-
-
         }
 
         @Override
@@ -486,6 +474,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         break;
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
                         Log.d(TAG, "" +config.getIntegerArrayList(key).toString());
+                        deactivateAllSensors();
                         findAndSetAvailableSensorTypes(config.getIntegerArrayList(key));
                         // Activate the "next" sensors
                         activateNextSensors();
