@@ -132,7 +132,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
 
     private void createSwitchesForSensorTypes(ArrayList<Integer> sensorTypes){
         for (Integer sensorType : sensorTypes){
-            createSwitchesForSensorType(sensorType, false);
+            createSwitchesForSensorType(sensorType, true);
         }
     }
     private void createSwitchesForSensorType(final Integer sensorType, Boolean checked) {
@@ -255,6 +255,10 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                     switchInvertBlackAndWhite.setChecked(config.getBoolean(key));
                     break;
                 case ConfigurationHelper.KEY_ENABLED_SENSORS:
+                    // First set all to off
+                    for (Integer sensor: sensors){
+                        setSensorSwitchChecked(sensor, false);
+                    }
                     ArrayList<Integer> enabledSensors = config.getIntegerArrayList(key);
                     for (Integer enabledSensor : enabledSensors) {
                         setSensorSwitchChecked(enabledSensor, true);
