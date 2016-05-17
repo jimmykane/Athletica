@@ -29,7 +29,6 @@ import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.SunriseSunsetHelper;
 import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
 import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
-import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
@@ -485,7 +484,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                                 .setViewProtectionMode(!config.getBoolean(key) ? WatchFaceStyle.PROGRESS_MODE_NONE : WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR)
                                 .build());
                         break;
-                    case ConfigurationHelper.KEY_SENSORS:
+                    case ConfigurationHelper.KEY_ENABLED_SENSORS:
                         Log.d(TAG, "" +config.getIntegerArrayList(key).toString());
                         findAndSetAvailableSensorTypes(config.getIntegerArrayList(key));
                         // Activate the "next" sensors
