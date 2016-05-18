@@ -503,22 +503,34 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Clear all enabled
             availableSensorTypes.clear();
             for (int sensorType : sensorTypes) {
-                // If the sensor is heart rate we need to ask permissions
-//                if (sensor == Sensor.TYPE_HEART_RATE) {
-//                    if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
-//                        permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
-//                    }
-//                }
-                // If we can get really a sensor for this type
-                if (sensorManager.getDefaultSensor(sensorType) != null) {
-                    // @todo add back sensor for altitude
-                    Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(sensorType).getStringType());
-                    // Add an extra for pressure altitude
-                    if (sensorType == Sensor.TYPE_PRESSURE){
-                        availableSensorTypes.add(CallbackSensor.TYPE_PRESSURE_ALTITUDE);
-                    }
-                    availableSensorTypes.add(sensorType);
+                switch (sensorType) {
+                    case Sensor.TYPE_HEART_RATE:
+                        if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
+                            permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
+                            continue;
+                        }
+                        if (sensorManager.getDefaultSensor(sensorType) == null) {
+                            Log.w(TAG, "Could not add to available sensors sensor: " + sensorType);
+                            continue;
+                        }
+                        Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(sensorType).getStringType());
+                        break;
+                    case CallbackSensor.TYPE_PRESSURE_ALTITUDE:
+                        if (sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE) == null) {
+                            Log.w(TAG, "Could not add to available sensors sensor: " + sensorType);
+                            continue;
+                        }
+                        Log.d(TAG, "Available sensor: pressure_altitude");
+                        break;
+                    default:
+                        if (sensorManager.getDefaultSensor(sensorType) == null) {
+                            Log.w(TAG, "Could not add to available sensors sensor: " + sensorType);
+                            continue;
+                        }
+                        Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(sensorType).getStringType());
+                        break;
                 }
+                availableSensorTypes.add(sensorType);
             }
         }
 
