@@ -10,6 +10,7 @@ import android.widget.Switch;
 import com.dimitrioskanellopoulos.athletica.R;
 import com.dimitrioskanellopoulos.athletica.activities.AmbientAwareWearableActivity;
 import com.dimitrioskanellopoulos.athletica.helpers.SensorHelper;
+import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.wearable.DataMap;
@@ -140,7 +141,9 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
                 sensorSwitch.setText(R.string.configuration_activity_android_sensor_pressure);
-                // @todo add extra
+                break;
+            case CallbackSensor.TYPE_PRESSURE_ALTITUDE:
+                sensorSwitch.setText(R.string.configuration_activity_android_sensor_pressure_altitude);
                 break;
             case Sensor.TYPE_HEART_RATE:
                 sensorSwitch.setText(R.string.configuration_activity_android_sensor_heart_rate);
