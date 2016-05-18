@@ -29,6 +29,7 @@ import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.SunriseSunsetHelper;
 import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
 import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
+import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
@@ -498,20 +499,25 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * Finds and sets all the available and supported sensors
          */
-        private void setAvailableSensorTypes(ArrayList<Integer> sensors) {
+        private void setAvailableSensorTypes(ArrayList<Integer> sensorTypes) {
             // Clear all enabled
             availableSensorTypes.clear();
-            for (int sensor : sensors) {
+            for (int sensorType : sensorTypes) {
                 // If the sensor is heart rate we need to ask permissions
 //                if (sensor == Sensor.TYPE_HEART_RATE) {
 //                    if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
 //                        permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
 //                    }
 //                }
-                if (sensorManager.getDefaultSensor(sensor) != null) {
+                // If we can get really a sensor for this type
+                if (sensorManager.getDefaultSensor(sensorType) != null) {
                     // @todo add back sensor for altitude
-                    Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(sensor).getStringType());
-                    availableSensorTypes.add(sensor);
+                    Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(sensorType).getStringType());
+                    // Add an extra for pressure altitude
+                    if (sensorType == Sensor.TYPE_PRESSURE){
+                        availableSensorTypes.add(CallbackSensor.TYPE_PRESSURE_ALTITUDE);
+                    }
+                    availableSensorTypes.add(sensorType);
                 }
             }
         }
@@ -627,8 +633,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             if (availableSensorTypes.size() == 0) {
                 return;
             }
-            // Deactivate all sensors
-            deactivateAllSensors();
             // Find the active sensors position in the available sensors
             int countFound = 0;
             int lastFoundIndex = 0;
@@ -646,6 +650,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     break;
                 }
             }
+            // Deactivate all sensors
+            deactivateAllSensors();
             // Enable the next ones (+1)
             for (int i = 0; i < maxActiveSensors; i++) {
                 // Check if we hit the last
