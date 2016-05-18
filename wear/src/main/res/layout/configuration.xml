@@ -7,8 +7,8 @@
     android:id="@+id/container"
     android:background="@color/black"
     android:paddingTop="32dp"
-    android:paddingLeft="36dp"
-    android:paddingRight="22dp"
+    android:paddingStart="36dp"
+    android:paddingEnd="22dp"
     tools:context=".configuration.ConfigurationActivity"
     tools:deviceIds="wear">
 
@@ -19,7 +19,7 @@
         <LinearLayout
             android:id="@+id/configuration_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_box="all">
 
