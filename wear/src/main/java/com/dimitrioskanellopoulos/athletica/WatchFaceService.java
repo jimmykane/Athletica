@@ -474,7 +474,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         break;
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
                         Log.d(TAG, "" +config.getIntegerArrayList(key).toString());
-                        deactivateAllSensors();
+                        // deactivateAllSensors();
                         setAvailableSensorTypes(config.getIntegerArrayList(key));
                         // Activate the "next" sensors
                         activateNextSensors();
@@ -505,6 +505,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 //                    }
 //                }
                 if (sensorManager.getDefaultSensor(sensor) != null) {
+                    // @todo add back sensor for altitude
                     Log.d(TAG, "Available sensor: " + sensorManager.getDefaultSensor(sensor).getStringType());
                     availableSensorTypes.add(sensor);
                 }
@@ -652,6 +653,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 // Activate
                 activateSensor(availableSensorTypes.get(lastFoundIndex));
             }
+            // @todo maybe start listening
         }
 
         /**
