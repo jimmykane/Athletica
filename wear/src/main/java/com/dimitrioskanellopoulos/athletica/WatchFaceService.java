@@ -475,7 +475,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
                         Log.d(TAG, "" +config.getIntegerArrayList(key).toString());
                         deactivateAllSensors();
-                        findAndSetAvailableSensorTypes(config.getIntegerArrayList(key));
+                        setAvailableSensorTypes(config.getIntegerArrayList(key));
                         // Activate the "next" sensors
                         activateNextSensors();
                         break;
@@ -494,7 +494,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * Finds and sets all the available and supported sensors
          */
-        private void findAndSetAvailableSensorTypes(ArrayList<Integer> sensors) {
+        private void setAvailableSensorTypes(ArrayList<Integer> sensors) {
             // Clear all enabled
             availableSensorTypes.clear();
             for (int sensor : sensors) {
