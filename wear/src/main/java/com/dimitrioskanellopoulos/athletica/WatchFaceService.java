@@ -478,6 +478,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         setAvailableSensorTypes(config.getIntegerArrayList(key));
                         // Activate the "next" sensors
                         activateNextSensors();
+                        // If at we are visible then start listening to the updated sensor list
+                        if (isVisible()){
+                            startListeningToSensors();
+                        }
                         break;
                     default:
                         Log.w(TAG, "Ignoring unknown config key: " + key);
@@ -623,6 +627,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
             if (availableSensorTypes.size() == 0) {
                 return;
             }
+            // Deactivate all sensors
+            deactivateAllSensors();
             // Find the active sensors position in the available sensors
             int countFound = 0;
             int lastFoundIndex = 0;
@@ -640,8 +646,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     break;
                 }
             }
-            // Deactivate all sensors
-            deactivateAllSensors();
             // Enable the next ones (+1)
             for (int i = 0; i < maxActiveSensors; i++) {
                 // Check if we hit the last
@@ -653,7 +657,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 // Activate
                 activateSensor(availableSensorTypes.get(lastFoundIndex));
             }
-            // @todo maybe start listening
         }
 
         /**
