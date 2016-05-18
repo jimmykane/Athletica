@@ -24,8 +24,10 @@ public abstract class AmbientAwareWearableActivity extends WearableActivity impl
         int childCount = layout.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View view = layout.getChildAt(i);
-            ((TextView) view).getPaint().setAntiAlias(antialias);
-            view.invalidate();
+            if (view instanceof TextView) {
+                ((TextView) view).getPaint().setAntiAlias(antialias);
+                view.invalidate();
+            }
         }
     }
 }
