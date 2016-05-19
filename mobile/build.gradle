@@ -8,8 +8,8 @@ android {
         applicationId "com.dimitrioskanellopoulos.athletica"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 76
-        versionName "2.0.2"
+        versionCode 77
+        versionName "2.0.3"
     }
     buildTypes {
         release {
