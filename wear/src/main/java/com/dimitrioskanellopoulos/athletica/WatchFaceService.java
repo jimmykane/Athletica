@@ -346,6 +346,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 @TapType int tapType, int x, int y, long eventTime) {
             switch (tapType) {
                 case WatchFaceService.TAP_TYPE_TAP:
+                    // If there is another sensor
+                    if (availableSensorTypes.size() < 2){
+                        break;
+                    }
                     activateNextSensors();
                     startListeningToSensors();
                     vibrator.vibrate(new long[]{0, 50, 50}, -1);
