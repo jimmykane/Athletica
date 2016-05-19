@@ -41,7 +41,7 @@ public class PermissionActivity extends AmbientAwareWearableActivity {
             return;
         }
 
-        setContentView(R.layout.activity_watch_face_permissions);
+        setContentView(R.layout.permissions);
         TextView permissionExplanationTextView = (TextView) findViewById(R.id.permission_explanation);
 
         switch (permission) {

@@ -7,8 +7,8 @@
     android:id="@+id/container"
     android:background="@color/black"
     android:paddingTop="32dp"
-    android:paddingLeft="36dp"
-    android:paddingRight="22dp"
+    android:paddingStart="36dp"
+    android:paddingEnd="22dp"
     tools:context=".permissions.PermissionActivity"
     tools:deviceIds="wear">
 
@@ -16,7 +16,6 @@
         android:id="@+id/permission_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:onClick="onClickEnablePermission"
         android:orientation="vertical"
         app:layout_box="all">
 
@@ -49,16 +48,14 @@
                 app:circle_color="@color/black"
                 android:src="@drawable/ic_lock_open_white_24dp" />
 
-            <android.support.v4.widget.Space
-                android:layout_width="8dp"
-                android:layout_height="8dp" />
-
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:textSize="14sp"
                 android:textColor="@color/white"
-                android:text="@string/permission_enable" />
+                android:text="@string/permission_enable"
+                android:onClick="onClickEnablePermission"
+                android:gravity="center|start" />
 
         </LinearLayout>
 
