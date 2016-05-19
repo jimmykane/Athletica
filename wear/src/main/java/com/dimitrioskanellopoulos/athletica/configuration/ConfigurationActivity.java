@@ -1,5 +1,6 @@
 package com.dimitrioskanellopoulos.athletica.configuration;
 
+import android.Manifest;
 import android.hardware.Sensor;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.Switch;
 import com.dimitrioskanellopoulos.athletica.R;
 import com.dimitrioskanellopoulos.athletica.activities.AmbientAwareWearableActivity;
 import com.dimitrioskanellopoulos.athletica.helpers.SensorHelper;
+import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -29,11 +31,14 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     private Switch switchInvertBlackAndWhite;
     private ArrayList<Integer> sensors;
 
+    private PermissionsHelper permissionsHelper;
+
     private GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        permissionsHelper = new PermissionsHelper(getApplicationContext(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS});
         setContentView(R.layout.configuration);
         setAmbientEnabled();
 
@@ -136,8 +141,10 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             createSwitchesForSensorType(sensorType, true);
         }
     }
-    private void createSwitchesForSensorType(final Integer sensorType, Boolean checked) {
+    private void createSwitchesForSensorType(Integer sensorType, Boolean checked) {
         Switch sensorSwitch = new Switch(this);
+        sensorSwitch.setId(sensorType);
+        sensorSwitch.setChecked(checked);
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
                 sensorSwitch.setText(R.string.configuration_activity_android_sensor_pressure);
@@ -147,6 +154,9 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                 break;
             case Sensor.TYPE_HEART_RATE:
                 sensorSwitch.setText(R.string.configuration_activity_android_sensor_heart_rate);
+                if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS)) {
+                    sensorSwitch.setChecked(false);
+                }
                 break;
             case Sensor.TYPE_AMBIENT_TEMPERATURE:
                 sensorSwitch.setText(R.string.configuration_activity_android_sensor_ambient_temperature);
@@ -160,12 +170,16 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             default:
                 return;
         }
-        sensorSwitch.setId(sensorType);
-        sensorSwitch.setChecked(checked);
         sensorSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
+                /**
+                 * When a sensors state changes
+                 * 1. Loop over the switches
+                 * 2. Create list with the ones that are on
+                 * 3. Save them as the enabled sensors
+                 */
                 ArrayList<Integer> enabledSensors = new ArrayList<>();
                 for (Integer sensor : sensors){
                     Switch sensorSwitch = (Switch) findViewById(sensor);
@@ -182,10 +196,22 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     private void setSensorSwitchChecked(Integer sensorType, Boolean checked) {
         Switch sensorSwitch = (Switch) findViewById(sensorType);
         if (sensorSwitch == null) {
-            Log.w(TAG, "Now switch found for sensor type " + sensorSwitch);
+            Log.w(TAG, "No switch found for sensor type " + sensorType);
             return;
         }
+        Log.w(TAG, "Setting  checked to: " + checked.toString() + " for " + sensorType);
+
         sensorSwitch.setChecked(checked);
+        switch (sensorType){
+            case Sensor.TYPE_HEART_RATE:
+                if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
+                    permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
+                    sensorSwitch.setChecked(false);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     private void updateConfigDataItemTimeFormat(boolean format24) {
