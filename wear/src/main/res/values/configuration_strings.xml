@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="configuration_activity_general">General settings</string>
+    <string name="configuration_activity_general_settings">General settings</string>
     <string name="configuration_switch_24_hour_clock">Use 24 hour format</string>
     <string name="configuration_switch_show_day_name">Show the name of the day </string>
     <string name="configuration_interlace">Interlacing to save battery</string>
     <string name="configuration_invert_black_and_white">Invert black and white</string>
-    <string name="configuration_activity_sensors">Sensors</string>
+    <string name="configuration_activity_sensor_settings">Sensor settings</string>
     <string name="configuration_activity_android.sensor.pressure">Pressure</string>
-    <string name="configuration_activity_android.sensor.pressure_altitude">Altitude from pressure</string>
+    <string name="configuration_activity_android.sensor.pressure_altitude">Altitude</string>
     <string name="configuration_activity_android.sensor.heart_rate">Heart rate</string>
     <string name="configuration_activity_android.sensor.ambient_temperature">Ambient temperature</string>
     <string name="configuration_activity_android.sensor.magnetic_field">Magnetic field</string>
