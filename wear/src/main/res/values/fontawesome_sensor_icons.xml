@@ -4,7 +4,6 @@
     <string name="icon_android.sensor.pressure_altitude">&#xf1fe;</string>
     <string name="icon_android.sensor.heart_rate">&#xF21E;</string>
     <string name="icon_android.sensor.ambient_temperature">&#xF080;</string>
-    <string name="icon_android.sensor.accelerometer">&#xF00A;</string>
     <string name="icon_android.sensor.magnetic_field">&#xF076;</string>
     <string name="icon_android.sensor.light">&#xF042;</string>
 </resources>
