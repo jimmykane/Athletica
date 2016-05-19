@@ -275,7 +275,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 // Check for battery changes
                 registerBatteryInfoReceiver();
                 // Start updating sensor values
-                startListeningToSensors();
+                startListeningToActiveSensors();
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
@@ -308,7 +308,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             if (inAmbientMode) {
                 stopListeningToSensors();
             } else {
-                startListeningToSensors();
+                startListeningToActiveSensors();
             }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
@@ -351,7 +351,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         break;
                     }
                     activateNextSensors();
-                    startListeningToSensors();
+                    startListeningToActiveSensors();
                     vibrator.vibrate(new long[]{0, 50, 50}, -1);
                     break;
 
@@ -426,9 +426,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
                 DataMapItem dataMapItem = DataMapItem.fromDataItem(dataItem);
                 DataMap config = dataMapItem.getDataMap();
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Config DataItem updated:" + config);
-                }
+                Log.d(TAG, "Config DataItem updated:" + config);
                 // This can happen from this method more often when phone changes
                 updateUiForConfigDataMap(config);
             }
@@ -478,14 +476,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
                                 .build());
                         break;
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
-                        Log.d(TAG, "" +config.getIntegerArrayList(key).toString());
-                        // deactivateAllSensors();
                         setAvailableSensorTypes(config.getIntegerArrayList(key));
                         // Activate the "next" sensors
                         activateNextSensors();
                         // If at we are visible then start listening to the updated sensor list
                         if (isVisible()){
-                            startListeningToSensors();
+                            startListeningToActiveSensors();
                         }
                         break;
                     default:
@@ -719,7 +715,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             Log.d(TAG, "Successfully updated sunrise");
         }
 
-        private void startListeningToSensors() {
+        private void startListeningToActiveSensors() {
             for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
                 entry.getValue().startListening();
             }
