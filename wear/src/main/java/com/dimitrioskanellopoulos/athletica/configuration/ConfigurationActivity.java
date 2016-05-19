@@ -141,7 +141,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             createSwitchesForSensorType(sensorType, true);
         }
     }
-    private void createSwitchesForSensorType(Integer sensorType, Boolean checked) {
+    private void createSwitchesForSensorType(final Integer sensorType, Boolean checked) {
         Switch sensorSwitch = new Switch(this);
         sensorSwitch.setId(sensorType);
         sensorSwitch.setChecked(checked);
@@ -174,6 +174,9 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
+                // 0. Try to set it on
+                setSensorSwitchChecked(sensorType, isChecked);
+
                 /**
                  * When a sensors state changes
                  * 1. Loop over the switches
@@ -199,17 +202,20 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             Log.w(TAG, "No switch found for sensor type " + sensorType);
             return;
         }
-        Log.w(TAG, "Setting  checked to: " + checked.toString() + " for " + sensorType);
-
-        sensorSwitch.setChecked(checked);
         switch (sensorType){
             case Sensor.TYPE_HEART_RATE:
-                if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
-                    permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
-                    sensorSwitch.setChecked(false);
+                if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS)){
+                    checked = false;
+                    if (permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)){
+                        permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
+                    }
                 }
+                sensorSwitch.setChecked(checked);
+                Log.d(TAG, "Set checked to: " + checked.toString() + " for " + sensorType);
                 break;
             default:
+                sensorSwitch.setChecked(checked);
+                Log.d(TAG, "Set checked to: " + checked.toString() + " for " + sensorType);
                 break;
         }
     }
