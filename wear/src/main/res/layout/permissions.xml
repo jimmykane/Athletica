@@ -38,6 +38,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="onClickEnablePermission"
             android:orientation="horizontal">
 
             <android.support.wearable.view.CircledImageView
@@ -54,7 +55,6 @@
                 android:textSize="14sp"
                 android:textColor="@color/white"
                 android:text="@string/permission_enable"
-                android:onClick="onClickEnablePermission"
                 android:gravity="center|start" />
 
         </LinearLayout>
