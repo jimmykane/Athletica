@@ -397,7 +397,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     watchFace.updateSensorText(sensorType, decimalFormat.format(Math.round(eventValues[0])));
                     break;
             }
-            Log.d(TAG, "Updated value for sensor: " + sensorType);
+            Log.d(TAG, "Updated value for sensor: " + sensorType + " " + eventValues[0]);
             Log.d(TAG, "Invalidating view");
             postInvalidate();
         }
@@ -482,9 +482,23 @@ public class WatchFaceService extends CanvasWatchFaceService {
                          * 2. Get the new available sensors
                          * 3. Activate the ones the where last activated and stored
                          */
+
+                        // One only exception
+                        // @todo to be fixed
+                        if (activeSensors.size() == 0){
+                            setAvailableSensorTypes(config.getIntegerArrayList(key));
+                            if (availableSensorTypes.size() < 1){
+                                break;
+                            }
+                            activateNextSensors();
+                        }
+
                         LinkedHashMap<Integer, AveragingCallbackSensor> lastActiveSensors = new LinkedHashMap<>(activeSensors);
                         deactivateAllSensors();
                         setAvailableSensorTypes(config.getIntegerArrayList(key));
+                        if (availableSensorTypes.size() < 1){
+                            break;
+                        }
                         for (Integer availableSensorType : availableSensorTypes){
                             if (lastActiveSensors.containsKey(availableSensorType)){
                                 activateSensor(availableSensorType);
@@ -654,6 +668,13 @@ public class WatchFaceService extends CanvasWatchFaceService {
             Log.d(TAG, "Activating next available sensor(s)");
             // If there are no sensors to activate exit
             if (availableSensorTypes.size() == 0) {
+                return;
+            }
+            // If there is only one activate that one if not activated
+            if (availableSensorTypes.size() == 1) {
+                if (!activeSensors.containsKey(availableSensorTypes.get(0))){
+                    activateSensor(availableSensorTypes.get(0));
+                }
                 return;
             }
             // Find the active sensors position in the available sensors
