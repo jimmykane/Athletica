@@ -476,10 +476,20 @@ public class WatchFaceService extends CanvasWatchFaceService {
                                 .build());
                         break;
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
+                        /**
+                         * When the config is updated:
+                         * 1. Store the current active sensors
+                         * 2. Get the new available sensors
+                         * 3. Activate the ones the where last activated and stored
+                         */
+                        LinkedHashMap<Integer, AveragingCallbackSensor> lastActiveSensors = new LinkedHashMap<>(activeSensors);
+                        deactivateAllSensors();
                         setAvailableSensorTypes(config.getIntegerArrayList(key));
-                        // Activate the "next" sensors
-                        activateNextSensors();
-                        // If at we are visible then start listening to the updated sensor list
+                        for (Integer availableSensorType : availableSensorTypes){
+                            if (lastActiveSensors.containsKey(availableSensorType)){
+                                activateSensor(availableSensorType);
+                            }
+                        }
                         if (isVisible()){
                             startListeningToActiveSensors();
                         }
