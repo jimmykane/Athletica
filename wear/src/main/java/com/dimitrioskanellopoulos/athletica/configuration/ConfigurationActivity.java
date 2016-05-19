@@ -204,7 +204,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
         }
         switch (sensorType){
             case Sensor.TYPE_HEART_RATE:
-                if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS)){
+                if (checked && !permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS)){
                     checked = false;
                     if (permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)){
                         permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
@@ -295,6 +295,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                         setSensorSwitchChecked(sensor, false);
                     }
                     ArrayList<Integer> enabledSensors = config.getIntegerArrayList(key);
+                    Log.d(TAG, "Config enabled sensors: " + enabledSensors.toString());
                     for (Integer enabledSensor : enabledSensors) {
                         setSensorSwitchChecked(enabledSensor, true);
                     }
