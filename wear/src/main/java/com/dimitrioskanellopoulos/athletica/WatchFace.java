@@ -98,7 +98,7 @@ public class WatchFace {
         GridRenderer.drawRows(canvas, bounds, rows, chinSize);
 
         if (interlace) {
-            GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, isInAmbientMode ? 100: 70);
+            GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, isInAmbientMode ? 100 : 70);
         }
     }
 
@@ -212,7 +212,7 @@ public class WatchFace {
 
     public void setInvertBlackAndWhite(Boolean invertBlackAndWhite) {
         textColor = invertBlackAndWhite ? Color.BLACK : Color.WHITE;
-        backgroundColor = invertBlackAndWhite? Color.WHITE : Color.BLACK;
+        backgroundColor = invertBlackAndWhite ? Color.WHITE : Color.BLACK;
         for (Row row : rows) {
             for (Column column : row.getAllColumns()) {
                 column.setTextDefaultColor(textColor);

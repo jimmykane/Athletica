@@ -136,11 +136,12 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
         return (LinearLayout) findViewById(R.id.configuration_layout);
     }
 
-    private void createSwitchesForSensorTypes(ArrayList<Integer> sensorTypes){
-        for (Integer sensorType : sensorTypes){
+    private void createSwitchesForSensorTypes(ArrayList<Integer> sensorTypes) {
+        for (Integer sensorType : sensorTypes) {
             createSwitchesForSensorType(sensorType, true);
         }
     }
+
     private void createSwitchesForSensorType(final Integer sensorType, Boolean checked) {
         Switch sensorSwitch = new Switch(this);
         sensorSwitch.setId(sensorType);
@@ -184,9 +185,9 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                  * 3. Save them as the enabled sensors
                  */
                 ArrayList<Integer> enabledSensors = new ArrayList<>();
-                for (Integer sensor : sensors){
+                for (Integer sensor : sensors) {
                     Switch sensorSwitch = (Switch) findViewById(sensor);
-                    if (sensorSwitch.isChecked()){
+                    if (sensorSwitch.isChecked()) {
                         enabledSensors.add(sensor);
                     }
                 }
@@ -202,11 +203,11 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
             Log.w(TAG, "No switch found for sensor type " + sensorType);
             return;
         }
-        switch (sensorType){
+        switch (sensorType) {
             case Sensor.TYPE_HEART_RATE:
-                if (checked && !permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS)){
+                if (checked && !permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS)) {
                     checked = false;
-                    if (permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)){
+                    if (permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
                         permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
                     }
                 }
@@ -292,10 +293,10 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                 case ConfigurationHelper.KEY_ENABLED_SENSORS:
                     ArrayList<Integer> enabledSensors = config.getIntegerArrayList(key);
                     Log.d(TAG, "Config enabled sensors: " + enabledSensors.toString() + " Application/Device sensors: " + sensors.toString());
-                    for (Integer sensor: sensors){
+                    for (Integer sensor : sensors) {
                         if (enabledSensors.contains(sensor)) {
                             setSensorSwitchChecked(sensor, true);
-                        }else {
+                        } else {
                             setSensorSwitchChecked(sensor, false);
                         }
                     }

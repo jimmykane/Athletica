@@ -19,7 +19,6 @@ import com.google.android.gms.wearable.Wearable;
 import java.util.ArrayList;
 
 public final class ConfigurationHelper {
-    private static final String TAG = "ConfigurationHelper";
     /**
      * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} time format.
      */
@@ -58,19 +57,20 @@ public final class ConfigurationHelper {
     public static final Boolean INVERT_BLACK_AND_WHITE = false;
     /**
      * The default sensors
+     *
      * @todo fix
      */
     public static final Integer[] SENSORS_DEFAULT = {};
-
     /**
      * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
      */
     public static final String PATH_WITH_FEATURE = "/athletica/config";
+    private static final String TAG = "ConfigurationHelper";
 
     /**
      * Asynchronously fetches the current config {@link DataMap} for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService}
      * and passes it to the given callback.
-     * <p>
+     * <p/>
      * If the current config {@link DataItem} doesn't exist, it isn't created and the callback
      * receives an empty DataMap.
      */
@@ -97,7 +97,7 @@ public final class ConfigurationHelper {
      * Overwrites (or sets, if not present) the keys in the current config {@link DataItem} with
      * the ones appearing in the given {@link DataMap}. If the config DataItem doesn't exist,
      * it's created.
-     * <p>
+     * <p/>
      * It is allowed that only some of the keys used in the config DataItem appear in
      * {@code configKeysToOverwrite}. The rest of the keys remains unmodified in this case.
      */

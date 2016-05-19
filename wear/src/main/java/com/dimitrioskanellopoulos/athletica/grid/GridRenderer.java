@@ -3,7 +3,6 @@ package com.dimitrioskanellopoulos.athletica.grid;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
@@ -65,7 +64,7 @@ public class GridRenderer {
         }
     }
 
-    public static void drawBackground(Canvas canvas, Rect bounds, Integer color){
+    public static void drawBackground(Canvas canvas, Rect bounds, Integer color) {
         Paint backgroundPaint = new Paint();
         backgroundPaint.setColor(color);
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);

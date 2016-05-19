@@ -347,7 +347,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             switch (tapType) {
                 case WatchFaceService.TAP_TYPE_TAP:
                     // If there is another sensor
-                    if (availableSensorTypes.size() < 2){
+                    if (availableSensorTypes.size() < 2) {
                         break;
                     }
                     activateNextSensors();
@@ -485,9 +485,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
                         // One only exception
                         // @todo to be fixed
-                        if (activeSensors.size() == 0){
+                        if (activeSensors.size() == 0) {
                             setAvailableSensorTypes(config.getIntegerArrayList(key));
-                            if (availableSensorTypes.size() < 1){
+                            if (availableSensorTypes.size() < 1) {
                                 break;
                             }
                             activateNextSensors();
@@ -496,15 +496,15 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         LinkedHashMap<Integer, AveragingCallbackSensor> lastActiveSensors = new LinkedHashMap<>(activeSensors);
                         deactivateAllSensors();
                         setAvailableSensorTypes(config.getIntegerArrayList(key));
-                        if (availableSensorTypes.size() < 1){
+                        if (availableSensorTypes.size() < 1) {
                             break;
                         }
-                        for (Integer availableSensorType : availableSensorTypes){
-                            if (lastActiveSensors.containsKey(availableSensorType)){
+                        for (Integer availableSensorType : availableSensorTypes) {
+                            if (lastActiveSensors.containsKey(availableSensorType)) {
                                 activateSensor(availableSensorType);
                             }
                         }
-                        if (isVisible()){
+                        if (isVisible()) {
                             startListeningToActiveSensors();
                         }
                         break;
@@ -530,9 +530,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 switch (sensorType) {
                     case Sensor.TYPE_HEART_RATE:
                         // if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
-                            // permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
-                            // Let it be handled by settings and don't nag the user
-                            // continue;
+                        // permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
+                        // Let it be handled by settings and don't nag the user
+                        // continue;
                         // }
                         if (sensorManager.getDefaultSensor(sensorType) == null) {
                             Log.w(TAG, "Could not add to available sensors sensor: " + sensorType);
@@ -672,7 +672,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             // If there is only one activate that one if not activated
             if (availableSensorTypes.size() == 1) {
-                if (!activeSensors.containsKey(availableSensorTypes.get(0))){
+                if (!activeSensors.containsKey(availableSensorTypes.get(0))) {
                     activateSensor(availableSensorTypes.get(0));
                 }
                 return;

@@ -12,7 +12,7 @@ public abstract class CalendarColumn extends Column {
         super(paintTypeface, paintTextSize, paintColor);
     }
 
-    public void setTimezone(TimeZone timeZone){
+    public void setTimezone(TimeZone timeZone) {
         calendar.setTimeZone(timeZone);
     }
 }

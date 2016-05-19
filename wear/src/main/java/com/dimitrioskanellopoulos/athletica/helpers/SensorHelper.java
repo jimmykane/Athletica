@@ -3,7 +3,6 @@ package com.dimitrioskanellopoulos.athletica.helpers;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
-import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 
