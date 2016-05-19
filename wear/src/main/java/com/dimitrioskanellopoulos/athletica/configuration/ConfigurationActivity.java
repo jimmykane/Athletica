@@ -290,14 +290,14 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                     switchInvertBlackAndWhite.setChecked(config.getBoolean(key));
                     break;
                 case ConfigurationHelper.KEY_ENABLED_SENSORS:
-                    // First set all to off
-                    for (Integer sensor: sensors){
-                        setSensorSwitchChecked(sensor, false);
-                    }
                     ArrayList<Integer> enabledSensors = config.getIntegerArrayList(key);
-                    Log.d(TAG, "Config enabled sensors: " + enabledSensors.toString());
-                    for (Integer enabledSensor : enabledSensors) {
-                        setSensorSwitchChecked(enabledSensor, true);
+                    Log.d(TAG, "Config enabled sensors: " + enabledSensors.toString() + " Application/Device sensors: " + sensors.toString());
+                    for (Integer sensor: sensors){
+                        if (enabledSensors.contains(sensor)) {
+                            setSensorSwitchChecked(sensor, true);
+                        }else {
+                            setSensorSwitchChecked(sensor, false);
+                        }
                     }
                     break;
                 default:
