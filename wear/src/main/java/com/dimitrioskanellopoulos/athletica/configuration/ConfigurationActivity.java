@@ -298,6 +298,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
                     for (Integer enabledSensor : enabledSensors) {
                         setSensorSwitchChecked(enabledSensor, true);
                     }
+                    break;
                 default:
                     Log.w(TAG, "Ignoring unknown config key: " + key);
                     break;
