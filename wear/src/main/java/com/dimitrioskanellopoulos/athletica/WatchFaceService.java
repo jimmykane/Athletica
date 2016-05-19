@@ -505,10 +505,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
             for (int sensorType : sensorTypes) {
                 switch (sensorType) {
                     case Sensor.TYPE_HEART_RATE:
-                        if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
-                            permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
-                            continue;
-                        }
+                        // if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
+                            // permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
+                            // Let it be handled by settings and don't nag the user
+                            // continue;
+                        // }
                         if (sensorManager.getDefaultSensor(sensorType) == null) {
                             Log.w(TAG, "Could not add to available sensors sensor: " + sensorType);
                             continue;
