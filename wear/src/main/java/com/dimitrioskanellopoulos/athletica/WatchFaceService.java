@@ -350,7 +350,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     if (availableSensorTypes.size() < 2) {
                         break;
                     }
-                    activateNextSensors();
+                    activateNextAvaialableSensors();
                     startListeningToActiveSensors();
                     vibrator.vibrate(new long[]{0, 50, 50}, -1);
                     break;
@@ -490,7 +490,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                             if (availableSensorTypes.size() < 1) {
                                 break;
                             }
-                            activateNextSensors();
+                            activateNextAvaialableSensors();
                         }
 
                         LinkedHashMap<Integer, AveragingCallbackSensor> lastActiveSensors = new LinkedHashMap<>(activeSensors);
@@ -664,7 +664,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * Activates the next sensors
          */
-        private void activateNextSensors() {
+        private void activateNextAvaialableSensors() {
             Log.d(TAG, "Activating next available sensor(s)");
             // If there are no sensors to activate exit
             if (availableSensorTypes.size() == 0) {
