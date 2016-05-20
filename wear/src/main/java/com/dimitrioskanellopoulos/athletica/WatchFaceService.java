@@ -468,7 +468,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         watchFace.setInvertBlackAndWhite(config.getBoolean(key));
                         setWatchFaceStyle(new WatchFaceStyle.Builder(WatchFaceService.this)
                                 .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
-                                .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_VISIBLE)
+                                .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
                                 .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
                                 .setAcceptsTapEvents(true)
                                 .setShowSystemUiTime(false)
