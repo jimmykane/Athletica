@@ -476,36 +476,30 @@ public class WatchFaceService extends CanvasWatchFaceService {
                                 .build());
                         break;
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
-                        /**
-                         * When the config is updated:
-                         * 1. Store the current active sensors
-                         * 2. Get the new available sensors
-                         * 3. Activate the ones the where last activated and stored
-                         */
-
-                        // One only exception
-                        // @todo to be fixed
-                        if (activeSensors.size() == 0) {
-                            setAvailableSensorTypes(config.getIntegerArrayList(key));
-                            if (availableSensorTypes.size() < 1) {
-                                break;
-                            }
-                            activateNextAvaialableSensors();
-                        }
-
+                        // 1. Store the previous active sensors
                         LinkedHashMap<Integer, AveragingCallbackSensor> lastActiveSensors = new LinkedHashMap<>(activeSensors);
+                        // 2. Deactivate all
                         deactivateAllSensors();
+                        // 3. Set the available sensors to the new ones
                         setAvailableSensorTypes(config.getIntegerArrayList(key));
-                        if (availableSensorTypes.size() < 1) {
+                        // 4. If there are no available sensors break
+                        if (availableSensorTypes.size() == 0){
                             break;
                         }
+                        // 5. If there are no active sensor (just enabled one or more then just activate the next ones
+                        if (lastActiveSensors.size() == 0) {
+                            activateNextAvaialableSensors();
+                            break;
+                        }
+                        // 6. Check if in the new available sensors belongs a previously active ones and activate them
                         for (Integer availableSensorType : availableSensorTypes) {
                             if (lastActiveSensors.containsKey(availableSensorType)) {
                                 activateSensor(availableSensorType);
                             }
                         }
-                        if (isVisible()) {
-                            startListeningToActiveSensors();
+                        // 7. If no previous active sensor is activated activate the next one
+                        if (activeSensors.size() == 0){
+                            activateNextAvaialableSensors();
                         }
                         break;
                     default:
@@ -715,6 +709,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private void activateSensor(Integer sensorType) {
             activeSensors.put(sensorType, CallbackSensorFactory.getCallbackSensor(getApplicationContext(), sensorType, this, this));
             watchFace.addSensorColumn(sensorType);
+            // If we are visible and no
+            if (isVisible() && !isInAmbientMode()) {
+                activeSensors.get(sensorType).startListening();
+            }
         }
 
         /**
