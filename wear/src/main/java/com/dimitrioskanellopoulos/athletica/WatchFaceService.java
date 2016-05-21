@@ -69,6 +69,17 @@ public class WatchFaceService extends CanvasWatchFaceService {
      */
     private static final int MSG_UPDATE_TIME = 0;
 
+    /**
+     * The location update intervals: 1hour in ms
+     */
+    private static final long LOCATION_UPDATE_INTERVAL_MS = 3600000;
+    private static final long LOCATION_UPDATE_FASTEST_INTERVAL_MS = 3600000;
+    /**
+     * How often the onTimeTick actions should run
+     * 15 minutes for real device and 1 minute for emulator
+     */
+    private static final long RUN_ON_TICK_TASKS_EVERY_MS = !EmulatorHelper.isEmulator() ? 15 * 60 * 1000 : 1 * 60 * 1000;
+
     @Override
     public CanvasWatchFaceService.Engine onCreateEngine() {
         return new Engine();
@@ -106,15 +117,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             GoogleApiClient.OnConnectionFailedListener {
         private static final String TAG = "Engine";
 
-        /**
-         * The location update intervals: 1hour in ms
-         */
-        private static final long LOCATION_UPDATE_INTERVAL_MS = 3600000;
-        private static final long LOCATION_UPDATE_FASTEST_INTERVAL_MS = 3600000;
-        /**
-         * How often the onTimeTick actions should run
-         */
-        private final long RUN_ON_TICK_TASKS_EVERY_MS = !EmulatorHelper.isEmulator() ? 15 * 60 * 1000 : 1 * 60 * 1000; // 15 Minutes
         /**
          * Handler for updating the time
          */
