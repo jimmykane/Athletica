@@ -56,12 +56,6 @@ public final class ConfigurationHelper {
      */
     public static final Boolean INVERT_BLACK_AND_WHITE = false;
     /**
-     * The default sensors
-     *
-     * @todo fix
-     */
-    public static final Integer[] SENSORS_DEFAULT = {};
-    /**
      * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
      */
     public static final String PATH_WITH_FEATURE = "/athletica/config";

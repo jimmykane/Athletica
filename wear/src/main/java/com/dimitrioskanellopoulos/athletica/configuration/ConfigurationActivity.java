@@ -20,8 +20,6 @@ import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
 
-
-// @todo add antialias support
 public class ConfigurationActivity extends AmbientAwareWearableActivity {
     private final static String TAG = "ConfigurationActivity";
 
