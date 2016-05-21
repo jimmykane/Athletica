@@ -216,6 +216,28 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * disable anti-aliasing in ambient mode.
          */
         private boolean mLowBitAmbient;
+
+        /**
+         * The normal watch face style for white on black background
+         */
+        private final WatchFaceStyle watchFaceStyleNormal = new WatchFaceStyle.Builder(WatchFaceService.this)
+                .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
+                .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
+                .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
+                .setAcceptsTapEvents(true)
+                .setShowSystemUiTime(false)
+                .build();
+
+        /**
+         * The inverted watch face style for black on white background
+         */
+        private final WatchFaceStyle watchFaceStyleInverted = new WatchFaceStyle.Builder(WatchFaceService.this)
+                .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
+                .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
+                .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
+                .setAcceptsTapEvents(true)
+                .setShowSystemUiTime(false)
+                .build();
         /**
          * The available sensors. Cross of supported by the app sensors and supported by the device
          */
@@ -226,15 +248,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onCreate(SurfaceHolder holder) {
             super.onCreate(holder);
 
-            // Set the style
-            setWatchFaceStyle(new WatchFaceStyle.Builder(WatchFaceService.this)
-                    .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
-                    .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
-                    .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
-                    .setAcceptsTapEvents(true)
-                    .setShowSystemUiTime(false)
-                    .setViewProtectionMode(WatchFaceStyle.PROGRESS_MODE_NONE)
-                    .build());
+            // Set the style start with normal
+            setWatchFaceStyle(watchFaceStyleNormal);
 
             // Create a watch face
             watchFace = new WatchFace(WatchFaceService.this);
@@ -468,14 +483,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         break;
                     case ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE:
                         watchFace.setInvertBlackAndWhite(config.getBoolean(key));
-                        setWatchFaceStyle(new WatchFaceStyle.Builder(WatchFaceService.this)
-                                .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
-                                .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
-                                .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
-                                .setAcceptsTapEvents(true)
-                                .setShowSystemUiTime(false)
-                                .setViewProtectionMode(!config.getBoolean(key) ? WatchFaceStyle.PROGRESS_MODE_NONE : WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR)
-                                .build());
+                        setWatchFaceStyle(config.getBoolean(key) ? watchFaceStyleInverted : watchFaceStyleNormal);
                         break;
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
                         // 1. Store the previous active sensors
