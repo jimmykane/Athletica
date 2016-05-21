@@ -237,6 +237,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
                 .setAcceptsTapEvents(true)
                 .setShowSystemUiTime(false)
+                .setViewProtectionMode(WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR)
                 .build();
         /**
          * The available sensors. Cross of supported by the app sensors and supported by the device
