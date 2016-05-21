@@ -38,7 +38,7 @@ public class AveragingSensorEventListener implements SensorEventListener {
             if (value == 0.0) {
                 continue;
             }
-            sum = sum + value;
+            sum += value;
             i++;
         }
 
