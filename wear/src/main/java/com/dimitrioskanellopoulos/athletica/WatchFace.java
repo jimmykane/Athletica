@@ -134,6 +134,14 @@ public class WatchFace {
         // @todo  When using more than one sensors should add the margin to the previous one
     }
 
+    // @todo should destroy the object somehow to stop listening by the object / column
+    public void removeSensorColumn(Integer sensorType){
+        // @todo should stop etc
+        grid.getRow("forthRow").removeColumn(sensorType.toString() + "_icon");
+        grid.getRow("forthRow").removeColumn(sensorType.toString());
+        grid.getRow("forthRow").removeColumn(sensorType.toString() + "_units");
+    }
+
     private void addColumnForBattery() {
         BatteryIconColumn batteryIconColumn = new BatteryIconColumn(resources, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         batteryIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
