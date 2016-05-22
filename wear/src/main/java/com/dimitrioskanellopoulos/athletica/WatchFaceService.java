@@ -368,7 +368,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     if (availableSensorTypes.size() < 2) {
                         break;
                     }
-                    activateNextAvaialableSensors();
+                    activateNextAvailableSensors();
                     startListeningToActiveSensors();
                     vibrator.vibrate(new long[]{0, 50, 50}, -1);
                     break;
@@ -499,7 +499,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         }
                         // 5. If there are no active sensor (just enabled one or more then just activate the next ones
                         if (lastActiveSensors.size() == 0) {
-                            activateNextAvaialableSensors();
+                            activateNextAvailableSensors();
                             break;
                         }
                         // 6. Check if in the new available sensors belongs a previously active ones and activate them
@@ -510,7 +510,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         }
                         // 7. If no previous active sensor is activated activate the next one
                         if (activeSensors.size() == 0){
-                            activateNextAvaialableSensors();
+                            activateNextAvailableSensors();
                         }
                         break;
                     default:
@@ -669,7 +669,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * Activates the next sensors
          */
-        private void activateNextAvaialableSensors() {
+        private void activateNextAvailableSensors() {
             Log.d(TAG, "Activating next available sensor(s)");
             // If there are no sensors to activate exit
             if (availableSensorTypes.size() == 0) {
