@@ -21,20 +21,20 @@ public class GridRenderer {
         float totalHeight = bounds.height() - bottomMargin;
         float startingOffsetY = 0.0f;
         float rowHeight = totalHeight / rows.length;
-        if (centerOnY){
-            totalHeight = bounds.height()/ 2.0f - bottomMargin;
-            rowHeight = ((totalHeight + totalHeight/rows.length/2.0f))/rows.length;
-            startingOffsetY = bounds.exactCenterY() - rowHeight/2.0f;
+        if (centerOnY) {
+            totalHeight = bounds.height() / 2.0f - bottomMargin;
+            rowHeight = ((totalHeight + totalHeight / rows.length / 2.0f)) / rows.length;
+            startingOffsetY = bounds.exactCenterY() - rowHeight / 2.0f;
         }
 
         int rowCount = 0;
-        for (Row row : rows){
+        for (Row row : rows) {
             if (BuildConfig.DEBUG) {
                 Paint greenPaint = new Paint();
                 greenPaint.setColor(Color.GREEN);
                 Paint bluePaint = new Paint();
                 bluePaint.setColor(Color.BLUE);
-                canvas.drawLine(bounds.left,  startingOffsetY + rowCount * rowHeight, bounds.right,  startingOffsetY + rowCount * rowHeight, greenPaint);
+                canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, greenPaint);
                 canvas.drawLine(bounds.left, (startingOffsetY + rowCount * rowHeight) + rowHeight, bounds.right, (startingOffsetY + rowCount * rowHeight) + rowHeight, bluePaint);
             }
 
@@ -44,8 +44,16 @@ public class GridRenderer {
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
             }
 
-            float cursor =  bounds.exactCenterX() - totalTextWidth * 0.5f;
+            float cursor = bounds.exactCenterX() - totalTextWidth * 0.5f;
             for (Column column : row.getAllColumns()) {
+                if (BuildConfig.DEBUG) {
+                    Paint greenPaint = new Paint();
+                    greenPaint.setColor(Color.GREEN);
+                    Paint bluePaint = new Paint();
+                    bluePaint.setColor(Color.BLUE);
+                    canvas.drawLine(cursor, startingOffsetY + rowCount * rowHeight, cursor, (startingOffsetY + rowCount * rowHeight) + rowHeight, greenPaint);
+                    canvas.drawLine(cursor + column.getHorizontalMargin() + column.getWidth(), startingOffsetY + rowCount * rowHeight, cursor + column.getHorizontalMargin() + column.getWidth(), (startingOffsetY + rowCount * rowHeight) + rowHeight, bluePaint);
+                }
                 // Draw the column
                 canvas.drawText(column.getText(), cursor, yOffset + rowHeight, column.getPaint()); // check if it needs per column height
                 cursor += column.getWidth() + column.getHorizontalMargin();
