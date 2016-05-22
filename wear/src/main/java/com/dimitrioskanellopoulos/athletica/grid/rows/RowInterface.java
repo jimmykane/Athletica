@@ -3,7 +3,7 @@ package com.dimitrioskanellopoulos.athletica.grid.rows;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 
 public interface RowInterface {
-    void addColumn(String name, Column column);
+    void putColumn(String name, Column column);
 
     void removeColumn(String name);
 

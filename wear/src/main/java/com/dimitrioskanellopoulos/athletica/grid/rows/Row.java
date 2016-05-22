@@ -9,7 +9,7 @@ public class Row implements RowInterface {
     private Float verticalMargin = 0.0f;
 
     @Override
-    public void addColumn(String name, Column column) {
+    public void putColumn(String name, Column column) {
         columns.put(name, column);
     }
 

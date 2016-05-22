@@ -8,7 +8,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.util.Pair;
-import android.util.TypedValue;
 
 import com.dimitrioskanellopoulos.athletica.grid.GridRenderer;
 import com.dimitrioskanellopoulos.athletica.grid.columns.AmPmColumn;
@@ -101,55 +100,55 @@ public class WatchFace {
 
     private void addColumnForTime() {
         TimeColumn timeColumn = new TimeColumn(defaultTypeface, resources.getDimension(R.dimen.time_size), textColor);
-        firstRow.addColumn("time", timeColumn);
+        firstRow.putColumn("time", timeColumn);
     }
 
     private void addColumnForDate() {
         DateColumn dateColumn = new DateColumn(defaultTypeface, resources.getDimension(R.dimen.date_size), textColor);
-        secondRow.addColumn("date", dateColumn);
+        secondRow.putColumn("date", dateColumn);
     }
 
     private void addColumnForSunrise() {
         Column sunriseIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
         sunriseIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
+        thirdRow.putColumn("sunrise_icon", sunriseIconColumn);
 
         Column sunriseColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
         sunriseColumn.setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
-        thirdRow.addColumn("sunrise", sunriseColumn);
+        thirdRow.putColumn("sunrise", sunriseColumn);
     }
 
     private void addColumnForSunset() {
         Column sunsetIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sunsetIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
-        thirdRow.addColumn("sunset_icon", sunsetIconColumn);
+        thirdRow.putColumn("sunset_icon", sunsetIconColumn);
 
         Column sunsetColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
-        thirdRow.addColumn("sunset", sunsetColumn);
+        thirdRow.putColumn("sunset", sunsetColumn);
     }
 
     private void addColumnForBattery() {
         BatteryIconColumn batteryIconColumn = new BatteryIconColumn(resources, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         batteryIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        fifthRow.addColumn("battery_icon", batteryIconColumn);
+        fifthRow.putColumn("battery_icon", batteryIconColumn);
 
         Column batteryColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.battery_text_size), textColor);
-        fifthRow.addColumn("battery", batteryColumn);
+        fifthRow.putColumn("battery", batteryColumn);
     }
 
     public void addSensorColumn(Integer sensorType) {
         Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(resources, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sensorIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
+        forthRow.putColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
         Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
         sensorColumn.setHorizontalMargin(resources.getDimension(R.dimen.units_margin));
-        forthRow.addColumn(sensorType.toString(), sensorColumn);
+        forthRow.putColumn(sensorType.toString(), sensorColumn);
 
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), textColor);
-        forthRow.addColumn(sensorType.toString() + "_units", sensorUnitsColumn);
+        forthRow.putColumn(sensorType.toString() + "_units", sensorUnitsColumn);
         // @todo  When using more than one sensors should add the margin to the previous one
     }
 
@@ -176,7 +175,7 @@ public class WatchFace {
             firstRow.removeColumn("amPm");
         } else {
             AmPmColumn amPmColumn = new AmPmColumn(defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), textColor);
-            firstRow.addColumn("amPm", amPmColumn);
+            firstRow.putColumn("amPm", amPmColumn);
         }
     }
 
