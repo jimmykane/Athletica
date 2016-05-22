@@ -1,9 +1,12 @@
 package com.dimitrioskanellopoulos.athletica.grid;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.BuildConfig;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
@@ -13,54 +16,43 @@ public class GridRenderer {
     /**
      * @todo document more and make it faster
      */
-    public static void drawRows(Canvas canvas, Rect bounds, Row[] rows, Integer chinSize) {
-        /**
-         * We loop over each row:
-         * 1. Find the total width of the text so we can center the text on X
-         * 2. Find the biggest height of the text so we can offset on Y
-         * 3. Take care for special case of last row
-         */
-        Float yOffset = bounds.exactCenterY();
+    public static void drawRows(Canvas canvas, Rect bounds, Row[] rows, Integer bottomMargin, Boolean centerOnY) {
+
+        float totalHeight = bounds.height() - bottomMargin;
+        float startingOffsetY = 0.0f;
+        float rowHeight = totalHeight / rows.length;
+        if (centerOnY){
+            totalHeight = bounds.height()/ 2.0f - bottomMargin;
+            rowHeight = ((totalHeight + totalHeight/rows.length/2.0f))/rows.length;
+            startingOffsetY = bounds.exactCenterY() - rowHeight/2.0f;
+        }
+
         int rowCount = 0;
-        for (Row row : rows) {
-            Float totalTextWidth = 0f;
-            Float maxColumnHeight = 0f;
-            // Go over the paints (columns of each row)
-            int columnCount = 0;
-            for (Column column : row.getAllColumns()) {
-                // If the height is bigger than the current set it to that
-                if (column.getHeight() > maxColumnHeight) {
-                    maxColumnHeight = column.getHeight();
-                }
-                // The total width of the row increases by the Column's text with
-                totalTextWidth += column.getWidth() + column.getHorizontalMargin();
-                // Remove the horizontal margin if it's the last column
-                // if (columnCount >= row.getAllColumns().length) {
-                //Log.d(TAG, "Removing last column margin " + column.getHorizontalMargin());
-                //totalTextWidth -= column.getHorizontalMargin();
-                //}
-                // Log.d(TAG, "Row " + rowCount + " Column " + columnCount + " height "+ column.getHeight());
-                columnCount++;
-            }
-            // Add the total height to the offset
-            yOffset += row.getVerticalMargin() + maxColumnHeight / 2.0f;
-            // Last row change yOffset and put it as low as possible because it's the bottom row
-            if (rowCount == rows.length - 1) {
-                yOffset = bounds.bottom - chinSize - maxColumnHeight / 2.0f;
+        for (Row row : rows){
+            if (BuildConfig.DEBUG) {
+                Paint greenPaint = new Paint();
+                greenPaint.setColor(Color.GREEN);
+                Paint bluePaint = new Paint();
+                bluePaint.setColor(Color.BLUE);
+                canvas.drawLine(bounds.left,  startingOffsetY + rowCount * rowHeight, bounds.right,  startingOffsetY + rowCount * rowHeight, greenPaint);
+                canvas.drawLine(bounds.left, (startingOffsetY + rowCount * rowHeight) + rowHeight, bounds.right, (startingOffsetY + rowCount * rowHeight) + rowHeight, bluePaint);
             }
 
-            /**
-             * All is found and set start drawing
-             */
-            Float cursor = bounds.exactCenterX() - totalTextWidth / 2.0f;
-            columnCount = 0;
+            float yOffset = startingOffsetY + rowCount * rowHeight;
+            Float totalTextWidth = 0f;
+            for (Column column : row.getAllColumns()) {
+                totalTextWidth += column.getWidth() + column.getHorizontalMargin();
+            }
+
+            float cursor =  bounds.exactCenterX() - totalTextWidth * 0.5f;
             for (Column column : row.getAllColumns()) {
                 // Draw the column
-                canvas.drawText(column.getText(), cursor, yOffset, column.getPaint()); // check if it needs per column height
+                canvas.drawText(column.getText(), cursor, yOffset + rowHeight, column.getPaint()); // check if it needs per column height
                 cursor += column.getWidth() + column.getHorizontalMargin();
-                columnCount++;
+                Log.d(TAG, "Drew column cursor " + cursor);
             }
             rowCount++;
+            Log.d(TAG, "Drew row " + rowCount + " offsetY " + yOffset);
         }
     }
 

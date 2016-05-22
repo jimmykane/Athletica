@@ -95,7 +95,7 @@ public class WatchFace {
 
         GridRenderer.drawBackground(canvas, bounds, backgroundColor);
 
-        GridRenderer.drawRows(canvas, bounds, rows, chinSize);
+        GridRenderer.drawRows(canvas, bounds, rows, chinSize, true);
 
         if (interlace) {
             GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, isInAmbientMode ? 100 : 70);
