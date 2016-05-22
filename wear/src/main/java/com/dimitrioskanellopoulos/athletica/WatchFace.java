@@ -57,10 +57,7 @@ public class WatchFace {
         resources = context.getApplicationContext().getResources();
 
         // Define the margin of the rows for vertical
-        Float verticalMargin = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.row_vertical_margin),
-                resources.getDisplayMetrics());
+        Float verticalMargin = resources.getDimension(R.dimen.row_vertical_margin);
 
         // Set margins to the rows
         firstRow.setVerticalMargin(0.0f);
@@ -115,26 +112,17 @@ public class WatchFace {
     private void addColumnForSunrise() {
         Column sunriseIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
-        sunriseIconColumn.setHorizontalMargin(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.icon_margin),
-                resources.getDisplayMetrics()));
+        sunriseIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         thirdRow.addColumn("sunrise_icon", sunriseIconColumn);
 
         Column sunriseColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
-        sunriseColumn.setHorizontalMargin(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.column_margin),
-                resources.getDisplayMetrics()));
+        sunriseColumn.setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
         thirdRow.addColumn("sunrise", sunriseColumn);
     }
 
     private void addColumnForSunset() {
         Column sunsetIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
-        sunsetIconColumn.setHorizontalMargin(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.icon_margin),
-                resources.getDisplayMetrics()));
+        sunsetIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
         thirdRow.addColumn("sunset_icon", sunsetIconColumn);
 
@@ -144,10 +132,7 @@ public class WatchFace {
 
     private void addColumnForBattery() {
         BatteryIconColumn batteryIconColumn = new BatteryIconColumn(resources, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
-        batteryIconColumn.setHorizontalMargin(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.icon_margin),
-                resources.getDisplayMetrics()));
+        batteryIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         fifthRow.addColumn("battery_icon", batteryIconColumn);
 
         Column batteryColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.battery_text_size), textColor);
@@ -156,17 +141,11 @@ public class WatchFace {
 
     public void addSensorColumn(Integer sensorType) {
         Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(resources, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
-        sensorIconColumn.setHorizontalMargin(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.icon_margin),
-                resources.getDisplayMetrics()));
+        sensorIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         forthRow.addColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
         Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
-        sensorColumn.setHorizontalMargin(TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                resources.getDimension(R.dimen.units_margin),
-                resources.getDisplayMetrics()));
+        sensorColumn.setHorizontalMargin(resources.getDimension(R.dimen.units_margin));
         forthRow.addColumn(sensorType.toString(), sensorColumn);
 
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), textColor);
