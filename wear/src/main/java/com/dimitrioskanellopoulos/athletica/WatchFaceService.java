@@ -471,10 +471,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         if (availableSensorTypes.size() == 0){
                             break;
                         }
+                        watchFace.addSensorColumn(availableSensorTypes.get(0));
                         // 6. Check if in the new available sensors belongs a previously active ones and activate them
-                        for (Integer availableSensorType : availableSensorTypes) {
-                            watchFace.addSensorColumn(availableSensorType);
-                        }
+//                        for (Integer availableSensorType : availableSensorTypes) {
+//                            watchFace.addSensorColumn(availableSensorType);
+//                        }
                         break;
                     default:
                         Log.w(TAG, "Ignoring unknown config key: " + key);
@@ -628,6 +629,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs);
             }
         }
+
+
 
         /**
          * Activates the next sensors

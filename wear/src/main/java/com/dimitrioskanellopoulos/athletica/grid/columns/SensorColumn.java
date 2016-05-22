@@ -24,8 +24,9 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
 
     public SensorColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, int sensorType) {
         super(paintTypeface, paintTextSize, paintColor);
-        this.averagingCallbackSensor = CallbackSensorFactory.getCallbackSensor(context, sensorType, this, this);
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        this.averagingCallbackSensor = CallbackSensorFactory.getCallbackSensor(context, sensorType, this, this);
+        this.averagingCallbackSensor.startListening();
     }
 
     @Override
