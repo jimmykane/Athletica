@@ -9,6 +9,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 import android.util.Pair;
 
+import com.dimitrioskanellopoulos.athletica.grid.Grid;
 import com.dimitrioskanellopoulos.athletica.grid.GridRenderer;
 import com.dimitrioskanellopoulos.athletica.grid.columns.AmPmColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.BatteryIconColumn;
@@ -22,6 +23,9 @@ import java.util.TimeZone;
 
 public class WatchFace {
     private static final String TAG = "Watchface";
+
+    private static final Grid grid = new Grid();
+
     // First row of paints
     private final static Row firstRow = new Row();
     // Second row
@@ -65,6 +69,12 @@ public class WatchFace {
         forthRow.setVerticalMargin(verticalMargin);
         fifthRow.setVerticalMargin(verticalMargin);
 
+        grid.putRow("firstRow", firstRow);
+        grid.putRow("secondRow", secondRow);
+        grid.putRow("thirdRow", thirdRow);
+        grid.putRow("forthRow", forthRow);
+        grid.putRow("fifthRow", fifthRow);
+
         // Default typeface
         defaultTypeface = Typeface.SANS_SERIF;
 
@@ -89,9 +99,7 @@ public class WatchFace {
 
     public void draw(Canvas canvas, Rect bounds) {
 
-        GridRenderer.drawBackground(canvas, bounds, backgroundColor);
-
-        GridRenderer.drawRows(canvas, bounds, rows, chinSize, true);
+        GridRenderer.renderGrid(canvas, bounds, grid, chinSize, true, backgroundColor);
 
         if (interlace) {
             GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, isInAmbientMode ? 100 : 70);

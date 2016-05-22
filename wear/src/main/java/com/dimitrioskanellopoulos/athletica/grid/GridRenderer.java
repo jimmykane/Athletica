@@ -17,8 +17,11 @@ public class GridRenderer {
     /**
      * @todo document more and make it faster
      */
-    public static void drawRows(Canvas canvas, Rect bounds, Row[] rows, Integer bottomMargin, Boolean centerOnY) {
+    public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, Integer bottomMargin, Boolean centerOnY, int backgroundColor) {
+        // Draw background
+        drawBackground(canvas, bounds, backgroundColor);
 
+        Row[] rows = grid.getAllRows();
         float totalHeight = bounds.height() - bottomMargin;
         float startingOffsetY = 0.0f;
         float rowHeight = totalHeight / rows.length;

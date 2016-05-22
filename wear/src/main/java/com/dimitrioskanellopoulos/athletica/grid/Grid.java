@@ -21,6 +21,10 @@ public class Grid {
         return rows.get(rowName);
     }
 
+    public Row[] getAllRows() {
+        return rows.values().toArray(new Row[0]);
+    }
+
     public void putColumn(String rowName, String columnName, Column column){
         rows.get(rowName).putColumn(columnName, column);
     }
