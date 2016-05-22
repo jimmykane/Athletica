@@ -36,6 +36,7 @@ public class WatchFace {
     private Typeface defaultTypeface;
     private boolean isRound;
     private boolean isInAmbientMode = false;
+    private boolean isVisible = false;
     private boolean interlace = true;
     private boolean invertBlackAndWhite = false;
 
@@ -159,6 +160,18 @@ public class WatchFace {
         for (Row row : grid.getAllRows()) {
             for (Column column : row.getAllColumns()) {
                 column.setAmbientMode(inAmbientMode);
+            }
+        }
+    }
+
+    /**
+     * Toggles the visible or not mode for all the columns
+     */
+    public void setIsVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+        for (Row row : grid.getAllRows()) {
+            for (Column column : row.getAllColumns()) {
+                column.setIsVisible(isVisible);
             }
         }
     }

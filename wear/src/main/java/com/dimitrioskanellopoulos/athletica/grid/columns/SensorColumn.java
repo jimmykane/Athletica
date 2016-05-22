@@ -26,17 +26,33 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
         super(paintTypeface, paintTextSize, paintColor);
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         this.averagingCallbackSensor = CallbackSensorFactory.getCallbackSensor(context, sensorType, this, this);
-        this.averagingCallbackSensor.startListening();
+    }
+
+    @Override
+    public void stopAll() {
+        super.stopAll();
+        averagingCallbackSensor.stopListening();
+    }
+
+    @Override
+    public void setIsVisible(Boolean isVisible) {
+        super.setIsVisible(isVisible);
+        if (isVisible()){
+            averagingCallbackSensor.startListening();
+        }else{
+            averagingCallbackSensor.stopListening();
+        }
     }
 
     @Override
     public void setAmbientMode(Boolean ambientMode) {
         super.setAmbientMode(ambientMode);
-        if (isInAmbientMode()){
-            averagingCallbackSensor.stopListening();
-        }else{
+        if (!ambientMode){
             averagingCallbackSensor.startListening();
+        }else{
+            averagingCallbackSensor.stopListening();
         }
+
     }
 
     @Override
@@ -56,6 +72,8 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
                 if (Math.round(eventValues[0]) > 180) {
                     vibrator.vibrate(new long[]{0, 250, 500, 250, 100, 250, 50, 250, 50}, -1);
                 }
+                setText(decimalFormat.format(Math.round(eventValues[0])));
+                break;
             default:
                 setText(decimalFormat.format(Math.round(eventValues[0])));
                 break;

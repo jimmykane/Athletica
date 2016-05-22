@@ -26,6 +26,7 @@ import android.view.WindowInsets;
 
 import com.dimitrioskanellopoulos.athletica.configuration.ConfigurationHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
+import com.dimitrioskanellopoulos.athletica.helpers.SensorHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.SunriseSunsetHelper;
 import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
 import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
@@ -109,9 +110,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
     }
 
     private class Engine extends CanvasWatchFaceService.Engine implements
-            OnSensorEventCallbackInterface,
-            OnSensorAverageEventCallbackInterface,
-            OnSensorTriggerCallbackInterface,
             GoogleApiClient.ConnectionCallbacks,
             DataApi.DataListener,
             GoogleApiClient.OnConnectionFailedListener {
@@ -234,7 +232,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * The available sensors. Cross of supported by the app sensors and supported by the device
          */
-        private ArrayList<Integer> availableSensorTypes = new ArrayList<Integer>();
+        private ArrayList<Integer> availableSensorTypes = new ArrayList<>();
         private PermissionsHelper permissionsHelper;
 
         @Override
@@ -298,6 +296,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     googleApiClient.disconnect();
                 }
             }
+            watchFace.setIsVisible(visible);
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
             updateTimer();
@@ -378,36 +377,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             Log.d(TAG, "Google API connection failed");
         }
 
-        @Override
-        public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
-            // Special cases for special sensors :-)
-            DecimalFormat decimalFormat = new DecimalFormat("#.#");
-            switch (sensorType) {
-                case Sensor.TYPE_PRESSURE:
-                    watchFace.updateSensorText(sensorType, decimalFormat.format(eventValues[0]));
-                    break;
-                case Sensor.TYPE_HEART_RATE:
-                    if (Math.round(eventValues[0]) > 180) {
-                        vibrator.vibrate(new long[]{0, 250, 500, 250, 100, 250, 50, 250, 50}, -1);
-                    }
-                default:
-                    watchFace.updateSensorText(sensorType, decimalFormat.format(Math.round(eventValues[0])));
-                    break;
-            }
-            Log.d(TAG, "Updated value for sensor: " + sensorType + " " + eventValues[0]);
-            Log.d(TAG, "Invalidating view");
-            postInvalidate();
-        }
-
-        @Override
-        public void handleOnSensorAverageChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
-            handleOnSensorChangedEvent(sensor, sensorType, eventValues);
-        }
-
-        @Override
-        public void handleOnSensorTriggerEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
-        }
-
         @Override // DataApi.DataListener
         public void onDataChanged(DataEventBuffer dataEvents) {
             for (DataEvent dataEvent : dataEvents) {
@@ -466,16 +435,19 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         setWatchFaceStyle(config.getBoolean(key) ? watchFaceStyleInverted : watchFaceStyleNormal);
                         break;
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
+
+                        for (Integer availableDeviceSensorType : SensorHelper.getApplicationDeviceSupportedSensors(getApplicationContext())) {
+                            watchFace.removeSensor(availableDeviceSensorType);
+                        }
+
                         setAvailableSensorTypes(config.getIntegerArrayList(key));
-                        // 4. If there are no available sensors break
                         if (availableSensorTypes.size() == 0){
                             break;
                         }
-                        watchFace.addSensorColumn(availableSensorTypes.get(0));
                         // 6. Check if in the new available sensors belongs a previously active ones and activate them
-//                        for (Integer availableSensorType : availableSensorTypes) {
-//                            watchFace.addSensorColumn(availableSensorType);
-//                        }
+                        for (Integer availableSensorType : availableSensorTypes) {
+                            watchFace.addSensorColumn(availableSensorType);
+                        }
                         break;
                     default:
                         Log.w(TAG, "Ignoring unknown config key: " + key);

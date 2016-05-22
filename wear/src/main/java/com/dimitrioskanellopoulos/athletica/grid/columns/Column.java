@@ -8,6 +8,7 @@ public class Column implements ColumnInterface {
     private final static String TAG = "Column";
     private final Paint paint = new Paint();
     private Boolean ambientMode = false;
+    private Boolean visible = false;
     // @todo fix this
     private String text = "";
     private Float horizontalMargin = 0.0f;
@@ -18,7 +19,6 @@ public class Column implements ColumnInterface {
         getPaint().setTextSize(paintTextSize);
         setTextDefaultColor(paintColor);
         getPaint().setAntiAlias(true);
-        ambientMode = false;
     }
 
     @Override
@@ -81,5 +81,20 @@ public class Column implements ColumnInterface {
     @Override
     public Boolean isInAmbientMode() {
         return ambientMode;
+    }
+
+    @Override
+    public Boolean isVisible() {
+        return visible;
+    }
+
+    @Override
+    public void setIsVisible(Boolean isVisible) {
+        this.visible = isVisible;
+    }
+
+    @Override
+    public void stopAll() {
+
     }
 }

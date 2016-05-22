@@ -24,4 +24,10 @@ public interface ColumnInterface {
     void setHorizontalMargin(Float horizontalMargin);
 
     Boolean isInAmbientMode();
+
+    Boolean isVisible();
+
+    void setIsVisible(Boolean visible);
+
+    void stopAll();
 }
