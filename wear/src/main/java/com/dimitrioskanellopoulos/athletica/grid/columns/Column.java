@@ -17,7 +17,8 @@ public class Column implements ColumnInterface {
         getPaint().setTypeface(paintTypeface);
         getPaint().setTextSize(paintTextSize);
         setTextDefaultColor(paintColor);
-        setAmbientMode(false);
+        getPaint().setAntiAlias(true);
+        ambientMode = false;
     }
 
     @Override

@@ -122,14 +122,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         private final Handler mUpdateTimeHandler = new EngineHandler(this);
         /**
-         * How many sensors we want to utilize concurrently
-         */
-        private final Integer maxActiveSensors = 1;
-        /**
-         * The active sensors list. These sensors are the active ones at runtime
-         */
-        private final LinkedHashMap<Integer, AveragingCallbackSensor> activeSensors = new LinkedHashMap<Integer, AveragingCallbackSensor>();
-        /**
          * Don't be kinky on this. It's the vibrating system service. Useful for haptic feedback
          */
         private final Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -272,7 +264,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             Log.d(TAG, "onDestroy");
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
-            deactivateAllSensors();
             unregisterBatteryInfoReceiver();
             unregisterTimeZoneReceiver();
             if (googleApiClient.isConnected()) {
@@ -292,8 +283,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 registerTimeZoneReceiver();
                 // Check for battery changes
                 registerBatteryInfoReceiver();
-                // Start updating sensor values
-                startListeningToActiveSensors();
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
@@ -301,8 +290,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 unregisterTimeZoneReceiver();
                 // Stop checking for battery level changes
                 unregisterBatteryInfoReceiver();
-                // Stop updating sensor values
-                stopListeningToSensors();
 
                 if (googleApiClient != null && googleApiClient.isConnected()) {
                     Wearable.DataApi.removeListener(googleApiClient, this);
@@ -322,12 +309,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Obvious
             watchFace.inAmbientMode(inAmbientMode);
 
-            // When we are active show realtime data from the sensors. Start listening
-            if (inAmbientMode) {
-                stopListeningToSensors();
-            } else {
-                startListeningToActiveSensors();
-            }
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.
             updateTimer();
@@ -368,8 +349,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     if (availableSensorTypes.size() < 2) {
                         break;
                     }
-                    activateNextAvailableSensors();
-                    startListeningToActiveSensors();
                     vibrator.vibrate(new long[]{0, 50, 50}, -1);
                     break;
 
@@ -487,30 +466,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         setWatchFaceStyle(config.getBoolean(key) ? watchFaceStyleInverted : watchFaceStyleNormal);
                         break;
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
-                        // 1. Store the previous active sensors
-                        LinkedHashMap<Integer, AveragingCallbackSensor> lastActiveSensors = new LinkedHashMap<>(activeSensors);
-                        // 2. Deactivate all
-                        deactivateAllSensors();
-                        // 3. Set the available sensors to the new ones
                         setAvailableSensorTypes(config.getIntegerArrayList(key));
                         // 4. If there are no available sensors break
                         if (availableSensorTypes.size() == 0){
                             break;
                         }
-                        // 5. If there are no active sensor (just enabled one or more then just activate the next ones
-                        if (lastActiveSensors.size() == 0) {
-                            activateNextAvailableSensors();
-                            break;
-                        }
                         // 6. Check if in the new available sensors belongs a previously active ones and activate them
                         for (Integer availableSensorType : availableSensorTypes) {
-                            if (lastActiveSensors.containsKey(availableSensorType)) {
-                                activateSensor(availableSensorType);
-                            }
-                        }
-                        // 7. If no previous active sensor is activated activate the next one
-                        if (activeSensors.size() == 0){
-                            activateNextAvailableSensors();
+                            watchFace.addSensorColumn(availableSensorType);
                         }
                         break;
                     default:
@@ -669,81 +632,51 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * Activates the next sensors
          */
-        private void activateNextAvailableSensors() {
-            Log.d(TAG, "Activating next available sensor(s)");
-            // If there are no sensors to activate exit
-            if (availableSensorTypes.size() == 0) {
-                return;
-            }
-            // If there is only one activate that one if not activated
-            if (availableSensorTypes.size() == 1) {
-                if (!activeSensors.containsKey(availableSensorTypes.get(0))) {
-                    activateSensor(availableSensorTypes.get(0));
-                }
-                return;
-            }
-            // Find the active sensors position in the available sensors
-            int countFound = 0;
-            int lastFoundIndex = 0;
-            for (Integer availableSensorType : availableSensorTypes) {
-                if (!activeSensors.containsKey(availableSensorType)) {
-                    continue;
-                }
-                // Found one
-                countFound += 1;
-                // If we found all
-                if (countFound == maxActiveSensors) {
-                    // Get the index that the last was found
-                    lastFoundIndex = availableSensorTypes.indexOf(availableSensorType);
-                    // Stop we don't need to loop more
-                    break;
-                }
-            }
-            // Deactivate all sensors
-            deactivateAllSensors();
-            // Enable the next ones (+1)
-            for (int i = 0; i < maxActiveSensors; i++) {
-                // Check if we hit the last
-                lastFoundIndex += 1;
-                if (lastFoundIndex >= availableSensorTypes.size()) {
-                    // Reset the index to start
-                    lastFoundIndex = 0;
-                }
-                // Activate
-                activateSensor(availableSensorTypes.get(lastFoundIndex));
-            }
-        }
+//        private void activateNextAvailableSensors() {
+//            Log.d(TAG, "Activating next available sensor(s)");
+//            // If there are no sensors to activate exit
+//            if (availableSensorTypes.size() == 0) {
+//                return;
+//            }
+//            // If there is only one activate that one if not activated
+//            if (availableSensorTypes.size() == 1) {
+//                if (activeSensors.indexOf(availableSensorTypes.get(0))<0) {
+//                    activateSensor(availableSensorTypes.get(0));
+//                }
+//                return;
+//            }
+//            // Find the active sensors position in the available sensors
+//            int countFound = 0;
+//            int lastFoundIndex = 0;
+//            for (Integer availableSensorType : availableSensorTypes) {
+//                if (activeSensors.indexOf(availableSensorType) < 0) {
+//                    continue;
+//                }
+//                // Found one
+//                countFound += 1;
+//                // If we found all
+//                if (countFound == maxActiveSensors) {
+//                    // Get the index that the last was found
+//                    lastFoundIndex = availableSensorTypes.indexOf(availableSensorType);
+//                    // Stop we don't need to loop more
+//                    break;
+//                }
+//            }
+//            // Deactivate all sensors
+//            deactivateAllSensors();
+//            // Enable the next ones (+1)
+//            for (int i = 0; i < maxActiveSensors; i++) {
+//                // Check if we hit the last
+//                lastFoundIndex += 1;
+//                if (lastFoundIndex >= availableSensorTypes.size()) {
+//                    // Reset the index to start
+//                    lastFoundIndex = 0;
+//                }
+//                // Activate
+//                activateSensor(availableSensorTypes.get(lastFoundIndex));
+//            }
+//        }
 
-        /**
-         * Activate a specific type of sensor
-         */
-        private void activateSensor(Integer sensorType) {
-            activeSensors.put(sensorType, CallbackSensorFactory.getCallbackSensor(getApplicationContext(), sensorType, this, this));
-            watchFace.addSensorColumn(sensorType);
-            // If we are visible and no
-            if (isVisible() && !isInAmbientMode()) {
-                activeSensors.get(sensorType).startListening();
-            }
-        }
-
-        /**
-         * Deactivate all types of active sensors
-         */
-        private void deactivateAllSensors() {
-            for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
-                deactivateSensor(entry.getKey());
-            }
-        }
-
-        /**
-         * Deactivate a specific type of sensor
-         */
-        private void deactivateSensor(Integer sensorType) {
-            Log.d(TAG, "Deactivating sensor: " + sensorType);
-            activeSensors.get(sensorType).stopListening();
-            activeSensors.remove(sensorType);
-            watchFace.removeSensor(sensorType);
-        }
 
         /**
          * Updates the sunrise and sunset according to a location if possible
@@ -753,24 +686,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             watchFace.updateSunriseSunset(sunriseSunset);
             invalidate();
             Log.d(TAG, "Successfully updated sunrise");
-        }
-
-        private void startListeningToActiveSensors() {
-            for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
-                entry.getValue().startListening();
-            }
-        }
-
-        private void calculateAverageForActiveSensors() {
-            for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
-                entry.getValue().getAverage();
-            }
-        }
-
-        private void stopListeningToSensors() {
-            for (Map.Entry<Integer, AveragingCallbackSensor> entry : activeSensors.entrySet()) {
-                entry.getValue().stopListening();
-            }
         }
 
         /**
@@ -796,7 +711,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 //                watchFace.updateSensorText(Sensor.TYPE_HEART_RATE, "128");
             }
 
-            calculateAverageForActiveSensors();
+            //calculateAverageForActiveSensors();
         }
     }
 }

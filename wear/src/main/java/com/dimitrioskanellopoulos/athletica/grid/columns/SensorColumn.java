@@ -29,6 +29,16 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
     }
 
     @Override
+    public void setAmbientMode(Boolean ambientMode) {
+        super.setAmbientMode(ambientMode);
+        if (isInAmbientMode()){
+            averagingCallbackSensor.stopListening();
+        }else{
+            averagingCallbackSensor.startListening();
+        }
+    }
+
+    @Override
     public void handleOnSensorAverageChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
         handleOnSensorChangedEvent(sensor, sensorType, eventValues);
     }
