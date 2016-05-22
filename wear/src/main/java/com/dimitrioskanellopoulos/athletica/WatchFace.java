@@ -16,6 +16,7 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.BatteryIconColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.columns.ColumnFactory;
 import com.dimitrioskanellopoulos.athletica.grid.columns.DateColumn;
+import com.dimitrioskanellopoulos.athletica.grid.columns.SensorColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
@@ -26,6 +27,7 @@ public class WatchFace {
 
     private static final Grid grid = new Grid();
 
+    private final Context context;
     private final Resources resources;
 
     private final Typeface fontAwesome;
@@ -44,7 +46,8 @@ public class WatchFace {
      */
     public WatchFace(Context context) {
 
-        resources = context.getApplicationContext().getResources();
+        this.context = context;
+        resources = context.getResources();
 
         // Define the margin of the rows for vertical
         Float verticalMargin = resources.getDimension(R.dimen.row_vertical_margin);
@@ -122,7 +125,7 @@ public class WatchFace {
         sensorIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         grid.getRow("forthRow").putColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
-        Column sensorColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
+        Column sensorColumn = new SensorColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), textColor, sensorType);
         sensorColumn.setHorizontalMargin(resources.getDimension(R.dimen.units_margin));
         grid.getRow("forthRow").putColumn(sensorType.toString(), sensorColumn);
 

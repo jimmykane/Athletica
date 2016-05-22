@@ -5,6 +5,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 
 public class Column implements ColumnInterface {
+    private final static String TAG = "Column";
     private final Paint paint = new Paint();
     private Boolean ambientMode = false;
     // @todo fix this

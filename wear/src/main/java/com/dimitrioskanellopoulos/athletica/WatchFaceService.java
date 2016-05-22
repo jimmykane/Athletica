@@ -791,9 +791,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 location.setTime(System.currentTimeMillis());
                 location.setAccuracy(3.0f);
                 updateSunriseAndSunset(location);
-                deactivateAllSensors();
-                watchFace.addSensorColumn(Sensor.TYPE_HEART_RATE);
-                watchFace.updateSensorText(Sensor.TYPE_HEART_RATE, "128");
+//                deactivateAllSensors();
+//                watchFace.addSensorColumn(Sensor.TYPE_HEART_RATE);
+//                watchFace.updateSensorText(Sensor.TYPE_HEART_RATE, "128");
             }
 
             calculateAverageForActiveSensors();
