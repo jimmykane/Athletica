@@ -127,6 +127,7 @@ public class WatchFace {
         grid.getRow("forthRow").putColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
         Column sensorColumn = new SensorColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), textColor, sensorType);
+        sensorColumn.setIsVisible(isVisible);
         sensorColumn.setHorizontalMargin(resources.getDimension(R.dimen.units_margin));
         grid.getRow("forthRow").putColumn(sensorType.toString(), sensorColumn);
 
