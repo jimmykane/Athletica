@@ -29,12 +29,6 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
     }
 
     @Override
-    public void stopAll() {
-        super.stopAll();
-        averagingCallbackSensor.stopListening();
-    }
-
-    @Override
     public void setIsVisible(Boolean isVisible) {
         super.setIsVisible(isVisible);
         if (isVisible()){

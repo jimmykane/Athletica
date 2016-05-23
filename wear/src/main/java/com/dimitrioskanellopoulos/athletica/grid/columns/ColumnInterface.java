@@ -28,6 +28,4 @@ public interface ColumnInterface {
     Boolean isVisible();
 
     void setIsVisible(Boolean visible);
-
-    void stopAll();
 }

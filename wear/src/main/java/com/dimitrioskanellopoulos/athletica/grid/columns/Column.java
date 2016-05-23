@@ -92,9 +92,4 @@ public class Column implements ColumnInterface {
     public void setIsVisible(Boolean isVisible) {
         this.visible = isVisible;
     }
-
-    @Override
-    public void stopAll() {
-
-    }
 }
