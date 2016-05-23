@@ -9,7 +9,7 @@ public interface RowInterface {
 
     Column getColumn(String name);
 
-    Column[] getAllColumns();
+    Column[] getAllColumnsToArray();
 
     Float getVerticalMargin();
 

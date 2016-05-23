@@ -23,7 +23,7 @@ public class Grid {
         return rows.get(rowName);
     }
 
-    public Row[] getAllRows() {
+    public Row[] getAllRowsToArray() {
         return rows.values().toArray(new Row[0]);
     }
 

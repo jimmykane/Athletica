@@ -158,8 +158,8 @@ public class WatchFace {
      */
     public void inAmbientMode(boolean inAmbientMode) {
         isInAmbientMode = inAmbientMode;
-        for (Row row : grid.getAllRows()) {
-            for (Column column : row.getAllColumns()) {
+        for (Row row : grid.getAllRowsToArray()) {
+            for (Column column : row.getAllColumnsToArray()) {
                 column.setAmbientMode(inAmbientMode);
             }
         }
@@ -170,8 +170,8 @@ public class WatchFace {
      */
     public void setIsVisible(boolean isVisible) {
         this.isVisible = isVisible;
-        for (Row row : grid.getAllRows()) {
-            for (Column column : row.getAllColumns()) {
+        for (Row row : grid.getAllRowsToArray()) {
+            for (Column column : row.getAllColumnsToArray()) {
                 column.setIsVisible(isVisible);
             }
         }
@@ -204,8 +204,8 @@ public class WatchFace {
     public void setInvertBlackAndWhite(Boolean invertBlackAndWhite) {
         textColor = invertBlackAndWhite ? Color.BLACK : Color.WHITE;
         backgroundColor = invertBlackAndWhite ? Color.WHITE : Color.BLACK;
-        for (Row row : grid.getAllRows()) {
-            for (Column column : row.getAllColumns()) {
+        for (Row row : grid.getAllRowsToArray()) {
+            for (Column column : row.getAllColumnsToArray()) {
                 column.setTextDefaultColor(textColor);
             }
         }

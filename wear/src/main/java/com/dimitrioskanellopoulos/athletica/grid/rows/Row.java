@@ -27,7 +27,7 @@ public class Row implements RowInterface {
     }
 
     @Override
-    public Column[] getAllColumns() {
+    public Column[] getAllColumnsToArray() {
         return columns.values().toArray(new Column[0]);
     }
 

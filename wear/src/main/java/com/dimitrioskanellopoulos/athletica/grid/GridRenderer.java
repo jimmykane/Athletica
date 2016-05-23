@@ -4,8 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
-import android.util.TypedValue;
 
 import com.dimitrioskanellopoulos.athletica.BuildConfig;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
@@ -21,7 +19,7 @@ public class GridRenderer {
         // Draw background
         drawBackground(canvas, bounds, backgroundColor);
 
-        Row[] rows = grid.getAllRows();
+        Row[] rows = grid.getAllRowsToArray();
         float totalHeight = bounds.height() - bottomMargin;
         float startingOffsetY = 0.0f;
         float rowHeight = totalHeight / rows.length;
@@ -44,12 +42,12 @@ public class GridRenderer {
 
             float yOffset = startingOffsetY + rowCount * rowHeight;
             Float totalTextWidth = 0f;
-            for (Column column : row.getAllColumns()) {
+            for (Column column : row.getAllColumnsToArray()) {
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
             }
 
             float cursor = bounds.exactCenterX() - totalTextWidth * 0.5f;
-            for (Column column : row.getAllColumns()) {
+            for (Column column : row.getAllColumnsToArray()) {
                 if (BuildConfig.DEBUG) {
                     Paint greenPaint = new Paint();
                     greenPaint.setColor(Color.GREEN);
