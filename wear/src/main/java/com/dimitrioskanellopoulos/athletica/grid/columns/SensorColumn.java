@@ -33,6 +33,8 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
         super.setIsVisible(isVisible);
         if (isVisible()){
             averagingCallbackSensor.startListening();
+        }else {
+            averagingCallbackSensor.stopListening();
         }
     }
 
@@ -41,8 +43,9 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
         super.setAmbientMode(ambientMode);
         if (ambientMode){
             averagingCallbackSensor.stopListening();
+        }else if (isVisible()){
+            averagingCallbackSensor.startListening();
         }
-
     }
 
     @Override

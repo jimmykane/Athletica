@@ -15,6 +15,9 @@ public class Row implements RowInterface {
 
     @Override
     public void removeColumn(String name) {
+        if (columns.containsKey(name)){
+            columns.get(name).destroy();
+        }
         columns.remove(name);
     }
 

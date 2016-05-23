@@ -5,7 +5,7 @@ import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 import java.util.LinkedHashMap;
 
 public class Grid {
-
+    private static final String TAG = "Grid";
     private final LinkedHashMap<String, Row> rows = new LinkedHashMap<>();
 
     public void putRow(String rowName, Row row){

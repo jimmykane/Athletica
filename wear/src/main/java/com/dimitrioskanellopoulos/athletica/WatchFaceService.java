@@ -437,7 +437,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
 
                         for (Integer availableDeviceSensorType : SensorHelper.getApplicationDeviceSupportedSensors(getApplicationContext())) {
-                            watchFace.removeSensor(availableDeviceSensorType);
+                            watchFace.removeSensorColumn(availableDeviceSensorType);
                         }
 
                         setAvailableSensorTypes(config.getIntegerArrayList(key));

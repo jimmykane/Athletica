@@ -226,16 +226,6 @@ public class WatchFace {
         this.chinSize = chinSize;
     }
 
-    public void removeSensor(Integer sensorType) {
-        grid.getRow("forthRow").removeColumn(sensorType.toString() + "_icon");
-        grid.getRow("forthRow").removeColumn(sensorType.toString());
-        grid.getRow("forthRow").removeColumn(sensorType.toString() + "_units");
-    }
-
-    public void updateSensorText(Integer sensorType, String value) {
-        grid.getRow("forthRow").getColumn(sensorType.toString()).setText(value);
-    }
-
     public void updateBatteryLevel(Integer batteryPercentage) {
         ((BatteryIconColumn) grid.getRow("fifthRow").getColumn("battery_icon")).setBatteryLevel(batteryPercentage);
         grid.getRow("fifthRow").getColumn("battery").setText(batteryPercentage.toString() + "%");
