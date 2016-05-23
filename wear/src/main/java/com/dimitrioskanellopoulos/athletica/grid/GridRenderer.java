@@ -61,10 +61,10 @@ public class GridRenderer {
                 // Draw the column
                 canvas.drawText(column.getText(), cursor, yOffset + rowHeight, column.getPaint()); // check if it needs per column height
                 cursor += column.getWidth() + column.getHorizontalMargin();
-                Log.d(TAG, "Drew column cursor " + cursor);
+                //Log.d(TAG, "Drew column cursor " + cursor);
             }
             rowCount++;
-            Log.d(TAG, "Drew row " + rowCount + " offsetY " + yOffset);
+            //Log.d(TAG, "Drew row " + rowCount + " offsetY " + yOffset);
         }
     }
 
