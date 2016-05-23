@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
 
 public class SensorColumn extends Column implements OnSensorEventCallbackInterface,
         OnSensorAverageEventCallbackInterface {
-    private final static String TAG = "Sensor Column";
+    private final static String TAG = "SensorColumn";
     private final AveragingCallbackSensor averagingCallbackSensor;
     /**
      * Don't be kinky on this. It's the vibrating system service. Useful for haptic feedback
@@ -33,17 +33,13 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
         super.setIsVisible(isVisible);
         if (isVisible()){
             averagingCallbackSensor.startListening();
-        }else{
-            averagingCallbackSensor.stopListening();
         }
     }
 
     @Override
     public void setAmbientMode(Boolean ambientMode) {
         super.setAmbientMode(ambientMode);
-        if (!ambientMode){
-            averagingCallbackSensor.startListening();
-        }else{
+        if (ambientMode){
             averagingCallbackSensor.stopListening();
         }
 
@@ -73,5 +69,16 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
                 break;
         }
         Log.d(TAG, "Updated value for sensor: " + sensorType + " " + eventValues[0]);
+    }
+
+    @Override
+    public void start() {
+        Log.d(TAG, "started");
+    }
+
+    @Override
+    public void destroy() {
+        averagingCallbackSensor.stopListening();
+        Log.d(TAG, "destroyed");
     }
 }

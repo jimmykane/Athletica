@@ -3,10 +3,12 @@ package com.dimitrioskanellopoulos.athletica.grid.columns;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.R;
 
 public class BatteryIconColumn extends Column {
+    private static final String TAG = "BatteryIconColumn";
 
     private float batteryLevel = 0.0f;
 
@@ -48,5 +50,15 @@ public class BatteryIconColumn extends Column {
 
     public void setBatteryLevel(float batteryLevel) {
         this.batteryLevel = batteryLevel;
+    }
+
+    @Override
+    public void start() {
+        Log.d(TAG, "started");
+    }
+
+    @Override
+    public void destroy() {
+        Log.d(TAG, "destroyed");
     }
 }

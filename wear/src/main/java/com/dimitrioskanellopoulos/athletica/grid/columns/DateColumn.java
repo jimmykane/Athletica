@@ -1,6 +1,7 @@
 package com.dimitrioskanellopoulos.athletica.grid.columns;
 
 import android.graphics.Typeface;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -8,10 +9,11 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class DateColumn extends CalendarColumn {
+    private final static String TAG = "DateColumn";
 
-    private static final Calendar calendar = Calendar.getInstance();
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-    private static final SimpleDateFormat dateNamesFormat = new SimpleDateFormat("E d LLL yyyy", Locale.getDefault());
+    private static final Calendar CALENDAR = Calendar.getInstance();
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+    private static final SimpleDateFormat DATE_NAMES_FORMAT = new SimpleDateFormat("E d LLL yyyy", Locale.getDefault());
 
     private Boolean showDateNamesFormat = false;
 
@@ -22,21 +24,31 @@ public class DateColumn extends CalendarColumn {
     @Override
     public void setTimezone(TimeZone timeZone) {
         super.setTimezone(timeZone);
-        dateFormat.setTimeZone(calendar.getTimeZone());
-        dateNamesFormat.setTimeZone(calendar.getTimeZone());
+        DATE_FORMAT.setTimeZone(CALENDAR.getTimeZone());
+        DATE_NAMES_FORMAT.setTimeZone(CALENDAR.getTimeZone());
     }
 
     @Override
     public String getText() {
-        calendar.setTimeInMillis(System.currentTimeMillis());
+        CALENDAR.setTimeInMillis(System.currentTimeMillis());
         if (showDateNamesFormat) {
-            return dateNamesFormat.format(calendar.getTime());
+            return DATE_NAMES_FORMAT.format(CALENDAR.getTime());
         }
-        return dateFormat.format(calendar.getTime());
+        return DATE_FORMAT.format(CALENDAR.getTime());
     }
 
     public void setShowDateNamesFormat(Boolean showDateNamesFormat) {
         this.showDateNamesFormat = showDateNamesFormat;
         getPaint().setTextSize(getPaint().getTextSize());
+    }
+
+    @Override
+    public void start() {
+        Log.d(TAG, "started");
+    }
+
+    @Override
+    public void destroy() {
+        Log.d(TAG, "destroyed");
     }
 }

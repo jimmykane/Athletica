@@ -3,6 +3,7 @@ package com.dimitrioskanellopoulos.athletica.grid.columns;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.util.Log;
 
 public class Column implements ColumnInterface {
     private final static String TAG = "Column";
@@ -19,6 +20,7 @@ public class Column implements ColumnInterface {
         getPaint().setTextSize(paintTextSize);
         setTextDefaultColor(paintColor);
         getPaint().setAntiAlias(true);
+        start();
     }
 
     @Override
@@ -91,5 +93,15 @@ public class Column implements ColumnInterface {
     @Override
     public void setIsVisible(Boolean isVisible) {
         this.visible = isVisible;
+    }
+
+    @Override
+    public void start() {
+        Log.d(TAG, "started");
+    }
+
+    @Override
+    public void destroy() {
+        Log.d(TAG, "destroyed");
     }
 }
