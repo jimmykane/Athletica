@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 
 public class Grid {
 
-    private static final LinkedHashMap<String, Row> rows = new LinkedHashMap<>();
+    private final LinkedHashMap<String, Row> rows = new LinkedHashMap<>();
 
     public void putRow(String rowName, Row row){
         rows.put(rowName, row);
