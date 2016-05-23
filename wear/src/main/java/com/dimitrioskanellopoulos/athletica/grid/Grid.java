@@ -12,9 +12,12 @@ public class Grid {
         rows.put(rowName, row);
     }
 
-    public void removeRow(String rowName){
-        rows.remove(rowName);
-    }
+//    public void removeRow(String rowName){
+//        if (rows.containsKey(rowName)){
+//            rows.get(rowName).
+//        }
+//        rows.remove(rowName);
+//    }
 
     public Row getRow(String rowName){
         return rows.get(rowName);
