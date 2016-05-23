@@ -122,6 +122,9 @@ public class WatchFace {
     }
 
     public void addSensorColumn(Integer sensorType) {
+        if (grid.getRow("forthRow").getAllColumnsToArray().length >= 3){
+            grid.getRow("forthRow").getAllColumnsToArray()[grid.getRow("forthRow").getAllColumnsToArray().length-1].setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
+        }
         Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(resources, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sensorIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         grid.getRow("forthRow").putColumn(sensorType.toString() + "_icon", sensorIconColumn);
