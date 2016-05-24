@@ -2,6 +2,8 @@ package com.dimitrioskanellopoulos.athletica.grid.rows;
 
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 
+import java.util.LinkedHashMap;
+
 public interface RowInterface {
     void putColumn(String name, Column column);
 
@@ -9,7 +11,7 @@ public interface RowInterface {
 
     Column getColumn(String name);
 
-    Column[] getAllColumnsToArray();
+    LinkedHashMap<String, Column>  getAllColumns();
 
     Float getVerticalMargin();
 

@@ -33,8 +33,8 @@ public class GridRenderer {
         }
 
         int rowCount = 0;
-        for (Map.Entry<String, Row> entry : rows.entrySet()) {
-            Row row = entry.getValue();
+        for (Map.Entry<String, Row> rowEntry : rows.entrySet()) {
+            Row row = rowEntry.getValue();
             if (BuildConfig.DEBUG) {
                 Paint greenPaint = new Paint();
                 greenPaint.setColor(Color.GREEN);
@@ -46,12 +46,14 @@ public class GridRenderer {
 
             float yOffset = startingOffsetY + rowCount * rowHeight;
             Float totalTextWidth = 0f;
-            for (Column column : row.getAllColumnsToArray()) {
+            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
+                Column column = columnEntry.getValue();
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
             }
 
             float cursor = bounds.exactCenterX() - totalTextWidth * 0.5f;
-            for (Column column : row.getAllColumnsToArray()) {
+            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
+                Column column = columnEntry.getValue();
                 if (BuildConfig.DEBUG) {
                     Paint greenPaint = new Paint();
                     greenPaint.setColor(Color.GREEN);

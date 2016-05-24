@@ -27,8 +27,8 @@ public class Row implements RowInterface {
     }
 
     @Override
-    public Column[] getAllColumnsToArray() {
-        return columns.values().toArray(new Column[0]);
+    public LinkedHashMap<String, Column> getAllColumns() {
+        return columns;
     }
 
     @Override

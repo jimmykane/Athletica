@@ -123,8 +123,8 @@ public class WatchFace {
     }
 
     public void addSensorColumn(Integer sensorType) {
-        if (grid.getRow("forthRow").getAllColumnsToArray().length >= 3){
-            grid.getRow("forthRow").getAllColumnsToArray()[grid.getRow("forthRow").getAllColumnsToArray().length-1].setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
+        if (grid.getRow("forthRow").getAllColumns().size() >= 3){
+            grid.getRow("forthRow").getAllColumns().values().toArray(new Column[0])[grid.getRow("forthRow").getAllColumns().size() - 1].setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
         }
         Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(resources, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sensorIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
@@ -162,9 +162,10 @@ public class WatchFace {
      */
     public void inAmbientMode(boolean inAmbientMode) {
         isInAmbientMode = inAmbientMode;
-        for (Map.Entry<String, Row> entry : grid.getAllRows().entrySet()) {
-            Row row = entry.getValue();
-            for (Column column : row.getAllColumnsToArray()) {
+        for (Map.Entry<String, Row> rowEntry : grid.getAllRows().entrySet()) {
+            Row row = rowEntry.getValue();
+            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
+                Column column = columnEntry.getValue();
                 column.setAmbientMode(inAmbientMode);
             }
         }
@@ -175,9 +176,10 @@ public class WatchFace {
      */
     public void setIsVisible(boolean isVisible) {
         this.isVisible = isVisible;
-        for (Map.Entry<String, Row> entry : grid.getAllRows().entrySet()) {
-            Row row = entry.getValue();
-            for (Column column : row.getAllColumnsToArray()) {
+        for (Map.Entry<String, Row> rowEntry : grid.getAllRows().entrySet()) {
+            Row row = rowEntry.getValue();
+            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
+                Column column = columnEntry.getValue();
                 column.setIsVisible(isVisible);
             }
         }
@@ -210,9 +212,10 @@ public class WatchFace {
     public void setInvertBlackAndWhite(Boolean invertBlackAndWhite) {
         textColor = invertBlackAndWhite ? Color.BLACK : Color.WHITE;
         backgroundColor = invertBlackAndWhite ? Color.WHITE : Color.BLACK;
-        for (Map.Entry<String, Row> entry : grid.getAllRows().entrySet()) {
-            Row row = entry.getValue();
-            for (Column column : row.getAllColumnsToArray()) {
+        for (Map.Entry<String, Row> rowEntry : grid.getAllRows().entrySet()) {
+            Row row = rowEntry.getValue();
+            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
+                Column column = columnEntry.getValue();
                 column.setTextDefaultColor(textColor);
             }
         }
