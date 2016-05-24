@@ -30,12 +30,7 @@ import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.SensorHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.SunriseSunsetHelper;
 import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
-import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
-import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensorFactory;
-import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
-import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
-import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorTriggerCallbackInterface;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -50,12 +45,8 @@ import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.Wearable;
 
 import java.lang.ref.WeakReference;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -246,7 +237,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
             // Create a watch face
             watchFace = new WatchFace(WatchFaceService.this);
-            watchFace.inAmbientMode(false);
+            watchFace.setInAmbientMode(false);
 
             // Add the helper
             permissionsHelper = new PermissionsHelper(getApplicationContext(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS});
@@ -308,7 +299,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onAmbientModeChanged(boolean inAmbientMode) {
             super.onAmbientModeChanged(inAmbientMode);
             // Obvious
-            watchFace.inAmbientMode(inAmbientMode);
+            watchFace.setInAmbientMode(inAmbientMode);
 
             // Whether the timer should be running depends on whether we're visible (as well as
             // whether we're in ambient mode), so we may need to start or stop the timer.

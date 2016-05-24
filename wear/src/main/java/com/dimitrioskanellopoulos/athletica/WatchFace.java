@@ -36,7 +36,7 @@ public class WatchFace {
     private int backgroundColor;
     private Typeface defaultTypeface;
     private boolean isRound;
-    private boolean isInAmbientMode = false;
+    private boolean ambientMode = false;
     private boolean isVisible = false;
     private boolean interlace = true;
     private boolean invertBlackAndWhite = false;
@@ -87,7 +87,7 @@ public class WatchFace {
         GridRenderer.renderGrid(canvas, bounds, grid, chinSize, true, backgroundColor);
 
         if (interlace) {
-            GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, isInAmbientMode ? 100 : 70);
+            GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, ambientMode ? 100 : 70);
         }
     }
 
@@ -160,15 +160,9 @@ public class WatchFace {
     /**
      * Toggles the ambient or not mode for all the paints
      */
-    public void inAmbientMode(boolean inAmbientMode) {
-        isInAmbientMode = inAmbientMode;
-        for (Map.Entry<String, Row> rowEntry : grid.getAllRows().entrySet()) {
-            Row row = rowEntry.getValue();
-            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
-                Column column = columnEntry.getValue();
-                column.setAmbientMode(inAmbientMode);
-            }
-        }
+    public void setInAmbientMode(boolean inAmbientMode) {
+        ambientMode = inAmbientMode;
+        grid.setInAmbientMode(inAmbientMode);
     }
 
     /**
@@ -176,13 +170,7 @@ public class WatchFace {
      */
     public void setIsVisible(boolean isVisible) {
         this.isVisible = isVisible;
-        for (Map.Entry<String, Row> rowEntry : grid.getAllRows().entrySet()) {
-            Row row = rowEntry.getValue();
-            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
-                Column column = columnEntry.getValue();
-                column.setIsVisible(isVisible);
-            }
-        }
+        grid.setIsVisible(isVisible);
     }
 
     public void setTimeFormat24(Boolean timeFormat24) {
