@@ -3,6 +3,7 @@ package com.dimitrioskanellopoulos.athletica.configuration;
 import android.Manifest;
 import android.hardware.Sensor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
@@ -26,7 +27,7 @@ import com.google.android.gms.wearable.Wearable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ConfigurationActivity extends AmbientAwareWearableActivity implements DataApi.DataListener{
+public class ConfigurationActivity extends AmbientAwareWearableActivity implements DataApi.DataListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
     private final static String TAG = "ConfigurationActivity";
 
     private Switch switchTimeFormat;
@@ -47,27 +48,10 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
         setAmbientEnabled();
 
         googleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                    @Override
-                    public void onConnected(Bundle connectionHint) {
-                        Log.d(TAG, "onConnected: " + connectionHint);
-                        updateConfigDataOnStartup();
-                    }
-
-                    @Override
-                    public void onConnectionSuspended(int cause) {
-                        Log.d(TAG, "onConnectionSuspended: " + cause);
-                    }
-                })
-                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(ConnectionResult result) {
-                        Log.d(TAG, "onConnectionFailed: " + result);
-                    }
-                })
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
                 .addApi(Wearable.API)
                 .build();
-
 
         switchTimeFormat = (Switch) findViewById(R.id.switch_24_hour_clock);
 
@@ -138,6 +122,17 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
     @Override
     public LinearLayout getLayout() {
         return (LinearLayout) findViewById(R.id.configuration_layout);
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        Log.d(TAG, "onConnected: " + connectionHint);
+        updateConfigDataOnStartup();
+    }
+
+    @Override
+    public void onConnectionSuspended(int cause) {
+        Log.d(TAG, "onConnectionSuspended: " + cause);
     }
 
     @Override // DataApi.DataListener
@@ -333,5 +328,10 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
                     break;
             }
         }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed: " + connectionResult);
     }
 }
