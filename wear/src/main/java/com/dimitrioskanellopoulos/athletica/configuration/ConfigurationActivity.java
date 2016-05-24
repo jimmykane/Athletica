@@ -19,6 +19,7 @@ import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ConfigurationActivity extends AmbientAwareWearableActivity {
     private final static String TAG = "ConfigurationActivity";
@@ -136,7 +137,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
 
     private void createSwitchesForSensorTypes(ArrayList<Integer> sensorTypes) {
         for (Integer sensorType : sensorTypes) {
-            createSwitchesForSensorType(sensorType, true);
+            createSwitchesForSensorType(sensorType, false);
         }
     }
 
@@ -248,6 +249,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     }
 
     private void updateConfigDataItemSensors(ArrayList<Integer> enabledSensors) {
+        Log.d(TAG, "Updating config for enabled sensors " + Arrays.toString(enabledSensors.toArray()));
         DataMap configMap = new DataMap();
         configMap.putIntegerArrayList(ConfigurationHelper.KEY_ENABLED_SENSORS,
                 enabledSensors);
