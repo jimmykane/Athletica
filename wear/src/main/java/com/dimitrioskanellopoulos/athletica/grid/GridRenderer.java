@@ -9,6 +9,9 @@ import com.dimitrioskanellopoulos.athletica.BuildConfig;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class GridRenderer {
     private static final String TAG = "GridRenderer";
 
@@ -19,18 +22,19 @@ public class GridRenderer {
         // Draw background
         drawBackground(canvas, bounds, backgroundColor);
 
-        Row[] rows = grid.getAllRowsToArray();
+        LinkedHashMap<String, Row> rows = grid.getAllRows();
         float totalHeight = bounds.height() - bottomMargin;
         float startingOffsetY = 0.0f;
-        float rowHeight = totalHeight / rows.length;
+        float rowHeight = totalHeight / rows.size();
         if (centerOnY) {
             totalHeight = bounds.height() / 2.0f - bottomMargin;
-            rowHeight = ((totalHeight + totalHeight / rows.length / 2.0f)) / rows.length;
+            rowHeight = ((totalHeight + totalHeight / rows.size() / 2.0f)) / rows.size();
             startingOffsetY = bounds.exactCenterY() - rowHeight / 2.0f;
         }
 
         int rowCount = 0;
-        for (Row row : rows) {
+        for (Map.Entry<String, Row> entry : rows.entrySet()) {
+            Row row = entry.getValue();
             if (BuildConfig.DEBUG) {
                 Paint greenPaint = new Paint();
                 greenPaint.setColor(Color.GREEN);

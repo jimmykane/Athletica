@@ -20,6 +20,7 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.SensorColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
+import java.util.Map;
 import java.util.TimeZone;
 
 public class WatchFace {
@@ -161,7 +162,8 @@ public class WatchFace {
      */
     public void inAmbientMode(boolean inAmbientMode) {
         isInAmbientMode = inAmbientMode;
-        for (Row row : grid.getAllRowsToArray()) {
+        for (Map.Entry<String, Row> entry : grid.getAllRows().entrySet()) {
+            Row row = entry.getValue();
             for (Column column : row.getAllColumnsToArray()) {
                 column.setAmbientMode(inAmbientMode);
             }
@@ -173,7 +175,8 @@ public class WatchFace {
      */
     public void setIsVisible(boolean isVisible) {
         this.isVisible = isVisible;
-        for (Row row : grid.getAllRowsToArray()) {
+        for (Map.Entry<String, Row> entry : grid.getAllRows().entrySet()) {
+            Row row = entry.getValue();
             for (Column column : row.getAllColumnsToArray()) {
                 column.setIsVisible(isVisible);
             }
@@ -207,7 +210,8 @@ public class WatchFace {
     public void setInvertBlackAndWhite(Boolean invertBlackAndWhite) {
         textColor = invertBlackAndWhite ? Color.BLACK : Color.WHITE;
         backgroundColor = invertBlackAndWhite ? Color.WHITE : Color.BLACK;
-        for (Row row : grid.getAllRowsToArray()) {
+        for (Map.Entry<String, Row> entry : grid.getAllRows().entrySet()) {
+            Row row = entry.getValue();
             for (Column column : row.getAllColumnsToArray()) {
                 column.setTextDefaultColor(textColor);
             }

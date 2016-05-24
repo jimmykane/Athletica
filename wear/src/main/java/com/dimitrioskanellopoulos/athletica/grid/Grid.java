@@ -23,8 +23,8 @@ public class Grid {
         return rows.get(rowName);
     }
 
-    public Row[] getAllRowsToArray() {
-        return rows.values().toArray(new Row[0]);
+    public LinkedHashMap<String, Row> getAllRows() {
+        return rows;
     }
 
 }
