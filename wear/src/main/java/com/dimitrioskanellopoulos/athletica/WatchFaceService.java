@@ -47,6 +47,8 @@ import com.google.android.gms.wearable.Wearable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -429,27 +431,34 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         setWatchFaceStyle(config.getBoolean(key) ? watchFaceStyleInverted : watchFaceStyleNormal);
                         break;
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
+                        // Save new config
+                        setAvailableSensorTypes(config.getIntegerArrayList(key));
 
+                        // Remove columns that are not there (getApplicationDeviceSupportedSensors gives all) or all if the size is 0
                         for (Integer availableDeviceSensorType : SensorHelper.getApplicationDeviceSupportedSensors(getApplicationContext())) {
-                            watchFace.removeSensorColumn(availableDeviceSensorType);
+                            if (!availableSensorTypes.contains(availableDeviceSensorType) || availableSensorTypes.size() == 0) {
+                                watchFace.removeSensorColumn(availableDeviceSensorType);
+                            }
                         }
 
-                        setAvailableSensorTypes(config.getIntegerArrayList(key));
+                        // Stop if 0 we are done
                         if (availableSensorTypes.size() == 0){
                             break;
                         }
-                        // @todo this goes pro
-                        if (availableSensorTypes.size() > 2) {
-                            DataMap configMap = new DataMap();
-                            configMap.putIntegerArrayList(ConfigurationHelper.KEY_ENABLED_SENSORS,
-                                    new ArrayList<>(availableSensorTypes.subList(0, 2)));
-                            ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
-                            Toast.makeText(getApplicationContext(), getResources().getText(R.string.get_pro), Toast.LENGTH_SHORT).show();
-                            break;
-                        }
 
-                        for (Integer availableSensorType : availableSensorTypes) {
-                            watchFace.addSensorColumn(availableSensorType);
+
+//                        if (availableSensorTypes.size() > 1) {
+//                            DataMap configMap = new DataMap();
+//                            configMap.putIntegerArrayList(ConfigurationHelper.KEY_ENABLED_SENSORS,
+//                                    new ArrayList<>(availableSensorTypes.subList(0, 1)));
+//                            ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
+//                            Toast.makeText(getApplicationContext(), getResources().getText(R.string.get_pro), Toast.LENGTH_SHORT).show();
+//                            break;
+//                        }
+
+                        Iterator<Integer> it = availableSensorTypes.iterator();
+                        if (it.hasNext()){
+                            watchFace.addSensorColumn(it.next());
                         }
                         break;
                     default:
