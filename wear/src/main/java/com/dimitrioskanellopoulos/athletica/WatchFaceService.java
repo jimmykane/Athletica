@@ -23,6 +23,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
+import android.widget.Toast;
 
 import com.dimitrioskanellopoulos.athletica.configuration.ConfigurationHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
@@ -53,6 +54,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -444,7 +446,16 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         if (availableSensorTypes.size() == 0){
                             break;
                         }
-                        // 6. Check if in the new available sensors belongs a previously active ones and activate them
+                        // @todo this goes pro
+                        if (availableSensorTypes.size() > 1) {
+                            DataMap configMap = new DataMap();
+                            configMap.putIntegerArrayList(ConfigurationHelper.KEY_ENABLED_SENSORS,
+                                    new ArrayList<>(availableSensorTypes.subList(0, 1)));
+                            ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
+                            Toast.makeText(getApplicationContext(), getResources().getText(R.string.get_pro), Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+
                         for (Integer availableSensorType : availableSensorTypes) {
                             watchFace.addSensorColumn(availableSensorType);
                         }
