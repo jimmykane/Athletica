@@ -381,6 +381,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
         @Override // DataApi.DataListener
         public void onDataChanged(DataEventBuffer dataEvents) {
+            Log.d(TAG, "Data changed");
             for (DataEvent dataEvent : dataEvents) {
                 if (dataEvent.getType() != DataEvent.TYPE_CHANGED) {
                     continue;
@@ -447,10 +448,10 @@ public class WatchFaceService extends CanvasWatchFaceService {
                             break;
                         }
                         // @todo this goes pro
-                        if (availableSensorTypes.size() > 1) {
+                        if (availableSensorTypes.size() > 2) {
                             DataMap configMap = new DataMap();
                             configMap.putIntegerArrayList(ConfigurationHelper.KEY_ENABLED_SENSORS,
-                                    new ArrayList<>(availableSensorTypes.subList(0, 1)));
+                                    new ArrayList<>(availableSensorTypes.subList(0, 2)));
                             ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
                             Toast.makeText(getApplicationContext(), getResources().getText(R.string.get_pro), Toast.LENGTH_SHORT).show();
                             break;

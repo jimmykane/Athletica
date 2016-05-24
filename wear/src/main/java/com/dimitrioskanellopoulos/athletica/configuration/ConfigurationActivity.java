@@ -15,13 +15,18 @@ import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.DataEvent;
+import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.DataItem;
 import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ConfigurationActivity extends AmbientAwareWearableActivity {
+public class ConfigurationActivity extends AmbientAwareWearableActivity implements DataApi.DataListener{
     private final static String TAG = "ConfigurationActivity";
 
     private Switch switchTimeFormat;
@@ -133,6 +138,28 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity {
     @Override
     public LinearLayout getLayout() {
         return (LinearLayout) findViewById(R.id.configuration_layout);
+    }
+
+    @Override // DataApi.DataListener
+    public void onDataChanged(DataEventBuffer dataEvents) {
+        Log.d(TAG, "Data changed");
+        for (DataEvent dataEvent : dataEvents) {
+            if (dataEvent.getType() != DataEvent.TYPE_CHANGED) {
+                continue;
+            }
+
+            DataItem dataItem = dataEvent.getDataItem();
+            if (!dataItem.getUri().getPath().equals(
+                    ConfigurationHelper.PATH_WITH_FEATURE)) {
+                continue;
+            }
+
+            DataMapItem dataMapItem = DataMapItem.fromDataItem(dataItem);
+            DataMap config = dataMapItem.getDataMap();
+            Log.d(TAG, "Config DataItem updated " + config);
+            // This can happen from this method more often when phone changes
+            updateUiForConfigDataMap(config);
+        }
     }
 
     private void createSwitchesForSensorTypes(ArrayList<Integer> sensorTypes) {
