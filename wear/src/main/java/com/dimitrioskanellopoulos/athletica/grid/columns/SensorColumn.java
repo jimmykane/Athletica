@@ -30,7 +30,7 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
 
     @Override
     public void setIsVisible(Boolean isVisible) {
-        if (isVisible){
+        if (isVisible && !isInAmbientMode()){
             averagingCallbackSensor.startListening();
         }else {
             averagingCallbackSensor.stopListening();
@@ -40,10 +40,10 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
 
     @Override
     public void setAmbientMode(Boolean ambientMode) {
-        if (ambientMode){
-            averagingCallbackSensor.stopListening();
-        }else if (isVisible()){
+        if (!ambientMode && isVisible()){
             averagingCallbackSensor.startListening();
+        }else {
+            averagingCallbackSensor.stopListening();
         }
         super.setAmbientMode(ambientMode);
     }
