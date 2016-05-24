@@ -20,6 +20,7 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.SensorColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -122,6 +123,13 @@ public class WatchFace {
         grid.getRow("thirdRow").putColumn("sunset", sunsetColumn);
     }
 
+    public Boolean hasSensorColumn(Integer sensorType) {
+        if (grid.getRow("forthRow").getColumn(sensorType.toString()) != null){
+            return true;
+        }
+        return false;
+    }
+
     public void addSensorColumn(Integer sensorType) {
         if (grid.getRow("forthRow").getAllColumns().size() >= 3){
             grid.getRow("forthRow").getAllColumns().values().toArray(new Column[0])[grid.getRow("forthRow").getAllColumns().size() - 1].setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
@@ -140,7 +148,9 @@ public class WatchFace {
         // @todo  When using more than one sensors should add the margin to the previous one
     }
 
-    // @todo should destroy the object somehow to stop listening by the object / column
+    public void removeAllSensorColumns(){
+        grid.getRow("forthRow").removeAllColumns();
+    }
     public void removeSensorColumn(Integer sensorType){
         // @todo should stop etc
         grid.getRow("forthRow").removeColumn(sensorType.toString() + "_icon");

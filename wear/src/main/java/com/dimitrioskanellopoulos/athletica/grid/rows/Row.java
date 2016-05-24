@@ -3,6 +3,7 @@ package com.dimitrioskanellopoulos.athletica.grid.rows;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 public class Row implements RowInterface {
     private LinkedHashMap<String, Column> columns = new LinkedHashMap<>();
@@ -39,5 +40,12 @@ public class Row implements RowInterface {
     @Override
     public void setVerticalMargin(Float verticalMargin) {
         this.verticalMargin = verticalMargin;
+    }
+
+    public void removeAllColumns() {
+        for (String columnName : columns.keySet()){
+            columns.get(columnName).destroy();
+        }
+        columns.clear();
     }
 }

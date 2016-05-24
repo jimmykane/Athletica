@@ -23,7 +23,6 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
-import android.widget.Toast;
 
 import com.dimitrioskanellopoulos.athletica.configuration.ConfigurationHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
@@ -48,7 +47,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -343,6 +341,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     if (availableSensorTypes.size() < 2) {
                         break;
                     }
+                    addSensorColumn();
                     vibrator.vibrate(new long[]{0, 50, 50}, -1);
                     break;
 
@@ -434,16 +433,19 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         // Save new config
                         setAvailableSensorTypes(config.getIntegerArrayList(key));
 
-                        // Remove columns that are not there (getApplicationDeviceSupportedSensors gives all) or all if the size is 0
-                        for (Integer availableDeviceSensorType : SensorHelper.getApplicationDeviceSupportedSensors(getApplicationContext())) {
-                            if (!availableSensorTypes.contains(availableDeviceSensorType) || availableSensorTypes.size() == 0) {
-                                watchFace.removeSensorColumn(availableDeviceSensorType);
-                            }
+                        if (availableSensorTypes.size() == 0) {
+                            watchFace.removeAllSensorColumns();
+                            break;
                         }
 
-                        // Stop if 0 we are done
-                        if (availableSensorTypes.size() == 0){
-                            break;
+                        Boolean found = false;
+                        for (Integer availableSensorType : SensorHelper.getApplicationDeviceSupportedSensors(getApplicationContext())){
+                            if (watchFace.hasSensorColumn(availableSensorType)){
+                                found = true;
+                            }
+                        }
+                        if (!found){
+                            addSensorColumn();
                         }
 
 
@@ -456,10 +458,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 //                            break;
 //                        }
 
-                        Iterator<Integer> it = availableSensorTypes.iterator();
-                        if (it.hasNext()){
-                            watchFace.addSensorColumn(it.next());
-                        }
+
                         break;
                     default:
                         Log.w(TAG, "Ignoring unknown config key: " + key);
@@ -472,6 +471,44 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
+        private void addSensorColumn() {
+            // Sanity
+            if (availableSensorTypes.size() == 0) {
+                watchFace.removeAllSensorColumns();
+                return;
+            }
+            // If only one
+            if (availableSensorTypes.size() == 1) {
+                // If it's not there
+                if (!watchFace.hasSensorColumn(availableSensorTypes.get(0))){
+                    watchFace.removeAllSensorColumns();
+                    watchFace.addSensorColumn(availableSensorTypes.get(0));
+                }
+                return;
+            }
+            // Check if found and what position and remove
+            int indexFound = -1;
+            int i=0;
+            for (Integer availableSensorType : availableSensorTypes){
+                if (watchFace.hasSensorColumn(availableSensorType)){
+                    indexFound = i;
+                    break;
+                }
+                i++;
+            }
+            watchFace.removeAllSensorColumns();
+            // If not found add 1st one
+            if (indexFound == -1){
+                watchFace.addSensorColumn(availableSensorTypes.get(0));
+                return;
+            }
+            // If last got to 1st
+            if ((indexFound + 1) >= availableSensorTypes.size()){
+                watchFace.addSensorColumn(availableSensorTypes.get(0));
+                return;
+            }
+            watchFace.addSensorColumn(availableSensorTypes.get(indexFound+1));
+        }
 
         /**
          * Finds and sets all the available and supported sensors
@@ -482,11 +519,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             for (int sensorType : sensorTypes) {
                 switch (sensorType) {
                     case Sensor.TYPE_HEART_RATE:
-                        // if (!permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS) && permissionsHelper.canAskAgainForPermission(Manifest.permission.BODY_SENSORS)) {
-                        // permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
-                        // Let it be handled by settings and don't nag the user
-                        // continue;
-                        // }
                         if (sensorManager.getDefaultSensor(sensorType) == null) {
                             Log.w(TAG, "Could not add to available sensors sensor: " + sensorType);
                             continue;
@@ -511,6 +543,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 availableSensorTypes.add(sensorType);
             }
         }
+
+
 
         private void registerTimeZoneReceiver() {
             if (isRegisteredTimeZoneReceiver) {
