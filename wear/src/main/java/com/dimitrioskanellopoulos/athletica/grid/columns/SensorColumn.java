@@ -30,6 +30,7 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
 
     @Override
     public void setIsVisible(Boolean isVisible) {
+        Log.d(TAG, "Set is visible " + isVisible.toString());
         if (isVisible && !isInAmbientMode()){
             averagingCallbackSensor.startListening();
         }else {
