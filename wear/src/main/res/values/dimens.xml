@@ -4,7 +4,7 @@
     <dimen name="time_am_pm_size">12dp</dimen>
     <dimen name="date_size">18dp</dimen>
     <dimen name="text_size">14dp</dimen>
-    <dimen name="icon_size">13dp</dimen>
+    <dimen name="icon_size">14dp</dimen>
     <dimen name="icon_margin">2dp</dimen>
     <dimen name="units_size">12dp</dimen>
     <dimen name="units_margin">2dp</dimen>
