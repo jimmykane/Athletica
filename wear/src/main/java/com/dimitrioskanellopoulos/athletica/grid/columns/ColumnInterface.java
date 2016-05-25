@@ -29,6 +29,8 @@ public interface ColumnInterface {
 
     void setIsVisible(Boolean visible);
 
+    void runTasks();
+
     void start();
     void destroy();
 }

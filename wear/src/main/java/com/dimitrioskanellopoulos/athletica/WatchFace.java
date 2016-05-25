@@ -183,6 +183,17 @@ public class WatchFace {
         grid.setIsVisible(isVisible);
     }
 
+    /**
+     * Run's tasks for every column
+     */
+    public void runTasks() {
+        // Fow now do it only on the sensor columns
+        for (Map.Entry<String, Column> columnEntry : grid.getRow("forthRow").getAllColumns().entrySet()) {
+            Column column = columnEntry.getValue();
+            column.runTasks();
+        }
+    }
+
     public void setTimeFormat24(Boolean timeFormat24) {
         TimeColumn timeColumn = (TimeColumn) grid.getRow("firstRow").getColumn("time");
         timeColumn.setTimeFormat24(timeFormat24);

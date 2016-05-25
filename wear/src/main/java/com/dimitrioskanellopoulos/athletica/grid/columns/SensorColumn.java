@@ -56,7 +56,6 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
 
     @Override
     public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
-
         DecimalFormat decimalFormat = new DecimalFormat("#.#");
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
@@ -77,12 +76,18 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
 
     @Override
     public void start() {
-        Log.d(TAG, "started");
+        Log.d(TAG, "Started");
     }
 
     @Override
     public void destroy() {
         averagingCallbackSensor.stopListening();
-        Log.d(TAG, "destroyed");
+        Log.d(TAG, "Destroyed");
+    }
+
+    @Override
+    public void runTasks() {
+        Log.d(TAG, "Running tasks");
+        averagingCallbackSensor.getAverage();
     }
 }

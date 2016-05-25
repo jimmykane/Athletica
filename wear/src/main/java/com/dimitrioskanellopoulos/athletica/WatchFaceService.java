@@ -718,7 +718,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 return;
             }
             Log.d(TAG, "Running onTimeTickTasks");
+            watchFace.runTasks();
             lastOnTimeTickTasksRun = now;
+
 
             if (EmulatorHelper.isEmulator()) {
                 Location location = new Location("dummy");
