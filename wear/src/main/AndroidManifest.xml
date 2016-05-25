@@ -71,6 +71,11 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activities.LaunchActivity"
+            android:enabled="true"
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>
