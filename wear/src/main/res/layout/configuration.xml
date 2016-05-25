@@ -2,13 +2,13 @@
 <android.support.wearable.view.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/container"
     android:background="@color/black"
-    android:paddingTop="32dp"
-    android:paddingStart="36dp"
     android:paddingEnd="22dp"
+    android:paddingStart="36dp"
+    android:paddingTop="32dp"
     tools:context=".configuration.ConfigurationActivity"
     tools:deviceIds="wear">
 
@@ -27,60 +27,60 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/white"
                 android:text="@string/configuration_activity_general_settings"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <Switch
+                android:id="@+id/switch_24_hour_clock"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:layout_gravity="end"
                 android:paddingBottom="4dp"
                 android:text="@string/configuration_switch_24_hour_clock"
-                android:id="@+id/switch_24_hour_clock"
-                android:layout_gravity="end"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="12sp" />
 
             <Switch
+                android:id="@+id/switch_date_names"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:layout_gravity="end"
                 android:paddingBottom="4dp"
                 android:text="@string/configuration_switch_show_day_name"
-                android:id="@+id/switch_date_names"
-                android:layout_gravity="end"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="12sp" />
 
             <Switch
+                android:id="@+id/switch_interlace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:layout_gravity="end"
                 android:paddingBottom="4dp"
                 android:text="@string/configuration_interlace"
-                android:id="@+id/switch_interlace"
-                android:layout_gravity="end"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="12sp" />
 
             <Switch
+                android:id="@+id/switch_invert_black_and_white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:layout_gravity="end"
                 android:paddingBottom="4dp"
                 android:text="@string/configuration_invert_black_and_white"
-                android:id="@+id/switch_invert_black_and_white"
-                android:layout_gravity="end"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="12sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
                 android:paddingBottom="4dp"
-                android:textColor="@color/white"
                 android:text="@string/configuration_activity_sensor_settings"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
         </LinearLayout>
 

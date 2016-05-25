@@ -46,13 +46,13 @@
         </service>
 
         <!--<service android:name=".configuration.ConfigurationListenerService">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />-->
-                <!--<data-->
-                    <!--android:host="*"-->
-                    <!--android:pathPrefix="/"-->
-                    <!--android:scheme="wear" />-->
-            <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />-->
+        <!--<data-->
+        <!--android:host="*"-->
+        <!--android:pathPrefix="/"-->
+        <!--android:scheme="wear" />-->
+        <!--</intent-filter>-->
         <!--</service>-->
 
         <activity

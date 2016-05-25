@@ -127,10 +127,30 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 .setFastestInterval(LOCATION_UPDATE_FASTEST_INTERVAL_MS)
                 .setPriority(LocationRequest.PRIORITY_LOW_POWER);
         /**
+         * The normal watch face style for white on black background
+         */
+        private final WatchFaceStyle watchFaceStyleNormal = new WatchFaceStyle.Builder(WatchFaceService.this)
+                .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
+                .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
+                .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
+                .setAcceptsTapEvents(true)
+                .setShowSystemUiTime(false)
+                .build();
+        /**
+         * The inverted watch face style for black on white background
+         */
+        private final WatchFaceStyle watchFaceStyleInverted = new WatchFaceStyle.Builder(WatchFaceService.this)
+                .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
+                .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
+                .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
+                .setAcceptsTapEvents(true)
+                .setShowSystemUiTime(false)
+                .setViewProtectionMode(WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR)
+                .build();
+        /**
          * Whether tha Battery receiver is registered
          */
         boolean isRegisteredBatteryInfoReceiver = false;
-
         /**
          * Whether tha location receiver is registered
          */
@@ -198,29 +218,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * disable anti-aliasing in ambient mode.
          */
         private boolean mLowBitAmbient;
-
-        /**
-         * The normal watch face style for white on black background
-         */
-        private final WatchFaceStyle watchFaceStyleNormal = new WatchFaceStyle.Builder(WatchFaceService.this)
-                .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
-                .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
-                .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
-                .setAcceptsTapEvents(true)
-                .setShowSystemUiTime(false)
-                .build();
-
-        /**
-         * The inverted watch face style for black on white background
-         */
-        private final WatchFaceStyle watchFaceStyleInverted = new WatchFaceStyle.Builder(WatchFaceService.this)
-                .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
-                .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
-                .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
-                .setAcceptsTapEvents(true)
-                .setShowSystemUiTime(false)
-                .setViewProtectionMode(WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR)
-                .build();
         /**
          * The available sensors. Cross of supported by the app sensors and supported by the device
          */
@@ -438,12 +435,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         }
 
                         Boolean found = false;
-                        for (Integer availableSensorType : SensorHelper.getApplicationDeviceSupportedSensors(getApplicationContext())){
-                            if (watchFace.hasSensorColumn(availableSensorType)){
+                        for (Integer availableSensorType : SensorHelper.getApplicationDeviceSupportedSensors(getApplicationContext())) {
+                            if (watchFace.hasSensorColumn(availableSensorType)) {
                                 found = true;
                             }
                         }
-                        if (!found){
+                        if (!found) {
                             addSensorColumn();
                         }
 
@@ -479,7 +476,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // If only one
             if (availableSensorTypes.size() == 1) {
                 // If it's not there
-                if (!watchFace.hasSensorColumn(availableSensorTypes.get(0))){
+                if (!watchFace.hasSensorColumn(availableSensorTypes.get(0))) {
                     watchFace.removeAllSensorColumns();
                     watchFace.addSensorColumn(availableSensorTypes.get(0));
                 }
@@ -487,9 +484,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             // Check if found and what position and remove
             int indexFound = -1;
-            int i=0;
-            for (Integer availableSensorType : availableSensorTypes){
-                if (watchFace.hasSensorColumn(availableSensorType)){
+            int i = 0;
+            for (Integer availableSensorType : availableSensorTypes) {
+                if (watchFace.hasSensorColumn(availableSensorType)) {
                     indexFound = i;
                     break;
                 }
@@ -497,16 +494,16 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
             watchFace.removeAllSensorColumns();
             // If not found add 1st one
-            if (indexFound == -1){
+            if (indexFound == -1) {
                 watchFace.addSensorColumn(availableSensorTypes.get(0));
                 return;
             }
             // If last got to 1st
-            if ((indexFound + 1) >= availableSensorTypes.size()){
+            if ((indexFound + 1) >= availableSensorTypes.size()) {
                 watchFace.addSensorColumn(availableSensorTypes.get(0));
                 return;
             }
-            watchFace.addSensorColumn(availableSensorTypes.get(indexFound+1));
+            watchFace.addSensorColumn(availableSensorTypes.get(indexFound + 1));
         }
 
         /**
@@ -542,7 +539,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 availableSensorTypes.add(sensorType);
             }
         }
-
 
 
         private void registerTimeZoneReceiver() {
@@ -646,7 +642,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs);
             }
         }
-
 
 
         /**

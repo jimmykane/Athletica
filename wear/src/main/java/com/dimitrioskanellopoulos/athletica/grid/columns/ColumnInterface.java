@@ -32,5 +32,6 @@ public interface ColumnInterface {
     void runTasks();
 
     void start();
+
     void destroy();
 }

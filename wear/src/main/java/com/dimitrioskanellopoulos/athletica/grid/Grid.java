@@ -10,7 +10,7 @@ public class Grid {
     private static final String TAG = "Grid";
     private final LinkedHashMap<String, Row> rows = new LinkedHashMap<>();
 
-    public void putRow(String rowName, Row row){
+    public void putRow(String rowName, Row row) {
         rows.put(rowName, row);
     }
 
@@ -21,7 +21,7 @@ public class Grid {
 //        rows.remove(rowName);
 //    }
 
-    public Row getRow(String rowName){
+    public Row getRow(String rowName) {
         return rows.get(rowName);
     }
 

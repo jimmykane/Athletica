@@ -123,14 +123,14 @@ public class WatchFace {
     }
 
     public Boolean hasSensorColumn(Integer sensorType) {
-        if (grid.getRow("forthRow").getColumn(sensorType.toString()) != null){
+        if (grid.getRow("forthRow").getColumn(sensorType.toString()) != null) {
             return true;
         }
         return false;
     }
 
     public void addSensorColumn(Integer sensorType) {
-        if (grid.getRow("forthRow").getAllColumns().size() >= 3){
+        if (grid.getRow("forthRow").getAllColumns().size() >= 3) {
             grid.getRow("forthRow").getAllColumns().values().toArray(new Column[0])[grid.getRow("forthRow").getAllColumns().size() - 1].setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
         }
         Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(resources, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
@@ -147,10 +147,11 @@ public class WatchFace {
         // @todo  When using more than one sensors should add the margin to the previous one
     }
 
-    public void removeAllSensorColumns(){
+    public void removeAllSensorColumns() {
         grid.getRow("forthRow").removeAllColumns();
     }
-    public void removeSensorColumn(Integer sensorType){
+
+    public void removeSensorColumn(Integer sensorType) {
         // @todo should stop etc
         grid.getRow("forthRow").removeColumn(sensorType.toString() + "_icon");
         grid.getRow("forthRow").removeColumn(sensorType.toString());

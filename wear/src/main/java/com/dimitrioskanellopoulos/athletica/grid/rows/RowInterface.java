@@ -11,7 +11,7 @@ public interface RowInterface {
 
     Column getColumn(String name);
 
-    LinkedHashMap<String, Column>  getAllColumns();
+    LinkedHashMap<String, Column> getAllColumns();
 
     Float getVerticalMargin();
 

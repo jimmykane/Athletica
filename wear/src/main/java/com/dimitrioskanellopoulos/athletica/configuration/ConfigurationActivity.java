@@ -27,7 +27,7 @@ import com.google.android.gms.wearable.Wearable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ConfigurationActivity extends AmbientAwareWearableActivity implements DataApi.DataListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+public class ConfigurationActivity extends AmbientAwareWearableActivity implements DataApi.DataListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private final static String TAG = "ConfigurationActivity";
 
     private Switch switchTimeFormat;
