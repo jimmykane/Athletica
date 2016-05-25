@@ -20,6 +20,12 @@ android {
         }
     }
     productFlavors {
+        free{
+            applicationId "com.dimitrioskanellopoulos.athletica"
+        }
+        pro{
+            applicationId "com.dimitrioskanellopoulos.athletica.pro"
+        }
     }
 }
 
