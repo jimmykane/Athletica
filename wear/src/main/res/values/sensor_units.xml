@@ -6,4 +6,6 @@
     <string name="units_android.sensor.ambient_temperature">c</string>
     <string name="units_android.sensor.magnetic_field">uT</string>
     <string name="units_android.sensor.light">lux</string>
+    <string name="units_android.sensor.relative_humidity">%</string>
+    <string name="units_android.sensor.accelerometer">m/s^2</string>
 </resources>

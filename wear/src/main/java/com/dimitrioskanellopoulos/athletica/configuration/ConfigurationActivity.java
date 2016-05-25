@@ -194,6 +194,12 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
             case Sensor.TYPE_MAGNETIC_FIELD:
                 sensorSwitch.setText(R.string.configuration_activity_android_sensor_magnetic_field);
                 break;
+            case Sensor.TYPE_RELATIVE_HUMIDITY:
+                sensorSwitch.setText(R.string.configuration_activity_android_sensor_relative_humidity);
+                break;
+            case Sensor.TYPE_ACCELEROMETER:
+                sensorSwitch.setText(R.string.configuration_activity_android_sensor_accelerometer);
+                break;
             default:
                 return;
         }
@@ -213,7 +219,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
                 ArrayList<Integer> enabledSensors = new ArrayList<>();
                 for (Integer sensor : sensors) {
                     Switch sensorSwitch = (Switch) findViewById(sensor);
-                    if (sensorSwitch.isChecked()) {
+                    if (sensorSwitch != null && sensorSwitch.isChecked()) {
                         enabledSensors.add(sensor);
                     }
                 }

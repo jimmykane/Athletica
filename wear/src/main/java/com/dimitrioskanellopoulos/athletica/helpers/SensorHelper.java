@@ -16,6 +16,8 @@ public class SensorHelper {
             Sensor.TYPE_AMBIENT_TEMPERATURE,
             Sensor.TYPE_LIGHT,
             Sensor.TYPE_MAGNETIC_FIELD,
+            Sensor.TYPE_RELATIVE_HUMIDITY,
+            Sensor.TYPE_ACCELEROMETER,
     };
 
     public static ArrayList<Integer> getApplicationDeviceSupportedSensors(Context context) {
@@ -47,6 +49,16 @@ public class SensorHelper {
                     break;
                 case Sensor.TYPE_MAGNETIC_FIELD:
                     if (!packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_COMPASS)) {
+                        continue;
+                    }
+                    break;
+                case Sensor.TYPE_RELATIVE_HUMIDITY:
+                    if (!packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_RELATIVE_HUMIDITY)) {
+                        continue;
+                    }
+                    break;
+                case Sensor.TYPE_ACCELEROMETER:
+                    if (!packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_ACCELEROMETER)) {
                         continue;
                     }
                     break;

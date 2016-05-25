@@ -1,5 +1,6 @@
 package com.dimitrioskanellopoulos.athletica.grid.columns;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
@@ -29,6 +30,26 @@ public class ColumnFactory {
             case Sensor.TYPE_LIGHT:
                 sensorIconColumn.setText(resources.getString(R.string.icon_android_sensor_light));
                 break;
+            case Sensor.TYPE_RELATIVE_HUMIDITY:
+                sensorIconColumn.setText(resources.getString(R.string.icon_android_sensor_relative_humidity));
+                break;
+            case Sensor.TYPE_ACCELEROMETER:
+                sensorIconColumn.setText(resources.getString(R.string.icon_android_sensor_accelerometer));
+                break;
+            default:
+                sensorIconColumn.setText("-/-");
+        }
+        return sensorIconColumn;
+    }
+
+    public static Column getColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor) {
+        SensorColumn sensorIconColumn = new SensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType);
+        switch (sensorType) {
+            case Sensor.TYPE_ACCELEROMETER:
+                sensorIconColumn.setText(context.getApplicationContext().getResources().getString(R.string.icon_android_sensor_accelerometer));
+                // Decrease size
+                //sensorIconColumn.getPaint().setTextSize(paintTextSize*0.9f);
+                break;
             default:
                 sensorIconColumn.setText("-/-");
         }
@@ -55,6 +76,12 @@ public class ColumnFactory {
                 break;
             case Sensor.TYPE_LIGHT:
                 sensorUnitsColumn.setText(resources.getString(R.string.units_android_sensor_light));
+                break;
+            case Sensor.TYPE_RELATIVE_HUMIDITY:
+                sensorUnitsColumn.setText(resources.getString(R.string.units_android_sensor_relative_humidity));
+                break;
+            case Sensor.TYPE_ACCELEROMETER:
+                sensorUnitsColumn.setText(resources.getString(R.string.units_android_sensor_accelerometer));
                 break;
             default:
                 sensorUnitsColumn.setText("-/-");

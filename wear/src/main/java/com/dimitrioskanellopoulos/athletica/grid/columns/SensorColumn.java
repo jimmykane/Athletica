@@ -61,6 +61,10 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
             case Sensor.TYPE_PRESSURE:
                 setText(decimalFormat.format(eventValues[0]));
                 break;
+            case Sensor.TYPE_ACCELEROMETER:
+                decimalFormat = new DecimalFormat("##");
+                setText(decimalFormat.format(eventValues[0]) + " - " + decimalFormat.format(eventValues[1]) + " - " + decimalFormat.format(eventValues[2]));
+                break;
             case Sensor.TYPE_HEART_RATE:
                 if (Math.round(eventValues[0]) > 180) {
                     vibrator.vibrate(new long[]{0, 250, 500, 250, 100, 250, 50, 250, 50}, -1);

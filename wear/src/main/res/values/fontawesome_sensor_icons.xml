@@ -6,4 +6,6 @@
     <string name="icon_android.sensor.ambient_temperature">&#xF080;</string>
     <string name="icon_android.sensor.magnetic_field">&#xF076;</string>
     <string name="icon_android.sensor.light">&#xF042;</string>
+    <string name="icon_android.sensor.relative_humidity">&#xf043;</string>
+    <string name="icon_android.sensor.accelerometer">&#xf047;</string>
 </resources>

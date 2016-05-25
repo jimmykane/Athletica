@@ -12,4 +12,6 @@
     <string name="configuration_activity_android.sensor.ambient_temperature">Ambient temperature</string>
     <string name="configuration_activity_android.sensor.magnetic_field">Magnetic field</string>
     <string name="configuration_activity_android.sensor.light">Light</string>
+    <string name="configuration_activity_android.sensor.relative_humidity">Relative humidity</string>
+    <string name="configuration_activity_android.sensor.accelerometer">Accelerometer</string>
 </resources>
