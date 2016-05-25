@@ -157,6 +157,11 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
         }
     }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed: " + connectionResult);
+    }
+
     private void createSwitchesForSensorTypes(ArrayList<Integer> sensorTypes) {
         for (Integer sensorType : sensorTypes) {
             createSwitchesForSensorType(sensorType, false);
@@ -330,8 +335,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
         }
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "onConnectionFailed: " + connectionResult);
+    public Boolean isPro() {
+        return getApplicationContext().getPackageName().contains(".pro");
     }
 }
