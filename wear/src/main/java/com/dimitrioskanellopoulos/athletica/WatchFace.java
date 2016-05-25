@@ -20,7 +20,6 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.SensorColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TimeZone;
 

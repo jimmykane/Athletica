@@ -3,7 +3,6 @@ package com.dimitrioskanellopoulos.athletica.grid.rows;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 
 import java.util.LinkedHashMap;
-import java.util.Set;
 
 public class Row implements RowInterface {
     private LinkedHashMap<String, Column> columns = new LinkedHashMap<>();
