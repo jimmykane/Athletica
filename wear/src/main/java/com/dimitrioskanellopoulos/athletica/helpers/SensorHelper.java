@@ -11,12 +11,12 @@ import java.util.ArrayList;
 public class SensorHelper {
     private static final String TAG = "SensorHelper";
     private static final Integer[] APPLICATION_SUPPORTED_SENSORS = {
-            Sensor.TYPE_PRESSURE,
             Sensor.TYPE_HEART_RATE,
+            Sensor.TYPE_PRESSURE,
             Sensor.TYPE_AMBIENT_TEMPERATURE,
-            Sensor.TYPE_LIGHT,
-            Sensor.TYPE_MAGNETIC_FIELD,
             Sensor.TYPE_RELATIVE_HUMIDITY,
+            Sensor.TYPE_MAGNETIC_FIELD,
+            Sensor.TYPE_LIGHT,
             Sensor.TYPE_ACCELEROMETER,
     };
 
