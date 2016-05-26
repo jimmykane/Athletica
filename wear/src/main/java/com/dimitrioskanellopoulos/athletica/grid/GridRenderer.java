@@ -63,7 +63,7 @@ public class GridRenderer {
                     canvas.drawLine(cursor + column.getHorizontalMargin() + column.getWidth(), startingOffsetY + rowCount * rowHeight, cursor + column.getHorizontalMargin() + column.getWidth(), (startingOffsetY + rowCount * rowHeight) + rowHeight, bluePaint);
                 }
                 // Draw the column
-                canvas.drawText(column.getText(), cursor, yOffset + rowHeight, column.getPaint()); // check if it needs per column height
+                canvas.drawText(column.getText(), cursor, yOffset + rowHeight + row.getPaddingBottom(), column.getPaint()); // check if it needs per column height
                 cursor += column.getWidth() + column.getHorizontalMargin();
                 //Log.d(TAG, "Drew column cursor " + cursor);
             }

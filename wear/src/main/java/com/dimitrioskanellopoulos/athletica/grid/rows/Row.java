@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 
 public class Row implements RowInterface {
     private LinkedHashMap<String, Column> columns = new LinkedHashMap<>();
-    private Float verticalMargin = 0.0f;
+    private Float paddingBottom = 0.0f;
 
     @Override
     public void putColumn(String name, Column column) {
@@ -32,13 +32,13 @@ public class Row implements RowInterface {
     }
 
     @Override
-    public Float getVerticalMargin() {
-        return verticalMargin;
+    public Float getPaddingBottom() {
+        return paddingBottom;
     }
 
     @Override
-    public void setVerticalMargin(Float verticalMargin) {
-        this.verticalMargin = verticalMargin;
+    public void setPaddingBottom(Float verticalMargin) {
+        this.paddingBottom = verticalMargin;
     }
 
     public void removeAllColumns() {

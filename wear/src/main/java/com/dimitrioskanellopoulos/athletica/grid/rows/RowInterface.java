@@ -13,7 +13,7 @@ public interface RowInterface {
 
     LinkedHashMap<String, Column> getAllColumns();
 
-    Float getVerticalMargin();
+    Float getPaddingBottom();
 
-    void setVerticalMargin(Float verticalMargin);
+    void setPaddingBottom(Float verticalMargin);
 }

@@ -16,7 +16,6 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.BatteryIconColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.columns.ColumnFactory;
 import com.dimitrioskanellopoulos.athletica.grid.columns.DateColumn;
-import com.dimitrioskanellopoulos.athletica.grid.columns.SensorColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
@@ -50,9 +49,6 @@ public class WatchFace {
 
         this.context = context;
         resources = context.getResources();
-
-        // Define the margin of the rows for vertical
-        Float verticalMargin = resources.getDimension(R.dimen.row_vertical_margin);
 
         grid.putRow("firstRow", new Row());
         grid.putRow("secondRow", new Row());
@@ -162,6 +158,7 @@ public class WatchFace {
         BatteryIconColumn batteryIconColumn = new BatteryIconColumn(resources, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         batteryIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         grid.getRow("fifthRow").putColumn("battery_icon", batteryIconColumn);
+        grid.getRow("fifthRow").setPaddingBottom(resources.getDimension(R.dimen.row_padding_bottom));
 
         Column batteryColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.battery_text_size), textColor);
         grid.getRow("fifthRow").putColumn("battery", batteryColumn);
