@@ -429,17 +429,19 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         // Save new config
                         setAvailableSensorTypes(config.getIntegerArrayList(key));
 
+                        // If new available sensor are none clear all
                         if (availableSensorTypes.size() == 0) {
                             watchFace.removeAllSensorColumns();
                             break;
                         }
 
                         Boolean found = false;
-                        for (Integer availableSensorType : SensorHelper.getApplicationDeviceSupportedSensors(getApplicationContext())) {
+                        for (Integer availableSensorType : availableSensorTypes) {
                             if (watchFace.hasSensorColumn(availableSensorType)) {
                                 found = true;
                             }
                         }
+                        // If the current column was not found add next
                         if (!found) {
                             addSensorColumn();
                         }

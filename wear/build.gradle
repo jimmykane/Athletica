@@ -9,8 +9,8 @@ android {
         applicationId "com.dimitrioskanellopoulos.athletica"
         minSdkVersion 20
         targetSdkVersion 23
-        versionCode 85
-        versionName "2.5.2"
+        versionCode 86
+        versionName "2.5.3"
     }
     buildTypes {
         debug {
@@ -43,6 +43,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:8.4.0'
     compile 'com.google.android.gms:play-services-wearable:8.4.0'
     compile 'com.luckycatlabs:SunriseSunsetCalculator:1.2'
-    compile 'org.apache.commons:commons-lang3:3.4'
     provided 'com.google.android.wearable:wearable:1.0.0'
 }
