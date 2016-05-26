@@ -15,12 +15,25 @@ public class TimeColumn extends CalendarColumn {
     private final static SimpleDateFormat TIME_FORMAT_24_WITH_SECONDS = new SimpleDateFormat("k:mm:ss", Locale.getDefault());
     private Boolean isIn24hourFormat = true;
 
+    private final Float initTextSize;
+
     public TimeColumn(Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(paintTypeface, paintTextSize, paintColor);
+        initTextSize = paintTextSize;
     }
 
     public void setTimeFormat24(Boolean timeFormat24) {
         this.isIn24hourFormat = timeFormat24;
+    }
+
+    @Override
+    public void setAmbientMode(Boolean ambientMode) {
+        super.setAmbientMode(ambientMode);
+        if (ambientMode) {
+            getPaint().setTextSize(initTextSize);
+        }else {
+            getPaint().setTextSize(initTextSize * 0.8f);
+        }
     }
 
     @Override
