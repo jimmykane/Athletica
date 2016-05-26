@@ -6,24 +6,32 @@ import android.hardware.Sensor;
 
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.util.ArrayList;
 
 public class SensorHelper {
     private static final String TAG = "SensorHelper";
-    private static final Integer[] APPLICATION_SUPPORTED_SENSORS = {
+
+    private static final Integer[] FREE_VERSION_SENSORS = {
             Sensor.TYPE_HEART_RATE,
-            Sensor.TYPE_PRESSURE,
-            Sensor.TYPE_AMBIENT_TEMPERATURE,
-            Sensor.TYPE_RELATIVE_HUMIDITY,
             Sensor.TYPE_MAGNETIC_FIELD,
             Sensor.TYPE_LIGHT,
             Sensor.TYPE_ACCELEROMETER,
     };
 
+    private static final Integer[] PRO_VERSION_EXTRA_SENSORS = {
+            Sensor.TYPE_PRESSURE,
+            Sensor.TYPE_AMBIENT_TEMPERATURE,
+            Sensor.TYPE_RELATIVE_HUMIDITY,
+    };
+
     public static ArrayList<Integer> getApplicationDeviceSupportedSensors(Context context) {
         PackageManager packageManager = context.getApplicationContext().getPackageManager();
         ArrayList<Integer> applicationDeviceSupportedSensors = new ArrayList<>();
-        for (Integer applicationSupportedSensor : APPLICATION_SUPPORTED_SENSORS) {
+
+        Integer[] applicationSupportedSensors = PackageHelper.isPro(context) ? ArrayUtils.addAll(FREE_VERSION_SENSORS, PRO_VERSION_EXTRA_SENSORS) : FREE_VERSION_SENSORS;
+        for (Integer applicationSupportedSensor : applicationSupportedSensors) {
             switch (applicationSupportedSensor) {
                 case Sensor.TYPE_PRESSURE:
                     if (!packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_BAROMETER)) {
