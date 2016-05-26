@@ -28,9 +28,11 @@ android {
     productFlavors {
         free{
             applicationId "com.dimitrioskanellopoulos.athletica"
+            resValue "string", "app_name", "Athletica"
         }
         pro{
             applicationId "com.dimitrioskanellopoulos.athletica.pro"
+            resValue "string", "app_name", "Athletica Pro"
         }
     }
 }
