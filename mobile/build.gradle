@@ -14,7 +14,7 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix ".debug"
-            embedMicroApp = false
+            embedMicroApp = true
             minifyEnabled false
         }
         release {
