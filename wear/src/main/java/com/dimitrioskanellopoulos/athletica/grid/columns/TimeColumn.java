@@ -20,6 +20,7 @@ public class TimeColumn extends CalendarColumn {
     public TimeColumn(Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(paintTypeface, paintTextSize, paintColor);
         initTextSize = paintTextSize;
+        getPaint().setTextSize(initTextSize * 0.8f);
     }
 
     public void setTimeFormat24(Boolean timeFormat24) {
@@ -35,6 +36,8 @@ public class TimeColumn extends CalendarColumn {
             getPaint().setTextSize(initTextSize * 0.8f);
         }
     }
+
+
 
     @Override
     public void setTimezone(TimeZone timeZone) {
