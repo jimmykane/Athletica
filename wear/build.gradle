@@ -10,7 +10,7 @@ android {
         minSdkVersion 20
         targetSdkVersion 23
         versionCode 88
-        versionName "2.5.5"
+        versionName "2.5.6"
     }
     buildTypes {
         debug {
