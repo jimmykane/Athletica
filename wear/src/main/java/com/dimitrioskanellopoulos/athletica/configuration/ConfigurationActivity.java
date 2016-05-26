@@ -340,8 +340,4 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
             }
         }
     }
-
-    public Boolean isPro() {
-        return getApplicationContext().getPackageName().contains(".pro");
-    }
 }
