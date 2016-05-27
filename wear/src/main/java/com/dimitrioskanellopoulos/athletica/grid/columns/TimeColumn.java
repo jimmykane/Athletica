@@ -30,11 +30,6 @@ public class TimeColumn extends CalendarColumn {
     @Override
     public void setAmbientMode(Boolean ambientMode) {
         super.setAmbientMode(ambientMode);
-        if (ambientMode) {
-            getPaint().setTextSize(initTextSize);
-        }else {
-            getPaint().setTextSize(initTextSize * 0.8f);
-        }
     }
 
 
@@ -50,6 +45,15 @@ public class TimeColumn extends CalendarColumn {
 
     @Override
     public String getText() {
+        Float textSize = initTextSize;
+        if (!isIn24hourFormat) {
+            textSize = textSize * 0.90f;
+        }
+        if(!isInAmbientMode()){
+            textSize = textSize * 0.90f;
+        }
+        getPaint().setTextSize(textSize);
+
         CALENDAR.setTimeInMillis(System.currentTimeMillis());
         if (isInAmbientMode() && isIn24hourFormat) {
             return TIME_FORMAT_24.format(CALENDAR.getTime());

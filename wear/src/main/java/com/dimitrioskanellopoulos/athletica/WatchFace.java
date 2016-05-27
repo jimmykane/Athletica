@@ -194,9 +194,6 @@ public class WatchFace {
     public void setTimeFormat24(Boolean timeFormat24) {
         TimeColumn timeColumn = (TimeColumn) grid.getRow("firstRow").getColumn("time");
         timeColumn.setTimeFormat24(timeFormat24);
-        timeColumn.getPaint().setTextSize(timeFormat24 ?
-                resources.getDimension(R.dimen.time_size) :
-                resources.getDimension(R.dimen.time_size) - resources.getDimension(R.dimen.time_am_pm_size));
 
         if (timeFormat24) {
             grid.getRow("firstRow").removeColumn("amPm");
