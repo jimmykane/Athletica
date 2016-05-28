@@ -13,6 +13,7 @@ import com.dimitrioskanellopoulos.athletica.grid.Grid;
 import com.dimitrioskanellopoulos.athletica.grid.GridRenderer;
 import com.dimitrioskanellopoulos.athletica.grid.columns.AmPmColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.BatteryIconColumn;
+import com.dimitrioskanellopoulos.athletica.grid.columns.BatteryLevelColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.columns.ColumnFactory;
 import com.dimitrioskanellopoulos.athletica.grid.columns.DateColumn;
@@ -98,6 +99,7 @@ public class WatchFace {
     }
 
     private void addColumnForSunrise() {
+        // @todo should be a calendar column
         Column sunriseIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
         sunriseIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
@@ -155,13 +157,13 @@ public class WatchFace {
     }
 
     private void addColumnForBattery() {
-        BatteryIconColumn batteryIconColumn = new BatteryIconColumn(resources, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
+        BatteryIconColumn batteryIconColumn = new BatteryIconColumn(context, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         batteryIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         grid.getRow("fifthRow").putColumn("battery_icon", batteryIconColumn);
         grid.getRow("fifthRow").setPaddingBottom(resources.getDimension(R.dimen.row_padding_bottom));
 
-        Column batteryColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.battery_text_size), textColor);
-        grid.getRow("fifthRow").putColumn("battery", batteryColumn);
+        BatteryLevelColumn batteryLevelColumn = new BatteryLevelColumn(context, defaultTypeface, resources.getDimension(R.dimen.battery_text_size), textColor);
+        grid.getRow("fifthRow").putColumn("battery", batteryLevelColumn);
     }
 
     /**
@@ -237,11 +239,6 @@ public class WatchFace {
 
     public void setChinSize(Integer chinSize) {
         this.chinSize = chinSize;
-    }
-
-    public void updateBatteryLevel(Integer batteryPercentage) {
-        ((BatteryIconColumn) grid.getRow("fifthRow").getColumn("battery_icon")).setBatteryLevel(batteryPercentage);
-        grid.getRow("fifthRow").getColumn("battery").setText(batteryPercentage.toString() + "%");
     }
 
     public void updateSunriseSunset(Pair<String, String> sunriseSunset) {

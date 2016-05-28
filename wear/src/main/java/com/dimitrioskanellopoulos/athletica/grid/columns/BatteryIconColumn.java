@@ -1,30 +1,35 @@
 package com.dimitrioskanellopoulos.athletica.grid.columns;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.BatteryManager;
 import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.R;
 
-public class BatteryIconColumn extends Column {
+public class BatteryIconColumn extends BatteryColumn {
     private static final String TAG = "BatteryIconColumn";
+    private final Context context;
 
-    private float batteryLevel = 0.0f;
+    private final String batteryEmptyIcon;
+    private final String batteryQuarterIcon;
+    private final String batteryHalfIcon;
+    private final String batteryThreeQuartersIcon;
+    private final String batteryFullIcon;
 
-    private String batteryEmptyIcon;
-    private String batteryQuarterIcon;
-    private String batteryHalfIcon;
-    private String batteryThreeQuartersIcon;
-    private String batteryFullIcon;
-
-    public BatteryIconColumn(Resources resources, Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        super(paintTypeface, paintTextSize, paintColor);
-        batteryEmptyIcon = resources.getString(R.string.icon_battery_empty);
-        batteryQuarterIcon = resources.getString(R.string.icon_battery_one_quarter);
-        batteryHalfIcon = resources.getString(R.string.icon_battery_half);
-        batteryThreeQuartersIcon = resources.getString(R.string.icon_battery_three_quarters);
-        batteryFullIcon = resources.getString(R.string.icon_battery_full);
+    public BatteryIconColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
+        super(context, paintTypeface, paintTextSize, paintColor);
+        this.context = context.getApplicationContext();
+        batteryEmptyIcon = this.context .getResources().getString(R.string.icon_battery_empty);
+        batteryQuarterIcon = this.context .getResources().getString(R.string.icon_battery_one_quarter);
+        batteryHalfIcon = this.context .getResources().getString(R.string.icon_battery_half);
+        batteryThreeQuartersIcon = this.context .getResources().getString(R.string.icon_battery_three_quarters);
+        batteryFullIcon = this.context .getResources().getString(R.string.icon_battery_full);
     }
 
     @Override
@@ -46,10 +51,6 @@ public class BatteryIconColumn extends Column {
             icon = batteryEmptyIcon;
         }
         return icon;
-    }
-
-    public void setBatteryLevel(float batteryLevel) {
-        this.batteryLevel = batteryLevel;
     }
 
     @Override

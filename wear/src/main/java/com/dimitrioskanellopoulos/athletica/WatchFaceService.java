@@ -10,7 +10,6 @@ import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.Location;
-import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -148,10 +147,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 .setViewProtectionMode(WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR)
                 .build();
         /**
-         * Whether tha Battery receiver is registered
-         */
-        boolean isRegisteredBatteryInfoReceiver = false;
-        /**
          * Whether tha location receiver is registered
          */
         boolean isRegisteredLocationReceiver = false;
@@ -174,24 +169,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             @Override
             public void onReceive(Context context, Intent intent) {
                 watchFace.updateTimeZoneWith(TimeZone.getTimeZone(intent.getStringExtra("time-zone")));
-            }
-        };
-        /**
-         * Broadcast receiver for updating the battery level
-         */
-        private final BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-                Intent batteryStatus = context.registerReceiver(null, ifilter);
-                // Just in case
-                int level = 0;
-                if (batteryStatus != null) {
-                    level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-                }
-                //int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-                //float batteryPct = level / (float) scale;
-                watchFace.updateBatteryLevel(level);
             }
         };
         /**
@@ -251,7 +228,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             Log.d(TAG, "onDestroy");
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
-            unregisterBatteryInfoReceiver();
             unregisterTimeZoneReceiver();
             if (googleApiClient.isConnected()) {
                 googleApiClient.disconnect();
@@ -268,15 +244,11 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 googleApiClient.connect();
                 // Check for timezone changes
                 registerTimeZoneReceiver();
-                // Check for battery changes
-                registerBatteryInfoReceiver();
                 // Update time zone in case it changed while we weren't visible.
                 watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
                 // Stop checking for timezone updates
                 unregisterTimeZoneReceiver();
-                // Stop checking for battery level changes
-                unregisterBatteryInfoReceiver();
 
                 if (googleApiClient != null && googleApiClient.isConnected()) {
                     Wearable.DataApi.removeListener(googleApiClient, this);
@@ -595,22 +567,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             isRegisteredLocationReceiver = false;
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, locationChangedReceiver);
             Log.d(TAG, "Stopped listening for location updates");
-        }
-
-        private void unregisterBatteryInfoReceiver() {
-            if (!isRegisteredBatteryInfoReceiver) {
-                return;
-            }
-            unregisterReceiver(batteryInfoReceiver);
-            isRegisteredBatteryInfoReceiver = false;
-        }
-
-        private void registerBatteryInfoReceiver() {
-            if (isRegisteredBatteryInfoReceiver) {
-                return;
-            }
-            registerReceiver(batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-            isRegisteredBatteryInfoReceiver = true;
         }
 
         /**
