@@ -18,9 +18,6 @@ public abstract class BatteryColumn extends Column {
 
     protected static float batteryLevel = 0.0f;
 
-    /**
-     * Whether tha Battery receiver is registered
-     */
     protected static boolean isRegisteredBatteryInfoReceiver = false;
 
     /**

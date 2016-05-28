@@ -155,22 +155,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         private Calendar lastOnTimeTickTasksRun = Calendar.getInstance();
         /**
-         * Whether tha timezone receiver is registered
-         */
-        private boolean isRegisteredTimeZoneReceiver = false;
-        /**
          * The watchface. Used for drawing and updating the view/watchface
          */
         private WatchFace watchFace;
-        /**
-         * Broadcast receiver for updating the timezone
-         */
-        private final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                watchFace.updateTimeZoneWith(TimeZone.getTimeZone(intent.getStringExtra("time-zone")));
-            }
-        };
         /**
          * Broadcast receiver for location intent
          */
@@ -228,7 +215,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         public void onDestroy() {
             Log.d(TAG, "onDestroy");
             mUpdateTimeHandler.removeMessages(MSG_UPDATE_TIME);
-            unregisterTimeZoneReceiver();
             if (googleApiClient.isConnected()) {
                 googleApiClient.disconnect();
             }
@@ -242,14 +228,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             if (visible) {
                 // Connect to Google API
                 googleApiClient.connect();
-                // Check for timezone changes
-                registerTimeZoneReceiver();
-                // Update time zone in case it changed while we weren't visible.
-                watchFace.updateTimeZoneWith(TimeZone.getDefault());
             } else {
-                // Stop checking for timezone updates
-                unregisterTimeZoneReceiver();
-
                 if (googleApiClient != null && googleApiClient.isConnected()) {
                     Wearable.DataApi.removeListener(googleApiClient, this);
                     // Unregister location receiver to save up in case of a foreground app
@@ -512,24 +491,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 }
                 availableSensorTypes.add(sensorType);
             }
-        }
-
-
-        private void registerTimeZoneReceiver() {
-            if (isRegisteredTimeZoneReceiver) {
-                return;
-            }
-            isRegisteredTimeZoneReceiver = true;
-            IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
-            registerReceiver(mTimeZoneReceiver, filter);
-        }
-
-        private void unregisterTimeZoneReceiver() {
-            if (!isRegisteredTimeZoneReceiver) {
-                return;
-            }
-            isRegisteredTimeZoneReceiver = false;
-            unregisterReceiver(mTimeZoneReceiver);
         }
 
         private void registerLocationReceiver() {

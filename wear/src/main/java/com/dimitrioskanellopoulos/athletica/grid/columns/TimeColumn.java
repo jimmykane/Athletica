@@ -1,5 +1,6 @@
 package com.dimitrioskanellopoulos.athletica.grid.columns;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
 
@@ -17,8 +18,8 @@ public class TimeColumn extends CalendarColumn {
 
     private final Float initTextSize;
 
-    public TimeColumn(Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        super(paintTypeface, paintTextSize, paintColor);
+    public TimeColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
+        super(context, paintTypeface, paintTextSize, paintColor);
         initTextSize = paintTextSize;
         getPaint().setTextSize(initTextSize * 0.8f);
     }
@@ -30,17 +31,6 @@ public class TimeColumn extends CalendarColumn {
     @Override
     public void setAmbientMode(Boolean ambientMode) {
         super.setAmbientMode(ambientMode);
-    }
-
-
-
-    @Override
-    public void setTimezone(TimeZone timeZone) {
-        super.setTimezone(timeZone);
-        TIME_FORMAT.setTimeZone(CALENDAR.getTimeZone());
-        TIME_FORMAT_WITH_SECONDS.setTimeZone(CALENDAR.getTimeZone());
-        TIME_FORMAT_24.setTimeZone(CALENDAR.getTimeZone());
-        TIME_FORMAT_24_WITH_SECONDS.setTimeZone(CALENDAR.getTimeZone());
     }
 
     @Override

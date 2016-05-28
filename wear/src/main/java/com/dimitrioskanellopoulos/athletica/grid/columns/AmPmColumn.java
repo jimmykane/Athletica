@@ -1,5 +1,6 @@
 package com.dimitrioskanellopoulos.athletica.grid.columns;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
 
@@ -13,14 +14,8 @@ public class AmPmColumn extends CalendarColumn {
     private static final Calendar CALENDAR = Calendar.getInstance();
     private final static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("a", Locale.getDefault());
 
-    public AmPmColumn(Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        super(paintTypeface, paintTextSize, paintColor);
-    }
-
-    @Override
-    public void setTimezone(TimeZone timeZone) {
-        super.setTimezone(timeZone);
-        TIME_FORMAT.setTimeZone(CALENDAR.getTimeZone());
+    public AmPmColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
+        super(context, paintTypeface, paintTextSize, paintColor);
     }
 
     @Override

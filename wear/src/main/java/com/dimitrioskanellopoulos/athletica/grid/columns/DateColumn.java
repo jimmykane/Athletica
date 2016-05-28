@@ -1,5 +1,6 @@
 package com.dimitrioskanellopoulos.athletica.grid.columns;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
 
@@ -17,15 +18,8 @@ public class DateColumn extends CalendarColumn {
 
     private Boolean showDateNamesFormat = false;
 
-    public DateColumn(Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        super(paintTypeface, paintTextSize, paintColor);
-    }
-
-    @Override
-    public void setTimezone(TimeZone timeZone) {
-        super.setTimezone(timeZone);
-        DATE_FORMAT.setTimeZone(CALENDAR.getTimeZone());
-        DATE_NAMES_FORMAT.setTimeZone(CALENDAR.getTimeZone());
+    public DateColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
+        super(context, paintTypeface, paintTextSize, paintColor);
     }
 
     @Override

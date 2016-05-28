@@ -21,7 +21,6 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
 import java.util.Map;
-import java.util.TimeZone;
 
 public class WatchFace {
     private static final String TAG = "Watchface";
@@ -89,12 +88,12 @@ public class WatchFace {
     }
 
     private void addColumnForTime() {
-        TimeColumn timeColumn = new TimeColumn(defaultTypeface, resources.getDimension(R.dimen.time_size), textColor);
+        TimeColumn timeColumn = new TimeColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_size), textColor);
         grid.getRow("firstRow").putColumn("time", timeColumn);
     }
 
     private void addColumnForDate() {
-        DateColumn dateColumn = new DateColumn(defaultTypeface, resources.getDimension(R.dimen.date_size), textColor);
+        DateColumn dateColumn = new DateColumn(context, defaultTypeface, resources.getDimension(R.dimen.date_size), textColor);
         grid.getRow("secondRow").putColumn("date", dateColumn);
     }
 
@@ -200,7 +199,7 @@ public class WatchFace {
         if (timeFormat24) {
             grid.getRow("firstRow").removeColumn("amPm");
         } else {
-            AmPmColumn amPmColumn = new AmPmColumn(defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), textColor);
+            AmPmColumn amPmColumn = new AmPmColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), textColor);
             grid.getRow("firstRow").putColumn("amPm", amPmColumn);
         }
     }
@@ -225,12 +224,6 @@ public class WatchFace {
             }
         }
         this.invertBlackAndWhite = invertBlackAndWhite;
-    }
-
-    public void updateTimeZoneWith(TimeZone timeZone) {
-        Log.d(TAG, "Updating timezone to " + timeZone.getDisplayName());
-        ((TimeColumn) grid.getRow("firstRow").getColumn("time")).setTimezone(timeZone);
-        ((DateColumn) grid.getRow("secondRow").getColumn("date")).setTimezone(timeZone);
     }
 
     public void setIsRound(boolean round) {
