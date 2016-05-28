@@ -34,6 +34,15 @@ public class TimeColumn extends CalendarColumn {
     }
 
     @Override
+    public void setIsVisible(Boolean isVisible) {
+        super.setIsVisible(isVisible);
+        TIME_FORMAT.setTimeZone(CALENDAR.getTimeZone());
+        TIME_FORMAT_WITH_SECONDS.setTimeZone(CALENDAR.getTimeZone());
+        TIME_FORMAT_24.setTimeZone(CALENDAR.getTimeZone());
+        TIME_FORMAT_24_WITH_SECONDS.setTimeZone(CALENDAR.getTimeZone());
+    }
+
+    @Override
     public String getText() {
         Float textSize = initTextSize;
         if (!isIn24hourFormat) {

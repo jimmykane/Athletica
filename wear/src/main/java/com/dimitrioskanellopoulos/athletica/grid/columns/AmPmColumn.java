@@ -11,7 +11,6 @@ import java.util.TimeZone;
 
 public class AmPmColumn extends CalendarColumn {
     private static final String TAG = "AmPmColumn";
-    private static final Calendar CALENDAR = Calendar.getInstance();
     private final static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("a", Locale.getDefault());
 
     public AmPmColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
@@ -19,7 +18,14 @@ public class AmPmColumn extends CalendarColumn {
     }
 
     @Override
+    public void setIsVisible(Boolean isVisible) {
+        super.setIsVisible(isVisible);
+        TIME_FORMAT.setTimeZone(CALENDAR.getTimeZone());
+    }
+
+    @Override
     public String getText() {
+
         CALENDAR.setTimeInMillis(System.currentTimeMillis());
         return TIME_FORMAT.format(CALENDAR.getTime());
     }

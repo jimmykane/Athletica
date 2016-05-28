@@ -14,6 +14,7 @@ public abstract class CalendarColumn extends Column {
     private final static String TAG = "CalendarColumn";
     private final Context context;
 
+
     protected static final Calendar CALENDAR = Calendar.getInstance();
     private static boolean isRegisteredTimeZoneReceiver = false;
 
@@ -23,6 +24,7 @@ public abstract class CalendarColumn extends Column {
     private final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "Setting timezone to " + TimeZone.getTimeZone(intent.getStringExtra("time-zone")));
             CALENDAR.setTimeZone(TimeZone.getTimeZone(intent.getStringExtra("time-zone")));
         }
     };
@@ -37,6 +39,8 @@ public abstract class CalendarColumn extends Column {
         super.setIsVisible(isVisible);
         if (isVisible) {
             registerTimeZoneReceiver();
+            // Update in case it changed and the receiver missed it
+            CALENDAR.setTimeZone(TimeZone.getDefault());
         }else {
             unregisterTimeZoneReceiver();
         }

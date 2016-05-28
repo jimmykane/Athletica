@@ -12,7 +12,6 @@ import java.util.TimeZone;
 public class DateColumn extends CalendarColumn {
     private final static String TAG = "DateColumn";
 
-    private static final Calendar CALENDAR = Calendar.getInstance();
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
     private static final SimpleDateFormat DATE_NAMES_FORMAT = new SimpleDateFormat("E d LLL yyyy", Locale.getDefault());
 
@@ -20,6 +19,13 @@ public class DateColumn extends CalendarColumn {
 
     public DateColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
+    }
+
+    @Override
+    public void setIsVisible(Boolean isVisible) {
+        super.setIsVisible(isVisible);
+        DATE_FORMAT.setTimeZone(CALENDAR.getTimeZone());
+        DATE_NAMES_FORMAT.setTimeZone(CALENDAR.getTimeZone());
     }
 
     @Override
