@@ -38,7 +38,7 @@ public abstract class LocationColumn extends Column implements GoogleApiClient.C
     /**
      * A helper for google api that can be shared within the app
      */
-    private GoogleApiClient googleApiClient;
+    private static GoogleApiClient googleApiClient;
 
     private PermissionsHelper permissionsHelper;
 
@@ -53,7 +53,7 @@ public abstract class LocationColumn extends Column implements GoogleApiClient.C
     /**
      * Whether tha location receiver is registered
      */
-    boolean isRegisteredLocationReceiver = false;
+    protected static boolean isRegisteredLocationReceiver = false;
 
     protected static Location lastLocation;
 
@@ -75,6 +75,7 @@ public abstract class LocationColumn extends Column implements GoogleApiClient.C
 
     public LocationColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
+
         // Add the helper
         permissionsHelper = new PermissionsHelper(context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS});
 
@@ -140,12 +141,17 @@ public abstract class LocationColumn extends Column implements GoogleApiClient.C
     @Override
     public void start() {
         super.start();
-        // Get a Google API client
-        googleApiClient = new GoogleApiClient.Builder(context)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+        if (googleApiClient == null) {
+            // Get a Google API client
+            googleApiClient = new GoogleApiClient.Builder(context)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+        if (!googleApiClient.isConnected()) {
+            googleApiClient.connect();
+        }
 
         // Maybe move to start
         if (EmulatorHelper.isEmulator()) {
