@@ -35,8 +35,6 @@ public abstract class LocationColumn extends Column implements GoogleApiClient.C
     private static final long LOCATION_UPDATE_INTERVAL_MS = 3600000;
     private static final long LOCATION_UPDATE_FASTEST_INTERVAL_MS = 3600000;
 
-    private final Context context;
-
     /**
      * A helper for google api that can be shared within the app
      */
@@ -76,8 +74,7 @@ public abstract class LocationColumn extends Column implements GoogleApiClient.C
     };
 
     public LocationColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        super(paintTypeface, paintTextSize, paintColor);
-        this.context = context.getApplicationContext();
+        super(context, paintTypeface, paintTextSize, paintColor);
         // Add the helper
         permissionsHelper = new PermissionsHelper(context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS});
 
@@ -91,7 +88,9 @@ public abstract class LocationColumn extends Column implements GoogleApiClient.C
     public void setIsVisible(Boolean isVisible) {
         super.setIsVisible(isVisible);
         if (isVisible) {
-            googleApiClient.connect();
+            if (googleApiClient != null && !googleApiClient.isConnected()) {
+                googleApiClient.connect();
+            }
         } else {
             if (googleApiClient != null && googleApiClient.isConnected()) {
                 unregisterLocationReceiver();

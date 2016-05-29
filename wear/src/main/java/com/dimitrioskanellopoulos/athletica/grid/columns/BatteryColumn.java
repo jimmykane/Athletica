@@ -14,7 +14,6 @@ import com.dimitrioskanellopoulos.athletica.R;
 
 public abstract class BatteryColumn extends Column {
     private static final String TAG = "BatteryColumn";
-    private final Context context;
 
     protected static float batteryLevel = 0.0f;
 
@@ -40,8 +39,7 @@ public abstract class BatteryColumn extends Column {
     };
 
     public BatteryColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        super(paintTypeface, paintTextSize, paintColor);
-        this.context = context.getApplicationContext();
+        super(context, paintTypeface, paintTextSize, paintColor);
     }
 
     @Override

@@ -12,8 +12,6 @@ import java.util.TimeZone;
 
 public abstract class CalendarColumn extends Column {
     private final static String TAG = "CalendarColumn";
-    private final Context context;
-
 
     protected static final Calendar CALENDAR = Calendar.getInstance();
     private static boolean isRegisteredTimeZoneReceiver = false;
@@ -30,8 +28,7 @@ public abstract class CalendarColumn extends Column {
     };
 
     public CalendarColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        super(paintTypeface, paintTextSize, paintColor);
-        this.context = context.getApplicationContext();
+        super(context, paintTypeface, paintTextSize, paintColor);
     }
 
     @Override

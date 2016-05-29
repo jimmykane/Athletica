@@ -14,7 +14,6 @@ import com.dimitrioskanellopoulos.athletica.R;
 
 public class BatteryIconColumn extends BatteryColumn {
     private static final String TAG = "BatteryIconColumn";
-    private final Context context;
 
     private final String batteryEmptyIcon;
     private final String batteryQuarterIcon;
@@ -24,7 +23,6 @@ public class BatteryIconColumn extends BatteryColumn {
 
     public BatteryIconColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
-        this.context = context.getApplicationContext();
         batteryEmptyIcon = this.context .getResources().getString(R.string.icon_battery_empty);
         batteryQuarterIcon = this.context .getResources().getString(R.string.icon_battery_one_quarter);
         batteryHalfIcon = this.context .getResources().getString(R.string.icon_battery_half);

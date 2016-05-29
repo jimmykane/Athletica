@@ -101,7 +101,7 @@ public class WatchFace {
 
     private void addColumnForSunrise() {
         // @todo should be a calendar column
-        Column sunriseIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
+        Column sunriseIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
         sunriseIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         grid.getRow("thirdRow").putColumn("sunrise_icon", sunriseIconColumn);
@@ -112,7 +112,7 @@ public class WatchFace {
     }
 
     private void addColumnForSunset() {
-        Column sunsetIconColumn = new Column(fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
+        Column sunsetIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sunsetIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
         grid.getRow("thirdRow").putColumn("sunset_icon", sunsetIconColumn);
@@ -132,7 +132,7 @@ public class WatchFace {
         if (grid.getRow("forthRow").getAllColumns().size() >= 3) {
             grid.getRow("forthRow").getAllColumns().values().toArray(new Column[0])[grid.getRow("forthRow").getAllColumns().size() - 1].setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
         }
-        Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(resources, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
+        Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(context, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), textColor);
         sensorIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         grid.getRow("forthRow").putColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
@@ -141,7 +141,7 @@ public class WatchFace {
         sensorColumn.setHorizontalMargin(resources.getDimension(R.dimen.units_margin));
         grid.getRow("forthRow").putColumn(sensorType.toString(), sensorColumn);
 
-        Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(resources, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), textColor);
+        Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), textColor);
         grid.getRow("forthRow").putColumn(sensorType.toString() + "_units", sensorUnitsColumn);
         // @todo  When using more than one sensors should add the margin to the previous one
     }

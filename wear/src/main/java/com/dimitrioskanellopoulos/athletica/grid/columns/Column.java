@@ -1,5 +1,6 @@
 package com.dimitrioskanellopoulos.athletica.grid.columns;
 
+import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -7,6 +8,8 @@ import android.util.Log;
 
 public class Column implements ColumnInterface {
     private final static String TAG = "Column";
+    protected final Context context;
+
     private final Paint paint = new Paint();
     private Boolean ambientMode = false;
     private Boolean visible = false;
@@ -15,7 +18,8 @@ public class Column implements ColumnInterface {
     private Float horizontalMargin = 0.0f;
     private Integer textDefaultColor;
 
-    public Column(Typeface paintTypeface, Float paintTextSize, int paintColor) {
+    public Column(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
+        this.context = context.getApplicationContext();
         getPaint().setTypeface(paintTypeface);
         getPaint().setTextSize(paintTextSize);
         setTextDefaultColor(paintColor);
