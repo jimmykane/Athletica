@@ -62,11 +62,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
     private static final int MSG_UPDATE_TIME = 0;
 
     /**
-     * The location update intervals: 1hour in ms
-     */
-    private static final long LOCATION_UPDATE_INTERVAL_MS = 3600000;
-    private static final long LOCATION_UPDATE_FASTEST_INTERVAL_MS = 3600000;
-    /**
      * How often the onTimeTick actions should run
      * 15 minutes for real device and 1 minute for emulator
      */
@@ -119,13 +114,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
          */
         private final SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         /**
-         * The location request we will be making
-         */
-        private final LocationRequest locationRequest = new LocationRequest()
-                .setInterval(LOCATION_UPDATE_INTERVAL_MS)
-                .setFastestInterval(LOCATION_UPDATE_FASTEST_INTERVAL_MS)
-                .setPriority(LocationRequest.PRIORITY_LOW_POWER);
-        /**
          * The normal watch face style for white on black background
          */
         private final WatchFaceStyle watchFaceStyleNormal = new WatchFaceStyle.Builder(WatchFaceService.this)
@@ -146,10 +134,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 .setShowSystemUiTime(false)
                 .setViewProtectionMode(WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR)
                 .build();
-        /**
-         * Whether tha location receiver is registered
-         */
-        boolean isRegisteredLocationReceiver = false;
+
         /**
          * When the onTickActions were run last time in ms
          */
@@ -158,21 +143,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * The watchface. Used for drawing and updating the view/watchface
          */
         private WatchFace watchFace;
-        /**
-         * Broadcast receiver for location intent
-         */
-        private final LocationListener locationChangedReceiver = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                Log.d(TAG, "Location changed");
-                Log.d(TAG, "Provider: " + location.getProvider());
-                Log.d(TAG, "Lat: " + location.getLatitude());
-                Log.d(TAG, "Long: " + location.getLongitude());
-                Log.d(TAG, "Altitude: " + location.getAltitude());
-                Log.d(TAG, "Accuracy: " + location.getAccuracy());
-                updateSunriseAndSunset(location);
-            }
-        };
+
         /**
          * A helper for google api that can be shared within the app
          */
@@ -186,7 +157,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * The available sensors. Cross of supported by the app sensors and supported by the device
          */
         private ArrayList<Integer> availableSensorTypes = new ArrayList<>();
-        private PermissionsHelper permissionsHelper;
 
         @Override
         public void onCreate(SurfaceHolder holder) {
@@ -199,15 +169,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
             watchFace = new WatchFace(WatchFaceService.this);
             watchFace.setInAmbientMode(false);
 
-            // Add the helper
-            permissionsHelper = new PermissionsHelper(getApplicationContext(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS});
 
             // Get a Google API client
             googleApiClient = new GoogleApiClient.Builder(WatchFaceService.this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(Wearable.API)
-                    .addApi(LocationServices.API)
                     .build();
         }
 
@@ -231,8 +198,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             } else {
                 if (googleApiClient != null && googleApiClient.isConnected()) {
                     Wearable.DataApi.removeListener(googleApiClient, this);
-                    // Unregister location receiver to save up in case of a foreground app
-                    unregisterLocationReceiver();
                     googleApiClient.disconnect();
                 }
             }
@@ -303,7 +268,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onConnected(@Nullable Bundle bundle) {
             Log.d(TAG, "Google API connected");
-            registerLocationReceiver();
             Wearable.DataApi.addListener(googleApiClient, Engine.this);
             updateConfigDataItemAndUiOnStartup();
         }
@@ -493,43 +457,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
-        private void registerLocationReceiver() {
-            if (!googleApiClient.isConnected()) {
-                Log.d(TAG, "Google API client is not ready yet, wont register for location updates");
-                return;
-            }
-            if (isRegisteredLocationReceiver) {
-                Log.d(TAG, "Location listener is registered nothing to do");
-                return;
-            }
-            // Check permissions (hopefully the receiver wont be registered
-            if (!permissionsHelper.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                if (permissionsHelper.canAskAgainForPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-                    permissionsHelper.askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
-                    Log.d(TAG, "Asking for location permissions");
-                }
-                return;
-            }
-
-            isRegisteredLocationReceiver = true;
-            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, locationChangedReceiver);
-            Log.d(TAG, "Listening for location updates");
-        }
-
-        private void unregisterLocationReceiver() {
-            if (!googleApiClient.isConnected()) {
-                Log.d(TAG, "Google API client is not ready yet, wont unregister listener");
-                return;
-            }
-            if (!isRegisteredLocationReceiver) {
-                Log.d(TAG, "Location listener is not registered nothing to do");
-                return;
-            }
-            isRegisteredLocationReceiver = false;
-            LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, locationChangedReceiver);
-            Log.d(TAG, "Stopped listening for location updates");
-        }
-
         /**
          * Starts the {@link #mUpdateTimeHandler} timer if it should be running and isn't currently
          * or stops it if it shouldn't be running but currently is.
@@ -612,15 +539,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 //        }
 
 
-        /**
-         * Updates the sunrise and sunset according to a location if possible
-         */
-        private void updateSunriseAndSunset(@NonNull Location location) {
-            Pair<String, String> sunriseSunset = SunriseSunsetHelper.getSunriseAndSunset(location, TimeZone.getDefault().getID());
-            watchFace.updateSunriseSunset(sunriseSunset);
-            invalidate();
-            Log.d(TAG, "Successfully updated sunrise");
-        }
+
 
         /**
          * Run's tasks according to the current time
@@ -633,21 +552,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
             Log.d(TAG, "Running onTimeTickTasks");
             watchFace.runTasks();
             lastOnTimeTickTasksRun = now;
-
-
-            if (EmulatorHelper.isEmulator()) {
-                Location location = new Location("dummy");
-                location.setLatitude(41);
-                location.setLongitude(11);
-                location.setTime(System.currentTimeMillis());
-                location.setAccuracy(3.0f);
-                updateSunriseAndSunset(location);
-//                deactivateAllSensors();
-//                watchFace.addSensorColumn(Sensor.TYPE_HEART_RATE);
-//                watchFace.updateSensorText(Sensor.TYPE_HEART_RATE, "128");
-            }
-
-            //calculateAverageForActiveSensors();
         }
     }
 }

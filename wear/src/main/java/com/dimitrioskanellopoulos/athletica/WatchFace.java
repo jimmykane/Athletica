@@ -17,6 +17,8 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.BatteryLevelColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.columns.ColumnFactory;
 import com.dimitrioskanellopoulos.athletica.grid.columns.DateColumn;
+import com.dimitrioskanellopoulos.athletica.grid.columns.SunriseColumn;
+import com.dimitrioskanellopoulos.athletica.grid.columns.SunsetColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
@@ -104,7 +106,7 @@ public class WatchFace {
         sunriseIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         grid.getRow("thirdRow").putColumn("sunrise_icon", sunriseIconColumn);
 
-        Column sunriseColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
+        SunriseColumn sunriseColumn = new SunriseColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
         sunriseColumn.setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
         grid.getRow("thirdRow").putColumn("sunrise", sunriseColumn);
     }
@@ -115,7 +117,7 @@ public class WatchFace {
         sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
         grid.getRow("thirdRow").putColumn("sunset_icon", sunsetIconColumn);
 
-        Column sunsetColumn = new Column(defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
+        SunsetColumn sunsetColumn = new SunsetColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), textColor);
         grid.getRow("thirdRow").putColumn("sunset", sunsetColumn);
     }
 
@@ -232,10 +234,5 @@ public class WatchFace {
 
     public void setChinSize(Integer chinSize) {
         this.chinSize = chinSize;
-    }
-
-    public void updateSunriseSunset(Pair<String, String> sunriseSunset) {
-        grid.getRow("thirdRow").getColumn("sunrise").setText(sunriseSunset.first);
-        grid.getRow("thirdRow").getColumn("sunset").setText(sunriseSunset.second);
     }
 }
