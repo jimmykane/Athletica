@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.grid.Grid;
 import com.dimitrioskanellopoulos.athletica.grid.GridRenderer;
@@ -16,9 +18,11 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.columns.ColumnFactory;
 import com.dimitrioskanellopoulos.athletica.grid.columns.DateColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.SunriseColumn;
+import com.dimitrioskanellopoulos.athletica.grid.columns.SunriseSunsetColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.SunsetColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
+import com.dimitrioskanellopoulos.athletica.helpers.SunriseSunsetHelper;
 
 import java.util.Map;
 
@@ -39,6 +43,7 @@ public class WatchFace {
     private boolean dayNightMode = false;
 
     private int chinSize;
+    private Boolean invertBlackAndWhite;
 
     /**
      * The WatchFace. Everything the user sees. No extra init or data manipulation
@@ -188,6 +193,22 @@ public class WatchFace {
             Column column = columnEntry.getValue();
             column.runTasks();
         }
+        setGridColors();
+    }
+
+    @NonNull
+    private Boolean isDay(){
+        if (SunriseSunsetHelper.officialSunrise == null
+               || SunriseSunsetHelper.officialSunrise == null){
+            Log.d(TAG, "Defaulting to is Day" );
+            return true;
+        }
+        if (SunriseSunsetHelper.isDay(SunriseSunsetHelper.officialSunrise, SunriseSunsetHelper.officialSunset)){
+            Log.d(TAG, "is Day" );
+            return true;
+        }
+        Log.d(TAG, "is Night" );
+        return false;
     }
 
     public void setTimeFormat24(Boolean timeFormat24) {
@@ -211,9 +232,32 @@ public class WatchFace {
         this.interlace = shouldInterlace;
     }
 
-    public void invertBlackAndWhite(Boolean invertBlackAndWhite){
-        grid.setBackgroundColor(invertBlackAndWhite ? Color.WHITE : Color.BLACK);
-        grid.setTextColor(invertBlackAndWhite ? Color.BLACK : Color.WHITE);
+    public void setInvertBlackAndWhite(Boolean invertBlackAndWhite){
+        this.invertBlackAndWhite = invertBlackAndWhite;
+        setGridColors();
+//        grid.setBackgroundColor(setInvertBlackAndWhite ? Color.WHITE : Color.BLACK);
+//        grid.setTextColor(setInvertBlackAndWhite ? Color.BLACK : Color.WHITE);
+    }
+
+    private void setGridColors() {
+        if (invertBlackAndWhite) {
+            if (dayNightMode) {
+                grid.setBackgroundColor(isDay() ? Color.WHITE : Color.BLACK);
+                grid.setTextColor(isDay() ? Color.BLACK : Color.WHITE);
+            } else {
+                grid.setBackgroundColor(Color.WHITE);
+                grid.setTextColor(Color.BLACK);
+            }
+        }else {
+            if (dayNightMode) {
+                grid.setBackgroundColor(isDay() ? Color.BLACK : Color.WHITE);
+                grid.setTextColor(isDay() ? Color.WHITE : Color.BLACK);
+            } else {
+                grid.setBackgroundColor(Color.BLACK);
+                grid.setTextColor(Color.WHITE);
+            }
+        }
+
     }
 
     public void setIsRound(boolean round) {
