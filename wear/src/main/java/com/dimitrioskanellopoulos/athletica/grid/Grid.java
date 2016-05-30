@@ -73,4 +73,9 @@ public class Grid {
     public Integer getBackgroundColor(){
         return backgroundColor;
     }
+
+    public void invertColors(){
+        setBackgroundColor(getBackgroundColor() == Color.BLACK ? Color.WHITE : Color.BLACK);
+        setTextColor(getTextColor() == Color.WHITE ? Color.BLACK : Color.WHITE);
+    }
 }

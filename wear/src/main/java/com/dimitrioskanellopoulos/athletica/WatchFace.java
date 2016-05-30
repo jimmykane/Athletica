@@ -215,8 +215,8 @@ public class WatchFace {
     }
 
     public void invertBlackAndWhite(){
-        grid.setBackgroundColor(grid.getBackgroundColor() == Color.BLACK ? Color.WHITE : Color.BLACK);
-        grid.setTextColor(grid.getTextColor() == Color.WHITE ? Color.BLACK : Color.WHITE);
+        grid.setBackgroundColor(Color.WHITE);
+        grid.setTextColor(Color.BLACK);
     }
 
     public void setIsRound(boolean round) {
