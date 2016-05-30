@@ -18,9 +18,9 @@ public class GridRenderer {
     /**
      * @todo document more and make it faster
      */
-    public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, Integer bottomMargin, Boolean centerOnY, int backgroundColor) {
+    public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, Integer bottomMargin, Boolean centerOnY) {
         // Draw background
-        drawBackground(canvas, bounds, backgroundColor);
+        drawBackground(canvas, bounds, grid.getBackgroundColor());
 
         LinkedHashMap<String, Row> rows = grid.getAllRows();
         float totalHeight = bounds.height() - bottomMargin;

@@ -81,7 +81,7 @@ public class WatchFace {
 
     public void draw(Canvas canvas, Rect bounds) {
 
-        GridRenderer.renderGrid(canvas, bounds, grid, chinSize, true, backgroundColor);
+        GridRenderer.renderGrid(canvas, bounds, grid, chinSize, true);
 
         if (interlace) {
             GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, ambientMode ? 100 : 70);
@@ -214,17 +214,9 @@ public class WatchFace {
         this.interlace = shouldInterlace;
     }
 
-    public void setInvertBlackAndWhite(Boolean invertBlackAndWhite) {
-        textColor = invertBlackAndWhite ? Color.BLACK : Color.WHITE;
-        backgroundColor = invertBlackAndWhite ? Color.WHITE : Color.BLACK;
-        for (Map.Entry<String, Row> rowEntry : grid.getAllRows().entrySet()) {
-            Row row = rowEntry.getValue();
-            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
-                Column column = columnEntry.getValue();
-                column.setTextDefaultColor(textColor);
-            }
-        }
-        this.invertBlackAndWhite = invertBlackAndWhite;
+    public void invertBlackAndWhite(){
+        grid.setBackgroundColor(grid.getBackgroundColor() == Color.BLACK ? Color.WHITE : Color.BLACK);
+        grid.setTextColor(grid.getTextColor() == Color.WHITE ? Color.BLACK : Color.WHITE);
     }
 
     public void setIsRound(boolean round) {

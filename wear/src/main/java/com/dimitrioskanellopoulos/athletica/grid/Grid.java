@@ -1,5 +1,7 @@
 package com.dimitrioskanellopoulos.athletica.grid;
 
+import android.graphics.Color;
+
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
@@ -9,6 +11,8 @@ import java.util.Map;
 public class Grid {
     private static final String TAG = "Grid";
     private final LinkedHashMap<String, Row> rows = new LinkedHashMap<>();
+    private Integer backgroundColor = Color.BLACK;
+    private Integer textColor = Color.WHITE;
 
     public void putRow(String rowName, Row row) {
         rows.put(rowName, row);
@@ -46,5 +50,27 @@ public class Grid {
                 column.setIsVisible(isVisible);
             }
         }
+    }
+
+    public void setTextColor(Integer textColor){
+        this.textColor = textColor;
+        for (Map.Entry<String, Row> rowEntry : getAllRows().entrySet()) {
+            Row row = rowEntry.getValue();
+            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
+                Column column = columnEntry.getValue();
+                column.setTextDefaultColor(textColor);
+            }
+        }
+    }
+
+    public void setBackgroundColor(Integer backgroundColor){
+        this.backgroundColor = backgroundColor;
+    }
+
+    public Integer getTextColor(){
+        return textColor;
+    }
+    public Integer getBackgroundColor(){
+        return backgroundColor;
     }
 }
