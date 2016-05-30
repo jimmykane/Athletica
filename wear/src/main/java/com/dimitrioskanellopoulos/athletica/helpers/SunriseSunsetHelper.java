@@ -11,8 +11,8 @@ import java.util.Calendar;
 public class SunriseSunsetHelper {
     private static final String TAG = "SunriseSunsetHelper";
 
-    public static Calendar officialSunrise;
-    public static Calendar officialSunset;
+    private static Calendar officialSunrise;
+    private static Calendar officialSunset;
 
     public static Pair<String, String> getSunriseAndSunset(Location location, String timezone) {
         SunriseSunsetCalculator calculator = new SunriseSunsetCalculator(
@@ -26,9 +26,22 @@ public class SunriseSunsetHelper {
         return new Pair<>(officialSunriseString, officialSunsetString);
     }
 
-    public static Boolean isDay(Calendar sunrise, Calendar sunset){
+    public static Boolean isDay(){
+        if (getLastKnownSunriseSunset() == null){
+            Log.d(TAG, "Defaulting to day" );
+            return true;
+        }
         Calendar now = Calendar.getInstance();
-        return now.compareTo(sunrise) > 0 && now.compareTo(sunset) < 0;
+        Boolean isDay =  now.compareTo(officialSunrise) > 0 && now.compareTo(officialSunset) < 0;
+        Log.d(TAG, "It is day " + isDay.toString());
+        return isDay;
+    }
+
+    public static Pair<Calendar, Calendar> getLastKnownSunriseSunset(){
+        if (officialSunrise == null || officialSunset == null){
+            return null;
+        }
+        return new Pair<>(officialSunrise, officialSunset);
     }
 
     protected SunriseSunsetHelper(){

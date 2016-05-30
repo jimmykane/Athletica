@@ -196,20 +196,6 @@ public class WatchFace {
         setGridColors();
     }
 
-    @NonNull
-    private Boolean isDay(){
-        if (SunriseSunsetHelper.officialSunrise == null
-               || SunriseSunsetHelper.officialSunrise == null){
-            Log.d(TAG, "Defaulting to is Day" );
-            return true;
-        }
-        if (SunriseSunsetHelper.isDay(SunriseSunsetHelper.officialSunrise, SunriseSunsetHelper.officialSunset)){
-            Log.d(TAG, "is Day" );
-            return true;
-        }
-        Log.d(TAG, "is Night" );
-        return false;
-    }
 
     public void setTimeFormat24(Boolean timeFormat24) {
         TimeColumn timeColumn = (TimeColumn) grid.getRow("firstRow").getColumn("time");
@@ -235,23 +221,21 @@ public class WatchFace {
     public void setInvertBlackAndWhite(Boolean invertBlackAndWhite){
         this.invertBlackAndWhite = invertBlackAndWhite;
         setGridColors();
-//        grid.setBackgroundColor(setInvertBlackAndWhite ? Color.WHITE : Color.BLACK);
-//        grid.setTextColor(setInvertBlackAndWhite ? Color.BLACK : Color.WHITE);
     }
 
     private void setGridColors() {
         if (invertBlackAndWhite) {
             if (dayNightMode) {
-                grid.setBackgroundColor(isDay() ? Color.WHITE : Color.BLACK);
-                grid.setTextColor(isDay() ? Color.BLACK : Color.WHITE);
+                grid.setBackgroundColor(SunriseSunsetHelper.isDay() ? Color.WHITE : Color.BLACK);
+                grid.setTextColor(SunriseSunsetHelper.isDay() ? Color.BLACK : Color.WHITE);
             } else {
                 grid.setBackgroundColor(Color.WHITE);
                 grid.setTextColor(Color.BLACK);
             }
         }else {
             if (dayNightMode) {
-                grid.setBackgroundColor(isDay() ? Color.BLACK : Color.WHITE);
-                grid.setTextColor(isDay() ? Color.WHITE : Color.BLACK);
+                grid.setBackgroundColor(SunriseSunsetHelper.isDay() ? Color.BLACK : Color.WHITE);
+                grid.setTextColor(SunriseSunsetHelper.isDay() ? Color.WHITE : Color.BLACK);
             } else {
                 grid.setBackgroundColor(Color.BLACK);
                 grid.setTextColor(Color.WHITE);
