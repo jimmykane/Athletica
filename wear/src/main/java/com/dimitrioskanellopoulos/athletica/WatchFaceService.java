@@ -1,15 +1,10 @@
 package com.dimitrioskanellopoulos.athletica;
 
-import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,21 +14,14 @@ import android.support.annotation.Nullable;
 import android.support.wearable.watchface.CanvasWatchFaceService;
 import android.support.wearable.watchface.WatchFaceStyle;
 import android.util.Log;
-import android.util.Pair;
 import android.view.SurfaceHolder;
 import android.view.WindowInsets;
 
 import com.dimitrioskanellopoulos.athletica.configuration.ConfigurationHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
-import com.dimitrioskanellopoulos.athletica.helpers.SensorHelper;
-import com.dimitrioskanellopoulos.athletica.helpers.SunriseSunsetHelper;
-import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
@@ -45,7 +33,6 @@ import com.google.android.gms.wearable.Wearable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 public class WatchFaceService extends CanvasWatchFaceService {
@@ -488,58 +475,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 mUpdateTimeHandler.sendEmptyMessageDelayed(MSG_UPDATE_TIME, delayMs);
             }
         }
-
-
-        /**
-         * Activates the next sensors
-         */
-//        private void activateNextAvailableSensors() {
-//            Log.d(TAG, "Activating next available sensor(s)");
-//            // If there are no sensors to activate exit
-//            if (availableSensorTypes.size() == 0) {
-//                return;
-//            }
-//            // If there is only one activate that one if not activated
-//            if (availableSensorTypes.size() == 1) {
-//                if (activeSensors.indexOf(availableSensorTypes.get(0))<0) {
-//                    activateSensor(availableSensorTypes.get(0));
-//                }
-//                return;
-//            }
-//            // Find the active sensors position in the available sensors
-//            int countFound = 0;
-//            int lastFoundIndex = 0;
-//            for (Integer availableSensorType : availableSensorTypes) {
-//                if (activeSensors.indexOf(availableSensorType) < 0) {
-//                    continue;
-//                }
-//                // Found one
-//                countFound += 1;
-//                // If we found all
-//                if (countFound == maxActiveSensors) {
-//                    // Get the index that the last was found
-//                    lastFoundIndex = availableSensorTypes.indexOf(availableSensorType);
-//                    // Stop we don't need to loop more
-//                    break;
-//                }
-//            }
-//            // Deactivate all sensors
-//            deactivateAllSensors();
-//            // Enable the next ones (+1)
-//            for (int i = 0; i < maxActiveSensors; i++) {
-//                // Check if we hit the last
-//                lastFoundIndex += 1;
-//                if (lastFoundIndex >= availableSensorTypes.size()) {
-//                    // Reset the index to start
-//                    lastFoundIndex = 0;
-//                }
-//                // Activate
-//                activateSensor(availableSensorTypes.get(lastFoundIndex));
-//            }
-//        }
-
-
-
 
         /**
          * Run's tasks according to the current time
