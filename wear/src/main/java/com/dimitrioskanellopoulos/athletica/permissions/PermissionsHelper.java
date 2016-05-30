@@ -44,13 +44,13 @@ public class PermissionsHelper {
             String permission = intent.getExtras().getString("permission");
             switch (status) {
                 case PERMISSION_STATUS_GRANTED:
-                    Toast.makeText(context, context.getResources().getText(R.string.permission_granted) + "[" + permission + "]", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getResources().getText(R.string.permission_granted) + " [" + permission + "] ", Toast.LENGTH_SHORT).show();
                     break;
                 case PERMISSION_STATUS_DENIED:
-                    Toast.makeText(context, context.getResources().getText(R.string.permission_rationale) + "[" + permission + "]", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getResources().getText(R.string.permission_rationale) + " [" + permission + "] ", Toast.LENGTH_SHORT).show();
                     break;
                 case PERMISSION_STATUS_DENIED_DO_NOT_ASK_AGAIN:
-                    Toast.makeText(context, context.getResources().getText(R.string.permission_do_not_ask_again_message) + " [" + permission + "]", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getResources().getText(R.string.permission_do_not_ask_again_message) + " [" + permission + "] ", Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
