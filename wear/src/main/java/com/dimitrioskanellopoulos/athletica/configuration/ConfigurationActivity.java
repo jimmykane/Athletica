@@ -127,7 +127,6 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
     @Override
     public void onConnected(Bundle connectionHint) {
         Log.d(TAG, "onConnected: " + connectionHint);
-        Wearable.DataApi.addListener(googleApiClient, this);
         updateConfigDataOnStartup();
     }
 
