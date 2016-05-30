@@ -347,18 +347,6 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         if (!found) {
                             addSensorColumn();
                         }
-
-
-//                        if (availableSensorTypes.size() > 1) {
-//                            DataMap configMap = new DataMap();
-//                            configMap.putIntegerArrayList(ConfigurationHelper.KEY_ENABLED_SENSORS,
-//                                    new ArrayList<>(availableSensorTypes.subList(0, 1)));
-//                            ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
-//                            Toast.makeText(getApplicationContext(), getResources().getText(R.string.get_pro), Toast.LENGTH_SHORT).show();
-//                            break;
-//                        }
-
-
                         break;
                     default:
                         Log.w(TAG, "Ignoring unknown config key: " + key);
