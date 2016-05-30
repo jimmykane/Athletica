@@ -1,10 +1,7 @@
 package com.dimitrioskanellopoulos.athletica.grid.columns;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
@@ -21,14 +18,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.wearable.Wearable;
 
-import java.util.Calendar;
 import java.util.TimeZone;
 
-public abstract class LocationColumn extends Column implements GoogleApiClient.ConnectionCallbacks,
+public abstract class SunriseSunsetColumn extends Column implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
-    private final static String TAG = "LocationColumn";
+    private final static String TAG = "SunriseSunsetColumn";
     /**
      * The location update intervals: 1hour in ms
      */
@@ -55,12 +50,12 @@ public abstract class LocationColumn extends Column implements GoogleApiClient.C
      */
     protected static boolean isRegisteredLocationReceiver = false;
 
-    protected static Location lastLocation;
+    protected static Pair<String, String> sunriseSunsetTimes;
 
     /**
      * Broadcast receiver for location intent
      */
-    private final LocationListener locationChangedReceiver = new LocationListener() {
+    private static final LocationListener locationChangedReceiver = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             Log.d(TAG, "Location changed");
@@ -69,20 +64,14 @@ public abstract class LocationColumn extends Column implements GoogleApiClient.C
             Log.d(TAG, "Long: " + location.getLongitude());
             Log.d(TAG, "Altitude: " + location.getAltitude());
             Log.d(TAG, "Accuracy: " + location.getAccuracy());
-            updateLocation(location);
+            sunriseSunsetTimes = SunriseSunsetHelper.getSunriseAndSunset(location, TimeZone.getDefault().getID());
+            Log.d(TAG, "Successfully updated sunrise");
         }
     };
 
-    public LocationColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
+    public SunriseSunsetColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
-
-        // Add the helper
         permissionsHelper = new PermissionsHelper(context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS});
-
-    }
-
-    public void updateLocation(Location location) {
-        lastLocation = location;
     }
 
     @Override
@@ -160,12 +149,7 @@ public abstract class LocationColumn extends Column implements GoogleApiClient.C
             location.setLongitude(11);
             location.setTime(System.currentTimeMillis());
             location.setAccuracy(3.0f);
-            updateLocation(location);
-            // Force on task in column
-            //updateSunriseAndSunset(location);
-//                deactivateAllSensors();
-//                watchFace.addSensorColumn(Sensor.TYPE_HEART_RATE);
-//                watchFace.updateSensorText(Sensor.TYPE_HEART_RATE, "128");
+            sunriseSunsetTimes = SunriseSunsetHelper.getSunriseAndSunset(location, TimeZone.getDefault().getID());
         }
     }
 
