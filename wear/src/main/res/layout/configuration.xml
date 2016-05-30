@@ -73,6 +73,16 @@
                 android:textAlignment="center"
                 android:textSize="12sp" />
 
+            <Switch
+                android:id="@+id/switch_day_night_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingBottom="4dp"
+                android:text="@string/configuration_day_night_mode"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

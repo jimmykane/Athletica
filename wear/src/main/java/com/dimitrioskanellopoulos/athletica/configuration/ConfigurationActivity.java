@@ -34,6 +34,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
     private Switch switchDateNames;
     private Switch switchInterlace;
     private Switch switchInvertBlackAndWhite;
+    private Switch switchDayNightMode;
     private ArrayList<Integer> sensors;
 
     private PermissionsHelper permissionsHelper;
@@ -60,6 +61,8 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
         switchInterlace = (Switch) findViewById(R.id.switch_interlace);
 
         switchInvertBlackAndWhite = (Switch) findViewById(R.id.switch_invert_black_and_white);
+
+        switchDayNightMode = (Switch) findViewById(R.id.switch_day_night_mode);
 
         switchTimeFormat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -90,6 +93,14 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 updateConfigDataItemInvertBlackAndWhite(isChecked);
+            }
+        });
+
+        switchDayNightMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                updateConfigDataItemDayNightMode(isChecked);
             }
         });
 
@@ -281,6 +292,13 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
     }
 
+    private void updateConfigDataItemDayNightMode(boolean dayNightMode) {
+        DataMap configMap = new DataMap();
+        configMap.putBoolean(ConfigurationHelper.KEY_DAY_NIGHT_MODE,
+                dayNightMode);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
+    }
+
     private void updateConfigDataItemSensors(ArrayList<Integer> enabledSensors) {
         Log.d(TAG, "Updating config for enabled sensors " + Arrays.toString(enabledSensors.toArray()));
         DataMap configMap = new DataMap();
@@ -322,6 +340,9 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
                     break;
                 case ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE:
                     switchInvertBlackAndWhite.setChecked(config.getBoolean(key));
+                    break;
+                case ConfigurationHelper.KEY_DAY_NIGHT_MODE:
+                    switchDayNightMode.setChecked(config.getBoolean(key));
                     break;
                 case ConfigurationHelper.KEY_ENABLED_SENSORS:
                     ArrayList<Integer> enabledSensors = config.getIntegerArrayList(key);
