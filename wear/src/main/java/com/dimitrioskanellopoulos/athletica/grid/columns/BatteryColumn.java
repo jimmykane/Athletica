@@ -4,21 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.BatteryManager;
 import android.util.Log;
-
-import com.dimitrioskanellopoulos.athletica.R;
 
 public abstract class BatteryColumn extends Column {
     private static final String TAG = "BatteryColumn";
 
     protected static float batteryLevel = 0.0f;
-
-    protected static boolean isRegisteredBatteryInfoReceiver = false;
-
     /**
      * Broadcast receiver for updating the battery level
      */
@@ -37,6 +30,7 @@ public abstract class BatteryColumn extends Column {
             batteryLevel = level;
         }
     };
+    protected static boolean isRegisteredBatteryInfoReceiver = false;
 
     public BatteryColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
@@ -47,7 +41,7 @@ public abstract class BatteryColumn extends Column {
         super.setIsVisible(isVisible);
         if (isVisible) {
             registerBatteryInfoReceiver();
-        }else {
+        } else {
             unregisterBatteryInfoReceiver();
         }
 

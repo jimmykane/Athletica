@@ -1,13 +1,8 @@
 package com.dimitrioskanellopoulos.athletica.grid.columns;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.BatteryManager;
 import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.R;
@@ -23,11 +18,11 @@ public class BatteryIconColumn extends BatteryColumn {
 
     public BatteryIconColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
-        batteryEmptyIcon = this.context .getResources().getString(R.string.icon_battery_empty);
-        batteryQuarterIcon = this.context .getResources().getString(R.string.icon_battery_one_quarter);
-        batteryHalfIcon = this.context .getResources().getString(R.string.icon_battery_half);
-        batteryThreeQuartersIcon = this.context .getResources().getString(R.string.icon_battery_three_quarters);
-        batteryFullIcon = this.context .getResources().getString(R.string.icon_battery_full);
+        batteryEmptyIcon = this.context.getResources().getString(R.string.icon_battery_empty);
+        batteryQuarterIcon = this.context.getResources().getString(R.string.icon_battery_one_quarter);
+        batteryHalfIcon = this.context.getResources().getString(R.string.icon_battery_half);
+        batteryThreeQuartersIcon = this.context.getResources().getString(R.string.icon_battery_three_quarters);
+        batteryFullIcon = this.context.getResources().getString(R.string.icon_battery_full);
     }
 
     @Override

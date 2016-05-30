@@ -5,9 +5,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class DateColumn extends CalendarColumn {
     private final static String TAG = "DateColumn";

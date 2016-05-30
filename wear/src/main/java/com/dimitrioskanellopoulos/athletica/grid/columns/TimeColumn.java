@@ -6,7 +6,6 @@ import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class TimeColumn extends CalendarColumn {
     private final static String TAG = "SensorColumn";
@@ -14,9 +13,8 @@ public class TimeColumn extends CalendarColumn {
     private final static SimpleDateFormat TIME_FORMAT_WITH_SECONDS = new SimpleDateFormat("h:mm:ss", Locale.getDefault());
     private final static SimpleDateFormat TIME_FORMAT_24 = new SimpleDateFormat("k:mm", Locale.getDefault());
     private final static SimpleDateFormat TIME_FORMAT_24_WITH_SECONDS = new SimpleDateFormat("k:mm:ss", Locale.getDefault());
-    private Boolean isIn24hourFormat = true;
-
     private final Float initTextSize;
+    private Boolean isIn24hourFormat = true;
 
     public TimeColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
@@ -48,7 +46,7 @@ public class TimeColumn extends CalendarColumn {
         if (!isIn24hourFormat) {
             textSize = textSize * 0.90f;
         }
-        if(!isInAmbientMode()){
+        if (!isInAmbientMode()) {
             textSize = textSize * 0.90f;
         }
         getPaint().setTextSize(textSize);

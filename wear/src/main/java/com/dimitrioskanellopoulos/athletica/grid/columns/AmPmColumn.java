@@ -5,9 +5,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class AmPmColumn extends CalendarColumn {
     private static final String TAG = "AmPmColumn";
@@ -25,7 +23,6 @@ public class AmPmColumn extends CalendarColumn {
 
     @Override
     public String getText() {
-
         CALENDAR.setTimeInMillis(System.currentTimeMillis());
         return TIME_FORMAT.format(CALENDAR.getTime());
     }

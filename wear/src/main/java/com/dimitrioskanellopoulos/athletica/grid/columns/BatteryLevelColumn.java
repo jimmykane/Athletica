@@ -1,16 +1,7 @@
 package com.dimitrioskanellopoulos.athletica.grid.columns;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.BatteryManager;
-import android.util.Log;
-
-import com.dimitrioskanellopoulos.athletica.R;
 
 import java.text.DecimalFormat;
 

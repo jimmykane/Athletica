@@ -29,29 +29,11 @@ public abstract class SunriseSunsetColumn extends Column implements GoogleApiCli
      */
     private static final long LOCATION_UPDATE_INTERVAL_MS = 3600000;
     private static final long LOCATION_UPDATE_FASTEST_INTERVAL_MS = 3600000;
-
-    /**
-     * A helper for google api that can be shared within the app
-     */
-    private static GoogleApiClient googleApiClient;
-
-    private PermissionsHelper permissionsHelper;
-
-    /**
-     * The location request we will be making
-     */
-    private final LocationRequest locationRequest = new LocationRequest()
-            .setInterval(LOCATION_UPDATE_INTERVAL_MS)
-            .setFastestInterval(LOCATION_UPDATE_FASTEST_INTERVAL_MS)
-            .setPriority(LocationRequest.PRIORITY_LOW_POWER);
-
     /**
      * Whether tha location receiver is registered
      */
     protected static boolean isRegisteredLocationReceiver = false;
-
     protected static Pair<String, String> sunriseSunsetTimes;
-
     /**
      * Broadcast receiver for location intent
      */
@@ -68,6 +50,18 @@ public abstract class SunriseSunsetColumn extends Column implements GoogleApiCli
             Log.d(TAG, "Successfully updated sunrise");
         }
     };
+    /**
+     * A helper for google api that can be shared within the app
+     */
+    private static GoogleApiClient googleApiClient;
+    /**
+     * The location request we will be making
+     */
+    private final LocationRequest locationRequest = new LocationRequest()
+            .setInterval(LOCATION_UPDATE_INTERVAL_MS)
+            .setFastestInterval(LOCATION_UPDATE_FASTEST_INTERVAL_MS)
+            .setPriority(LocationRequest.PRIORITY_LOW_POWER);
+    private PermissionsHelper permissionsHelper;
 
     public SunriseSunsetColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);

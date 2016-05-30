@@ -11,9 +11,8 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 public abstract class CalendarColumn extends Column {
-    private final static String TAG = "CalendarColumn";
-
     protected static final Calendar CALENDAR = Calendar.getInstance();
+    private final static String TAG = "CalendarColumn";
     private static boolean isRegisteredTimeZoneReceiver = false;
 
     /**
@@ -38,7 +37,7 @@ public abstract class CalendarColumn extends Column {
             registerTimeZoneReceiver();
             // Update in case it changed and the receiver missed it
             CALENDAR.setTimeZone(TimeZone.getDefault());
-        }else {
+        } else {
             unregisterTimeZoneReceiver();
         }
 

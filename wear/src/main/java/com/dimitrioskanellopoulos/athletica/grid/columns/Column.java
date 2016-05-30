@@ -97,7 +97,7 @@ public class Column implements ColumnInterface {
     @Override
     public void setIsVisible(Boolean isVisible) {
         this.visible = isVisible;
-        Log.d(TAG, "Visible " +visible.toString());
+        Log.d(TAG, "Visible " + visible.toString());
     }
 
     @Override
