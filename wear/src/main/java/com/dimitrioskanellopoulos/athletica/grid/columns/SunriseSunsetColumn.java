@@ -33,7 +33,7 @@ public abstract class SunriseSunsetColumn extends Column implements GoogleApiCli
      * Whether tha location receiver is registered
      */
     protected static boolean isRegisteredLocationReceiver = false;
-    protected static Pair<String, String> sunriseSunsetTimes;
+    protected static Pair<String, String> sunriseSunset;
     /**
      * Broadcast receiver for location intent
      */
@@ -46,7 +46,7 @@ public abstract class SunriseSunsetColumn extends Column implements GoogleApiCli
             Log.d(TAG, "Long: " + location.getLongitude());
             Log.d(TAG, "Altitude: " + location.getAltitude());
             Log.d(TAG, "Accuracy: " + location.getAccuracy());
-            sunriseSunsetTimes = SunriseSunsetHelper.getSunriseAndSunset(location, TimeZone.getDefault().getID());
+            sunriseSunset = SunriseSunsetHelper.getSunriseAndSunset(location, TimeZone.getDefault().getID());
             Log.d(TAG, "Successfully updated sunrise");
         }
     };
@@ -143,7 +143,7 @@ public abstract class SunriseSunsetColumn extends Column implements GoogleApiCli
             location.setLongitude(11);
             location.setTime(System.currentTimeMillis());
             location.setAccuracy(3.0f);
-            sunriseSunsetTimes = SunriseSunsetHelper.getSunriseAndSunset(location, TimeZone.getDefault().getID());
+            sunriseSunset = SunriseSunsetHelper.getSunriseAndSunset(location, TimeZone.getDefault().getID());
         }
     }
 

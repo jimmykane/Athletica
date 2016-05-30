@@ -12,6 +12,9 @@ public class SunsetColumn extends SunriseSunsetColumn {
 
     @Override
     public String getText() {
-        return sunriseSunsetTimes.second;
+        if (sunriseSunset == null){
+            return super.getText();
+        }
+        return sunriseSunset.second;
     }
 }
