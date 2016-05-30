@@ -20,7 +20,6 @@ public abstract class BatteryColumn extends Column {
         public void onReceive(Context context, Intent intent) {
             IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
             Intent batteryStatus = context.registerReceiver(null, ifilter);
-            int level = 0;
             if (batteryStatus != null) {
                 batteryLevel = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
             }
