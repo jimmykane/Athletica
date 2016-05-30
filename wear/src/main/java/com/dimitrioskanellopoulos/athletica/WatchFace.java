@@ -6,8 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.grid.Grid;
 import com.dimitrioskanellopoulos.athletica.grid.GridRenderer;
@@ -18,7 +16,6 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.columns.ColumnFactory;
 import com.dimitrioskanellopoulos.athletica.grid.columns.DateColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.SunriseColumn;
-import com.dimitrioskanellopoulos.athletica.grid.columns.SunriseSunsetColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.SunsetColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
@@ -218,7 +215,7 @@ public class WatchFace {
         this.interlace = shouldInterlace;
     }
 
-    public void setInvertBlackAndWhite(Boolean invertBlackAndWhite){
+    public void setInvertBlackAndWhite(Boolean invertBlackAndWhite) {
         this.invertBlackAndWhite = invertBlackAndWhite;
         setGridColors();
     }
@@ -232,7 +229,7 @@ public class WatchFace {
                 grid.setBackgroundColor(Color.WHITE);
                 grid.setTextColor(Color.BLACK);
             }
-        }else {
+        } else {
             if (dayNightMode) {
                 grid.setBackgroundColor(SunriseSunsetHelper.isDay() ? Color.BLACK : Color.WHITE);
                 grid.setTextColor(SunriseSunsetHelper.isDay() ? Color.WHITE : Color.BLACK);

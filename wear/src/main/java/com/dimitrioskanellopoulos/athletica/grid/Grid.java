@@ -52,7 +52,11 @@ public class Grid {
         }
     }
 
-    public void setTextColor(Integer textColor){
+    public Integer getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(Integer textColor) {
         this.textColor = textColor;
         for (Map.Entry<String, Row> rowEntry : getAllRows().entrySet()) {
             Row row = rowEntry.getValue();
@@ -63,18 +67,15 @@ public class Grid {
         }
     }
 
-    public void setBackgroundColor(Integer backgroundColor){
-        this.backgroundColor = backgroundColor;
-    }
-
-    public Integer getTextColor(){
-        return textColor;
-    }
-    public Integer getBackgroundColor(){
+    public Integer getBackgroundColor() {
         return backgroundColor;
     }
 
-    public void invertColors(){
+    public void setBackgroundColor(Integer backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public void invertColors() {
         setBackgroundColor(getBackgroundColor() == Color.BLACK ? Color.WHITE : Color.BLACK);
         setTextColor(getTextColor() == Color.WHITE ? Color.BLACK : Color.WHITE);
     }

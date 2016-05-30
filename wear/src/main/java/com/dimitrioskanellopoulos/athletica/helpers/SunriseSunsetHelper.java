@@ -14,6 +14,10 @@ public class SunriseSunsetHelper {
     private static Calendar officialSunrise;
     private static Calendar officialSunset;
 
+    protected SunriseSunsetHelper() {
+
+    }
+
     public static Pair<String, String> getSunriseAndSunset(Location location, String timezone) {
         SunriseSunsetCalculator calculator = new SunriseSunsetCalculator(
                 new com.luckycatlabs.sunrisesunset.dto.Location(location.getLatitude(), location.getLongitude()),
@@ -26,25 +30,21 @@ public class SunriseSunsetHelper {
         return new Pair<>(officialSunriseString, officialSunsetString);
     }
 
-    public static Boolean isDay(){
-        if (getLastKnownSunriseSunset() == null){
-            Log.d(TAG, "Defaulting to day" );
+    public static Boolean isDay() {
+        if (getLastKnownSunriseSunset() == null) {
+            Log.d(TAG, "Defaulting to day");
             return true;
         }
         Calendar now = Calendar.getInstance();
-        Boolean isDay =  now.compareTo(officialSunrise) > 0 && now.compareTo(officialSunset) < 0;
+        Boolean isDay = now.compareTo(officialSunrise) > 0 && now.compareTo(officialSunset) < 0;
         Log.d(TAG, "It is day " + isDay.toString());
         return isDay;
     }
 
-    public static Pair<Calendar, Calendar> getLastKnownSunriseSunset(){
-        if (officialSunrise == null || officialSunset == null){
+    public static Pair<Calendar, Calendar> getLastKnownSunriseSunset() {
+        if (officialSunrise == null || officialSunset == null) {
             return null;
         }
         return new Pair<>(officialSunrise, officialSunset);
-    }
-
-    protected SunriseSunsetHelper(){
-
     }
 }
