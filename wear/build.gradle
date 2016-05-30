@@ -9,8 +9,8 @@ android {
         applicationId "com.dimitrioskanellopoulos.athletica"
         minSdkVersion 20
         targetSdkVersion 23
-        versionCode 92
-        versionName "2.6.0"
+        versionCode 93
+        versionName "2.6.1"
     }
     buildTypes {
         debug {
