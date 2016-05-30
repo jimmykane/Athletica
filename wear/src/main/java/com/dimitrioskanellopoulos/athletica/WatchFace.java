@@ -211,9 +211,9 @@ public class WatchFace {
         this.interlace = shouldInterlace;
     }
 
-    public void invertBlackAndWhite(){
-        grid.setBackgroundColor(Color.WHITE);
-        grid.setTextColor(Color.BLACK);
+    public void invertBlackAndWhite(Boolean invertBlackAndWhite){
+        grid.setBackgroundColor(invertBlackAndWhite ? Color.WHITE : Color.BLACK);
+        grid.setTextColor(invertBlackAndWhite ? Color.BLACK : Color.WHITE);
     }
 
     public void setIsRound(boolean round) {

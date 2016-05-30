@@ -324,9 +324,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         watchFace.shouldInterlace(config.getBoolean(key));
                         break;
                     case ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE:
-                        if (config.getBoolean(key)){
-                            watchFace.invertBlackAndWhite();
-                        }
+                        watchFace.invertBlackAndWhite(config.getBoolean(key));
                         setWatchFaceStyle(config.getBoolean(key) ? watchFaceStyleInverted : watchFaceStyleNormal);
                         break;
                     case ConfigurationHelper.KEY_DAY_NIGHT_MODE:
