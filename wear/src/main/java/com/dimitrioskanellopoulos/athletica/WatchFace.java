@@ -39,6 +39,7 @@ public class WatchFace {
     private boolean isVisible = false;
     private boolean interlace = true;
     private boolean invertBlackAndWhite = false;
+    private boolean dayNightMode = false;
 
     private int chinSize;
 
@@ -232,5 +233,9 @@ public class WatchFace {
 
     public void setChinSize(Integer chinSize) {
         this.chinSize = chinSize;
+    }
+
+    public void setDayNightMode(boolean dayNightMode) {
+        this.dayNightMode = dayNightMode;
     }
 }

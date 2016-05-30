@@ -327,6 +327,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         watchFace.setInvertBlackAndWhite(config.getBoolean(key));
                         setWatchFaceStyle(config.getBoolean(key) ? watchFaceStyleInverted : watchFaceStyleNormal);
                         break;
+                    case ConfigurationHelper.KEY_DAY_NIGHT_MODE:
+                        watchFace.setDayNightMode(config.getBoolean(key));
+                        break;
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
                         // Save new config
                         setAvailableSensorTypes(config.getIntegerArrayList(key));
