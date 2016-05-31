@@ -15,7 +15,7 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.BatteryLevelColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.columns.ColumnFactory;
 import com.dimitrioskanellopoulos.athletica.grid.columns.DateColumn;
-import com.dimitrioskanellopoulos.athletica.grid.columns.GoogleFitColumn;
+import com.dimitrioskanellopoulos.athletica.grid.columns.GoogleFitStepsColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.SunriseColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.SunsetColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.TimeColumn;
@@ -133,7 +133,7 @@ public class WatchFace {
         googleFitStepsIconColumn.setText(resources.getString(R.string.icon_google_fit_steps));
         grid.getRow("forthRow").putColumn("googleFitSteps_icon", googleFitStepsIconColumn);
 
-        GoogleFitColumn googleFitStepsColumn = new GoogleFitColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
+        GoogleFitStepsColumn googleFitStepsColumn = new GoogleFitStepsColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
         grid.getRow("forthRow").putColumn("googleFitSteps", googleFitStepsColumn);
     }
 
