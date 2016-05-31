@@ -19,6 +19,7 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.SunriseColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.SunsetColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.TimeColumn;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
+import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.SunriseSunsetHelper;
 
 import java.util.Map;
@@ -127,6 +128,7 @@ public class WatchFace {
     }
 
     public void addSensorColumn(Integer sensorType) {
+        // Add icon
         if (grid.getRow("forthRow").getAllColumns().size() >= 3) {
             grid.getRow("forthRow").getAllColumns().values().toArray(new Column[0])[grid.getRow("forthRow").getAllColumns().size() - 1].setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
         }
@@ -134,14 +136,22 @@ public class WatchFace {
         sensorIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         grid.getRow("forthRow").putColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
-        Column sensorColumn = ColumnFactory.getColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
+        // Add column depending on emu
+        Column sensorColumn;
+        if (EmulatorHelper.isEmulator()){
+            sensorColumn = new Column(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
+            sensorColumn.setText("60");
+        }else {
+            sensorColumn = ColumnFactory.getColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
+        }
+
         sensorColumn.setIsVisible(isVisible);
         sensorColumn.setHorizontalMargin(resources.getDimension(R.dimen.units_margin));
         grid.getRow("forthRow").putColumn(sensorType.toString(), sensorColumn);
 
+        // Add units
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), grid.getTextColor());
         grid.getRow("forthRow").putColumn(sensorType.toString() + "_units", sensorUnitsColumn);
-        // @todo  When using more than one sensors should add the margin to the previous one
     }
 
     public void removeAllSensorColumns() {
