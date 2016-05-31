@@ -50,9 +50,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
     /**
      * How often the onTimeTick actions should run
-     * 15 minutes for real device and 1 minute for emulator
+     * 10 minutes for real device and 1 minute for emulator
      */
-    private static final long RUN_ON_TICK_TASKS_EVERY_MS = !EmulatorHelper.isEmulator() ? 15 * 60 * 1000 : 1 * 60 * 1000;
+    private static final long RUN_ON_TICK_TASKS_EVERY_MS = !EmulatorHelper.isEmulator() ? 10 * 60 * 1000 : 1 * 60 * 1000;
 
     @Override
     public CanvasWatchFaceService.Engine onCreateEngine() {
