@@ -50,14 +50,10 @@ public abstract class SunriseSunsetColumn extends Column implements GoogleApiCli
             Log.d(TAG, "Successfully updated sunrise");
         }
     };
-    /**
-     * A helper for google api that can be shared within the app
-     */
+
     private static GoogleApiClient googleApiClient;
-    /**
-     * The location request we will be making
-     */
-    private final LocationRequest locationRequest = new LocationRequest()
+
+    private static final LocationRequest locationRequest = new LocationRequest()
             .setInterval(LOCATION_UPDATE_INTERVAL_MS)
             .setFastestInterval(LOCATION_UPDATE_FASTEST_INTERVAL_MS)
             .setPriority(LocationRequest.PRIORITY_LOW_POWER);
