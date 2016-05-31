@@ -27,11 +27,9 @@ public class GridRenderer {
         float startingOffsetY = 0.0f;
         float rowHeight = totalHeight / rows.size();
         if (centerOnY) {
-            startingOffsetY = rowHeight;
-            totalHeight = totalHeight/2 + rowHeight;
-            rowHeight = totalHeight / rows.size();
-            //rowHeight = totalHeight / (rows.size() -1);
-            startingOffsetY = bounds.exactCenterY() - startingOffsetY ;
+            totalHeight = bounds.height() / 2.0f - bottomMargin + rowHeight;
+            rowHeight = totalHeight / (rows.size() +1);
+            startingOffsetY = bounds.exactCenterY() - rowHeight;
         }
 
         int rowCount = 0;
