@@ -15,6 +15,7 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.BatteryLevelColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.columns.ColumnFactory;
 import com.dimitrioskanellopoulos.athletica.grid.columns.DateColumn;
+import com.dimitrioskanellopoulos.athletica.grid.columns.GoogleFitColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.SunriseColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.SunsetColumn;
 import com.dimitrioskanellopoulos.athletica.grid.columns.TimeColumn;
@@ -56,6 +57,7 @@ public class WatchFace {
         grid.putRow("thirdRow", new Row());
         grid.putRow("forthRow", new Row());
         grid.putRow("fifthRow", new Row());
+        grid.putRow("sixthRow", new Row());
 
         // Default typeface
         defaultTypeface = Typeface.SANS_SERIF;
@@ -75,9 +77,14 @@ public class WatchFace {
         // Add column for sunset
         addColumnForSunset();
 
+        // Add column for sunset
+        addColumnForGoogleFit();
+
         // Add column for battery level
         addColumnForBattery();
     }
+
+
 
     public void draw(Canvas canvas, Rect bounds) {
 
@@ -120,8 +127,19 @@ public class WatchFace {
         grid.getRow("thirdRow").putColumn("sunset", sunsetColumn);
     }
 
+    private void addColumnForGoogleFit(){
+        Column googleFitStepsIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
+        googleFitStepsIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
+        googleFitStepsIconColumn.setText(resources.getString(R.string.icon_google_fit_steps));
+        grid.getRow("forthRow").putColumn("googleFitSteps_icon", googleFitStepsIconColumn);
+
+        GoogleFitColumn googleFitStepsColumn = new GoogleFitColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
+        grid.getRow("forthRow").putColumn("googleFitSteps", googleFitStepsColumn);
+    }
+
+
     public Boolean hasSensorColumn(Integer sensorType) {
-        if (grid.getRow("forthRow").getColumn(sensorType.toString()) != null) {
+        if (grid.getRow("fifthRow").getColumn(sensorType.toString()) != null) {
             return true;
         }
         return false;
@@ -129,12 +147,12 @@ public class WatchFace {
 
     public void addSensorColumn(Integer sensorType) {
         // Add icon
-        if (grid.getRow("forthRow").getAllColumns().size() >= 3) {
-            grid.getRow("forthRow").getAllColumns().values().toArray(new Column[0])[grid.getRow("forthRow").getAllColumns().size() - 1].setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
+        if (grid.getRow("fifthRow").getAllColumns().size() >= 3) {
+            grid.getRow("fifthRow").getAllColumns().values().toArray(new Column[0])[grid.getRow("fifthRow").getAllColumns().size() - 1].setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
         }
         Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(context, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         sensorIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        grid.getRow("forthRow").putColumn(sensorType.toString() + "_icon", sensorIconColumn);
+        grid.getRow("fifthRow").putColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
         // Add column depending on emu
         Column sensorColumn;
@@ -147,32 +165,32 @@ public class WatchFace {
 
         sensorColumn.setIsVisible(isVisible);
         sensorColumn.setHorizontalMargin(resources.getDimension(R.dimen.units_margin));
-        grid.getRow("forthRow").putColumn(sensorType.toString(), sensorColumn);
+        grid.getRow("fifthRow").putColumn(sensorType.toString(), sensorColumn);
 
         // Add units
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), grid.getTextColor());
-        grid.getRow("forthRow").putColumn(sensorType.toString() + "_units", sensorUnitsColumn);
+        grid.getRow("fifthRow").putColumn(sensorType.toString() + "_units", sensorUnitsColumn);
     }
 
     public void removeAllSensorColumns() {
-        grid.getRow("forthRow").removeAllColumns();
+        grid.getRow("fifthRow").removeAllColumns();
     }
 
     public void removeSensorColumn(Integer sensorType) {
         // @todo should stop etc
-        grid.getRow("forthRow").removeColumn(sensorType.toString() + "_icon");
-        grid.getRow("forthRow").removeColumn(sensorType.toString());
-        grid.getRow("forthRow").removeColumn(sensorType.toString() + "_units");
+        grid.getRow("fifthRow").removeColumn(sensorType.toString() + "_icon");
+        grid.getRow("fifthRow").removeColumn(sensorType.toString());
+        grid.getRow("fifthRow").removeColumn(sensorType.toString() + "_units");
     }
 
     private void addColumnForBattery() {
         BatteryIconColumn batteryIconColumn = new BatteryIconColumn(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         batteryIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        grid.getRow("fifthRow").putColumn("battery_icon", batteryIconColumn);
-        grid.getRow("fifthRow").setPaddingBottom(resources.getDimension(R.dimen.row_padding_bottom));
+        grid.getRow("sixthRow").putColumn("battery_icon", batteryIconColumn);
+        grid.getRow("sixthRow").setPaddingBottom(resources.getDimension(R.dimen.row_padding_bottom));
 
         BatteryLevelColumn batteryLevelColumn = new BatteryLevelColumn(context, defaultTypeface, resources.getDimension(R.dimen.battery_text_size), grid.getTextColor());
-        grid.getRow("fifthRow").putColumn("battery", batteryLevelColumn);
+        grid.getRow("sixthRow").putColumn("battery", batteryLevelColumn);
     }
 
     /**
@@ -196,7 +214,7 @@ public class WatchFace {
      */
     public void runTasks() {
         // Fow now do it only on the sensor columns
-        for (Map.Entry<String, Column> columnEntry : grid.getRow("forthRow").getAllColumns().entrySet()) {
+        for (Map.Entry<String, Column> columnEntry : grid.getRow("fifthRow").getAllColumns().entrySet()) {
             Column column = columnEntry.getValue();
             column.runTasks();
         }
