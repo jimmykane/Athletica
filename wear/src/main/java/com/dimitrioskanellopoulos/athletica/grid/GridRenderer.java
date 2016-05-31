@@ -78,6 +78,24 @@ public class GridRenderer {
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
     }
 
+    public static void drawTicks(Canvas canvas, Rect bounds, Integer color, Float strokeWidth){
+        Paint tickPaing = new Paint();
+        tickPaing.setColor(color);
+        tickPaing.setStrokeWidth(strokeWidth);
+
+        float innerTickRadius = bounds.exactCenterX() - 20;
+        float outerTickRadius = bounds.exactCenterX();
+        for (int tickIndex = 0; tickIndex < 12; tickIndex++) {
+            float tickRot = (float) (tickIndex * Math.PI * 2 / 12);
+            float innerX = (float) Math.sin(tickRot) * innerTickRadius;
+            float innerY = (float) -Math.cos(tickRot) * innerTickRadius;
+            float outerX = (float) Math.sin(tickRot) * outerTickRadius;
+            float outerY = (float) -Math.cos(tickRot) * outerTickRadius;
+            canvas.drawLine(bounds.exactCenterX() + innerX, bounds.exactCenterX() + innerY,
+                    bounds.exactCenterX() + outerX, bounds.exactCenterX() + outerY, tickPaing);
+        }
+    }
+
     public static void interlaceCanvas(Canvas canvas, Rect bounds, Integer color, Integer alpha) {
         Paint interlacePaint = new Paint();
         interlacePaint.setColor(color);
