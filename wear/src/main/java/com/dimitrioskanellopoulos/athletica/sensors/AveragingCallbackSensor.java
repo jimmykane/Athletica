@@ -31,14 +31,14 @@ public class AveragingCallbackSensor extends CallbackSensor implements
     public void getAverage() {
         stopListening();
         Log.d(TAG, "Starting average calculation");
-        sensorManager.registerListener(averagingSensorEventListener, sensor, samplingPeriodUs, maxReportLatencyUs);
         isListening = true;
+        sensorManager.registerListener(averagingSensorEventListener, sensor, samplingPeriodUs, maxReportLatencyUs);
     }
 
     @Override
     public void stopListening() {
-        sensorManager.unregisterListener(averagingSensorEventListener);
         super.stopListening();
+        sensorManager.unregisterListener(averagingSensorEventListener);
     }
 
     @Override
