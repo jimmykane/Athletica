@@ -55,10 +55,18 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
     }
 
     @Override
+    public void destroy() {
+        if (googleApiClient != null && googleApiClient.isConnected()) {
+            googleApiClient.disconnect();
+        }
+        super.destroy();
+    }
+
+    @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, "Google Api Connected");
         getTotalSteps();
-        subscribeToSteps();
+        //subscribeToSteps();
     }
 
     @Override
@@ -77,7 +85,7 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
         isTotalStepsRequested = false;
         if (dailyTotalResult.getStatus().isSuccess()) {
             List<DataPoint> points = dailyTotalResult.getTotal().getDataPoints();
-            ;
+
             if (!points.isEmpty()) {
                 Integer stepsTotal = points.get(0).getValue(Field.FIELD_STEPS).asInt();
                 setText(stepsTotal + "");
@@ -88,9 +96,35 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
         }
     }
 
+    @Override
+    public void setIsVisible(Boolean isVisible) {
+        super.setIsVisible(isVisible);
+        if (isVisible) {
+            if (googleApiClient != null && !googleApiClient.isConnected()) {
+                googleApiClient.connect();
+            }
+        } else {
+            if (googleApiClient != null && googleApiClient.isConnected()) {
+                googleApiClient.disconnect();
+            }
+        }
+
+    }
+
+    @Override
+    public void setAmbientMode(Boolean ambientMode) {
+        super.setAmbientMode(ambientMode);
+        getTotalSteps();
+    }
+
+    @Override
+    public void runTasks() {
+        super.runTasks();
+        getTotalSteps();
+    }
+
     private void getTotalSteps() {
         Log.d(TAG, "getTotalSteps()");
-
         if ((googleApiClient != null)
                 && (googleApiClient.isConnected())
                 && (!isTotalStepsRequested)) {
@@ -107,7 +141,7 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
     }
 
     /**
-     * Think if I need this and how good it works 
+     * @todo enable it from service and setting
      */
     private void subscribeToSteps() {
         Fitness.RecordingApi.subscribe(googleApiClient, DataType.TYPE_STEP_COUNT_DELTA)
