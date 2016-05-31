@@ -2,4 +2,5 @@
 <resources>
     <string name="icon_sunrise">&#xF185;</string>
     <string name="icon_sunset">&#xF186;</string>
+    <string name="icon_google_fit_steps">&#xf024;</string>
 </resources>
