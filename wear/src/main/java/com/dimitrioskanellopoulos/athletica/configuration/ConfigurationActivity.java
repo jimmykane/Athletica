@@ -27,7 +27,7 @@ import com.google.android.gms.wearable.Wearable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ConfigurationActivity extends AmbientAwareWearableActivity implements DataApi.DataListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class ConfigurationActivity extends AmbientAwareWearableActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private final static String TAG = "ConfigurationActivity";
 
     private Switch switchTimeFormat;
@@ -144,28 +144,6 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
     @Override
     public void onConnectionSuspended(int cause) {
         Log.d(TAG, "onConnectionSuspended: " + cause);
-    }
-
-    @Override // DataApi.DataListener
-    public void onDataChanged(DataEventBuffer dataEvents) {
-        Log.d(TAG, "Data changed");
-        for (DataEvent dataEvent : dataEvents) {
-            if (dataEvent.getType() != DataEvent.TYPE_CHANGED) {
-                continue;
-            }
-
-            DataItem dataItem = dataEvent.getDataItem();
-            if (!dataItem.getUri().getPath().equals(
-                    ConfigurationHelper.PATH_WITH_FEATURE)) {
-                continue;
-            }
-
-            DataMapItem dataMapItem = DataMapItem.fromDataItem(dataItem);
-            DataMap config = dataMapItem.getDataMap();
-            Log.d(TAG, "Config DataItem updated " + config);
-            // This can happen from this method more often when phone changes
-            updateUiForConfigDataMap(config);
-        }
     }
 
     @Override
