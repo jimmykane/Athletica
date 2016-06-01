@@ -19,14 +19,14 @@ public class GridRenderer {
     /**
      * @todo document more and make it faster
      */
-    public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, Integer topMargin,  Integer bottomMargin) {
+    public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, Float topMargin,  Float bottomMargin) {
         // Draw background
         drawBackground(canvas, bounds, grid.getBackgroundColor());
 
         // Get all the rows
         TreeMap<String, Row> rows = grid.getAllRows();
 
-        Integer totalHeight = bounds.height() - topMargin - bottomMargin;
+        Float totalHeight = bounds.height() - topMargin - bottomMargin;
         Float rowHeight = ((totalHeight + totalHeight / rows.size() * 0.5f)) / rows.size();
         Float startingOffsetY = topMargin - rowHeight * 0.5f;
 
