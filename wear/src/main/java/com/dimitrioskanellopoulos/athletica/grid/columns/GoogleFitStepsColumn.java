@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -51,6 +52,10 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
         }
         if (!googleApiClient.isConnected()) {
             googleApiClient.connect();
+        }
+
+        if (EmulatorHelper.isEmulator()){
+            setText("18000");
         }
     }
 
