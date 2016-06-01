@@ -5,7 +5,7 @@
     <string name="configuration_switch_show_day_name">Show the name of the day </string>
     <string name="configuration_interlace">Interlacing to save battery</string>
     <string name="configuration_invert_black_and_white">Invert black and white</string>
-    <string name="configuration_day_night_mode">Day to night b&amp;w inversion</string>
+    <string name="configuration_day_night_mode">Day to night color inversion</string>
     <string name="configuration_activity_sensor_settings">Sensor settings</string>
     <string name="configuration_activity_android.sensor.pressure">Pressure</string>
     <string name="configuration_activity_android.sensor.pressure_altitude">Altitude</string>
