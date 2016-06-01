@@ -33,6 +33,7 @@ public class WatchFace {
     private final Resources resources;
 
     private final Typeface fontAwesome;
+    private final Typeface materialIcons;
     private Typeface defaultTypeface;
     private boolean isRound;
     private boolean ambientMode = false;
@@ -56,6 +57,8 @@ public class WatchFace {
 
         // Add FontAwesome paint for icons
         fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
+
+        materialIcons = Typeface.createFromAsset(context.getAssets(), "fonts/MaterialIcons-Regular.ttf");
 
         // Add Row for time
         addRowForTime();
@@ -229,7 +232,7 @@ public class WatchFace {
         if (showGoogleFitSteps) {
             if (grid.getRow("4_googleFitRow") == null) {
                 // Icon
-                Column googleFitStepsIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
+                Column googleFitStepsIconColumn = new Column(context, materialIcons, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
                 googleFitStepsIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
                 googleFitStepsIconColumn.setText(resources.getString(R.string.icon_google_fit_steps));
                 Row googleFitRow = new Row();
