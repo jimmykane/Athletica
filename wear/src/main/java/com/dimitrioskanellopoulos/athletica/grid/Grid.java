@@ -19,9 +19,10 @@ public class Grid {
     }
 
     public void removeRow(String rowName) {
-        if (rows.containsKey(rowName)){
-            rows.get(rowName).removeAllColumns();
+        if (!rows.containsKey(rowName)) {
+            return;
         }
+        rows.get(rowName).removeAllColumns();
         rows.remove(rowName);
     }
 
