@@ -26,7 +26,7 @@ public class GridRenderer {
         // Get all the rows
         TreeMap<String, Row> rows = grid.getAllRows();
 
-        Float totalHeight = bounds.height() * 0.5f - bottomMargin;
+        Integer totalHeight = bounds.height() - topMargin - bottomMargin;
         Float rowHeight = ((totalHeight + totalHeight / rows.size() * 0.5f)) / rows.size();
         Float startingOffsetY = topMargin - rowHeight * 0.5f;
 
