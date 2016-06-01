@@ -24,11 +24,6 @@ import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.SunriseSunsetHelper;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 public class WatchFace {
     private static final String TAG = "Watchface";
 
@@ -47,18 +42,6 @@ public class WatchFace {
 
     private int chinSize;
     private Boolean invertBlackAndWhite;
-
-    private static final Map<Integer, String> rowOrder;
-    static {
-        Map<Integer, String> rowOrderMap = new HashMap<>();
-        rowOrderMap.put(1, "timeRow");
-        rowOrderMap.put(2, "dateRow");
-        rowOrderMap.put(3, "sunriseSunsetRow");
-        rowOrderMap.put(4, "googleFitRow");
-        rowOrderMap.put(5, "sensorsRow");
-        rowOrderMap.put(6, "batteryRow");
-        rowOrder = Collections.unmodifiableMap(rowOrderMap);
-    }
 
     /**
      * The WatchFace. Everything the user sees. No extra init or data manipulation
@@ -87,8 +70,6 @@ public class WatchFace {
         addRowForBattery();
     }
 
-
-
     public void draw(Canvas canvas, Rect bounds) {
 
         GridRenderer.renderGrid(canvas, bounds, grid, chinSize);
@@ -102,14 +83,14 @@ public class WatchFace {
         Row timeRow = new Row();
         TimeColumn timeColumn = new TimeColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_size), grid.getTextColor());
         timeRow.putColumn("timeColumn", timeColumn);
-        grid.putRow("timeRow", timeRow);
+        grid.putRow("1_timeRow", timeRow);
     }
 
     private void addRowForDate() {
         Row dateRow = new Row();
         DateColumn dateColumn = new DateColumn(context, defaultTypeface, resources.getDimension(R.dimen.date_size), grid.getTextColor());
         dateRow.putColumn("dateColumn", dateColumn);
-        grid.putRow("dateRow", dateRow);
+        grid.putRow("2_dateRow", dateRow);
     }
 
     private void addRowForSunriseSunset() {
@@ -134,19 +115,19 @@ public class WatchFace {
         SunsetColumn sunsetColumn = new SunsetColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
         sunriseSunsetRow.putColumn("sunsetColumn", sunsetColumn);
 
-        grid.putRow("sunriseSunsetRow", sunriseSunsetRow);
+        grid.putRow("3_sunriseSunsetRow", sunriseSunsetRow);
     }
 
     public Boolean hasSensorColumn(Integer sensorType) {
-        return grid.getRow("sensorsRow") != null && grid.getRow("sensorsRow").getColumn(sensorType.toString()) != null;
+        return grid.getRow("5_sensorsRow") != null && grid.getRow("5_sensorsRow").getColumn(sensorType.toString()) != null;
     }
 
     public void addSensorColumn(Integer sensorType) {
         // Check if row is there and else create it
-        Row sensorsRow = grid.getRow("sensorsRow");
-        if (sensorsRow == null){
+        Row sensorsRow = grid.getRow("5_sensorsRow");
+        if (sensorsRow == null) {
             sensorsRow = new Row();
-            grid.putRow("sensorsRow", sensorsRow);
+            grid.putRow("5_sensorsRow", sensorsRow);
         }
         // Add icon
         if (sensorsRow.getAllColumns().size() >= 3) {
@@ -158,10 +139,10 @@ public class WatchFace {
 
         // Add column depending on emu
         Column sensorColumn;
-        if (EmulatorHelper.isEmulator()){
+        if (EmulatorHelper.isEmulator()) {
             sensorColumn = new Column(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
             sensorColumn.setText("60");
-        }else {
+        } else {
             sensorColumn = ColumnFactory.getColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
         }
 
@@ -175,13 +156,7 @@ public class WatchFace {
     }
 
     public void removeSensorsRow() {
-        grid.removeRow("sensorsRow");
-    }
-
-    public void removeSensorColumn(Integer sensorType) {
-        grid.getRow("sensorsRow").removeColumn(sensorType.toString() + "_icon");
-        grid.getRow("sensorsRow").removeColumn(sensorType.toString());
-        grid.getRow("sensorsRow").removeColumn(sensorType.toString() + "_units");
+        grid.removeRow("5_sensorsRow");
     }
 
     private void addRowForBattery() {
@@ -196,7 +171,7 @@ public class WatchFace {
         BatteryLevelColumn batteryLevelColumn = new BatteryLevelColumn(context, defaultTypeface, resources.getDimension(R.dimen.battery_text_size), grid.getTextColor());
         batteryRow.putColumn("batteryLevelColumn", batteryLevelColumn);
 
-        grid.putRow("batteryRow", batteryRow);
+        grid.putRow("6_batteryRow", batteryRow);
     }
 
     /**
@@ -225,19 +200,19 @@ public class WatchFace {
 
 
     public void setTimeFormat24(Boolean timeFormat24) {
-        TimeColumn timeColumn = (TimeColumn) grid.getRow("timeRow").getColumn("timeColumn");
+        TimeColumn timeColumn = (TimeColumn) grid.getRow("1_timeRow").getColumn("timeColumn");
         timeColumn.setTimeFormat24(timeFormat24);
 
         if (timeFormat24) {
-            grid.getRow("timeRow").removeColumn("amPmColumn");
+            grid.getRow("1_timeRow").removeColumn("amPmColumn");
         } else {
             AmPmColumn amPmColumn = new AmPmColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), grid.getTextColor());
-            grid.getRow("timeRow").putColumn("amPmColumn", amPmColumn);
+            grid.getRow("1_timeRow").putColumn("amPmColumn", amPmColumn);
         }
     }
 
     public void setShowDateNamesFormat(Boolean showDateNamesFormat) {
-        DateColumn dateColumn = (DateColumn) grid.getRow("dateRow").getColumn("dateColumn");
+        DateColumn dateColumn = (DateColumn) grid.getRow("2_dateRow").getColumn("dateColumn");
         dateColumn.setShowDateNamesFormat(showDateNamesFormat);
     }
 
@@ -250,10 +225,10 @@ public class WatchFace {
         setGridColors();
     }
 
-    public void showGoogleFitSteps(Boolean showGoogleFitSteps){
+    public void showGoogleFitSteps(Boolean showGoogleFitSteps) {
         Log.d(TAG, "Show steps " + showGoogleFitSteps.toString());
-        if (showGoogleFitSteps){
-            if (grid.getRow("googleFitRow") == null ) {
+        if (showGoogleFitSteps) {
+            if (grid.getRow("4_googleFitRow") == null) {
                 // Icon
                 Column googleFitStepsIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
                 googleFitStepsIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
@@ -264,10 +239,10 @@ public class WatchFace {
                 // Steps
                 GoogleFitStepsColumn googleFitStepsColumn = new GoogleFitStepsColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
                 googleFitRow.putColumn("googleFitSteps", googleFitStepsColumn);
-                grid.putRow("googleFitRow", googleFitRow);
+                grid.putRow("4_googleFitRow", googleFitRow);
             }
-        }else{
-            grid.removeRow("googleFitRow");
+        } else {
+            grid.removeRow("4_googleFitRow");
         }
     }
 

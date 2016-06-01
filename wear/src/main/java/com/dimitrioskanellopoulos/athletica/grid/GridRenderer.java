@@ -11,6 +11,7 @@ import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class GridRenderer {
     private static final String TAG = "GridRenderer";
@@ -23,7 +24,7 @@ public class GridRenderer {
         drawBackground(canvas, bounds, grid.getBackgroundColor());
 
         // Get all the rows
-        LinkedHashMap<String, Row> rows = grid.getAllRows();
+        TreeMap<String, Row> rows = grid.getAllRows();
 
         // Find the total margin of all rows
         Float totalMargin = 0.0f;

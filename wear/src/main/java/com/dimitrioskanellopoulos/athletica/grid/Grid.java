@@ -7,10 +7,11 @@ import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Grid {
     private static final String TAG = "Grid";
-    private final LinkedHashMap<String, Row> rows = new LinkedHashMap<>();
+    private final TreeMap<String, Row> rows = new TreeMap<>();
     private Integer backgroundColor = Color.BLACK;
     private Integer textColor = Color.WHITE;
 
@@ -30,7 +31,7 @@ public class Grid {
         return rows.get(rowName);
     }
 
-    public LinkedHashMap<String, Row> getAllRows() {
+    public TreeMap<String, Row> getAllRows() {
         return rows;
     }
 
