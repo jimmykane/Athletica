@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="4dp"
-                android:text="@string/configuration_activity_general_settings"
+                android:text="@string/configuration_activity_time_and_date_settings"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
@@ -52,6 +52,15 @@
                 android:text="@string/configuration_switch_show_day_name"
                 android:textAlignment="center"
                 android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="4dp"
+                android:text="@string/configuration_activity_general_settings"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
             <Switch
                 android:id="@+id/switch_interlace"

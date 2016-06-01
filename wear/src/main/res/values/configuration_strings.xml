@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="configuration_activity_time_and_date_settings">Time and Date</string>
     <string name="configuration_activity_general_settings">General settings</string>
     <string name="configuration_switch_24_hour_clock">Use 24 hour format</string>
     <string name="configuration_switch_show_day_name">Show the name of the day </string>
