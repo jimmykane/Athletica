@@ -130,13 +130,19 @@ public class WatchFace {
     }
 
     public void addSensorColumn(Integer sensorType) {
+        // Check if row is there and else create it
+        Row sensorsRow = grid.getRow("sensorsRow");
+        if (sensorsRow == null){
+            sensorsRow = new Row();
+            grid.putRow("sensorsRow", sensorsRow);
+        }
         // Add icon
-        if (grid.getRow("sensorsRow").getAllColumns().size() >= 3) {
-            grid.getRow("sensorsRow").getAllColumns().values().toArray(new Column[0])[grid.getRow("sensorsRow").getAllColumns().size() - 1].setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
+        if (sensorsRow.getAllColumns().size() >= 3) {
+            sensorsRow.getAllColumns().values().toArray(new Column[0])[sensorsRow.getAllColumns().size() - 1].setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
         }
         Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(context, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         sensorIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        grid.getRow("sensorsRow").putColumn(sensorType.toString() + "_icon", sensorIconColumn);
+        sensorsRow.putColumn(sensorType.toString() + "_icon", sensorIconColumn);
 
         // Add column depending on emu
         Column sensorColumn;
@@ -149,15 +155,15 @@ public class WatchFace {
 
         sensorColumn.setIsVisible(isVisible);
         sensorColumn.setHorizontalMargin(resources.getDimension(R.dimen.units_margin));
-        grid.getRow("sensorsRow").putColumn(sensorType.toString(), sensorColumn);
+        sensorsRow.putColumn(sensorType.toString(), sensorColumn);
 
         // Add units
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), grid.getTextColor());
-        grid.getRow("sensorsRow").putColumn(sensorType.toString() + "_units", sensorUnitsColumn);
+        sensorsRow.putColumn(sensorType.toString() + "_units", sensorUnitsColumn);
     }
 
-    public void removeAllSensorColumns() {
-        grid.getRow("sensorsRow").removeAllColumns();
+    public void removeSensorsRow() {
+        grid.removeRow("sensorsRow");
     }
 
     public void removeSensorColumn(Integer sensorType) {

@@ -339,7 +339,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
                         // If new available sensor are none clear all
                         if (availableSensorTypes.size() == 0) {
-                            watchFace.removeAllSensorColumns();
+                            watchFace.removeSensorsRow();
                             break;
                         }
 
@@ -368,14 +368,14 @@ public class WatchFaceService extends CanvasWatchFaceService {
         private void addSensorColumn() {
             // Sanity
             if (availableSensorTypes.size() == 0) {
-                watchFace.removeAllSensorColumns();
+                watchFace.removeSensorsRow();
                 return;
             }
             // If only one
             if (availableSensorTypes.size() == 1) {
                 // If it's not there
                 if (!watchFace.hasSensorColumn(availableSensorTypes.get(0))) {
-                    watchFace.removeAllSensorColumns();
+                    watchFace.removeSensorsRow();
                     watchFace.addSensorColumn(availableSensorTypes.get(0));
                 }
                 return;
@@ -390,7 +390,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                 }
                 i++;
             }
-            watchFace.removeAllSensorColumns();
+            watchFace.removeSensorsRow();
             // If not found add 1st one
             if (indexFound == -1) {
                 watchFace.addSensorColumn(availableSensorTypes.get(0));
