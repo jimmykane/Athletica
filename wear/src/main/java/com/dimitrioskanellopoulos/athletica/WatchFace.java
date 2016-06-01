@@ -179,7 +179,6 @@ public class WatchFace {
     }
 
     public void removeSensorColumn(Integer sensorType) {
-        // @todo should stop etc
         grid.getRow("sensorsRow").removeColumn(sensorType.toString() + "_icon");
         grid.getRow("sensorsRow").removeColumn(sensorType.toString());
         grid.getRow("sensorsRow").removeColumn(sensorType.toString() + "_units");
