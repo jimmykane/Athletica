@@ -330,6 +330,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     case ConfigurationHelper.KEY_DAY_NIGHT_MODE:
                         watchFace.setDayNightMode(config.getBoolean(key));
                         break;
+                    case ConfigurationHelper.KEY_SHOW_GOOGLE_FIT_STEPS:
+                        watchFace.showGoogleFitSteps(config.getBoolean(key));
+                        break;
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
                         // Save new config
                         setAvailableSensorTypes(config.getIntegerArrayList(key));

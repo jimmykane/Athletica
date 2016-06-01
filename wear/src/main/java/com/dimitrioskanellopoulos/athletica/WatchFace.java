@@ -248,6 +248,10 @@ public class WatchFace {
         setGridColors();
     }
 
+    public void showGoogleFitSteps(Boolean showGoogleFitSteps){
+        
+    }
+
     private void setGridColors() {
         if (invertBlackAndWhite) {
             if (dayNightMode) {
