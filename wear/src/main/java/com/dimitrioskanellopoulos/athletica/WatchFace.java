@@ -53,32 +53,26 @@ public class WatchFace {
         this.context = context;
         resources = context.getResources();
 
-        grid.putRow("timeRow", new Row());
-        grid.putRow("dateRow", new Row());
-        grid.putRow("sunriseSunsetRow", new Row());
-        grid.putRow("sensorsRow", new Row());
-        grid.putRow("batteryRow", new Row());
-
         // Default typeface
         defaultTypeface = Typeface.SANS_SERIF;
 
         // Add FontAwesome paint for icons
         fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
 
-        // Add column for time
-        addColumnForTime();
+        // Add Row for time
+        addRowForTime();
 
-        // Add column for date
-        addColumnForDate();
+        // Add Row for date
+        addRowForDate();
 
-        // Add column for sunrise
-        addColumnForSunrise();
+        // Add Row for sunrise and sunset
+        addRowForSunriseSunset();
 
-        // Add column for sunset
-        addColumnForSunset();
+        grid.putRow("sensorsRow", new Row());
 
-        // Add column for battery level
-        addColumnForBattery();
+
+        // Add Row for battery level
+        addRowForBattery();
     }
 
 
@@ -92,36 +86,43 @@ public class WatchFace {
         }
     }
 
-    private void addColumnForTime() {
+    private void addRowForTime() {
+        Row timeRow = new Row();
         TimeColumn timeColumn = new TimeColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_size), grid.getTextColor());
-        grid.getRow("timeRow").putColumn("time", timeColumn);
+        timeRow.putColumn("timeColumn", timeColumn);
+        grid.putRow("timeRow", timeRow);
     }
 
-    private void addColumnForDate() {
+    private void addRowForDate() {
+        Row dateRow = new Row();
         DateColumn dateColumn = new DateColumn(context, defaultTypeface, resources.getDimension(R.dimen.date_size), grid.getTextColor());
-        grid.getRow("dateRow").putColumn("date", dateColumn);
+        dateRow.putColumn("dateColumn", dateColumn);
+        grid.putRow("dateRow", dateRow);
     }
 
-    private void addColumnForSunrise() {
-        // @todo should be a calendar column
+    private void addRowForSunriseSunset() {
+        Row sunriseSunsetRow = new Row();
+        // Icon
         Column sunriseIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
         sunriseIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        grid.getRow("sunriseSunsetRow").putColumn("sunrise_icon", sunriseIconColumn);
-
+        sunriseSunsetRow.putColumn("sunriseIconColumn", sunriseIconColumn);
+        // Column
         SunriseColumn sunriseColumn = new SunriseColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
         sunriseColumn.setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
-        grid.getRow("sunriseSunsetRow").putColumn("sunrise", sunriseColumn);
-    }
+        sunriseSunsetRow.putColumn("sunriseColumn", sunriseColumn);
 
-    private void addColumnForSunset() {
+        // Icon
         Column sunsetIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         sunsetIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
-        grid.getRow("sunriseSunsetRow").putColumn("sunset_icon", sunsetIconColumn);
+        sunriseSunsetRow.putColumn("sunsetIconColumn", sunsetIconColumn);
 
+        // Column
         SunsetColumn sunsetColumn = new SunsetColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
-        grid.getRow("sunriseSunsetRow").putColumn("sunset", sunsetColumn);
+        sunriseSunsetRow.putColumn("sunsetColumn", sunsetColumn);
+
+        grid.putRow("sunriseSunsetRow", sunriseSunsetRow);
     }
 
     public Boolean hasSensorColumn(Integer sensorType) {
@@ -169,14 +170,19 @@ public class WatchFace {
         grid.getRow("sensorsRow").removeColumn(sensorType.toString() + "_units");
     }
 
-    private void addColumnForBattery() {
+    private void addRowForBattery() {
+        Row batteryRow = new Row();
+        batteryRow.setMarginBottom(resources.getDimension(R.dimen.row_margin_bottom));
+        //Icon
         BatteryIconColumn batteryIconColumn = new BatteryIconColumn(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         batteryIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        grid.getRow("batteryRow").putColumn("battery_icon", batteryIconColumn);
-        grid.getRow("batteryRow").setMarginBottom(resources.getDimension(R.dimen.row_margin_bottom));
+        batteryRow.putColumn("batteryIconColumn", batteryIconColumn);
 
+        // Column
         BatteryLevelColumn batteryLevelColumn = new BatteryLevelColumn(context, defaultTypeface, resources.getDimension(R.dimen.battery_text_size), grid.getTextColor());
-        grid.getRow("batteryRow").putColumn("battery", batteryLevelColumn);
+        batteryRow.putColumn("batteryLevelColumn", batteryLevelColumn);
+
+        grid.putRow("batteryRow", batteryRow);
     }
 
     /**
@@ -209,19 +215,19 @@ public class WatchFace {
 
 
     public void setTimeFormat24(Boolean timeFormat24) {
-        TimeColumn timeColumn = (TimeColumn) grid.getRow("timeRow").getColumn("time");
+        TimeColumn timeColumn = (TimeColumn) grid.getRow("timeRow").getColumn("timeColumn");
         timeColumn.setTimeFormat24(timeFormat24);
 
         if (timeFormat24) {
-            grid.getRow("timeRow").removeColumn("amPm");
+            grid.getRow("timeRow").removeColumn("amPmColumn");
         } else {
             AmPmColumn amPmColumn = new AmPmColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), grid.getTextColor());
-            grid.getRow("timeRow").putColumn("amPm", amPmColumn);
+            grid.getRow("timeRow").putColumn("amPmColumn", amPmColumn);
         }
     }
 
     public void setShowDateNamesFormat(Boolean showDateNamesFormat) {
-        DateColumn dateColumn = (DateColumn) grid.getRow("dateRow").getColumn("date");
+        DateColumn dateColumn = (DateColumn) grid.getRow("dateRow").getColumn("dateColumn");
         dateColumn.setShowDateNamesFormat(showDateNamesFormat);
     }
 
