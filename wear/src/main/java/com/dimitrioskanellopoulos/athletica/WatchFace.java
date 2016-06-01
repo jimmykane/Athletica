@@ -24,6 +24,9 @@ import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.SunriseSunsetHelper;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class WatchFace {
@@ -44,6 +47,18 @@ public class WatchFace {
 
     private int chinSize;
     private Boolean invertBlackAndWhite;
+
+    private static final Map<Integer, String> rowOrder;
+    static {
+        Map<Integer, String> rowOrderMap = new HashMap<>();
+        rowOrderMap.put(1, "timeRow");
+        rowOrderMap.put(2, "dateRow");
+        rowOrderMap.put(3, "sunriseSunsetRow");
+        rowOrderMap.put(4, "googleFitRow");
+        rowOrderMap.put(5, "sensorsRow");
+        rowOrderMap.put(6, "batteryRow");
+        rowOrder = Collections.unmodifiableMap(rowOrderMap);
+    }
 
     /**
      * The WatchFace. Everything the user sees. No extra init or data manipulation
