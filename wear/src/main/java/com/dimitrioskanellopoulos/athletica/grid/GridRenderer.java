@@ -18,19 +18,14 @@ public class GridRenderer {
     /**
      * @todo document more and make it faster
      */
-    public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, Integer bottomMargin, Boolean centerOnY) {
+    public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, Integer bottomMargin) {
         // Draw background
         drawBackground(canvas, bounds, grid.getBackgroundColor());
 
         LinkedHashMap<String, Row> rows = grid.getAllRows();
-        float totalHeight = bounds.height() - bottomMargin;
-        float startingOffsetY = 0.0f;
-        float rowHeight = totalHeight / rows.size();
-        if (centerOnY) {
-            totalHeight = bounds.height() / 2.0f - bottomMargin;
-            rowHeight = ((totalHeight + totalHeight / rows.size() / 2.0f)) / rows.size();
-            startingOffsetY = bounds.exactCenterY() - rowHeight / 2.0f;
-        }
+        Float totalHeight = bounds.height() / 2.0f - bottomMargin;
+        Float rowHeight = ((totalHeight + totalHeight / rows.size() / 2.0f)) / rows.size();
+        Float startingOffsetY = bounds.exactCenterY() - rowHeight / 2.0f;
 
         if (BuildConfig.DEBUG) {
             // Do the center
@@ -70,6 +65,9 @@ public class GridRenderer {
                 }
                 // Draw the column
                 canvas.drawText(column.getText(), cursor, yOffset + rowHeight - row.getPaddingBottom(), column.getPaint()); // check if it needs per column height
+                // The below will center
+                // canvas.drawText(column.getText(), cursor, yOffset + rowHeight/2 + column.getHeight()/2, column.getPaint()); // check if it needs per column height
+
                 cursor += column.getWidth() + column.getHorizontalMargin();
                 //Log.d(TAG, "Drew column cursor " + cursor);
             }
