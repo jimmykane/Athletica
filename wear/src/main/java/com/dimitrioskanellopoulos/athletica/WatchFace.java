@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.grid.Grid;
 import com.dimitrioskanellopoulos.athletica.grid.GridRenderer;
@@ -55,7 +56,6 @@ public class WatchFace {
         grid.putRow("timeRow", new Row());
         grid.putRow("dateRow", new Row());
         grid.putRow("sunriseSunsetRow", new Row());
-        grid.putRow("googleFitRow", new Row());
         grid.putRow("sensorsRow", new Row());
         grid.putRow("batteryRow", new Row());
 
@@ -76,9 +76,6 @@ public class WatchFace {
 
         // Add column for sunset
         addColumnForSunset();
-
-        // Add column for sunset
-        addColumnForGoogleFit();
 
         // Add column for battery level
         addColumnForBattery();
@@ -126,17 +123,6 @@ public class WatchFace {
         SunsetColumn sunsetColumn = new SunsetColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
         grid.getRow("sunriseSunsetRow").putColumn("sunset", sunsetColumn);
     }
-
-    private void addColumnForGoogleFit(){
-        Column googleFitStepsIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
-        googleFitStepsIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        googleFitStepsIconColumn.setText(resources.getString(R.string.icon_google_fit_steps));
-        grid.getRow("googleFitRow").putColumn("googleFitSteps_icon", googleFitStepsIconColumn);
-
-        GoogleFitStepsColumn googleFitStepsColumn = new GoogleFitStepsColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
-        grid.getRow("googleFitRow").putColumn("googleFitSteps", googleFitStepsColumn);
-    }
-
 
     public Boolean hasSensorColumn(Integer sensorType) {
         if (grid.getRow("sensorsRow").getColumn(sensorType.toString()) != null) {
@@ -249,7 +235,24 @@ public class WatchFace {
     }
 
     public void showGoogleFitSteps(Boolean showGoogleFitSteps){
+        Log.d(TAG, "Show steps " + showGoogleFitSteps.toString());
+        if (showGoogleFitSteps){
+            if (grid.getRow("googleFitRow") == null ) {
+                // Icon
+                Column googleFitStepsIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
+                googleFitStepsIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
+                googleFitStepsIconColumn.setText(resources.getString(R.string.icon_google_fit_steps));
+                Row googleFitRow = new Row();
+                googleFitRow.putColumn("googleFitSteps_icon", googleFitStepsIconColumn);
 
+                // Steps
+                GoogleFitStepsColumn googleFitStepsColumn = new GoogleFitStepsColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
+                googleFitRow.putColumn("googleFitSteps", googleFitStepsColumn);
+                grid.putRow("googleFitRow", googleFitRow);
+            }
+        }else{
+            grid.removeRow("googleFitRow");
+        }
     }
 
     private void setGridColors() {
