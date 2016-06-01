@@ -23,9 +23,9 @@ public class GridRenderer {
         drawBackground(canvas, bounds, grid.getBackgroundColor());
 
         LinkedHashMap<String, Row> rows = grid.getAllRows();
-        Float totalHeight = bounds.height() / 2.0f - bottomMargin;
-        Float rowHeight = ((totalHeight + totalHeight / rows.size() / 2.0f)) / rows.size();
-        Float startingOffsetY = bounds.exactCenterY() - rowHeight / 2.0f;
+        Float totalHeight = bounds.height() * 0.5f - bottomMargin;
+        Float rowHeight = ((totalHeight + totalHeight / rows.size() * 0.5f)) / rows.size();
+        Float startingOffsetY = bounds.exactCenterY() - rowHeight * 0.5f;
 
         if (BuildConfig.DEBUG) {
             // Do the center
