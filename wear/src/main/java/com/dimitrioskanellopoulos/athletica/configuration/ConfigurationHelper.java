@@ -40,6 +40,10 @@ public final class ConfigurationHelper {
      */
     public static final String KEY_DAY_NIGHT_MODE = "KEY_DAY_NIGHT_MODE";
     /**
+     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} Show google fit steps
+     */
+    public static final String KEY_SHOW_GOOGLE_FIT_STEPS = "KEY_SHOW_GOOGLE_FIT_STEPS";
+    /**
      * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} sensors.
      */
     public static final String KEY_ENABLED_SENSORS = "KEY_ENABLED_SENSORS";
@@ -63,6 +67,10 @@ public final class ConfigurationHelper {
      * The default to invert black and white
      */
     public static final Boolean DAY_NIGHT_MODE = false;
+    /**
+     * The default to invert black and white
+     */
+    public static final Boolean SHOW_GOOGLE_FIT_STEPS = false;
     /**
      * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
      */
@@ -143,6 +151,7 @@ public final class ConfigurationHelper {
         addBooleanKeyIfMissing(config, KEY_INTERLACE, INTERLACE_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INVERT_BLACK_AND_WHITE, INVERT_BLACK_AND_WHITE);
         addBooleanKeyIfMissing(config, KEY_DAY_NIGHT_MODE, DAY_NIGHT_MODE);
+        addBooleanKeyIfMissing(config, KEY_SHOW_GOOGLE_FIT_STEPS, SHOW_GOOGLE_FIT_STEPS);
         addIntegerArrayListKeyIfMissing(config, KEY_ENABLED_SENSORS, SensorHelper.getApplicationDeviceSupportedSensors(context));
     }
 
