@@ -187,7 +187,7 @@ public class WatchFace {
         BatteryIconColumn batteryIconColumn = new BatteryIconColumn(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         batteryIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         grid.getRow("sixthRow").putColumn("battery_icon", batteryIconColumn);
-        grid.getRow("sixthRow").setPaddingBottom(resources.getDimension(R.dimen.row_padding_bottom));
+        grid.getRow("sixthRow").setMarginBottom(resources.getDimension(R.dimen.row_margin_bottom));
 
         BatteryLevelColumn batteryLevelColumn = new BatteryLevelColumn(context, defaultTypeface, resources.getDimension(R.dimen.battery_text_size), grid.getTextColor());
         grid.getRow("sixthRow").putColumn("battery", batteryLevelColumn);
