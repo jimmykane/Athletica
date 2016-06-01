@@ -72,7 +72,7 @@ public class WatchFace {
 
     public void draw(Canvas canvas, Rect bounds) {
 
-        GridRenderer.renderGrid(canvas, bounds, grid, chinSize);
+        GridRenderer.renderGrid(canvas, bounds, grid, (int) (chinSize + resources.getDimension(R.dimen.face_bottom_margin)));
 
         if (interlace) {
             GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, ambientMode ? 100 : 70);
@@ -161,7 +161,6 @@ public class WatchFace {
 
     private void addRowForBattery() {
         Row batteryRow = new Row();
-        batteryRow.setMarginBottom(resources.getDimension(R.dimen.row_margin_bottom));
         //Icon
         BatteryIconColumn batteryIconColumn = new BatteryIconColumn(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         batteryIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
