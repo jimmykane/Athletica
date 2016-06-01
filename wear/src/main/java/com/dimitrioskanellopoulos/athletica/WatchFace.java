@@ -68,9 +68,6 @@ public class WatchFace {
         // Add Row for sunrise and sunset
         addRowForSunriseSunset();
 
-        grid.putRow("sensorsRow", new Row());
-
-
         // Add Row for battery level
         addRowForBattery();
     }
