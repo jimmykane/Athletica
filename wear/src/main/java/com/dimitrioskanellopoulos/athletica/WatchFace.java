@@ -126,10 +126,7 @@ public class WatchFace {
     }
 
     public Boolean hasSensorColumn(Integer sensorType) {
-        if (grid.getRow("sensorsRow").getColumn(sensorType.toString()) != null) {
-            return true;
-        }
-        return false;
+        return grid.getRow("sensorsRow") != null && grid.getRow("sensorsRow").getColumn(sensorType.toString()) != null;
     }
 
     public void addSensorColumn(Integer sensorType) {
