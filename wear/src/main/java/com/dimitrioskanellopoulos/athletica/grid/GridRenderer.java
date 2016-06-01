@@ -84,6 +84,11 @@ public class GridRenderer {
             rowCount++;
             //Log.d(TAG, "Drew row " + rowCount + " offsetY " + yOffset);
         }
+        if (BuildConfig.DEBUG) {
+            Paint redPaint = new Paint();
+            redPaint.setColor(Color.RED);
+            canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, redPaint);
+        }
     }
 
     public static void drawBackground(Canvas canvas, Rect bounds, Integer color) {
