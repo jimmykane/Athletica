@@ -32,6 +32,13 @@ public class GridRenderer {
             startingOffsetY = bounds.exactCenterY() - rowHeight / 2.0f;
         }
 
+        if (BuildConfig.DEBUG) {
+            // Do the center
+            Paint bluePaint = new Paint();
+            bluePaint.setColor(Color.BLUE);
+            canvas.drawLine(bounds.left, bounds.exactCenterY() , bounds.right, bounds.exactCenterY(), bluePaint);
+        }
+
         int rowCount = 0;
         for (Map.Entry<String, Row> rowEntry : rows.entrySet()) {
             Row row = rowEntry.getValue();
@@ -41,7 +48,6 @@ public class GridRenderer {
                 Paint bluePaint = new Paint();
                 bluePaint.setColor(Color.BLUE);
                 canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, greenPaint);
-                canvas.drawLine(bounds.left, (startingOffsetY + rowCount * rowHeight) + rowHeight, bounds.right, (startingOffsetY + rowCount * rowHeight) + rowHeight, bluePaint);
             }
 
             float yOffset = startingOffsetY + rowCount * rowHeight;
