@@ -29,7 +29,7 @@ public class GridRenderer {
         Float totalMargin = 0.0f;
         for (Map.Entry<String, Row> rowEntry : rows.entrySet()) {
             Row row = rowEntry.getValue();
-            totalMargin += row.getPaddingBottom();
+            totalMargin += row.getMarginBottom();
         }
 
         Float totalHeight = bounds.height() * 0.5f - bottomMargin;
@@ -73,7 +73,7 @@ public class GridRenderer {
                     canvas.drawLine(cursor + column.getHorizontalMargin() + column.getWidth(), startingOffsetY + rowCount * rowHeight, cursor + column.getHorizontalMargin() + column.getWidth(), (startingOffsetY + rowCount * rowHeight) + rowHeight, bluePaint);
                 }
                 // Draw the column
-                canvas.drawText(column.getText(), cursor, yOffset + rowHeight - row.getPaddingBottom(), column.getPaint()); // check if it needs per column height
+                canvas.drawText(column.getText(), cursor, yOffset + rowHeight, column.getPaint()); // check if it needs per column height
                 // The below will center
                 // canvas.drawText(column.getText(), cursor, yOffset + rowHeight/2 + column.getHeight()/2, column.getPaint()); // check if it needs per column height
 
