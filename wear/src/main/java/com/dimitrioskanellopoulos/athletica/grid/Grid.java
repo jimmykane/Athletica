@@ -86,4 +86,14 @@ public class Grid {
         setBackgroundColor(getBackgroundColor() == Color.BLACK ? Color.WHITE : Color.BLACK);
         setTextColor(getTextColor() == Color.WHITE ? Color.BLACK : Color.WHITE);
     }
+
+    public void runTasks() {
+        for (Map.Entry<String, Row> rowEntry : getAllRows().entrySet()) {
+            Row row = rowEntry.getValue();
+            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
+                Column column = columnEntry.getValue();
+                column.runTasks();
+            }
+        }
+    }
 }

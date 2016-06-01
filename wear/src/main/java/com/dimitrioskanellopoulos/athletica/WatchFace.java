@@ -208,11 +208,7 @@ public class WatchFace {
      * Run's tasks for every column
      */
     public void runTasks() {
-        // Fow now do it only on the sensor columns
-        for (Map.Entry<String, Column> columnEntry : grid.getRow("sensorsRow").getAllColumns().entrySet()) {
-            Column column = columnEntry.getValue();
-            column.runTasks();
-        }
+        grid.runTasks();
         setGridColors();
     }
 
