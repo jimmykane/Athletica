@@ -32,7 +32,7 @@ public class GridRenderer {
             Paint bluePaint = new Paint();
             bluePaint.setColor(Color.BLUE);
             canvas.drawLine(bounds.left, bounds.exactCenterY() , bounds.right, bounds.exactCenterY(), bluePaint);
-            canvas.drawLine(bounds.left, bounds.exactCenterY() + totalHeight-1 , bounds.right, bounds.exactCenterY() + totalHeight-1, bluePaint);
+            canvas.drawLine(bounds.left, bounds.exactCenterY() + totalHeight-1.0f , bounds.right, bounds.exactCenterY() + totalHeight-1.0f, bluePaint);
         }
 
         int rowCount = 0;
