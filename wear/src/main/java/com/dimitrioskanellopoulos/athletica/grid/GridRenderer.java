@@ -41,6 +41,7 @@ public class GridRenderer {
             Paint bluePaint = new Paint();
             bluePaint.setColor(Color.BLUE);
             canvas.drawLine(bounds.left, bounds.exactCenterY() , bounds.right, bounds.exactCenterY(), bluePaint);
+            // Do the bottom
             canvas.drawLine(bounds.left, bounds.exactCenterY() + totalHeight-1.0f , bounds.right, bounds.exactCenterY() + totalHeight-1.0f, bluePaint);
         }
 
@@ -50,8 +51,6 @@ public class GridRenderer {
             if (BuildConfig.DEBUG) {
                 Paint greenPaint = new Paint();
                 greenPaint.setColor(Color.GREEN);
-                Paint bluePaint = new Paint();
-                bluePaint.setColor(Color.BLUE);
                 canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, greenPaint);
             }
 
@@ -85,9 +84,9 @@ public class GridRenderer {
             //Log.d(TAG, "Drew row " + rowCount + " offsetY " + yOffset);
         }
         if (BuildConfig.DEBUG) {
-            Paint redPaint = new Paint();
-            redPaint.setColor(Color.RED);
-            canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, redPaint);
+            Paint greenPaint = new Paint();
+            greenPaint.setColor(Color.GREEN);
+            canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, greenPaint);
         }
     }
 
