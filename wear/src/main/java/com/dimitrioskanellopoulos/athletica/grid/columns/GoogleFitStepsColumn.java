@@ -94,7 +94,7 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
 
             if (!points.isEmpty()) {
                 Integer stepsTotal = points.get(0).getValue(Field.FIELD_STEPS).asInt();
-                setText(stepsTotal + "");
+                setText(withSuffix(stepsTotal));
                 Log.d(TAG, "steps updated: " + stepsTotal);
             }
         } else {
