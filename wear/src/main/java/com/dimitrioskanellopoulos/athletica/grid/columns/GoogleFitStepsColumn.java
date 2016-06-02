@@ -112,6 +112,8 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
             }
         } else {
             if (googleApiClient != null && googleApiClient.isConnected()) {
+                // @todo destroy the pending
+                isTotalStepsRequested=false;
                 googleApiClient.disconnect();
             }
         }
