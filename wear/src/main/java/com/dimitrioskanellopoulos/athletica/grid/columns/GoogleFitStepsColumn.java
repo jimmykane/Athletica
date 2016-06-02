@@ -21,6 +21,7 @@ import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.fitness.result.DailyTotalResult;
 
 import java.util.List;
+import java.util.Locale;
 
 
 public class GoogleFitStepsColumn extends Column implements GoogleApiClient.ConnectionCallbacks,
@@ -55,7 +56,7 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
         }
 
         if (EmulatorHelper.isEmulator()){
-            setText("18000");
+            setText(withSuffix(1801));
         }
     }
 
@@ -165,5 +166,14 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
                         }
                     }
                 });
+    }
+
+
+    public static String withSuffix(long count) {
+        if (count < 1000) return "" + count;
+        int exp = (int) (Math.log(count) / Math.log(1000));
+        return String.format(Locale.getDefault(), "%.1f %c",
+                count / Math.pow(1000, exp),
+                "kMGTPE".charAt(exp-1));
     }
 }
