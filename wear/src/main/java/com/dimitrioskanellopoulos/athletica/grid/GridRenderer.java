@@ -52,9 +52,13 @@ public class GridRenderer {
 
             float yOffset = startingOffsetY + rowCount * rowHeight;
             Float totalTextWidth = 0f;
+            Float maxTextHeight = 0f;
             for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
                 Column column = columnEntry.getValue();
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
+                if (column.getHeight() > maxTextHeight){
+                    maxTextHeight = column.getHeight();
+                }
             }
 
             float cursor = bounds.exactCenterX() - totalTextWidth * 0.5f;
@@ -73,6 +77,9 @@ public class GridRenderer {
                 Float columnHeight = column.getHeight();
                 if (columnHeight > rowHeight){
                     columnHeight = rowHeight;
+                }
+                if (columnHeight < maxTextHeight){
+                    columnHeight = columnHeight;
                 }
                 // Draw the column
                 if (column.isCenteredOnY()){
