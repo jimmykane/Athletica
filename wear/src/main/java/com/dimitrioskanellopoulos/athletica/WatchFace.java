@@ -122,15 +122,15 @@ public class WatchFace {
     }
 
     public Boolean hasSensorColumn(Integer sensorType) {
-        return grid.getRow("5_sensorsRow") != null && grid.getRow("5_sensorsRow").getColumn(sensorType.toString()) != null;
+        return grid.getRow("4_sensorsRow") != null && grid.getRow("4_sensorsRow").getColumn(sensorType.toString()) != null;
     }
 
     public void addSensorColumn(Integer sensorType) {
         // Check if row is there and else create it
-        Row sensorsRow = grid.getRow("5_sensorsRow");
+        Row sensorsRow = grid.getRow("4_sensorsRow");
         if (sensorsRow == null) {
             sensorsRow = new Row();
-            grid.putRow("5_sensorsRow", sensorsRow);
+            grid.putRow("4_sensorsRow", sensorsRow);
         }
         // Add icon
         if (sensorsRow.getAllColumns().size() >= 3) {
@@ -159,7 +159,7 @@ public class WatchFace {
     }
 
     public void removeSensorsRow() {
-        grid.removeRow("5_sensorsRow");
+        grid.removeRow("4_sensorsRow");
     }
 
     private void addRowForBattery() {
@@ -230,7 +230,7 @@ public class WatchFace {
     public void showGoogleFitSteps(Boolean showGoogleFitSteps) {
         Log.d(TAG, "Show steps " + showGoogleFitSteps.toString());
         if (showGoogleFitSteps) {
-            if (grid.getRow("4_googleFitRow") == null) {
+            if (grid.getRow("5_googleFitRow") == null) {
                 // Icon
                 Column googleFitStepsIconColumn = new Column(context, materialIcons, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
                 googleFitStepsIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
@@ -241,10 +241,10 @@ public class WatchFace {
                 // Steps
                 GoogleFitStepsColumn googleFitStepsColumn = new GoogleFitStepsColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
                 googleFitRow.putColumn("googleFitSteps", googleFitStepsColumn);
-                grid.putRow("4_googleFitRow", googleFitRow);
+                grid.putRow("5_googleFitRow", googleFitRow);
             }
         } else {
-            grid.removeRow("4_googleFitRow");
+            grid.removeRow("5_googleFitRow");
         }
     }
 
