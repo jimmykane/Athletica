@@ -37,6 +37,8 @@ public class GridRenderer {
             canvas.drawLine(bounds.left, bounds.exactCenterY() , bounds.right, bounds.exactCenterY(), bluePaint);
             // Do the bottom
             canvas.drawLine(bounds.left, bounds.exactCenterY() + totalHeight-1.0f , bounds.right, bounds.exactCenterY() + totalHeight-1.0f, bluePaint);
+            // Do the middle
+            canvas.drawLine(bounds.exactCenterY(), bounds.top , bounds.exactCenterY(), bounds.bottom, bluePaint);
         }
 
         int rowCount = 0;
