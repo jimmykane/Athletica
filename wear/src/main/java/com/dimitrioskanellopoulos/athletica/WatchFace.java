@@ -233,7 +233,7 @@ public class WatchFace {
             if (grid.getRow("5_googleFitRow") == null) {
                 // Icon
                 Column googleFitStepsIconColumn = new Column(context, materialIcons, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
-                googleFitStepsIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
+                //googleFitStepsIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin)); // No margin needed for these icons
                 googleFitStepsIconColumn.setText(resources.getString(R.string.icon_google_fit_steps));
                 Row googleFitRow = new Row();
                 googleFitRow.putColumn("googleFitSteps_icon", googleFitStepsIconColumn);
