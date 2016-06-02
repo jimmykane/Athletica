@@ -102,7 +102,7 @@ public class WatchFace {
         Column sunriseIconColumn = new Column(context, materialIconsFont, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
         sunriseIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        sunriseIconColumn.centerOnY(false);
+        sunriseIconColumn.centerOnY(true);
         sunriseSunsetRow.putColumn("sunriseIconColumn", sunriseIconColumn);
         // Column
         SunriseColumn sunriseColumn = new SunriseColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
@@ -112,7 +112,7 @@ public class WatchFace {
         // Icon
         Column sunsetIconColumn = new Column(context, materialIconsFont, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         sunsetIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        sunsetIconColumn.centerOnY(false);
+        sunsetIconColumn.centerOnY(true);
         sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
         sunriseSunsetRow.putColumn("sunsetIconColumn", sunsetIconColumn);
 
@@ -237,7 +237,7 @@ public class WatchFace {
                 Column googleFitStepsIconColumn = new Column(context, materialIconsFont, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
                 //googleFitStepsIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin)); // No margin needed for these icons
                 googleFitStepsIconColumn.setText(resources.getString(R.string.icon_google_fit_steps));
-                googleFitStepsIconColumn.centerOnY(false);
+                googleFitStepsIconColumn.centerOnY(true);
                 Row googleFitRow = new Row();
                 googleFitRow.putColumn("googleFitSteps_icon", googleFitStepsIconColumn);
 
