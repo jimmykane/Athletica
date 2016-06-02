@@ -13,6 +13,7 @@ public class Column implements ColumnInterface {
     private final Paint paint = new Paint();
     private Boolean ambientMode = false;
     private Boolean visible = false;
+    private Boolean centeredOnY = true;
     // @todo fix this
     private String text = "";
     private Float horizontalMargin = 0.0f;
@@ -82,6 +83,16 @@ public class Column implements ColumnInterface {
     @Override
     public void setHorizontalMargin(Float horizontalMargin) {
         this.horizontalMargin = horizontalMargin;
+    }
+
+    @Override
+    public Boolean isCenteredOnY() {
+        return this.centeredOnY;
+    }
+
+    @Override
+    public void centerOnY(Boolean centeredOnY) {
+        this.centeredOnY = centeredOnY;
     }
 
     @Override

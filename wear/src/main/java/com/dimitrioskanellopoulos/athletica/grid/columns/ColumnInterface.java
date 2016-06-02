@@ -23,6 +23,10 @@ public interface ColumnInterface {
 
     void setHorizontalMargin(Float horizontalMargin);
 
+    Boolean isCenteredOnY();
+
+    void centerOnY(Boolean centeredOnY);
+
     Boolean isInAmbientMode();
 
     Boolean isVisible();

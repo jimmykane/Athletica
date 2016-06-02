@@ -31,7 +31,7 @@ public class GridRenderer {
         Float startingOffsetY = topMargin - rowHeight * 0.5f;
 
         if (BuildConfig.DEBUG) {
-            // Do the center
+            // Do the centerOnY
             Paint bluePaint = new Paint();
             bluePaint.setColor(Color.BLUE);
             canvas.drawLine(bounds.left, bounds.exactCenterY() , bounds.right, bounds.exactCenterY(), bluePaint);
@@ -68,11 +68,18 @@ public class GridRenderer {
                     canvas.drawLine(cursor, startingOffsetY + rowCount * rowHeight, cursor, (startingOffsetY + rowCount * rowHeight) + rowHeight, greenPaint);
                     canvas.drawLine(cursor + column.getHorizontalMargin() + column.getWidth(), startingOffsetY + rowCount * rowHeight, cursor + column.getHorizontalMargin() + column.getWidth(), (startingOffsetY + rowCount * rowHeight) + rowHeight, bluePaint);
                 }
-                // Draw the column
-                canvas.drawText(column.getText(), cursor, yOffset + rowHeight, column.getPaint()); // check if it needs per column height
-                // The below will center
-                // canvas.drawText(column.getText(), cursor, yOffset + rowHeight/2 + column.getHeight()/2, column.getPaint()); // check if it needs per column height
 
+                // If it's bigger pretent it fits so we can get the middle position (center) easily
+                Float columnHeight = column.getHeight();
+                if (columnHeight > rowHeight){
+                    columnHeight = rowHeight;
+                }
+                // Draw the column
+                if (column.isCenteredOnY()){
+                    canvas.drawText(column.getText(), cursor, yOffset + rowHeight/2 + columnHeight/2, column.getPaint()); // check if it needs per column height
+                }else {
+                    canvas.drawText(column.getText(), cursor, yOffset + rowHeight, column.getPaint()); // check if it needs per column height
+                }
                 cursor += column.getWidth() + column.getHorizontalMargin();
                 //Log.d(TAG, "Drew column cursor " + cursor);
             }
