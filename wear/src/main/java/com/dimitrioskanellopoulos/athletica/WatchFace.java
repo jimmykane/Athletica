@@ -85,6 +85,7 @@ public class WatchFace {
     private void addRowForTime() {
         Row timeRow = new Row();
         TimeColumn timeColumn = new TimeColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_size), grid.getTextColor());
+        timeColumn.centerOnY(false);
         timeRow.putColumn("timeColumn", timeColumn);
         grid.putRow("1_timeRow", timeRow);
     }
