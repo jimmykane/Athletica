@@ -110,7 +110,7 @@ public class WatchFace {
         sunriseSunsetRow.putColumn("sunriseColumn", sunriseColumn);
 
         // Icon
-        Column sunsetIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
+        Column sunsetIconColumn = new Column(context, materialIconsFont, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         sunsetIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         sunsetIconColumn.centerOnY(true);
         sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
