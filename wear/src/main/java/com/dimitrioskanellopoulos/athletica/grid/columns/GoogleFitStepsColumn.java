@@ -64,6 +64,7 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
     public void destroy() {
         if (googleApiClient != null && googleApiClient.isConnected()) {
             googleApiClient.disconnect();
+            isTotalStepsRequested = false;
         }
         super.destroy();
     }
@@ -136,7 +137,7 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
                 && (!isTotalStepsRequested)) {
 
             isTotalStepsRequested = true;
-
+            // @todo pass it to the instance
             PendingResult<DailyTotalResult> stepsResult =
                     Fitness.HistoryApi.readDailyTotal(
                             googleApiClient,
