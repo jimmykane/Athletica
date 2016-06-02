@@ -78,12 +78,9 @@ public class GridRenderer {
                 if (columnHeight > rowHeight){
                     columnHeight = rowHeight;
                 }
-                if (columnHeight < maxTextHeight){
-                    columnHeight = columnHeight;
-                }
                 // Draw the column
                 if (column.isCenteredOnY()){
-                    canvas.drawText(column.getText(), cursor, yOffset + rowHeight/2 + columnHeight/2, column.getPaint()); // check if it needs per column height
+                    canvas.drawText(column.getText(), cursor, yOffset + rowHeight/2 + maxTextHeight/2 - (maxTextHeight-columnHeight)/2, column.getPaint()); // check if it needs per column height
                 }else {
                     canvas.drawText(column.getText(), cursor, yOffset + rowHeight, column.getPaint()); // check if it needs per column height
                 }
