@@ -27,6 +27,10 @@ public interface ColumnInterface {
 
     void centerOnY(Boolean centeredOnY);
 
+    Boolean baselineOnPreviousColumn();
+
+    void setBaselineOnPreviousColumn(Boolean usePreviousColumnBaseline);
+
     Boolean isInAmbientMode();
 
     Boolean isVisible();
