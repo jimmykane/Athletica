@@ -8,6 +8,7 @@
     <dimen name="icon_margin">2dp</dimen>
     <dimen name="units_size">12dp</dimen>
     <dimen name="units_margin">2dp</dimen>
+    <dimen name="battery_icon_size">12dp</dimen>
     <dimen name="battery_text_size">12dp</dimen>
     <dimen name="face_bottom_margin">0dp</dimen>
     <dimen name="column_margin">8dp</dimen>

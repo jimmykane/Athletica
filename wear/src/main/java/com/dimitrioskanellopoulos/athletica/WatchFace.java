@@ -170,13 +170,14 @@ public class WatchFace {
     private void addRowForBattery() {
         Row batteryRow = new Row();
         //Icon
-        BatteryIconColumn batteryIconColumn = new BatteryIconColumn(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
+        BatteryIconColumn batteryIconColumn = new BatteryIconColumn(context, fontAwesome, resources.getDimension(R.dimen.battery_icon_size), grid.getTextColor());
         batteryIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         batteryRow.putColumn("batteryIconColumn", batteryIconColumn);
 
         // Column
         BatteryLevelColumn batteryLevelColumn = new BatteryLevelColumn(context, defaultTypeface, resources.getDimension(R.dimen.battery_text_size), grid.getTextColor());
         batteryRow.putColumn("batteryLevelColumn", batteryLevelColumn);
+        batteryLevelColumn.setBaselineOnPreviousColumn(true);
 
         grid.putRow("6_batteryRow", batteryRow);
     }
