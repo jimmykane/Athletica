@@ -51,8 +51,8 @@ public class GridRenderer {
             }
 
             float yOffset = startingOffsetY + rowCount * rowHeight;
-            float totalTextWidth = 0f;
-            float maxTextHeight = 0f;
+            Float totalTextWidth = 0f;
+            Float maxTextHeight = 0f;
             for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
                 Column column = columnEntry.getValue();
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
@@ -61,7 +61,6 @@ public class GridRenderer {
                 }
             }
 
-            float previousColumnHeight = rowHeight;
             float cursor = bounds.exactCenterX() - totalTextWidth * 0.5f;
             for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
                 Column column = columnEntry.getValue();
@@ -79,12 +78,9 @@ public class GridRenderer {
                 if (columnHeight > rowHeight){
                     columnHeight = rowHeight;
                 }
-
-                // If it should use the previous columns baseline
-                if (column.baselineOnPreviousColumn()){
-                    columnHeight = previousColumnHeight;
-                }
-
+//                if (columnHeight < maxTextHeight){
+//                    columnHeight = columnHeight;
+//                }
                 // Draw the column
                 if (column.isCenteredOnY()){
                     canvas.drawText(column.getText(), cursor, yOffset + rowHeight/2 + columnHeight/2, column.getPaint()); // check if it needs per column height
@@ -92,9 +88,6 @@ public class GridRenderer {
                     canvas.drawText(column.getText(), cursor, yOffset + rowHeight, column.getPaint()); // check if it needs per column height
                 }
                 cursor += column.getWidth() + column.getHorizontalMargin();
-
-                previousColumnHeight = columnHeight;
-
                 //Log.d(TAG, "Drew column cursor " + cursor);
             }
             rowCount++;

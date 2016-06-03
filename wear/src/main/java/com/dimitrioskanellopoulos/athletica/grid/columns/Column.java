@@ -14,7 +14,6 @@ public class Column implements ColumnInterface {
     private Boolean ambientMode = false;
     private Boolean visible = false;
     private Boolean centeredOnY = true;
-    private Boolean baselineOnPreviousColumn = false;
     // @todo fix this
     private String text = "";
     private Float horizontalMargin = 0.0f;
@@ -94,16 +93,6 @@ public class Column implements ColumnInterface {
     @Override
     public void centerOnY(Boolean centeredOnY) {
         this.centeredOnY = centeredOnY;
-    }
-
-    @Override
-    public Boolean baselineOnPreviousColumn() {
-        return baselineOnPreviousColumn;
-    }
-
-    @Override
-    public void setBaselineOnPreviousColumn(Boolean baselineOnPreviousColumn) {
-        this.baselineOnPreviousColumn = baselineOnPreviousColumn;
     }
 
     @Override
