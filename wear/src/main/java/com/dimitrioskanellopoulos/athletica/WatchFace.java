@@ -75,7 +75,7 @@ public class WatchFace {
 
     public void draw(Canvas canvas, Rect bounds) {
 
-        GridRenderer.renderGrid(canvas, bounds, grid, bounds.height()/2.2f , chinSize + resources.getDimension(R.dimen.face_bottom_margin));
+        GridRenderer.renderGrid(canvas, bounds, grid, bounds.height()/2.25f , chinSize + resources.getDimension(R.dimen.face_bottom_margin));
 
         if (interlace) {
             GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, ambientMode ? 100 : 70);
@@ -93,6 +93,7 @@ public class WatchFace {
     private void addRowForDate() {
         Row dateRow = new Row();
         DateColumn dateColumn = new DateColumn(context, defaultTypeface, resources.getDimension(R.dimen.date_size), grid.getTextColor());
+        dateColumn.centerOnY(true);
         dateRow.putColumn("dateColumn", dateColumn);
         grid.putRow("2_dateRow", dateRow);
     }
@@ -212,6 +213,7 @@ public class WatchFace {
             grid.getRow("1_timeRow").removeColumn("amPmColumn");
         } else {
             AmPmColumn amPmColumn = new AmPmColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), grid.getTextColor());
+            amPmColumn.centerOnY(timeColumn.isCenteredOnY());
             grid.getRow("1_timeRow").putColumn("amPmColumn", amPmColumn);
         }
     }
