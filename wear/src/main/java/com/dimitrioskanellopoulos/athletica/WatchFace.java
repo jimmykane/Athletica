@@ -159,6 +159,7 @@ public class WatchFace {
 
         // Add units
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), grid.getTextColor());
+        sensorUnitsColumn.setBaselineOnPreviousColumn(true);
         sensorsRow.putColumn(sensorType.toString() + "_units", sensorUnitsColumn);
     }
 
