@@ -3,6 +3,13 @@ package com.dimitrioskanellopoulos.athletica.grid.columns;
 import android.graphics.Paint;
 
 public interface ColumnInterface {
+
+    int BASELINE_TOP = 1;
+    int BASELINE_MIDDLE = 2;
+    int BASELINE_ABSOLUTE_CENTER = 3;
+    int BASELINE_PREVIOUS = 4;
+    int BASELINE_BOTTOM = 5;
+
     void setAmbientMode(Boolean ambientMode);
 
     String getText();
@@ -23,13 +30,9 @@ public interface ColumnInterface {
 
     void setHorizontalMargin(Float horizontalMargin);
 
-    Boolean isCenteredOnY();
+    Integer getBaseline();
 
-    void centerOnY(Boolean centeredOnY);
-
-    Boolean baselineOnPreviousColumn();
-
-    void setBaselineOnPreviousColumn(Boolean usePreviousColumnBaseline);
+    void setBaseline(Integer baseline);
 
     Boolean isInAmbientMode();
 

@@ -75,7 +75,7 @@ public class WatchFace {
 
     public void draw(Canvas canvas, Rect bounds) {
 
-        GridRenderer.renderGrid(canvas, bounds, grid, bounds.height()/2.25f , chinSize + resources.getDimension(R.dimen.face_bottom_margin));
+        GridRenderer.renderGrid(canvas, bounds, grid, bounds.height()/2.0f , chinSize + resources.getDimension(R.dimen.face_bottom_margin));
 
         if (interlace) {
             GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, ambientMode ? 100 : 70);
@@ -85,7 +85,7 @@ public class WatchFace {
     private void addRowForTime() {
         Row timeRow = new Row();
         TimeColumn timeColumn = new TimeColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_size), grid.getTextColor());
-        timeColumn.centerOnY(false);
+        timeColumn.setBaseline(Column.BASELINE_ABSOLUTE_CENTER);
         timeRow.putColumn("timeColumn", timeColumn);
         grid.putRow("1_timeRow", timeRow);
     }
@@ -93,7 +93,6 @@ public class WatchFace {
     private void addRowForDate() {
         Row dateRow = new Row();
         DateColumn dateColumn = new DateColumn(context, defaultTypeface, resources.getDimension(R.dimen.date_size), grid.getTextColor());
-        dateColumn.centerOnY(true);
         dateRow.putColumn("dateColumn", dateColumn);
         grid.putRow("2_dateRow", dateRow);
     }
@@ -104,7 +103,6 @@ public class WatchFace {
         Column sunriseIconColumn = new Column(context, materialIconsFont, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
         sunriseIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        sunriseIconColumn.centerOnY(true);
         sunriseSunsetRow.putColumn("sunriseIconColumn", sunriseIconColumn);
         // Column
         SunriseColumn sunriseColumn = new SunriseColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
@@ -114,7 +112,6 @@ public class WatchFace {
         // Icon
         Column sunsetIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         sunsetIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        sunsetIconColumn.centerOnY(true);
         sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
         sunriseSunsetRow.putColumn("sunsetIconColumn", sunsetIconColumn);
 
@@ -159,7 +156,7 @@ public class WatchFace {
 
         // Add units
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), grid.getTextColor());
-        sensorUnitsColumn.setBaselineOnPreviousColumn(true);
+        sensorUnitsColumn.setBaseline(Column.BASELINE_PREVIOUS);
         sensorsRow.putColumn(sensorType.toString() + "_units", sensorUnitsColumn);
     }
 
@@ -177,7 +174,7 @@ public class WatchFace {
         // Column
         BatteryLevelColumn batteryLevelColumn = new BatteryLevelColumn(context, defaultTypeface, resources.getDimension(R.dimen.battery_text_size), grid.getTextColor());
         batteryRow.putColumn("batteryLevelColumn", batteryLevelColumn);
-        batteryLevelColumn.setBaselineOnPreviousColumn(true);
+        batteryLevelColumn.setBaseline(Column.BASELINE_PREVIOUS);
 
         grid.putRow("6_batteryRow", batteryRow);
     }
@@ -215,7 +212,7 @@ public class WatchFace {
             grid.getRow("1_timeRow").removeColumn("amPmColumn");
         } else {
             AmPmColumn amPmColumn = new AmPmColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), grid.getTextColor());
-            amPmColumn.centerOnY(timeColumn.isCenteredOnY());
+            amPmColumn.setBaseline(timeColumn.getBaseline());
             grid.getRow("1_timeRow").putColumn("amPmColumn", amPmColumn);
         }
     }
@@ -242,7 +239,6 @@ public class WatchFace {
                 Column googleFitStepsIconColumn = new Column(context, materialIconsFont, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
                 //googleFitStepsIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin)); // No margin needed for these icons
                 googleFitStepsIconColumn.setText(resources.getString(R.string.icon_google_fit_steps));
-                googleFitStepsIconColumn.centerOnY(true);
                 Row googleFitRow = new Row();
                 googleFitRow.putColumn("googleFitSteps_icon", googleFitStepsIconColumn);
 

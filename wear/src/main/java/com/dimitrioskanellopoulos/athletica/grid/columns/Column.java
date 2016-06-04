@@ -13,8 +13,7 @@ public class Column implements ColumnInterface {
     private final Paint paint = new Paint();
     private Boolean ambientMode = false;
     private Boolean visible = false;
-    private Boolean centeredOnY = true;
-    private Boolean baselineOnPreviousColumn = false;
+    private Integer baseline = BASELINE_MIDDLE;
     // @todo fix this
     private String text = "";
     private Float horizontalMargin = 0.0f;
@@ -87,23 +86,13 @@ public class Column implements ColumnInterface {
     }
 
     @Override
-    public Boolean isCenteredOnY() {
-        return this.centeredOnY;
+    public Integer getBaseline() {
+        return this.baseline;
     }
 
     @Override
-    public void centerOnY(Boolean centeredOnY) {
-        this.centeredOnY = centeredOnY;
-    }
-
-    @Override
-    public Boolean baselineOnPreviousColumn() {
-        return baselineOnPreviousColumn;
-    }
-
-    @Override
-    public void setBaselineOnPreviousColumn(Boolean baselineOnPreviousColumn) {
-        this.baselineOnPreviousColumn = baselineOnPreviousColumn;
+    public void setBaseline(Integer baseline) {
+        this.baseline = baseline;
     }
 
     @Override

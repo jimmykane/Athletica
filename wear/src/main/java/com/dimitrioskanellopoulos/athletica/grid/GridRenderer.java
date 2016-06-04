@@ -9,7 +9,6 @@ import com.dimitrioskanellopoulos.athletica.BuildConfig;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -31,7 +30,7 @@ public class GridRenderer {
         Float startingOffsetY = topMargin - rowHeight * 0.5f;
 
         if (BuildConfig.DEBUG) {
-            // Do the centerOnY
+            // Do the setBaseline
             Paint bluePaint = new Paint();
             bluePaint.setColor(Color.BLUE);
             canvas.drawLine(bounds.left, bounds.exactCenterY() , bounds.right, bounds.exactCenterY(), bluePaint);
@@ -50,7 +49,7 @@ public class GridRenderer {
                 canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, greenPaint);
             }
 
-            float yOffset = startingOffsetY + rowCount * rowHeight;
+            float rowOffsetY = startingOffsetY + rowCount * rowHeight;
             float totalTextWidth = 0f;
             float maxTextHeight = 0f;
             for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
@@ -61,7 +60,7 @@ public class GridRenderer {
                 }
             }
 
-            float previousColumnHeight = rowHeight;
+            float previousColumnOffsetY = rowHeight;
             float cursor = bounds.exactCenterX() - totalTextWidth * 0.5f;
             for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
                 Column column = columnEntry.getValue();
@@ -74,31 +73,46 @@ public class GridRenderer {
                     canvas.drawLine(cursor + column.getHorizontalMargin() + column.getWidth(), startingOffsetY + rowCount * rowHeight, cursor + column.getHorizontalMargin() + column.getWidth(), (startingOffsetY + rowCount * rowHeight) + rowHeight, bluePaint);
                 }
 
-                // If it's bigger pretent it fits so we can get the middle position (center) easily
-                Float columnHeight = column.getHeight();
-                if (columnHeight > rowHeight){
-                    columnHeight = rowHeight;
+
+
+                Float columnOffsetY;
+                switch (column.getBaseline()){
+                    case Column.BASELINE_TOP:
+                        columnOffsetY = 0.0f;
+                        break;
+                    case Column.BASELINE_MIDDLE:
+                        columnOffsetY = rowHeight/2 + column.getHeight()/2;
+                        break;
+                    case Column.BASELINE_ABSOLUTE_CENTER:
+                        columnOffsetY = rowHeight/2;
+                        break;
+                    case Column.BASELINE_PREVIOUS:
+                        columnOffsetY = previousColumnOffsetY;
+                        break;
+                    case Column.BASELINE_BOTTOM:
+                        columnOffsetY = rowOffsetY;
+                        break;
+                    default:
+                        columnOffsetY = column.getHeight();
+                        break;
                 }
 
-                // If it should use the previous columns baseline
-                if (column.baselineOnPreviousColumn()){
-                    columnHeight = previousColumnHeight;
+                // If it's bigger pretend it fits so we can get the middle position (center) easily
+                if (columnOffsetY > rowHeight){
+                    columnOffsetY = rowHeight;
                 }
 
                 // Draw the column
-                if (column.isCenteredOnY()){
-                    canvas.drawText(column.getText(), cursor, yOffset + rowHeight/2 + columnHeight/2, column.getPaint()); // check if it needs per column height
-                }else {
-                    canvas.drawText(column.getText(), cursor, yOffset + rowHeight, column.getPaint()); // check if it needs per column height
-                }
+                canvas.drawText(column.getText(), cursor, rowOffsetY + columnOffsetY, column.getPaint()); // check if it needs per column height
+                // canvas.drawText(column.getText(), cursor, rowOffsetY + rowHeight, column.getPaint()); // check if it needs per column height
                 cursor += column.getWidth() + column.getHorizontalMargin();
 
-                previousColumnHeight = columnHeight;
+                previousColumnOffsetY = columnOffsetY;
 
                 //Log.d(TAG, "Drew column cursor " + cursor);
             }
             rowCount++;
-            //Log.d(TAG, "Drew row " + rowCount + " offsetY " + yOffset);
+            //Log.d(TAG, "Drew row " + rowCount + " offsetY " + rowOffsetY);
         }
         if (BuildConfig.DEBUG) {
             Paint greenPaint = new Paint();
