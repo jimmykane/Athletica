@@ -29,25 +29,25 @@ public class GridRenderer {
         Float rowHeight = ((totalHeight + totalHeight / rows.size() * 0.5f)) / rows.size();
         Float startingOffsetY = topMargin - rowHeight * 0.5f;
 
-//        if (BuildConfig.DEBUG) {
-//            // Do the setBaseline
-//            Paint bluePaint = new Paint();
-//            bluePaint.setColor(Color.BLUE);
-//            canvas.drawLine(bounds.left, bounds.exactCenterY() , bounds.right, bounds.exactCenterY(), bluePaint);
-//            // Do the bottom
-//            canvas.drawLine(bounds.left, bounds.exactCenterY() + totalHeight-1.0f , bounds.right, bounds.exactCenterY() + totalHeight-1.0f, bluePaint);
-//            // Do the middle
-//            canvas.drawLine(bounds.exactCenterY(), bounds.top , bounds.exactCenterY(), bounds.bottom, bluePaint);
-//        }
+        if (BuildConfig.DEBUG) {
+            // Do the setBaseline
+            Paint bluePaint = new Paint();
+            bluePaint.setColor(Color.BLUE);
+            canvas.drawLine(bounds.left, bounds.exactCenterY() , bounds.right, bounds.exactCenterY(), bluePaint);
+            // Do the bottom
+            canvas.drawLine(bounds.left, bounds.exactCenterY() + totalHeight-1.0f , bounds.right, bounds.exactCenterY() + totalHeight-1.0f, bluePaint);
+            // Do the middle
+            canvas.drawLine(bounds.exactCenterY(), bounds.top , bounds.exactCenterY(), bounds.bottom, bluePaint);
+        }
 
         int rowCount = 0;
         for (Map.Entry<String, Row> rowEntry : rows.entrySet()) {
             Row row = rowEntry.getValue();
-//            if (BuildConfig.DEBUG) {
-//                Paint greenPaint = new Paint();
-//                greenPaint.setColor(Color.GREEN);
-//                canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, greenPaint);
-//            }
+            if (BuildConfig.DEBUG) {
+                Paint greenPaint = new Paint();
+                greenPaint.setColor(Color.GREEN);
+                canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, greenPaint);
+            }
 
             float rowOffsetY = startingOffsetY + rowCount * rowHeight;
             float totalTextWidth = 0f;
@@ -64,14 +64,14 @@ public class GridRenderer {
             float cursor = bounds.exactCenterX() - totalTextWidth * 0.5f;
             for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
                 Column column = columnEntry.getValue();
-//                if (BuildConfig.DEBUG) {
-//                    Paint greenPaint = new Paint();
-//                    greenPaint.setColor(Color.GREEN);
-//                    Paint bluePaint = new Paint();
-//                    bluePaint.setColor(Color.BLUE);
-//                    canvas.drawLine(cursor, startingOffsetY + rowCount * rowHeight, cursor, (startingOffsetY + rowCount * rowHeight) + rowHeight, greenPaint);
-//                    canvas.drawLine(cursor + column.getHorizontalMargin() + column.getWidth(), startingOffsetY + rowCount * rowHeight, cursor + column.getHorizontalMargin() + column.getWidth(), (startingOffsetY + rowCount * rowHeight) + rowHeight, bluePaint);
-//                }
+                if (BuildConfig.DEBUG) {
+                    Paint greenPaint = new Paint();
+                    greenPaint.setColor(Color.GREEN);
+                    Paint bluePaint = new Paint();
+                    bluePaint.setColor(Color.BLUE);
+                    canvas.drawLine(cursor, startingOffsetY + rowCount * rowHeight, cursor, (startingOffsetY + rowCount * rowHeight) + rowHeight, greenPaint);
+                    canvas.drawLine(cursor + column.getHorizontalMargin() + column.getWidth(), startingOffsetY + rowCount * rowHeight, cursor + column.getHorizontalMargin() + column.getWidth(), (startingOffsetY + rowCount * rowHeight) + rowHeight, bluePaint);
+                }
 
 
 
@@ -114,11 +114,11 @@ public class GridRenderer {
             rowCount++;
             //Log.d(TAG, "Drew row " + rowCount + " offsetY " + rowOffsetY);
         }
-//        if (BuildConfig.DEBUG) {
-//            Paint greenPaint = new Paint();
-//            greenPaint.setColor(Color.GREEN);
-//            canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, greenPaint);
-//        }
+        if (BuildConfig.DEBUG) {
+            Paint greenPaint = new Paint();
+            greenPaint.setColor(Color.GREEN);
+            canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, greenPaint);
+        }
     }
 
     public static void drawBackground(Canvas canvas, Rect bounds, Integer color) {
