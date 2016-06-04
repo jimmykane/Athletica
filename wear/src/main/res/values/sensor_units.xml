@@ -8,4 +8,5 @@
     <string name="units_android.sensor.light">lux</string>
     <string name="units_android.sensor.relative_humidity">%</string>
     <string name="units_android.sensor.accelerometer">m/s^2</string>
+    <string name="units_android.sensor.google_fit_steps">steps</string>
 </resources>

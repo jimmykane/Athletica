@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.hardware.Sensor;
 import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.grid.Grid;
@@ -123,15 +124,15 @@ public class WatchFace {
     }
 
     public Boolean hasSensorColumn(Integer sensorType) {
-        return grid.getRow("4_sensorsRow") != null && grid.getRow("4_sensorsRow").getColumn(sensorType.toString()) != null;
+        return grid.getRow("5_sensorsRow") != null && grid.getRow("5_sensorsRow").getColumn(sensorType.toString()) != null;
     }
 
     public void addSensorColumn(Integer sensorType) {
         // Check if row is there and else create it
-        Row sensorsRow = grid.getRow("4_sensorsRow");
+        Row sensorsRow = grid.getRow("5_sensorsRow");
         if (sensorsRow == null) {
             sensorsRow = new Row();
-            grid.putRow("4_sensorsRow", sensorsRow);
+            grid.putRow("5_sensorsRow", sensorsRow);
         }
         // Add icon
         if (sensorsRow.getAllColumns().size() >= 3) {
@@ -139,13 +140,13 @@ public class WatchFace {
         }
         Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(context, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         sensorIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        sensorsRow.putColumn(sensorType.toString() + "_icon", sensorIconColumn);
+        sensorsRow.putColumn(sensorType.toString() + "Icon", sensorIconColumn);
 
         // Add column depending on emu
         Column sensorColumn;
         if (EmulatorHelper.isEmulator()) {
             sensorColumn = new Column(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
-            sensorColumn.setText("60");
+            sensorColumn.setText("21");
         } else {
             sensorColumn = ColumnFactory.getColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
         }
@@ -157,11 +158,11 @@ public class WatchFace {
         // Add units
         Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), grid.getTextColor());
         sensorUnitsColumn.setBaseline(Column.BASELINE_PREVIOUS);
-        sensorsRow.putColumn(sensorType.toString() + "_units", sensorUnitsColumn);
+        sensorsRow.putColumn(sensorType.toString() + "Units", sensorUnitsColumn);
     }
 
     public void removeSensorsRow() {
-        grid.removeRow("4_sensorsRow");
+        grid.removeRow("5_sensorsRow");
     }
 
     private void addRowForBattery() {
@@ -234,21 +235,28 @@ public class WatchFace {
     public void showGoogleFitSteps(Boolean showGoogleFitSteps) {
         Log.d(TAG, "Show steps " + showGoogleFitSteps.toString());
         if (showGoogleFitSteps) {
-            if (grid.getRow("5_googleFitRow") == null) {
+            if (grid.getRow("4_googleFitRow") == null) {
                 // Icon
                 Column googleFitStepsIconColumn = new Column(context, materialIconsFont, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
                 //googleFitStepsIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin)); // No margin needed for these icons
                 googleFitStepsIconColumn.setText(resources.getString(R.string.icon_google_fit_steps));
                 Row googleFitRow = new Row();
-                googleFitRow.putColumn("googleFitSteps_icon", googleFitStepsIconColumn);
+                googleFitRow.putColumn("googleFitStepsColumnIcon", googleFitStepsIconColumn);
 
                 // Steps
                 GoogleFitStepsColumn googleFitStepsColumn = new GoogleFitStepsColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
-                googleFitRow.putColumn("googleFitSteps", googleFitStepsColumn);
-                grid.putRow("5_googleFitRow", googleFitRow);
+                googleFitRow.putColumn("googleFitStepsColumn", googleFitStepsColumn);
+                googleFitStepsColumn.setHorizontalMargin(resources.getDimension(R.dimen.units_margin));
+
+                // Steps
+                Column googleFitStepsUnitsColumn = new Column(context, defaultTypeface, resources.getDimension(R.dimen.units_size), grid.getTextColor());
+                googleFitStepsUnitsColumn.setText("steps");
+                googleFitStepsUnitsColumn.setBaseline(Column.BASELINE_PREVIOUS);
+                googleFitRow.putColumn("googleFitStepsUnitsColumn", googleFitStepsUnitsColumn);
+                grid.putRow("4_googleFitRow", googleFitRow);
             }
         } else {
-            grid.removeRow("5_googleFitRow");
+            grid.removeRow("4_googleFitRow");
         }
     }
 
