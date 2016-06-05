@@ -28,6 +28,10 @@ public final class ConfigurationHelper {
      */
     public static final String KEY_DATE_NAMES = "DATE_NAMES";
     /**
+     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} should show sunrise and sunsete.
+     */
+    public static final String KEY_SHOW_SUNRISE_SUNSET = "SHOW_SUNRISE_SUNSET";
+    /**
      * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} interlace.
      */
     public static final String KEY_INTERLACE = "INTERLACE";
@@ -55,6 +59,10 @@ public final class ConfigurationHelper {
      * The default if to show the name
      */
     public static final Boolean DATE_NAMES_DEFAULT = false;
+    /**
+     * The default if to show sunrise sunset
+     */
+    public static final Boolean SHOW_SUNRISE_SUNSET_DEFAULT = true;
     /**
      * The default interlace
      */
@@ -148,6 +156,7 @@ public final class ConfigurationHelper {
     public static void setDefaultValuesForMissingConfigKeys(Context context, DataMap config) {
         addBooleanKeyIfMissing(config, KEY_TIME_FORMAT, TIME_FORMAT_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_DATE_NAMES, DATE_NAMES_DEFAULT);
+        addBooleanKeyIfMissing(config, KEY_SHOW_SUNRISE_SUNSET, SHOW_SUNRISE_SUNSET_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INTERLACE, INTERLACE_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INVERT_BLACK_AND_WHITE, INVERT_BLACK_AND_WHITE);
         addBooleanKeyIfMissing(config, KEY_DAY_NIGHT_MODE, DAY_NIGHT_MODE);
