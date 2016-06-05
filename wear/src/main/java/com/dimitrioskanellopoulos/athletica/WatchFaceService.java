@@ -320,6 +320,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     case ConfigurationHelper.KEY_DATE_NAMES:
                         watchFace.setShowDateNamesFormat(config.getBoolean(key));
                         break;
+                    case ConfigurationHelper.KEY_SHOW_SUNRISE_SUNSET:
+                        watchFace.showSunriseSunsetTimes(config.getBoolean(key));
+                        break;
                     case ConfigurationHelper.KEY_INTERLACE:
                         watchFace.shouldInterlace(config.getBoolean(key));
                         break;
