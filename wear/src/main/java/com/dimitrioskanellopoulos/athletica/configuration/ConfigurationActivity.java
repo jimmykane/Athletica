@@ -16,12 +16,7 @@ import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.DataEvent;
-import com.google.android.gms.wearable.DataEventBuffer;
-import com.google.android.gms.wearable.DataItem;
 import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
@@ -32,6 +27,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
 
     private Switch switchTimeFormat;
     private Switch switchDateNames;
+    private Switch switchShowSunriseSunset;
     private Switch switchInterlace;
     private Switch switchInvertBlackAndWhite;
     private Switch switchDayNightMode;
@@ -59,6 +55,8 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
 
         switchDateNames = (Switch) findViewById(R.id.switch_date_names);
 
+        switchShowSunriseSunset = (Switch) findViewById(R.id.switch_show_sunrise_sunset);
+
         switchInterlace = (Switch) findViewById(R.id.switch_interlace);
 
         switchInvertBlackAndWhite = (Switch) findViewById(R.id.switch_invert_black_and_white);
@@ -82,6 +80,15 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
                 updateConfigDataItemDateNames(isChecked);
             }
         });
+
+        switchShowSunriseSunset.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                updateConfigDataItemShowSunriseSunsetTimes(isChecked);
+            }
+        });
+
 
         switchInterlace.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -267,6 +274,13 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
     }
 
+    private void updateConfigDataItemShowSunriseSunsetTimes(boolean showSunriseSunset) {
+        DataMap configMap = new DataMap();
+        configMap.putBoolean(ConfigurationHelper.KEY_SHOW_SUNRISE_SUNSET,
+                showSunriseSunset);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
+    }
+
     private void updateConfigDataItemInterlace(boolean interlace) {
         DataMap configMap = new DataMap();
         configMap.putBoolean(ConfigurationHelper.KEY_INTERLACE,
@@ -330,6 +344,9 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
                     break;
                 case ConfigurationHelper.KEY_DATE_NAMES:
                     switchDateNames.setChecked(config.getBoolean(key));
+                    break;
+                case ConfigurationHelper.KEY_SHOW_SUNRISE_SUNSET:
+                    switchShowSunriseSunset.setChecked(config.getBoolean(key));
                     break;
                 case ConfigurationHelper.KEY_INTERLACE:
                     switchInterlace.setChecked(config.getBoolean(key));
