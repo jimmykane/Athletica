@@ -7,6 +7,7 @@ import android.location.Location;
 import android.util.Log;
 import android.util.Pair;
 
+import com.dimitrioskanellopoulos.athletica.grid.columns.abstracts.GoogleApiColumn;
 import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.SunriseSunsetHelper;
 import com.dimitrioskanellopoulos.athletica.permissions.PermissionsHelper;
@@ -17,7 +18,7 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.TimeZone;
 
-public class SunriseSunsetColumn extends GoogleApiColumn{
+public class SunriseSunsetColumn extends GoogleApiColumn {
     private final static String TAG = "SunriseSunsetColumn";
 
     private static final long LOCATION_UPDATE_INTERVAL_MS = 3600000;

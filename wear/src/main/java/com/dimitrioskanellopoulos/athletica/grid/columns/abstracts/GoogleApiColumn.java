@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.athletica.grid.columns;
+package com.dimitrioskanellopoulos.athletica.grid.columns.abstracts;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.columns.interfaces.GoogleApiColumnInterface;
 import com.dimitrioskanellopoulos.athletica.grid.columns.interfaces.ReceiverColumnInterface;
 import com.google.android.gms.common.ConnectionResult;

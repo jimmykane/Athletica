@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.athletica.grid.columns;
+package com.dimitrioskanellopoulos.athletica.grid.columns.abstracts;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 import com.dimitrioskanellopoulos.athletica.grid.columns.interfaces.ReceiverColumnInterface;
 
 import java.util.Calendar;

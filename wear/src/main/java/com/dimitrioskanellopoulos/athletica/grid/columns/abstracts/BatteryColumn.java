@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.athletica.grid.columns;
+package com.dimitrioskanellopoulos.athletica.grid.columns.abstracts;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.os.BatteryManager;
 import android.util.Log;
+
+import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 
 public abstract class BatteryColumn extends Column {
     private static final String TAG = "BatteryColumn";

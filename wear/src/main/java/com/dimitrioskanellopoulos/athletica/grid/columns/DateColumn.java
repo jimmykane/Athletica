@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.grid.columns.abstracts.CalendarColumn;
+
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 

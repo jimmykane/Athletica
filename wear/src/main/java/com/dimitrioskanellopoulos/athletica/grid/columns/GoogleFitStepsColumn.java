@@ -2,13 +2,11 @@ package com.dimitrioskanellopoulos.athletica.grid.columns;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.grid.columns.abstracts.GoogleApiColumn;
 import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;

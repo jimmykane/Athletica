@@ -3,6 +3,8 @@ package com.dimitrioskanellopoulos.athletica.grid.columns;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import com.dimitrioskanellopoulos.athletica.grid.columns.abstracts.BatteryColumn;
+
 import java.text.DecimalFormat;
 
 public class BatteryLevelColumn extends BatteryColumn {

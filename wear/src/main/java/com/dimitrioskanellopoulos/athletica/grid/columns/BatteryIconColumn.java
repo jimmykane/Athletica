@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.R;
+import com.dimitrioskanellopoulos.athletica.grid.columns.abstracts.BatteryColumn;
 
 public class BatteryIconColumn extends BatteryColumn {
     private static final String TAG = "BatteryIconColumn";
