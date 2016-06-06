@@ -83,7 +83,7 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.w(TAG, "Google Api connetion failed");
+        Log.w(TAG, "Google Api connection failed");
     }
 
     @Override
