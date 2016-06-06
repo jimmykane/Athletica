@@ -7,18 +7,20 @@ import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.grid.columns.interfaces.ReceiverColumnInterface;
+
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public abstract class CalendarColumn extends Column {
+public abstract class CalendarColumn extends Column implements ReceiverColumnInterface {
     protected static final Calendar CALENDAR = Calendar.getInstance();
     private final static String TAG = "CalendarColumn";
-    private static boolean isRegisteredTimeZoneReceiver = false;
+    private static boolean hasRegisteredReceivers = false;
 
     /**
      * Broadcast receiver for updating the timezone
      */
-    private final BroadcastReceiver mTimeZoneReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver timeZoneReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "Setting timezone to " + TimeZone.getTimeZone(intent.getStringExtra("time-zone")));
@@ -34,36 +36,41 @@ public abstract class CalendarColumn extends Column {
     public void setIsVisible(Boolean isVisible) {
         super.setIsVisible(isVisible);
         if (isVisible) {
-            registerTimeZoneReceiver();
+            if (!hasRegisteredReceivers()){
+                registerReceivers();
+            }
             // Update in case it changed and the receiver missed it
             CALENDAR.setTimeZone(TimeZone.getDefault());
         } else {
-            unregisterTimeZoneReceiver();
+            if (hasRegisteredReceivers()){
+               unRegisterReceivers();
+            }
         }
     }
 
-    private void registerTimeZoneReceiver() {
-        if (isRegisteredTimeZoneReceiver) {
-            return;
-        }
-        isRegisteredTimeZoneReceiver = true;
+    @Override
+    public void registerReceivers() {
+        hasRegisteredReceivers = true;
         IntentFilter filter = new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED);
-        context.registerReceiver(mTimeZoneReceiver, filter);
+        context.registerReceiver(timeZoneReceiver, filter);
         Log.d(TAG, "Registered receiver");
     }
 
-    private void unregisterTimeZoneReceiver() {
-        if (!isRegisteredTimeZoneReceiver) {
-            return;
-        }
-        isRegisteredTimeZoneReceiver = false;
-        context.unregisterReceiver(mTimeZoneReceiver);
+    @Override
+    public void unRegisterReceivers() {
+        hasRegisteredReceivers = false;
+        context.unregisterReceiver(timeZoneReceiver);
         Log.d(TAG, "Unregistered receiver");
     }
 
     @Override
+    public Boolean hasRegisteredReceivers() {
+        return hasRegisteredReceivers;
+    }
+
+    @Override
     public void destroy() {
-        unregisterTimeZoneReceiver();
+        unRegisterReceivers();
         super.destroy();
     }
 }
