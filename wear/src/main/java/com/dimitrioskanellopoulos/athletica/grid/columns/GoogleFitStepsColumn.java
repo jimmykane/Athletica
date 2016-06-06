@@ -27,7 +27,12 @@ import java.util.Locale;
 public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ResultCallback<DailyTotalResult> {
     private final static String TAG = "GoogleFitStepsColumn";
-    protected static Boolean isTotalStepsRequested = false;
+
+
+    private PendingResult<DailyTotalResult> stepsResult;
+
+    private Boolean hasRegisteredReceivers = false;
+
     private static GoogleApiClient googleApiClient;
 
     public GoogleFitStepsColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
@@ -57,26 +62,9 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.d(TAG, "Google Api Connected");
-        getTotalSteps();
-        //subscribeToSteps();
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.d(TAG, "Google Api connection suspended");
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.w(TAG, "Google Api connection failed");
-    }
-
-    @Override
     public void onResult(@NonNull DailyTotalResult dailyTotalResult) {
         Log.d(TAG, "onResult(): " + dailyTotalResult);
-        isTotalStepsRequested = false;
+        hasRegisteredReceivers = false;
         if (dailyTotalResult.getStatus().isSuccess()) {
             List<DataPoint> points = dailyTotalResult.getTotal().getDataPoints();
 
@@ -93,28 +81,13 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
     @Override
     public void setAmbientMode(Boolean ambientMode) {
         super.setAmbientMode(ambientMode);
-        getTotalSteps();
+        registerReceivers();
     }
 
     @Override
     public void runTasks() {
         super.runTasks();
-        getTotalSteps();
-    }
-
-    private void getTotalSteps() {
-        Log.d(TAG, "getTotalSteps()");
-        if (!isTotalStepsRequested) {
-
-            isTotalStepsRequested = true;
-            // @todo pass it to the instance
-            PendingResult<DailyTotalResult> stepsResult =
-                    Fitness.HistoryApi.readDailyTotal(
-                            googleApiClient,
-                            DataType.TYPE_STEP_COUNT_DELTA);
-
-            stepsResult.setResultCallback(this);
-        }
+        registerReceivers();
     }
 
     /**
@@ -142,5 +115,23 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
     @Override
     public GoogleApiClient getGoogleApiClient() {
         return googleApiClient;
+    }
+
+    @Override
+    public void registerReceivers() {
+        Log.d(TAG, "Register pending intent for getTotalSteps()");
+        stepsResult = Fitness.HistoryApi.readDailyTotal(googleApiClient, DataType.TYPE_STEP_COUNT_DELTA);
+        stepsResult.setResultCallback(this);
+    }
+
+    @Override
+    public void unRegisterReceivers() {
+        Log.d(TAG, "Cancel pending intent for getTotalSteps()");
+        stepsResult.cancel();
+    }
+
+    @Override
+    public Boolean hasRegisteredReceivers() {
+        return hasRegisteredReceivers;
     }
 }
