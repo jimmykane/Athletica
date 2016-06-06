@@ -78,14 +78,6 @@ public class SunriseSunsetColumn extends GoogleApiColumn implements GoogleApiCli
     }
 
     private void registerLocationReceiver() {
-        if (!googleApiClient.isConnected()) {
-            Log.d(TAG, "Google API client is not ready yet, wont register for location updates");
-            return;
-        }
-        if (isRegisteredLocationReceiver) {
-            Log.d(TAG, "Location listener is registered nothing to do");
-            return;
-        }
         // Check permissions (hopefully the receiver wont be registered
         if (!permissionsHelper.hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
             if (permissionsHelper.canAskAgainForPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
@@ -101,14 +93,6 @@ public class SunriseSunsetColumn extends GoogleApiColumn implements GoogleApiCli
     }
 
     private void unregisterLocationReceiver() {
-        if (!googleApiClient.isConnected()) {
-            Log.d(TAG, "Google API client is not ready yet, wont unregister listener");
-            return;
-        }
-        if (!isRegisteredLocationReceiver) {
-            Log.d(TAG, "Location listener is not registered nothing to do");
-            return;
-        }
         isRegisteredLocationReceiver = false;
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, locationChangedReceiver);
         Log.d(TAG, "Stopped listening for location updates");
