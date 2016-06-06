@@ -1,4 +1,4 @@
-package com.dimitrioskanellopoulos.athletica.grid.columns;
+package com.dimitrioskanellopoulos.athletica.grid.columns.interfaces;
 
 import android.graphics.Paint;
 
@@ -41,8 +41,6 @@ public interface ColumnInterface {
     void setIsVisible(Boolean visible);
 
     void runTasks();
-
-    void start();
 
     void destroy();
 }
