@@ -34,6 +34,14 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
         super(context, paintTypeface, paintTextSize, paintColor);
     }
 
+    public static String withSuffix(long count) {
+        if (count < 1000) return "" + count;
+        int exp = (int) (Math.log(count) / Math.log(1000));
+        return String.format(Locale.getDefault(), "%.1f%c",
+                count / Math.pow(1000, exp),
+                "kMGTPE".charAt(exp - 1));
+    }
+
     @Override
     public void start() {
         super.start();
@@ -55,7 +63,7 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
             googleApiClient.connect();
         }
 
-        if (EmulatorHelper.isEmulator()){
+        if (EmulatorHelper.isEmulator()) {
             setText(withSuffix(1801));
         }
     }
@@ -113,7 +121,7 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
         } else {
             if (googleApiClient != null && googleApiClient.isConnected()) {
                 // @todo destroy the pending
-                isTotalStepsRequested=false;
+                isTotalStepsRequested = false;
                 googleApiClient.disconnect();
             }
         }
@@ -169,14 +177,5 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
                         }
                     }
                 });
-    }
-
-
-    public static String withSuffix(long count) {
-        if (count < 1000) return "" + count;
-        int exp = (int) (Math.log(count) / Math.log(1000));
-        return String.format(Locale.getDefault(), "%.1f%c",
-                count / Math.pow(1000, exp),
-                "kMGTPE".charAt(exp-1));
     }
 }

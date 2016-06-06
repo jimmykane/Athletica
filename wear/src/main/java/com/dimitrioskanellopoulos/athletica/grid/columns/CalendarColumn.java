@@ -40,7 +40,6 @@ public abstract class CalendarColumn extends Column {
         } else {
             unregisterTimeZoneReceiver();
         }
-
     }
 
     private void registerTimeZoneReceiver() {

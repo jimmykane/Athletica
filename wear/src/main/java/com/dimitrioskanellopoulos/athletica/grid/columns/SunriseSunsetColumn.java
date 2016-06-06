@@ -29,6 +29,10 @@ public abstract class SunriseSunsetColumn extends Column implements GoogleApiCli
      */
     private static final long LOCATION_UPDATE_INTERVAL_MS = 3600000;
     private static final long LOCATION_UPDATE_FASTEST_INTERVAL_MS = 3600000;
+    private static final LocationRequest locationRequest = new LocationRequest()
+            .setInterval(LOCATION_UPDATE_INTERVAL_MS)
+            .setFastestInterval(LOCATION_UPDATE_FASTEST_INTERVAL_MS)
+            .setPriority(LocationRequest.PRIORITY_LOW_POWER);
     /**
      * Whether tha location receiver is registered
      */
@@ -50,13 +54,7 @@ public abstract class SunriseSunsetColumn extends Column implements GoogleApiCli
             Log.d(TAG, "Successfully updated sunrise");
         }
     };
-
     private static GoogleApiClient googleApiClient;
-
-    private static final LocationRequest locationRequest = new LocationRequest()
-            .setInterval(LOCATION_UPDATE_INTERVAL_MS)
-            .setFastestInterval(LOCATION_UPDATE_FASTEST_INTERVAL_MS)
-            .setPriority(LocationRequest.PRIORITY_LOW_POWER);
     private PermissionsHelper permissionsHelper;
 
     public SunriseSunsetColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {

@@ -18,7 +18,7 @@ public class GridRenderer {
     /**
      * @todo document more and make it faster
      */
-    public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, Float topMargin,  Float bottomMargin) {
+    public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, Float topMargin, Float bottomMargin) {
         // Draw background
         drawBackground(canvas, bounds, grid.getBackgroundColor());
 
@@ -33,11 +33,11 @@ public class GridRenderer {
             // Do the setBaseline
             Paint bluePaint = new Paint();
             bluePaint.setColor(Color.BLUE);
-            canvas.drawLine(bounds.left, bounds.exactCenterY() , bounds.right, bounds.exactCenterY(), bluePaint);
+            canvas.drawLine(bounds.left, bounds.exactCenterY(), bounds.right, bounds.exactCenterY(), bluePaint);
             // Do the bottom
-            canvas.drawLine(bounds.left, bounds.exactCenterY() + totalHeight-1.0f , bounds.right, bounds.exactCenterY() + totalHeight-1.0f, bluePaint);
+            canvas.drawLine(bounds.left, bounds.exactCenterY() + totalHeight - 1.0f, bounds.right, bounds.exactCenterY() + totalHeight - 1.0f, bluePaint);
             // Do the middle
-            canvas.drawLine(bounds.exactCenterY(), bounds.top , bounds.exactCenterY(), bounds.bottom, bluePaint);
+            canvas.drawLine(bounds.exactCenterY(), bounds.top, bounds.exactCenterY(), bounds.bottom, bluePaint);
         }
 
         int rowCount = 0;
@@ -55,7 +55,7 @@ public class GridRenderer {
             for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
                 Column column = columnEntry.getValue();
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
-                if (column.getHeight() > maxTextHeight){
+                if (column.getHeight() > maxTextHeight) {
                     maxTextHeight = column.getHeight();
                 }
             }
@@ -74,17 +74,16 @@ public class GridRenderer {
                 }
 
 
-
                 Float columnOffsetY;
-                switch (column.getBaseline()){
+                switch (column.getBaseline()) {
                     case Column.BASELINE_TOP:
                         columnOffsetY = 0.0f;
                         break;
                     case Column.BASELINE_MIDDLE:
-                        columnOffsetY = rowHeight/2 + column.getHeight()/2;
+                        columnOffsetY = rowHeight / 2 + column.getHeight() / 2;
                         break;
                     case Column.BASELINE_ABSOLUTE_CENTER:
-                        columnOffsetY = rowHeight/2;
+                        columnOffsetY = rowHeight / 2;
                         break;
                     case Column.BASELINE_PREVIOUS:
                         columnOffsetY = previousColumnOffsetY;
@@ -98,7 +97,7 @@ public class GridRenderer {
                 }
 
                 // If it's bigger pretend it fits so we can get the middle position (center) easily
-                if (columnOffsetY > rowHeight){
+                if (columnOffsetY > rowHeight) {
                     columnOffsetY = rowHeight;
                 }
 
@@ -127,7 +126,7 @@ public class GridRenderer {
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
     }
 
-    public static void drawTicks(Canvas canvas, Rect bounds, Integer color, Float strokeWidth){
+    public static void drawTicks(Canvas canvas, Rect bounds, Integer color, Float strokeWidth) {
         Paint tickPaing = new Paint();
         tickPaing.setColor(color);
         tickPaing.setStrokeWidth(strokeWidth);

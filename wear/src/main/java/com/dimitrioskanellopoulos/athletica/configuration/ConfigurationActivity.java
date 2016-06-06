@@ -89,7 +89,6 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
             }
         });
 
-
         switchInterlace.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
