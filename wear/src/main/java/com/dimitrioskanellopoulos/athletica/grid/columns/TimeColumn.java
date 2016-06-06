@@ -63,11 +63,6 @@ public class TimeColumn extends CalendarColumn {
     }
 
     @Override
-    public void start() {
-        Log.d(TAG, "Started");
-    }
-
-    @Override
     public void destroy() {
         Log.d(TAG, "Destroyed");
     }

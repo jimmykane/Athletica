@@ -79,11 +79,6 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
     }
 
     @Override
-    public void start() {
-        Log.d(TAG, "Started");
-    }
-
-    @Override
     public void destroy() {
         averagingCallbackSensor.stopListening();
         Log.d(TAG, "Destroyed");

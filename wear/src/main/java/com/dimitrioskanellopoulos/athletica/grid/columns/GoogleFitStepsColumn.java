@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class GoogleFitStepsColumn extends Column implements GoogleApiClient.ConnectionCallbacks,
+public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ResultCallback<DailyTotalResult> {
     private final static String TAG = "GoogleFitStepsColumn";
     protected static Boolean isTotalStepsRequested = false;
@@ -32,6 +32,20 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
 
     public GoogleFitStepsColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
+        googleApiClient = new GoogleApiClient.Builder(context)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Fitness.HISTORY_API)
+                .addApi(Fitness.RECORDING_API)
+                // When user has multiple accounts, useDefaultAccount() allows Google Fit to
+                // associated with the main account for steps. It also replaces the need for
+                // a scope request.
+                .useDefaultAccount()
+                .build();
+
+        if (EmulatorHelper.isEmulator()) {
+            setText(withSuffix(1801));
+        }
     }
 
     public static String withSuffix(long count) {
@@ -40,41 +54,6 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
         return String.format(Locale.getDefault(), "%.1f%c",
                 count / Math.pow(1000, exp),
                 "kMGTPE".charAt(exp - 1));
-    }
-
-    @Override
-    public void start() {
-        super.start();
-        // Get a Google API client
-        if (googleApiClient == null) {
-
-            googleApiClient = new GoogleApiClient.Builder(context)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(Fitness.HISTORY_API)
-                    .addApi(Fitness.RECORDING_API)
-                    // When user has multiple accounts, useDefaultAccount() allows Google Fit to
-                    // associated with the main account for steps. It also replaces the need for
-                    // a scope request.
-                    .useDefaultAccount()
-                    .build();
-        }
-        if (!googleApiClient.isConnected()) {
-            googleApiClient.connect();
-        }
-
-        if (EmulatorHelper.isEmulator()) {
-            setText(withSuffix(1801));
-        }
-    }
-
-    @Override
-    public void destroy() {
-        if (googleApiClient != null && googleApiClient.isConnected()) {
-            googleApiClient.disconnect();
-            isTotalStepsRequested = false;
-        }
-        super.destroy();
     }
 
     @Override
@@ -112,23 +91,6 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
     }
 
     @Override
-    public void setIsVisible(Boolean isVisible) {
-        super.setIsVisible(isVisible);
-        if (isVisible) {
-            if (googleApiClient != null && !googleApiClient.isConnected()) {
-                googleApiClient.connect();
-            }
-        } else {
-            if (googleApiClient != null && googleApiClient.isConnected()) {
-                // @todo destroy the pending
-                isTotalStepsRequested = false;
-                googleApiClient.disconnect();
-            }
-        }
-
-    }
-
-    @Override
     public void setAmbientMode(Boolean ambientMode) {
         super.setAmbientMode(ambientMode);
         getTotalSteps();
@@ -142,9 +104,7 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
 
     private void getTotalSteps() {
         Log.d(TAG, "getTotalSteps()");
-        if ((googleApiClient != null)
-                && (googleApiClient.isConnected())
-                && (!isTotalStepsRequested)) {
+        if (!isTotalStepsRequested) {
 
             isTotalStepsRequested = true;
             // @todo pass it to the instance
@@ -177,5 +137,10 @@ public class GoogleFitStepsColumn extends Column implements GoogleApiClient.Conn
                         }
                     }
                 });
+    }
+
+    @Override
+    public GoogleApiClient getGoogleApiClient() {
+        return googleApiClient;
     }
 }

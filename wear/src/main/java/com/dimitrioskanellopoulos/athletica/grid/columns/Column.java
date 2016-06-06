@@ -6,6 +6,8 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.grid.columns.interfaces.ColumnInterface;
+
 public class Column implements ColumnInterface {
     private final static String TAG = "Column";
     protected final Context context;
@@ -25,7 +27,6 @@ public class Column implements ColumnInterface {
         getPaint().setTextSize(paintTextSize);
         setTextDefaultColor(paintColor);
         getPaint().setAntiAlias(true);
-        start();
     }
 
     @Override
@@ -114,11 +115,6 @@ public class Column implements ColumnInterface {
     @Override
     public void runTasks() {
         Log.d(TAG, "Running tasks");
-    }
-
-    @Override
-    public void start() {
-        Log.d(TAG, "Started");
     }
 
     @Override

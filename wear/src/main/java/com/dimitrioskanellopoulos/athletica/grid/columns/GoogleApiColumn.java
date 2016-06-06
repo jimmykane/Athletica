@@ -3,6 +3,8 @@ package com.dimitrioskanellopoulos.athletica.grid.columns;
 import android.content.Context;
 import android.graphics.Typeface;
 
+import com.dimitrioskanellopoulos.athletica.grid.columns.interfaces.GoogleApiColumnInterface;
+
 public abstract class GoogleApiColumn extends Column implements GoogleApiColumnInterface {
     private final static String TAG = "GoogleApiColumn";
 

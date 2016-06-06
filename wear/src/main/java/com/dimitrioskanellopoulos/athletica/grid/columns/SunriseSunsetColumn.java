@@ -21,26 +21,21 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.TimeZone;
 
-public abstract class SunriseSunsetColumn extends Column implements GoogleApiClient.ConnectionCallbacks,
+public class SunriseSunsetColumn extends GoogleApiColumn implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private final static String TAG = "SunriseSunsetColumn";
-    /**
-     * The location update intervals: 1hour in ms
-     */
+
     private static final long LOCATION_UPDATE_INTERVAL_MS = 3600000;
     private static final long LOCATION_UPDATE_FASTEST_INTERVAL_MS = 3600000;
     private static final LocationRequest locationRequest = new LocationRequest()
             .setInterval(LOCATION_UPDATE_INTERVAL_MS)
             .setFastestInterval(LOCATION_UPDATE_FASTEST_INTERVAL_MS)
             .setPriority(LocationRequest.PRIORITY_LOW_POWER);
-    /**
-     * Whether tha location receiver is registered
-     */
+
     protected static boolean isRegisteredLocationReceiver = false;
+
     protected static Pair<String, String> sunriseSunset;
-    /**
-     * Broadcast receiver for location intent
-     */
+
     private static final LocationListener locationChangedReceiver = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -54,28 +49,32 @@ public abstract class SunriseSunsetColumn extends Column implements GoogleApiCli
             Log.d(TAG, "Successfully updated sunrise");
         }
     };
+
     private static GoogleApiClient googleApiClient;
+
     private PermissionsHelper permissionsHelper;
 
     public SunriseSunsetColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
+        // Get a Google API client
+        googleApiClient = new GoogleApiClient.Builder(context)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+
+        // Get the helper for the permissions
         permissionsHelper = new PermissionsHelper(context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.BODY_SENSORS});
-    }
-
-    @Override
-    public void setIsVisible(Boolean isVisible) {
-        super.setIsVisible(isVisible);
-        if (isVisible) {
-            if (googleApiClient != null && !googleApiClient.isConnected()) {
-                googleApiClient.connect();
-            }
-        } else {
-            if (googleApiClient != null && googleApiClient.isConnected()) {
-                unregisterLocationReceiver();
-                googleApiClient.disconnect();
-            }
+        // Run the emulator stuff
+        if (EmulatorHelper.isEmulator()) {
+            Location location = new Location("dummy");
+            location.setLatitude(41);
+            location.setLongitude(11);
+            location.setTime(System.currentTimeMillis());
+            location.setAccuracy(3.0f);
+            sunriseSunset = SunriseSunsetHelper.getSunriseAndSunset(location, TimeZone.getDefault().getID());
         }
-
     }
 
     private void registerLocationReceiver() {
@@ -116,37 +115,8 @@ public abstract class SunriseSunsetColumn extends Column implements GoogleApiCli
     }
 
     @Override
-    public void start() {
-        super.start();
-        if (googleApiClient == null) {
-            // Get a Google API client
-            googleApiClient = new GoogleApiClient.Builder(context)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
-        if (!googleApiClient.isConnected()) {
-            googleApiClient.connect();
-        }
-
-        // Maybe move to start
-        if (EmulatorHelper.isEmulator()) {
-            Location location = new Location("dummy");
-            location.setLatitude(41);
-            location.setLongitude(11);
-            location.setTime(System.currentTimeMillis());
-            location.setAccuracy(3.0f);
-            sunriseSunset = SunriseSunsetHelper.getSunriseAndSunset(location, TimeZone.getDefault().getID());
-        }
-    }
-
-    @Override
     public void destroy() {
-        if (googleApiClient != null && googleApiClient.isConnected()) {
-            unregisterLocationReceiver();
-            googleApiClient.disconnect();
-        }
+        unregisterLocationReceiver();
         super.destroy();
     }
 
@@ -163,6 +133,11 @@ public abstract class SunriseSunsetColumn extends Column implements GoogleApiCli
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.w(TAG, "Google Api connetion failed");
+        Log.w(TAG, "Google Api connection failed");
+    }
+
+    @Override
+    public GoogleApiClient getGoogleApiClient() {
+        return googleApiClient;
     }
 }

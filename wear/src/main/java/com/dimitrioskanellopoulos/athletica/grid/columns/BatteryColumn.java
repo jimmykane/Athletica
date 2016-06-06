@@ -62,12 +62,6 @@ public abstract class BatteryColumn extends Column {
     }
 
     @Override
-    public void start() {
-        super.start();
-        // Maybe should register receiver
-    }
-
-    @Override
     public void destroy() {
         unregisterBatteryInfoReceiver();
         super.destroy();

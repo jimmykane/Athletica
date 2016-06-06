@@ -47,11 +47,6 @@ public class BatteryIconColumn extends BatteryColumn {
     }
 
     @Override
-    public void start() {
-        Log.d(TAG, "Started");
-    }
-
-    @Override
     public void destroy() {
         Log.d(TAG, "Destroyed");
     }
