@@ -31,6 +31,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
     private Switch switchInterlace;
     private Switch switchInvertBlackAndWhite;
     private Switch switchDayNightMode;
+    private Switch switchTwoColorBackground;
     private Switch switchShowGoogleFitSteps;
     private ArrayList<Integer> sensors;
 
@@ -62,6 +63,8 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
         switchInvertBlackAndWhite = (Switch) findViewById(R.id.switch_invert_black_and_white);
 
         switchDayNightMode = (Switch) findViewById(R.id.switch_day_night_mode);
+
+        switchTwoColorBackground = (Switch) findViewById(R.id.switch_two_color_background);
 
         switchShowGoogleFitSteps = (Switch) findViewById(R.id.switch_show_google_fit_steps);
 
@@ -110,6 +113,14 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 updateConfigDataItemDayNightMode(isChecked);
+            }
+        });
+
+        switchTwoColorBackground.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                updateConfigDataItemTwoColorBackground(isChecked);
             }
         });
 
@@ -301,6 +312,13 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
     }
 
+    private void updateConfigDataItemTwoColorBackground(boolean twoColorBackground) {
+        DataMap configMap = new DataMap();
+        configMap.putBoolean(ConfigurationHelper.KEY_TWO_COLOR_BACKGROUND,
+                twoColorBackground);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
+    }
+
     private void updateConfigDataItemShowGoogleFitSteps(boolean showGoogleFitSteps) {
         DataMap configMap = new DataMap();
         configMap.putBoolean(ConfigurationHelper.KEY_SHOW_GOOGLE_FIT_STEPS,
@@ -355,6 +373,9 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
                     break;
                 case ConfigurationHelper.KEY_DAY_NIGHT_MODE:
                     switchDayNightMode.setChecked(config.getBoolean(key));
+                    break;
+                case ConfigurationHelper.KEY_TWO_COLOR_BACKGROUND:
+                    switchTwoColorBackground.setChecked(config.getBoolean(key));
                     break;
                 case ConfigurationHelper.KEY_SHOW_GOOGLE_FIT_STEPS:
                     switchShowGoogleFitSteps.setChecked(config.getBoolean(key));

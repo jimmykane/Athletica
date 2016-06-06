@@ -44,6 +44,10 @@ public final class ConfigurationHelper {
      */
     public static final String KEY_DAY_NIGHT_MODE = "KEY_DAY_NIGHT_MODE";
     /**
+     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} for 2 color background b&w
+     */
+    public static final String KEY_TWO_COLOR_BACKGROUND = "KEY_TWO_COLOR_BACKGROUND";
+    /**
      * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} Show google fit steps
      */
     public static final String KEY_SHOW_GOOGLE_FIT_STEPS = "KEY_SHOW_GOOGLE_FIT_STEPS";
@@ -69,6 +73,10 @@ public final class ConfigurationHelper {
     public static final Boolean INTERLACE_DEFAULT = true;
     /**
      * The default to invert black and white
+     */
+    public static final Boolean TWO_COLOR_BACKGROUND = false;
+    /**
+     * The default to set if 2 color background consisting of b&w should be shown
      */
     public static final Boolean INVERT_BLACK_AND_WHITE = false;
     /**
@@ -160,6 +168,7 @@ public final class ConfigurationHelper {
         addBooleanKeyIfMissing(config, KEY_INTERLACE, INTERLACE_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INVERT_BLACK_AND_WHITE, INVERT_BLACK_AND_WHITE);
         addBooleanKeyIfMissing(config, KEY_DAY_NIGHT_MODE, DAY_NIGHT_MODE);
+        addBooleanKeyIfMissing(config, KEY_TWO_COLOR_BACKGROUND, TWO_COLOR_BACKGROUND);
         addBooleanKeyIfMissing(config, KEY_SHOW_GOOGLE_FIT_STEPS, SHOW_GOOGLE_FIT_STEPS);
         addIntegerArrayListKeyIfMissing(config, KEY_ENABLED_SENSORS, SensorHelper.getApplicationDeviceSupportedSensors(context));
     }

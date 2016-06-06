@@ -102,6 +102,16 @@
                 android:textSize="12sp" />
 
             <Switch
+                android:id="@+id/switch_two_color_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingBottom="4dp"
+                android:text="@string/configuration_two_color_background"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+            <Switch
                 android:id="@+id/switch_show_google_fit_steps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
