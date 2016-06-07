@@ -52,12 +52,15 @@ public class SunriseSunsetColumn extends GoogleApiColumn {
 
     public SunriseSunsetColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
-        // Get a Google API client
-        googleApiClient = new GoogleApiClient.Builder(context)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+        // Get a Google API client if not set
+        if (getGoogleApiClient() == null) {
+            googleApiClient = new GoogleApiClient.Builder(context)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+            getGoogleApiClient().connect();
+        }
 
 
         // Get the helper for the permissions

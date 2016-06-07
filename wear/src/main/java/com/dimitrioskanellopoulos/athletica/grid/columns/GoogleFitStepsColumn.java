@@ -45,6 +45,7 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
                 // a scope request.
                 .useDefaultAccount()
                 .build();
+        googleApiClient.connect();
 
         if (EmulatorHelper.isEmulator()) {
             setText(withSuffix(1801));
@@ -79,7 +80,9 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
     @Override
     public void setAmbientMode(Boolean ambientMode) {
         super.setAmbientMode(ambientMode);
-        registerReceivers();
+        if (!ambientMode && !hasRegisteredReceivers()){
+            registerReceivers();
+        }
     }
 
     @Override
@@ -117,6 +120,10 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
 
     @Override
     public void registerReceivers() {
+        if (!getGoogleApiClient().isConnected()){
+            Log.d(TAG, "Google api client is not connected wont register pending intent for getTotalSteps()");
+            return;
+        }
         Log.d(TAG, "Register pending intent for getTotalSteps()");
         stepsResult = Fitness.HistoryApi.readDailyTotal(googleApiClient, DataType.TYPE_STEP_COUNT_DELTA);
         stepsResult.setResultCallback(this);
