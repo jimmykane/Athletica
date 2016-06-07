@@ -40,6 +40,7 @@ public class WatchFace {
     private boolean isVisible = false;
     private boolean interlace = true;
     private boolean dayNightMode = false;
+    private boolean twoColorBackground = false;
 
     private int chinSize;
     private Boolean invertBlackAndWhite;
@@ -72,7 +73,9 @@ public class WatchFace {
 
     public void draw(Canvas canvas, Rect bounds) {
 
-        GridRenderer.renderGrid(canvas, bounds, grid, bounds.height() / 2.0f, chinSize + resources.getDimension(R.dimen.face_bottom_margin));
+
+        GridRenderer.renderGrid(canvas, bounds, grid, bounds.height() / 2.0f, chinSize + resources.getDimension(R.dimen.face_bottom_margin), twoColorBackground);
+
 
         if (interlace) {
             GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, ambientMode ? 100 : 70);
@@ -320,5 +323,9 @@ public class WatchFace {
 
     public void setDayNightMode(boolean dayNightMode) {
         this.dayNightMode = dayNightMode;
+    }
+
+    public void setTwoColorBackground(boolean twoColorBackground) {
+        this.twoColorBackground = twoColorBackground;
     }
 }
