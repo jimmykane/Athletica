@@ -108,6 +108,7 @@
                 android:layout_gravity="end"
                 android:paddingBottom="4dp"
                 android:text="@string/configuration_two_color_background"
+                android:visibility="gone"
                 android:textAlignment="center"
                 android:textSize="12sp" />
 
