@@ -72,11 +72,7 @@ public class WatchFace {
     }
 
     public void draw(Canvas canvas, Rect bounds) {
-
-
-        GridRenderer.renderGrid(canvas, bounds, grid, bounds.height() / 2.0f, chinSize + resources.getDimension(R.dimen.face_bottom_margin), twoColorBackground);
-
-
+        GridRenderer.renderGrid(canvas, bounds, grid, bounds.height() / 2.0f, chinSize + resources.getDimension(R.dimen.face_bottom_margin));
         if (interlace) {
             GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, ambientMode ? 100 : 70);
         }

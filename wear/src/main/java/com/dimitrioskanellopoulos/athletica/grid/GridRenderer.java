@@ -18,7 +18,7 @@ public class GridRenderer {
     /**
      * @todo document more and make it faster
      */
-    public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, Float topMargin, Float bottomMargin, Boolean twoColorBackground) {
+    public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, Float topMargin, Float bottomMargin) {
 
         drawBackground(canvas, bounds, grid.getBackgroundColor());
 
