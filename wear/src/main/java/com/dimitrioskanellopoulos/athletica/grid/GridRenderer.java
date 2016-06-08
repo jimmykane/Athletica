@@ -53,12 +53,6 @@ public class GridRenderer {
             float totalTextWidth = 0f;
             float maxTextHeight = 0f;
 
-            if (twoColorBackground && rowCount == 0){
-                Rect rect = new Rect();
-                rect.set(bounds.left, bounds.top, bounds.right, Math.round(rowOffsetY + rowHeight*0.75f));
-                drawBackground(canvas, rect, grid.getBackgroundColor() == Color.BLACK ? Color.WHITE : Color.BLACK);
-            }
-
             for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
                 Column column = columnEntry.getValue();
                 totalTextWidth += column.getWidth() + column.getHorizontalMargin();
@@ -109,13 +103,8 @@ public class GridRenderer {
                 }
 
                 // Draw the column
-                if (twoColorBackground && rowCount == 0){
-                    column.getPaint().setColor(column.getPaint().getColor() == Color.BLACK ? Color.WHITE : Color.BLACK);
-                    canvas.drawText(column.getText(), cursor, rowOffsetY + columnOffsetY, column.getPaint()); // check if it needs per column height
-                    column.getPaint().setColor(column.getPaint().getColor() == Color.BLACK ? Color.WHITE : Color.BLACK);
-                }else {
-                    canvas.drawText(column.getText(), cursor, rowOffsetY + columnOffsetY, column.getPaint()); // check if it needs per column height
-                }
+                canvas.drawText(column.getText(), cursor, rowOffsetY + columnOffsetY, column.getPaint()); // check if it needs per column height
+
                 // canvas.drawText(column.getText(), cursor, rowOffsetY + rowHeight, column.getPaint()); // check if it needs per column height
                 cursor += column.getWidth() + column.getHorizontalMargin();
 
