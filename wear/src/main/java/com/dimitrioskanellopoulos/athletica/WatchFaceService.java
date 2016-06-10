@@ -480,13 +480,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * Run's tasks according to the current time
          */
         private void runOnTimeTickTasks() {
-            Calendar now = Calendar.getInstance();
-            if (now.getTimeInMillis() - lastOnTimeTickTasksRun.getTimeInMillis() < RUN_ON_TICK_TASKS_EVERY_MS) {
+            if (System.currentTimeMillis() - lastOnTimeTickTasksRun.getTimeInMillis() < RUN_ON_TICK_TASKS_EVERY_MS) {
                 return;
             }
             Log.d(TAG, "Running onTimeTickTasks");
+            lastOnTimeTickTasksRun.setTimeInMillis(System.currentTimeMillis());
             watchFace.runTasks();
-            lastOnTimeTickTasksRun = now;
         }
     }
 }
