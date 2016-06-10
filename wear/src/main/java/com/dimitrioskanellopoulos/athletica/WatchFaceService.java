@@ -154,8 +154,8 @@ public class WatchFaceService extends CanvasWatchFaceService {
 
             // Create a watch face
             watchFace = new WatchFace(WatchFaceService.this);
-            watchFace.setInAmbientMode(false);
-
+            watchFace.setIsVisible(isVisible());
+            watchFace.setInAmbientMode(isInAmbientMode());
 
             // Get a Google API client
             googleApiClient = new GoogleApiClient.Builder(WatchFaceService.this)
