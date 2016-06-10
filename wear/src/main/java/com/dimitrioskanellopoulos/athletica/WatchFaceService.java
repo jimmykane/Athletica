@@ -152,10 +152,13 @@ public class WatchFaceService extends CanvasWatchFaceService {
             // Set the style start with normal
             setWatchFaceStyle(watchFaceStyleNormal);
 
-            // Create a watch face
+            // Create a watch face and init some rows
             watchFace = new WatchFace(WatchFaceService.this);
             watchFace.setIsVisible(isVisible());
             watchFace.setInAmbientMode(isInAmbientMode());
+            watchFace.addRowForTime();
+            watchFace.addRowForDate();
+            watchFace.addRowForBattery();
 
             // Get a Google API client
             googleApiClient = new GoogleApiClient.Builder(WatchFaceService.this)

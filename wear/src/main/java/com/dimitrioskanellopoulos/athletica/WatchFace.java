@@ -56,19 +56,8 @@ public class WatchFace {
         // Default typeface
         defaultTypeface = Typeface.SANS_SERIF;
 
-        // Add FontAwesome paint for icons
         fontAwesome = Typeface.createFromAsset(context.getAssets(), "fonts/fontawesome-webfont.ttf");
-
         materialIconsFont = Typeface.createFromAsset(context.getAssets(), "fonts/MaterialIcons-Regular.ttf");
-
-        // Add Row for time
-        addRowForTime();
-
-        // Add Row for date
-        addRowForDate();
-
-        // Add Row for battery level
-        addRowForBattery();
     }
 
     public void draw(Canvas canvas, Rect bounds) {
@@ -78,7 +67,7 @@ public class WatchFace {
         }
     }
 
-    private void addRowForTime() {
+    public void addRowForTime() {
         Row timeRow = new Row();
         TimeColumn timeColumn = new TimeColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_size), grid.getTextColor(), isVisible, ambientMode);
         timeColumn.setBaseline(Column.BASELINE_ABSOLUTE_CENTER);
@@ -86,7 +75,7 @@ public class WatchFace {
         grid.putRow("1_timeRow", timeRow);
     }
 
-    private void addRowForDate() {
+    public void addRowForDate() {
         Row dateRow = new Row();
         DateColumn dateColumn = new DateColumn(context, defaultTypeface, resources.getDimension(R.dimen.date_size), grid.getTextColor(), isVisible, ambientMode);
         dateRow.putColumn("dateColumn", dateColumn);
@@ -135,7 +124,7 @@ public class WatchFace {
         grid.removeRow("5_sensorsRow");
     }
 
-    private void addRowForBattery() {
+    public void addRowForBattery() {
         Row batteryRow = new Row();
         //Icon
         BatteryIconColumn batteryIconColumn = new BatteryIconColumn(context, fontAwesome, resources.getDimension(R.dimen.battery_icon_size), grid.getTextColor(), isVisible, ambientMode);
