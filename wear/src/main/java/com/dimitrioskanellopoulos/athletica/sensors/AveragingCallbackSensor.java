@@ -16,7 +16,7 @@ public class AveragingCallbackSensor extends CallbackSensor implements
 
 
     // For averages
-    private final static Integer averageSamplingPeriodUs = 2000000; // 2 secs
+    private final static Integer averageSamplingPeriodUs = 5000000; // 5 secs
     private final static Integer averageMaxReportLatencyUs = 5000000; // 5 secs
 
 
