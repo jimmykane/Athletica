@@ -5,6 +5,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.util.Log;
 
+import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
 
 import java.util.ArrayList;
@@ -17,14 +18,20 @@ public class AveragingSensorEventListener implements SensorEventListener {
 
     private Integer numberOfSamples = 10;
 
+    private final AveragingCallbackSensor sensor;
+
     private OnSensorAverageEventCallbackInterface changeCallback;
 
-    public AveragingSensorEventListener(OnSensorAverageEventCallbackInterface changeCallback) {
+    public AveragingSensorEventListener(AveragingCallbackSensor sensor, OnSensorAverageEventCallbackInterface changeCallback) {
+        this.sensor = sensor;
         this.changeCallback = changeCallback;
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (!sensor.isEventValuesAcceptable(event.values)) {
+            return;
+        }
         // If there is space to add more averageValues add it and do nothing
         if (averageValues.size() < numberOfSamples) {
             averageValues.add(event.values[0]);
