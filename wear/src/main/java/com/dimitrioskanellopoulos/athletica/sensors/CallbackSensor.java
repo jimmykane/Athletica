@@ -52,11 +52,6 @@ public class CallbackSensor implements SensorListenerInterface, OnSensorEventCal
     }
 
     @Override
-    public Boolean isListening() {
-        return isListening;
-    }
-
-    @Override
     public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
         if (isEventValuesAcceptable(eventValues)) {
             changeCallback.handleOnSensorChangedEvent(sensor, sensorType, eventValues);
