@@ -16,7 +16,7 @@ public class Column implements ColumnInterface {
     private Boolean ambientMode;
     private Boolean visible;
     private Integer baseline = BASELINE_MIDDLE;
-    private String text = "";
+    private String text = "\u21bb";
     private Float horizontalMargin = 0.0f;
     private Integer textDefaultColor;
 
