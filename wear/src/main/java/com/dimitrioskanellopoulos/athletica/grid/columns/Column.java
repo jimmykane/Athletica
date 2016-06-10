@@ -13,19 +13,21 @@ public class Column implements ColumnInterface {
     protected final Context context;
 
     private final Paint paint = new Paint();
-    private Boolean ambientMode = false;
-    private Boolean visible = false;
+    private Boolean ambientMode;
+    private Boolean visible;
     private Integer baseline = BASELINE_MIDDLE;
     private String text = "";
     private Float horizontalMargin = 0.0f;
     private Integer textDefaultColor;
 
-    public Column(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
+    public Column(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
         this.context = context.getApplicationContext();
         getPaint().setTypeface(paintTypeface);
         getPaint().setTextSize(paintTextSize);
         setTextDefaultColor(paintColor);
-        getPaint().setAntiAlias(true);
+        this.visible = visible;
+        this.ambientMode = ambientMode;
+        getPaint().setAntiAlias(!this.ambientMode);
     }
 
     @Override

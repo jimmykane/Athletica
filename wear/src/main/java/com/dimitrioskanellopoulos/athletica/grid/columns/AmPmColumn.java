@@ -13,8 +13,8 @@ public class AmPmColumn extends CalendarColumn {
     private static final String TAG = "AmPmColumn";
     private final static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("a", Locale.getDefault());
 
-    public AmPmColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        super(context, paintTypeface, paintTextSize, paintColor);
+    public AmPmColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+        super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
     }
 
     @Override

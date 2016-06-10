@@ -6,8 +6,8 @@ import android.graphics.Typeface;
 public class SunriseColumn extends SunriseSunsetColumn {
     private static final String TAG = "SunriseColumn";
 
-    public SunriseColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        super(context, paintTypeface, paintTextSize, paintColor);
+    public SunriseColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+        super(context, paintTypeface, paintTextSize, paintColor,visible,ambientMode);
     }
 
     @Override

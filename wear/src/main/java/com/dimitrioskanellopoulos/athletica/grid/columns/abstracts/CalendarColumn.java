@@ -29,8 +29,8 @@ public abstract class CalendarColumn extends Column implements ReceiverColumnInt
         }
     };
 
-    public CalendarColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        super(context, paintTypeface, paintTextSize, paintColor);
+    public CalendarColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+        super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
     }
 
     @Override

@@ -18,8 +18,8 @@ public class TimeColumn extends CalendarColumn {
     private final Float initTextSize;
     private Boolean isIn24hourFormat = true;
 
-    public TimeColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        super(context, paintTypeface, paintTextSize, paintColor);
+    public TimeColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+        super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
         initTextSize = paintTextSize;
         getPaint().setTextSize(initTextSize * 0.8f);
     }

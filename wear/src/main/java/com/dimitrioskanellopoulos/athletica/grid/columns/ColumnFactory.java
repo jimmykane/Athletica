@@ -8,8 +8,8 @@ import com.dimitrioskanellopoulos.athletica.R;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 
 public class ColumnFactory {
-    public static Column getIconColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        Column sensorIconColumn = new Column(context, paintTypeface, paintTextSize, paintColor);
+    public static Column getIconColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+        Column sensorIconColumn = new Column(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
                 sensorIconColumn.setText(context.getResources().getString(R.string.icon_android_sensor_pressure));
@@ -41,8 +41,8 @@ public class ColumnFactory {
         return sensorIconColumn;
     }
 
-    public static Column getColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        SensorColumn sensorIconColumn = new SensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType);
+    public static Column getColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+        SensorColumn sensorIconColumn = new SensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType, visible, ambientMode);
         switch (sensorType) {
             case Sensor.TYPE_ACCELEROMETER:
                 sensorIconColumn.setText(context.getApplicationContext().getResources().getString(R.string.icon_android_sensor_accelerometer));
@@ -55,8 +55,8 @@ public class ColumnFactory {
         return sensorIconColumn;
     }
 
-    public static Column getUnitsColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        Column sensorUnitsColumn = new Column(context, paintTypeface, paintTextSize, paintColor);
+    public static Column getUnitsColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+        Column sensorUnitsColumn = new Column(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
                 sensorUnitsColumn.setText(context.getResources().getString(R.string.units_android_sensor_pressure));

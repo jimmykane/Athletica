@@ -50,8 +50,8 @@ public class SunriseSunsetColumn extends GoogleApiColumn {
 
     private PermissionsHelper permissionsHelper;
 
-    public SunriseSunsetColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
-        super(context, paintTypeface, paintTextSize, paintColor);
+    public SunriseSunsetColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+        super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
         // Get a Google API client if not set
         if (getGoogleApiClient() == null) {
             googleApiClient = new GoogleApiClient.Builder(context)
