@@ -11,23 +11,19 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.SensorListenerInt
 import com.dimitrioskanellopoulos.athletica.sensors.listeners.ContinuousSensorEventListener;
 
 public class CallbackSensor implements SensorListenerInterface, OnSensorEventCallbackInterface {
-    protected final String TAG;
-
     public final static int TYPE_PRESSURE_ALTITUDE = 10000;
-
     // For continuous events
     private final static Integer samplingPeriodUs = 1000000; // 1 sec
     private final static Integer maxReportLatencyUs = 1000000; // 1 sec
-
-    final SensorManager sensorManager;
-
+    protected final String TAG;
     protected final Sensor sensor;
+    final SensorManager sensorManager;
     private final OnSensorEventCallbackInterface changeCallback;
     private final ContinuousSensorEventListener continuousSensorEventListener = new ContinuousSensorEventListener(this);
     Boolean isListening = false;
 
     CallbackSensor(@NonNull Context context, Integer sensorType,
-                          @NonNull OnSensorEventCallbackInterface changeCallback) {
+                   @NonNull OnSensorEventCallbackInterface changeCallback) {
         this.changeCallback = changeCallback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(sensorType);

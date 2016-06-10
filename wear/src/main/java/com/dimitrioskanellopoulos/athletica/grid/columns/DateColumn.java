@@ -17,7 +17,7 @@ public class DateColumn extends CalendarColumn {
 
     private Boolean showDateNamesFormat = false;
 
-    public DateColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode ) {
+    public DateColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
         super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
     }
 

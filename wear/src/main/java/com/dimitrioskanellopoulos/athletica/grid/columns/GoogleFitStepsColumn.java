@@ -25,13 +25,9 @@ import java.util.Locale;
 public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, ResultCallback<DailyTotalResult> {
     private final static String TAG = "GoogleFitStepsColumn";
-
-
-    private PendingResult<DailyTotalResult> stepsResult;
-
-    private Boolean hasRegisteredReceivers = false;
-
     private static GoogleApiClient googleApiClient;
+    private PendingResult<DailyTotalResult> stepsResult;
+    private Boolean hasRegisteredReceivers = false;
 
     public GoogleFitStepsColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
         super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
@@ -80,7 +76,7 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
     @Override
     public void setAmbientMode(Boolean ambientMode) {
         super.setAmbientMode(ambientMode);
-        if (!ambientMode && !hasRegisteredReceivers()){
+        if (!ambientMode && !hasRegisteredReceivers()) {
             registerReceivers();
         }
     }
@@ -120,7 +116,7 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
 
     @Override
     public void registerReceivers() {
-        if (!getGoogleApiClient().isConnected()){
+        if (!getGoogleApiClient().isConnected()) {
             Log.d(TAG, "Google api client is not connected wont register pending intent for getTotalSteps()");
             return;
         }

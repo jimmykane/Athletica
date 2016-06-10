@@ -164,7 +164,7 @@ class WatchFace {
     }
 
 
-     void setTimeFormat24(Boolean timeFormat24) {
+    void setTimeFormat24(Boolean timeFormat24) {
         TimeColumn timeColumn = (TimeColumn) grid.getRow("1_timeRow").getColumn("timeColumn");
         timeColumn.setTimeFormat24(timeFormat24);
 
@@ -236,7 +236,7 @@ class WatchFace {
                 sunriseSunsetRow.putColumn("sunriseColumn", sunriseColumn);
 
                 // Icon
-                Column sunsetIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor(), isVisible, ambientMode );
+                Column sunsetIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor(), isVisible, ambientMode);
                 sunsetIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
                 sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
                 sunriseSunsetRow.putColumn("sunsetIconColumn", sunsetIconColumn);

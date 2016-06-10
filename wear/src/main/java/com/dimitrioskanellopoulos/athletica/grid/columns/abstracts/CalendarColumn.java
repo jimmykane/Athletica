@@ -37,14 +37,14 @@ public abstract class CalendarColumn extends Column implements ReceiverColumnInt
     public void setIsVisible(Boolean isVisible) {
         super.setIsVisible(isVisible);
         if (isVisible) {
-            if (!hasRegisteredReceivers()){
+            if (!hasRegisteredReceivers()) {
                 registerReceivers();
             }
             // Update in case it changed and the receiver missed it
             CALENDAR.setTimeZone(TimeZone.getDefault());
         } else {
-            if (hasRegisteredReceivers()){
-               unRegisterReceivers();
+            if (hasRegisteredReceivers()) {
+                unRegisterReceivers();
             }
         }
     }

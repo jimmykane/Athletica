@@ -13,12 +13,12 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.interfaces.ReceiverColu
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public abstract class GoogleApiColumn extends Column implements GoogleApiColumnInterface, ReceiverColumnInterface,GoogleApiClient.ConnectionCallbacks,
+public abstract class GoogleApiColumn extends Column implements GoogleApiColumnInterface, ReceiverColumnInterface, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private final static String TAG = "GoogleApiColumn";
 
     public GoogleApiColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
-        super(context, paintTypeface, paintTextSize, paintColor,visible , ambientMode);
+        super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
     }
 
     @Override
@@ -30,7 +30,7 @@ public abstract class GoogleApiColumn extends Column implements GoogleApiColumnI
             }
         } else {
             if (getGoogleApiClient().isConnected()) {
-                if (hasRegisteredReceivers()){
+                if (hasRegisteredReceivers()) {
                     unRegisterReceivers();
                 }
                 getGoogleApiClient().disconnect();
@@ -40,7 +40,7 @@ public abstract class GoogleApiColumn extends Column implements GoogleApiColumnI
 
     @Override
     public void destroy() {
-        if (hasRegisteredReceivers()){
+        if (hasRegisteredReceivers()) {
             unRegisterReceivers();
         }
         if (getGoogleApiClient().isConnected()) {
