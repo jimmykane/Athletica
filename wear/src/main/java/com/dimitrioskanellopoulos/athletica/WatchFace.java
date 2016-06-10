@@ -93,31 +93,6 @@ public class WatchFace {
         grid.putRow("2_dateRow", dateRow);
     }
 
-    private void addRowForSunriseSunset() {
-        Row sunriseSunsetRow = new Row();
-        // Icon
-        Column sunriseIconColumn = new Column(context, materialIconsFont, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
-        sunriseIconColumn.setText(resources.getString(R.string.icon_sunrise));
-        sunriseIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        sunriseSunsetRow.putColumn("sunriseIconColumn", sunriseIconColumn);
-        // Column
-        SunriseColumn sunriseColumn = new SunriseColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
-        sunriseColumn.setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
-        sunriseSunsetRow.putColumn("sunriseColumn", sunriseColumn);
-
-        // Icon
-        Column sunsetIconColumn = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
-        sunsetIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
-        sunsetIconColumn.setText(resources.getString(R.string.icon_sunset));
-        sunriseSunsetRow.putColumn("sunsetIconColumn", sunsetIconColumn);
-
-        // Column
-        SunsetColumn sunsetColumn = new SunsetColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
-        sunriseSunsetRow.putColumn("sunsetColumn", sunsetColumn);
-
-        grid.putRow("3_sunriseSunsetRow", sunriseSunsetRow);
-    }
-
     public Boolean hasSensorColumn(Integer sensorType) {
         return grid.getRow("5_sensorsRow") != null && grid.getRow("5_sensorsRow").getColumn(sensorType.toString()) != null;
     }
