@@ -8,10 +8,10 @@ import android.util.Log;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorAverageEventCallbackInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCallbackInterface;
 
-public class HeartRateSensor extends AveragingCallbackSensor {
+class HeartRateSensor extends AveragingCallbackSensor {
     private static final Integer sensorType = Sensor.TYPE_HEART_RATE;
 
-    public HeartRateSensor(@NonNull Context context,
+    HeartRateSensor(@NonNull Context context,
                            @NonNull OnSensorEventCallbackInterface changeCallback,
                            @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
         super(context, HeartRateSensor.sensorType, changeCallback, averageChangeCallback);
