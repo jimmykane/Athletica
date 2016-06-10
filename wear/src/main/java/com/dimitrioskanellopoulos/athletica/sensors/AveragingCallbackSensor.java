@@ -20,7 +20,7 @@ public class AveragingCallbackSensor extends CallbackSensor implements
     private final static Integer averageMaxReportLatencyUs = 5000000; // 5 secs
 
 
-    private final AveragingSensorEventListener averagingSensorEventListener = new AveragingSensorEventListener(this);
+    private final AveragingSensorEventListener averagingSensorEventListener;
 
     private final OnSensorAverageEventCallbackInterface averageChangeCallback;
 
@@ -29,6 +29,7 @@ public class AveragingCallbackSensor extends CallbackSensor implements
                             @NonNull OnSensorEventCallbackInterface changeCallback,
                             @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
         super(context, sensorType, changeCallback);
+        averagingSensorEventListener = new AveragingSensorEventListener(this, this);
         this.averageChangeCallback = averageChangeCallback;
     }
 
