@@ -36,7 +36,7 @@ public class ColumnFactory {
                 sensorIconColumn.setText(context.getResources().getString(R.string.icon_android_sensor_accelerometer));
                 break;
             default:
-                sensorIconColumn.setText("-/-");
+                sensorIconColumn.setText("?");
         }
         return sensorIconColumn;
     }
@@ -50,7 +50,7 @@ public class ColumnFactory {
                 //sensorIconColumn.getPaint().setTextSize(paintTextSize*0.9f);
                 break;
             default:
-                sensorIconColumn.setText("-/-");
+                break;
         }
         return sensorIconColumn;
     }
@@ -83,7 +83,7 @@ public class ColumnFactory {
                 sensorUnitsColumn.setText(context.getResources().getString(R.string.units_android_sensor_accelerometer));
                 break;
             default:
-                sensorUnitsColumn.setText("-/-");
+                sensorUnitsColumn.setText("?");
         }
         return sensorUnitsColumn;
     }
