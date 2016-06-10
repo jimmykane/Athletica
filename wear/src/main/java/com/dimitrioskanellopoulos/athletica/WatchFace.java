@@ -24,7 +24,7 @@ import com.dimitrioskanellopoulos.athletica.grid.rows.Row;
 import com.dimitrioskanellopoulos.athletica.helpers.EmulatorHelper;
 import com.dimitrioskanellopoulos.athletica.helpers.SunriseSunsetHelper;
 
-public class WatchFace {
+class WatchFace {
     private static final String TAG = "Watchface";
 
     private static final Grid grid = new Grid();
@@ -48,7 +48,7 @@ public class WatchFace {
     /**
      * The WatchFace. Everything the user sees. No extra init or data manipulation
      */
-    public WatchFace(Context context) {
+    WatchFace(Context context) {
 
         this.context = context;
         resources = context.getResources();
@@ -60,14 +60,14 @@ public class WatchFace {
         materialIconsFont = Typeface.createFromAsset(context.getAssets(), "fonts/MaterialIcons-Regular.ttf");
     }
 
-    public void draw(Canvas canvas, Rect bounds) {
+    void draw(Canvas canvas, Rect bounds) {
         GridRenderer.renderGrid(canvas, bounds, grid, bounds.height() / 2.0f, chinSize + resources.getDimension(R.dimen.face_bottom_margin));
         if (interlace) {
             GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, ambientMode ? 100 : 70);
         }
     }
 
-    public void addRowForTime() {
+    void addRowForTime() {
         Row timeRow = new Row();
         TimeColumn timeColumn = new TimeColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_size), grid.getTextColor(), isVisible, ambientMode);
         timeColumn.setBaseline(Column.BASELINE_ABSOLUTE_CENTER);
@@ -75,18 +75,18 @@ public class WatchFace {
         grid.putRow("1_timeRow", timeRow);
     }
 
-    public void addRowForDate() {
+    void addRowForDate() {
         Row dateRow = new Row();
         DateColumn dateColumn = new DateColumn(context, defaultTypeface, resources.getDimension(R.dimen.date_size), grid.getTextColor(), isVisible, ambientMode);
         dateRow.putColumn("dateColumn", dateColumn);
         grid.putRow("2_dateRow", dateRow);
     }
 
-    public Boolean hasSensorColumn(Integer sensorType) {
+    Boolean hasSensorColumn(Integer sensorType) {
         return grid.getRow("5_sensorsRow") != null && grid.getRow("5_sensorsRow").getColumn(sensorType.toString()) != null;
     }
 
-    public void addSensorColumn(Integer sensorType) {
+    void addSensorColumn(Integer sensorType) {
         // Check if row is there and else create it
         Row sensorsRow = grid.getRow("5_sensorsRow");
         if (sensorsRow == null) {
@@ -120,11 +120,11 @@ public class WatchFace {
         sensorsRow.putColumn(sensorType.toString() + "Units", sensorUnitsColumn);
     }
 
-    public void removeSensorsRow() {
+    void removeSensorsRow() {
         grid.removeRow("5_sensorsRow");
     }
 
-    public void addRowForBattery() {
+    void addRowForBattery() {
         Row batteryRow = new Row();
         //Icon
         BatteryIconColumn batteryIconColumn = new BatteryIconColumn(context, fontAwesome, resources.getDimension(R.dimen.battery_icon_size), grid.getTextColor(), isVisible, ambientMode);
@@ -142,7 +142,7 @@ public class WatchFace {
     /**
      * Toggles the ambient or not mode for all the paints
      */
-    public void setInAmbientMode(boolean inAmbientMode) {
+    void setInAmbientMode(boolean inAmbientMode) {
         ambientMode = inAmbientMode;
         grid.setInAmbientMode(inAmbientMode);
     }
@@ -150,7 +150,7 @@ public class WatchFace {
     /**
      * Toggles the visible or not mode for all the columns
      */
-    public void setIsVisible(boolean isVisible) {
+    void setIsVisible(boolean isVisible) {
         this.isVisible = isVisible;
         grid.setIsVisible(isVisible);
     }
@@ -158,13 +158,13 @@ public class WatchFace {
     /**
      * Run's tasks for every column
      */
-    public void runTasks() {
+    void runTasks() {
         grid.runTasks();
         setGridColors();
     }
 
 
-    public void setTimeFormat24(Boolean timeFormat24) {
+     void setTimeFormat24(Boolean timeFormat24) {
         TimeColumn timeColumn = (TimeColumn) grid.getRow("1_timeRow").getColumn("timeColumn");
         timeColumn.setTimeFormat24(timeFormat24);
 
@@ -177,21 +177,21 @@ public class WatchFace {
         }
     }
 
-    public void setShowDateNamesFormat(Boolean showDateNamesFormat) {
+    void setShowDateNamesFormat(Boolean showDateNamesFormat) {
         DateColumn dateColumn = (DateColumn) grid.getRow("2_dateRow").getColumn("dateColumn");
         dateColumn.setShowDateNamesFormat(showDateNamesFormat);
     }
 
-    public void shouldInterlace(Boolean shouldInterlace) {
+    void shouldInterlace(Boolean shouldInterlace) {
         this.interlace = shouldInterlace;
     }
 
-    public void setInvertBlackAndWhite(Boolean invertBlackAndWhite) {
+    void setInvertBlackAndWhite(Boolean invertBlackAndWhite) {
         this.invertBlackAndWhite = invertBlackAndWhite;
         setGridColors();
     }
 
-    public void showGoogleFitSteps(Boolean showGoogleFitSteps) {
+    void showGoogleFitSteps(Boolean showGoogleFitSteps) {
         Log.d(TAG, "showGoogleFitSteps " + showGoogleFitSteps.toString());
         if (showGoogleFitSteps) {
             if (grid.getRow("4_googleFitRow") == null) {
@@ -220,7 +220,7 @@ public class WatchFace {
     }
 
 
-    public void showSunriseSunsetTimes(Boolean showSunriseSunsetTimes) {
+    void showSunriseSunsetTimes(Boolean showSunriseSunsetTimes) {
         Log.d(TAG, "showSunriseSunsetTimes " + showSunriseSunsetTimes.toString());
         if (showSunriseSunsetTimes) {
             if (grid.getRow("3_sunriseSunsetRow") == null) {
@@ -273,19 +273,19 @@ public class WatchFace {
 
     }
 
-    public void setIsRound(boolean round) {
+    void setIsRound(boolean round) {
         isRound = round;
     }
 
-    public void setChinSize(Integer chinSize) {
+    void setChinSize(Integer chinSize) {
         this.chinSize = chinSize;
     }
 
-    public void setDayNightMode(boolean dayNightMode) {
+    void setDayNightMode(boolean dayNightMode) {
         this.dayNightMode = dayNightMode;
     }
 
-    public void setTwoColorBackground(boolean twoColorBackground) {
+    void setTwoColorBackground(boolean twoColorBackground) {
         this.twoColorBackground = twoColorBackground;
     }
 }
