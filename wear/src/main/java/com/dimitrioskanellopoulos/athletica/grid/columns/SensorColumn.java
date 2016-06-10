@@ -87,6 +87,7 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
     @Override
     public void runTasks() {
         Log.d(TAG, "Running tasks");
+        setText("\u21bb");
         averagingCallbackSensor.getAverage();
     }
 }
