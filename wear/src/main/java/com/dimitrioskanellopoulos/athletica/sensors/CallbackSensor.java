@@ -10,18 +10,23 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCall
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.SensorListenerInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.listeners.ContinuousSensorEventListener;
 
-public class CallbackSensor implements SensorListenerInterface, OnSensorEventCallbackInterface {
-    public final static int TYPE_PRESSURE_ALTITUDE = 10000;
-    public final static Integer samplingPeriodUs = 1000000;
-    public final static Integer maxReportLatencyUs = 1000000;
+class CallbackSensor implements SensorListenerInterface, OnSensorEventCallbackInterface {
     protected final String TAG;
-    protected final SensorManager sensorManager;
+
+    public final static int TYPE_PRESSURE_ALTITUDE = 10000;
+
+    // For continuous events
+    private final static Integer samplingPeriodUs = 1000000; // 1 sec
+    private final static Integer maxReportLatencyUs = 1000000; // 1 sec
+
+    final SensorManager sensorManager;
+
     protected final Sensor sensor;
     private final OnSensorEventCallbackInterface changeCallback;
     private final ContinuousSensorEventListener continuousSensorEventListener = new ContinuousSensorEventListener(this);
-    protected Boolean isListening = false;
+    Boolean isListening = false;
 
-    public CallbackSensor(@NonNull Context context, Integer sensorType,
+    CallbackSensor(@NonNull Context context, Integer sensorType,
                           @NonNull OnSensorEventCallbackInterface changeCallback) {
         this.changeCallback = changeCallback;
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);

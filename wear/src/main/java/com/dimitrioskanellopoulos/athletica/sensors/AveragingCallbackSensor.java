@@ -10,9 +10,14 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCall
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.SensorAverageListenerInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.listeners.AveragingSensorEventListener;
 
-public class AveragingCallbackSensor extends CallbackSensor implements
+class AveragingCallbackSensor extends CallbackSensor implements
         SensorAverageListenerInterface, OnSensorEventCallbackInterface,
         OnSensorAverageEventCallbackInterface {
+
+
+    // For averages
+    private final static Integer averageSamplingPeriodUs = 2000000; // 2 secs
+    private final static Integer averageMaxReportLatencyUs = 5000000; // 5 secs
 
 
     private final AveragingSensorEventListener averagingSensorEventListener = new AveragingSensorEventListener(this);
@@ -32,7 +37,7 @@ public class AveragingCallbackSensor extends CallbackSensor implements
         stopListening();
         Log.d(TAG, "Starting average calculation");
         isListening = true;
-        sensorManager.registerListener(averagingSensorEventListener, sensor, samplingPeriodUs, maxReportLatencyUs);
+        sensorManager.registerListener(averagingSensorEventListener, sensor, averageSamplingPeriodUs, averageMaxReportLatencyUs);
     }
 
     @Override
