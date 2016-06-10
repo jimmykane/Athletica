@@ -65,7 +65,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
     private static class EngineHandler extends Handler {
         private final WeakReference<WatchFaceService.Engine> mWeakReference;
 
-        public EngineHandler(WatchFaceService.Engine reference) {
+        EngineHandler(WatchFaceService.Engine reference) {
             mWeakReference = new WeakReference<>(reference);
         }
 

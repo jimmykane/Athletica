@@ -10,7 +10,7 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCall
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.SensorAverageListenerInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.listeners.AveragingSensorEventListener;
 
-class AveragingCallbackSensor extends CallbackSensor implements
+public class AveragingCallbackSensor extends CallbackSensor implements
         SensorAverageListenerInterface, OnSensorEventCallbackInterface,
         OnSensorAverageEventCallbackInterface {
 
@@ -24,7 +24,7 @@ class AveragingCallbackSensor extends CallbackSensor implements
 
     private final OnSensorAverageEventCallbackInterface averageChangeCallback;
 
-    public AveragingCallbackSensor(@NonNull Context context,
+    AveragingCallbackSensor(@NonNull Context context,
                                    Integer sensorType,
                                    @NonNull OnSensorEventCallbackInterface changeCallback,
                                    @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {

@@ -10,7 +10,7 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCall
 import com.dimitrioskanellopoulos.athletica.sensors.interfaces.SensorListenerInterface;
 import com.dimitrioskanellopoulos.athletica.sensors.listeners.ContinuousSensorEventListener;
 
-class CallbackSensor implements SensorListenerInterface, OnSensorEventCallbackInterface {
+public class CallbackSensor implements SensorListenerInterface, OnSensorEventCallbackInterface {
     protected final String TAG;
 
     public final static int TYPE_PRESSURE_ALTITUDE = 10000;
