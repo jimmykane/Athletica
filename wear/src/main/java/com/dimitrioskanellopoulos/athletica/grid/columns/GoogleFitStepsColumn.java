@@ -48,7 +48,7 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
         }
     }
 
-    public static String withSuffix(long count) {
+    private static String withSuffix(long count) {
         if (count < 1000) return "" + count;
         int exp = (int) (Math.log(count) / Math.log(1000));
         return String.format(Locale.getDefault(), "%.1f%c",

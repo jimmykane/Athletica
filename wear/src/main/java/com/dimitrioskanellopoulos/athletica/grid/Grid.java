@@ -30,7 +30,7 @@ public class Grid {
         return rows.get(rowName);
     }
 
-    public TreeMap<String, Row> getAllRows() {
+    TreeMap<String, Row> getAllRows() {
         return rows;
     }
 
@@ -75,7 +75,7 @@ public class Grid {
         }
     }
 
-    public Integer getBackgroundColor() {
+    Integer getBackgroundColor() {
         return backgroundColor;
     }
 

@@ -17,8 +17,6 @@ class HeartRateSensor extends AveragingCallbackSensor {
         super(context, HeartRateSensor.sensorType, changeCallback, averageChangeCallback);
     }
 
-
-
     @Override
     public Boolean isEventValuesAcceptable(float[] eventValues) {
         if (eventValues[0] == 0.0f) {

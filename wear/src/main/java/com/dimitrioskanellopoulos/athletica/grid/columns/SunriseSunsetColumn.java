@@ -18,7 +18,7 @@ import com.google.android.gms.location.LocationServices;
 
 import java.util.TimeZone;
 
-public class SunriseSunsetColumn extends GoogleApiColumn {
+class SunriseSunsetColumn extends GoogleApiColumn {
     private final static String TAG = "SunriseSunsetColumn";
 
     private static final long LOCATION_UPDATE_INTERVAL_MS = 3600000;
@@ -28,9 +28,9 @@ public class SunriseSunsetColumn extends GoogleApiColumn {
             .setFastestInterval(LOCATION_UPDATE_FASTEST_INTERVAL_MS)
             .setPriority(LocationRequest.PRIORITY_LOW_POWER);
 
-    protected static boolean hasRegisteredReceivers = false;
+    private static boolean hasRegisteredReceivers = false;
 
-    protected static Pair<String, String> sunriseSunset;
+    static Pair<String, String> sunriseSunset;
 
     private static final LocationListener locationChangedReceiver = new LocationListener() {
         @Override
@@ -50,7 +50,7 @@ public class SunriseSunsetColumn extends GoogleApiColumn {
 
     private PermissionsHelper permissionsHelper;
 
-    public SunriseSunsetColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+    SunriseSunsetColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
         super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
         // Get a Google API client if not set
         if (getGoogleApiClient() == null) {
