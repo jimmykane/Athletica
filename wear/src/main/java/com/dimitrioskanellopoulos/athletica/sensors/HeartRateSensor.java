@@ -23,6 +23,7 @@ class HeartRateSensor extends AveragingCallbackSensor {
             Log.d(TAG, "Event value was 0 thus not accepted");
             return false;
         }
+        Log.d(TAG, "Event value " + eventValues[0] + " accepted");
         return super.isEventValuesAcceptable(eventValues);
     }
 }
