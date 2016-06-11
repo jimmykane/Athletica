@@ -27,7 +27,7 @@ public abstract class BatteryColumn extends Column {
             }
         }
     };
-    protected static boolean isRegisteredBatteryInfoReceiver = false;
+    private static boolean isRegisteredBatteryInfoReceiver = false;
 
     public BatteryColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
         super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
