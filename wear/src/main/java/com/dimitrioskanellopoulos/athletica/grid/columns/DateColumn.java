@@ -6,16 +6,19 @@ import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.grid.columns.abstracts.CalendarColumn;
 
+import org.apache.commons.lang3.time.FastDateFormat;
+
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class DateColumn extends CalendarColumn {
     private final static String TAG = "DateColumn";
 
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-    private static final SimpleDateFormat DATE_NAMES_FORMAT = new SimpleDateFormat("E d LLL yyyy", Locale.getDefault());
+    private static final FastDateFormat DATE_FORMAT = FastDateFormat.getInstance("dd.MM.yyyy", TimeZone.getDefault(),  Locale.getDefault());
+    private static final FastDateFormat DATE_NAMES_FORMAT = FastDateFormat.getInstance("E d MMM yyyy",TimeZone.getDefault(),  Locale.getDefault());
 
-    private Boolean showDateNamesFormat = false;
+    private FastDateFormat dateFormat = DATE_FORMAT;
 
     public DateColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
         super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
@@ -24,21 +27,22 @@ public class DateColumn extends CalendarColumn {
     @Override
     public void setIsVisible(Boolean isVisible) {
         super.setIsVisible(isVisible);
-        DATE_FORMAT.setTimeZone(CALENDAR.getTimeZone());
-        DATE_NAMES_FORMAT.setTimeZone(CALENDAR.getTimeZone());
+        // DATE_FORMAT.setTimeZone(CALENDAR.getTimeZone());
+        // DATE_NAMES_FORMAT.setTimeZone(CALENDAR.getTimeZone());
     }
 
     @Override
     public String getText() {
         CALENDAR.setTimeInMillis(System.currentTimeMillis());
-        if (showDateNamesFormat) {
-            return DATE_NAMES_FORMAT.format(CALENDAR.getTime());
-        }
-        return DATE_FORMAT.format(CALENDAR.getTime());
+        return dateFormat.format(CALENDAR.getTime());
     }
 
     public void setShowDateNamesFormat(Boolean showDateNamesFormat) {
-        this.showDateNamesFormat = showDateNamesFormat;
+        if (showDateNamesFormat){
+            dateFormat = DATE_NAMES_FORMAT;
+        }else {
+            dateFormat = DATE_FORMAT;
+        }
         getPaint().setTextSize(getPaint().getTextSize());
     }
 
