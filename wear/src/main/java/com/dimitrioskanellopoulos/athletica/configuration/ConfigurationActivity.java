@@ -225,7 +225,9 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 // 0. Try to set it on
-                setSensorSwitchChecked(sensorType, isChecked);
+                Switch sensorSwitch = (Switch) findViewById(sensorType);
+
+                setSwitchChecked(sensorSwitch, isChecked);
 
                 /**
                  * When a sensors state changes
@@ -235,8 +237,8 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
                  */
                 ArrayList<Integer> enabledSensors = new ArrayList<>();
                 for (Integer sensor : sensors) {
-                    Switch sensorSwitch = (Switch) findViewById(sensor);
-                    if (sensorSwitch != null && sensorSwitch.isChecked()) {
+                    Switch enabledSensorSwitch = (Switch) findViewById(sensor);
+                    if (enabledSensorSwitch != null && enabledSensorSwitch.isChecked()) {
                         enabledSensors.add(sensor);
                     }
                 }
@@ -246,13 +248,8 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
         getLayout().addView(sensorSwitch);
     }
 
-    private void setSensorSwitchChecked(Integer sensorType, Boolean checked) {
-        Switch sensorSwitch = (Switch) findViewById(sensorType);
-        if (sensorSwitch == null) {
-            Log.w(TAG, "No switch found for sensor type " + sensorType);
-            return;
-        }
-        switch (sensorType) {
+    private void setSwitchChecked(Switch aSwitch, Boolean checked) {
+        switch (aSwitch.getId()) {
             case Sensor.TYPE_HEART_RATE:
                 if (checked && !permissionsHelper.hasPermission(Manifest.permission.BODY_SENSORS)) {
                     checked = false;
@@ -260,12 +257,12 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
                         permissionsHelper.askForPermission(Manifest.permission.BODY_SENSORS);
                     }
                 }
-                sensorSwitch.setChecked(checked);
-                Log.d(TAG, "Set checked to: " + checked.toString() + " for " + sensorType);
+                aSwitch.setChecked(checked);
+                Log.d(TAG, "Set checked to: " + checked.toString() + " for " + aSwitch.getText());
                 break;
             default:
-                sensorSwitch.setChecked(checked);
-                Log.d(TAG, "Set checked to: " + checked.toString() + " for " + sensorType);
+                aSwitch.setChecked(checked);
+                Log.d(TAG, "Set checked to: " + checked.toString() + " for " + aSwitch.getText());
                 break;
         }
     }
@@ -384,10 +381,11 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
                     ArrayList<Integer> enabledSensors = config.getIntegerArrayList(key);
                     Log.d(TAG, "Config enabled sensors: " + enabledSensors.toString() + " Application/Device sensors: " + sensors.toString());
                     for (Integer sensor : sensors) {
+                        Switch sensorSwitch = (Switch) findViewById(sensor);
                         if (enabledSensors.contains(sensor)) {
-                            setSensorSwitchChecked(sensor, true);
+                            setSwitchChecked(sensorSwitch, true);
                         } else {
-                            setSensorSwitchChecked(sensor, false);
+                            setSwitchChecked(sensorSwitch, false);
                         }
                     }
                     break;
