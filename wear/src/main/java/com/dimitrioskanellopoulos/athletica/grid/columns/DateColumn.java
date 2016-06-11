@@ -25,13 +25,6 @@ public class DateColumn extends CalendarColumn {
     }
 
     @Override
-    public void setIsVisible(Boolean isVisible) {
-        super.setIsVisible(isVisible);
-        // DATE_FORMAT.setTimeZone(CALENDAR.getTimeZone());
-        // DATE_NAMES_FORMAT.setTimeZone(CALENDAR.getTimeZone());
-    }
-
-    @Override
     public String getText() {
         CALENDAR.setTimeInMillis(System.currentTimeMillis());
         return dateFormat.format(CALENDAR);
