@@ -16,8 +16,6 @@ public class AveragingSensorEventListener implements SensorEventListener {
 
     private List<Float> averageValues = new ArrayList<>();
 
-    private Integer numberOfSamples = 10;
-
     private final AveragingCallbackSensor sensor;
 
     private OnSensorAverageEventCallbackInterface changeCallback;
@@ -33,6 +31,7 @@ public class AveragingSensorEventListener implements SensorEventListener {
             return;
         }
         // If there is space to add more averageValues add it and do nothing
+        Integer numberOfSamples = 10;
         if (averageValues.size() < numberOfSamples) {
             averageValues.add(event.values[0]);
             Log.d(TAG, "Value [" + event.values[0] + "], Collected Values [" + averageValues.size() + "]");
