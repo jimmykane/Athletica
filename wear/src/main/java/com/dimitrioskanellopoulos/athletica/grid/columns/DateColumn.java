@@ -34,7 +34,7 @@ public class DateColumn extends CalendarColumn {
     @Override
     public String getText() {
         CALENDAR.setTimeInMillis(System.currentTimeMillis());
-        return dateFormat.format(CALENDAR.getTime());
+        return dateFormat.format(CALENDAR);
     }
 
     public void setShowDateNamesFormat(Boolean showDateNamesFormat) {
