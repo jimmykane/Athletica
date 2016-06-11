@@ -16,7 +16,6 @@
 #   public *;
 #}
 -optimizationpasses 5
--keep class com.google.android.gms.wearable.** {*;}
 -assumenosideeffects class android.util.Log {
     public static *** d(...);
     public static *** v(...);
