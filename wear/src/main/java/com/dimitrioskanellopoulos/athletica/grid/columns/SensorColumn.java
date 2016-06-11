@@ -13,18 +13,14 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCall
 
 import java.text.DecimalFormat;
 
-class SensorColumn extends Column implements OnSensorEventCallbackInterface,
+public class SensorColumn extends Column implements OnSensorEventCallbackInterface,
         OnSensorAverageEventCallbackInterface {
     private final static String TAG = "SensorColumn";
+    final static DecimalFormat decimalFormat =  new DecimalFormat("#.#");
     private final AveragingCallbackSensor averagingCallbackSensor;
-    /**
-     * Don't be kinky on this. It's the vibrating system service. Useful for haptic feedback
-     */
-    private final Vibrator vibrator;
 
     SensorColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, int sensorType, Boolean visible, Boolean ambientMode) {
         super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
-        vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
         this.averagingCallbackSensor = CallbackSensorFactory.getCallbackSensor(context, sensorType, this, this);
     }
 
@@ -56,25 +52,7 @@ class SensorColumn extends Column implements OnSensorEventCallbackInterface,
 
     @Override
     public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
-        DecimalFormat decimalFormat = new DecimalFormat("#.#");
-        switch (sensorType) {
-            case Sensor.TYPE_PRESSURE:
-                setText(decimalFormat.format(eventValues[0]));
-                break;
-            case Sensor.TYPE_ACCELEROMETER:
-                decimalFormat = new DecimalFormat("##");
-                setText(decimalFormat.format(eventValues[0]) + "." + decimalFormat.format(eventValues[1]) + "." + decimalFormat.format(eventValues[2]));
-                break;
-            case Sensor.TYPE_HEART_RATE:
-                if (Math.round(eventValues[0]) > 180) {
-                    vibrator.vibrate(new long[]{0, 250, 500, 250, 100, 250, 50, 250, 50}, -1);
-                }
-                setText(decimalFormat.format(Math.round(eventValues[0])));
-                break;
-            default:
-                setText(decimalFormat.format(Math.round(eventValues[0])));
-                break;
-        }
+        setText(decimalFormat.format(Math.round(eventValues[0])));
         Log.d(TAG, "Updated value for sensor: " + sensorType + " " + eventValues[0]);
     }
 

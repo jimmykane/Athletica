@@ -42,17 +42,22 @@ public class ColumnFactory {
     }
 
     public static Column getColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
-        SensorColumn sensorIconColumn = new SensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType, visible, ambientMode);
+        SensorColumn sensorColumn;
         switch (sensorType) {
             case Sensor.TYPE_ACCELEROMETER:
-                sensorIconColumn.setText(context.getApplicationContext().getResources().getString(R.string.icon_android_sensor_accelerometer));
-                // Decrease size
-                //sensorIconColumn.getPaint().setTextSize(paintTextSize*0.9f);
+                sensorColumn = new AccelerometerSensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType, visible, ambientMode);
+                break;
+            case Sensor.TYPE_PRESSURE:
+                sensorColumn = new PressureSensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType, visible, ambientMode);
+                break;
+            case Sensor.TYPE_HEART_RATE:
+                sensorColumn = new HeartRateSensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType, visible, ambientMode);
                 break;
             default:
+                sensorColumn = new SensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType, visible, ambientMode);
                 break;
         }
-        return sensorIconColumn;
+        return sensorColumn;
     }
 
     public static Column getUnitsColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
