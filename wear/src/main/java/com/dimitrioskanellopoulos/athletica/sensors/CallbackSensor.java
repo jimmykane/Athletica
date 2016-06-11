@@ -39,15 +39,15 @@ public class CallbackSensor implements SensorListenerInterface, OnSensorEventCal
     public void startListening() {
         // First stop listening
         stopListening();
-        isListening = true;
         sensorManager.registerListener(continuousSensorEventListener, sensor, samplingPeriodUs, maxReportLatencyUs);
+        isListening = true;
         Log.d(TAG, "Started listening");
     }
 
     @Override
     public void stopListening() {
-        isListening = false;
         sensorManager.unregisterListener(continuousSensorEventListener);
+        isListening = false;
         Log.d(TAG, "Stopped listening");
     }
 
