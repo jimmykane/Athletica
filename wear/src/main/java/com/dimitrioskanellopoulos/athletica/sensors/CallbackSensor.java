@@ -13,8 +13,8 @@ import com.dimitrioskanellopoulos.athletica.sensors.listeners.ContinuousSensorEv
 public class CallbackSensor implements SensorListenerInterface, OnSensorEventCallbackInterface {
     public final static int TYPE_PRESSURE_ALTITUDE = 10000;
     // For continuous events
-    private final static Integer samplingPeriodUs = 1000000; // 1 sec
-    private final static Integer maxReportLatencyUs = 1000000; // 1 sec
+    private final static Integer samplingPeriodUs = SensorManager.SENSOR_DELAY_UI;
+    private final static Integer maxReportLatencyUs = SensorManager.SENSOR_DELAY_UI; // 1 sec
     protected final String TAG;
     protected final Sensor sensor;
     final SensorManager sensorManager;
