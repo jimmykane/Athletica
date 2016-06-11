@@ -22,15 +22,15 @@ android {
             shrinkResources true
             minifyEnabled true
             zipAlignEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     productFlavors {
-        free{
+        free {
             applicationId "com.dimitrioskanellopoulos.athletica"
             resValue "string", "app_name", "Athletica"
         }
-        pro{
+        pro {
             applicationId "com.dimitrioskanellopoulos.athletica.pro"
             resValue "string", "app_name", "Athletica Pro"
         }
