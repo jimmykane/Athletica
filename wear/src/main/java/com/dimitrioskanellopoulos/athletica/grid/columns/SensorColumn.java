@@ -13,7 +13,7 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCall
 
 import java.text.DecimalFormat;
 
-public class SensorColumn extends Column implements OnSensorEventCallbackInterface,
+class SensorColumn extends Column implements OnSensorEventCallbackInterface,
         OnSensorAverageEventCallbackInterface {
     private final static String TAG = "SensorColumn";
     final static DecimalFormat decimalFormat =  new DecimalFormat("#.#");
@@ -21,7 +21,7 @@ public class SensorColumn extends Column implements OnSensorEventCallbackInterfa
 
     SensorColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, int sensorType, Boolean visible, Boolean ambientMode) {
         super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
-        this.averagingCallbackSensor = CallbackSensorFactory.getCallbackSensor(context, sensorType, this, this);
+        averagingCallbackSensor = CallbackSensorFactory.getCallbackSensor(context, sensorType, this, this);
     }
 
     @Override

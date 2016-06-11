@@ -24,7 +24,7 @@ public class AveragingCallbackSensor extends CallbackSensor implements
 
     private final OnSensorAverageEventCallbackInterface averageChangeCallback;
 
-    AveragingCallbackSensor(@NonNull Context context,
+    public AveragingCallbackSensor(@NonNull Context context,
                             Integer sensorType,
                             @NonNull OnSensorEventCallbackInterface changeCallback,
                             @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
