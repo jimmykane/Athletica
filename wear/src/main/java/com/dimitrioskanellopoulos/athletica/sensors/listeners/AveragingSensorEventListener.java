@@ -38,28 +38,27 @@ public class AveragingSensorEventListener implements SensorEventListener {
         if (averageValues.size() < numberOfSamples) {
             averageValues.add(event.values[0]);
             Log.d(TAG, "Value [" + event.values[0] + "], Collected Values [" + averageValues.size() + "]");
-            return;
-        }
-
-        Float sum = 0.0f;
-        Integer i = 0;
-        for (Float value : averageValues) {
-            if (value == 0.0) {
-                continue;
+        }else {
+            Float sum = 0.0f;
+            Integer i = 0;
+            for (Float value : averageValues) {
+                if (value == 0.0) {
+                    continue;
+                }
+                sum += value;
+                i++;
             }
-            sum += value;
-            i++;
-        }
 
-        Float average = 0.0f;
-        if (sum > 0 && i > 0) {
-            average = sum / i;
-        }
+            Float average = 0.0f;
+            if (sum > 0 && i > 0) {
+                average = sum / i;
+            }
 
-        Log.d(TAG, "Total sum[" + sum + "], Average[" + average + "]");
-        averageValues.clear();
-        event.values[0] = average;
-        changeCallback.handleOnSensorAverageChangedEvent(event.sensor, event.sensor.getType(), event.values);
+            Log.d(TAG, "Total sum[" + sum + "], Average[" + average + "]");
+            averageValues.clear();
+            event.values[0] = average;
+            changeCallback.handleOnSensorAverageChangedEvent(event.sensor, event.sensor.getType(), event.values);
+        }
     }
 
     @Override
