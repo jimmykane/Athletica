@@ -11,6 +11,8 @@ import com.dimitrioskanellopoulos.athletica.sensors.interfaces.OnSensorEventCall
 class HeartRateSensor extends AveragingCallbackSensor {
     private static final Integer sensorType = Sensor.TYPE_HEART_RATE;
 
+    private final static Integer NUMBER_OF_SAMPLES = 2 ;
+
     HeartRateSensor(@NonNull Context context,
                            @NonNull OnSensorEventCallbackInterface changeCallback,
                            @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
@@ -25,5 +27,10 @@ class HeartRateSensor extends AveragingCallbackSensor {
         }
         Log.d(TAG, "Event value " + eventValues[0] + " accepted");
         return super.isEventValuesAcceptable(eventValues);
+    }
+
+    @Override
+    public Integer getNumberOfSamples() {
+        return NUMBER_OF_SAMPLES;
     }
 }

@@ -18,11 +18,15 @@ public class AveragingSensorEventListener implements SensorEventListener {
 
     private final AveragingCallbackSensor sensor;
 
+    private final Integer numberOfSamples;
+
+
     private OnSensorAverageEventCallbackInterface changeCallback;
 
-    public AveragingSensorEventListener(AveragingCallbackSensor sensor, OnSensorAverageEventCallbackInterface changeCallback) {
+    public AveragingSensorEventListener(Integer numberOfSamples, AveragingCallbackSensor sensor, OnSensorAverageEventCallbackInterface changeCallback) {
         this.sensor = sensor;
         this.changeCallback = changeCallback;
+        this.numberOfSamples = numberOfSamples;
     }
 
     @Override
@@ -31,7 +35,6 @@ public class AveragingSensorEventListener implements SensorEventListener {
             return;
         }
         // If there is space to add more averageValues add it and do nothing
-        Integer numberOfSamples = 10;
         if (averageValues.size() < numberOfSamples) {
             averageValues.add(event.values[0]);
             Log.d(TAG, "Value [" + event.values[0] + "], Collected Values [" + averageValues.size() + "]");

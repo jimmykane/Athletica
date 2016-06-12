@@ -15,11 +15,11 @@ public class AveragingCallbackSensor extends CallbackSensor implements
         SensorAverageListenerInterface, OnSensorEventCallbackInterface,
         OnSensorAverageEventCallbackInterface {
 
+    private final static Integer NUMBER_OF_SAMPLES = 10;
 
     // For averages
-    private final static Integer AVERAGE_SAMPLING_PERIOD_US =  SensorManager.SENSOR_DELAY_UI;
-    private final static Integer AVERAGE_MAX_REPORT_LATENCY_US =  SensorManager.SENSOR_DELAY_UI;
-
+    private final static Integer AVERAGE_SAMPLING_PERIOD_US =  5000000; // 1 Sec
+    private final static Integer AVERAGE_MAX_REPORT_LATENCY_US =  5000000; // 1 Sec;
 
     private final AveragingSensorEventListener averagingSensorEventListener;
 
@@ -30,7 +30,7 @@ public class AveragingCallbackSensor extends CallbackSensor implements
                             @NonNull OnSensorEventCallbackInterface changeCallback,
                             @NonNull OnSensorAverageEventCallbackInterface averageChangeCallback) {
         super(context, sensorType, changeCallback);
-        averagingSensorEventListener = new AveragingSensorEventListener(this, this);
+        averagingSensorEventListener = new AveragingSensorEventListener(getNumberOfSamples(), this, this);
         this.averageChangeCallback = averageChangeCallback;
     }
 
@@ -41,7 +41,12 @@ public class AveragingCallbackSensor extends CallbackSensor implements
         }
         Log.d(TAG, "Starting average calculation");
         isListening = true;
-        sensorManager.registerListener(averagingSensorEventListener, sensor, 0);
+        sensorManager.registerListener(averagingSensorEventListener, sensor, AVERAGE_SAMPLING_PERIOD_US, AVERAGE_MAX_REPORT_LATENCY_US);
+    }
+
+    @Override
+    public Integer getNumberOfSamples() {
+        return NUMBER_OF_SAMPLES;
     }
 
     @Override
