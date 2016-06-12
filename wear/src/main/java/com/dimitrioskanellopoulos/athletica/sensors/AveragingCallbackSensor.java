@@ -36,16 +36,18 @@ public class AveragingCallbackSensor extends CallbackSensor implements
 
     @Override
     public void getAverage() {
-        stopListening();
+        if (isListening) {
+            stopListening();
+        }
         Log.d(TAG, "Starting average calculation");
         isListening = true;
-        sensorManager.registerListener(averagingSensorEventListener, sensor, AVERAGE_SAMPLING_PERIOD_US);
+        sensorManager.registerListener(averagingSensorEventListener, sensor, 0);
     }
 
     @Override
     public void stopListening() {
-        super.stopListening();
         sensorManager.unregisterListener(averagingSensorEventListener);
+        super.stopListening();
     }
 
     @Override
