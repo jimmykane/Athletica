@@ -17,8 +17,8 @@ public class AveragingCallbackSensor extends CallbackSensor implements
 
 
     // For averages
-    private final static Integer averageSamplingPeriodUs =  SensorManager.SENSOR_DELAY_UI;
-    private final static Integer averageMaxReportLatencyUs =  SensorManager.SENSOR_DELAY_UI;
+    private final static Integer AVERAGE_SAMPLING_PERIOD_US =  SensorManager.SENSOR_DELAY_UI;
+    private final static Integer AVERAGE_MAX_REPORT_LATENCY_US =  SensorManager.SENSOR_DELAY_UI;
 
 
     private final AveragingSensorEventListener averagingSensorEventListener;
@@ -39,7 +39,7 @@ public class AveragingCallbackSensor extends CallbackSensor implements
         stopListening();
         Log.d(TAG, "Starting average calculation");
         isListening = true;
-        sensorManager.registerListener(averagingSensorEventListener, sensor, averageSamplingPeriodUs, averageMaxReportLatencyUs);
+        sensorManager.registerListener(averagingSensorEventListener, sensor, AVERAGE_SAMPLING_PERIOD_US);
     }
 
     @Override
