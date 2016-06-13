@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="google_app_id">Athletica</string>
-    <string name="permissions_activity">Permissions Activity</string>
-    <string name="configuration_activity">Configuration Activity</string>
+    <string name="permissions_activity">Athletica Permissions</string>
+    <string name="configuration_activity">Athletica Settings</string>
 </resources>
