@@ -47,9 +47,6 @@ public class AveragingSensorEventListener implements SensorEventListener {
         Float sum = 0.0f;
         Integer i = 0;
         for (Float value : averageValues) {
-            if (value == 0.0) {
-                continue;
-            }
             sum += value;
             i++;
         }
