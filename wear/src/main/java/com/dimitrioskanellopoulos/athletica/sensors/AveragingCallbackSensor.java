@@ -3,6 +3,7 @@ package com.dimitrioskanellopoulos.athletica.sensors;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -25,6 +26,12 @@ public class AveragingCallbackSensor extends CallbackSensor implements
 
     private final OnSensorAverageEventCallbackInterface averageChangeCallback;
 
+    /**
+     * Power manager needed to provide wakelocks
+     */
+    private final PowerManager powerManager;
+    private final PowerManager.WakeLock wakeLock;
+
     AveragingCallbackSensor(@NonNull Context context,
                             Integer sensorType,
                             @NonNull OnSensorEventCallbackInterface changeCallback,
@@ -32,10 +39,15 @@ public class AveragingCallbackSensor extends CallbackSensor implements
         super(context, sensorType, changeCallback);
         averagingSensorEventListener = new AveragingSensorEventListener(getNumberOfSamples(), this, this);
         this.averageChangeCallback = averageChangeCallback;
+        powerManager  = (PowerManager) context.getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                this.getClass().getName());
     }
 
     @Override
     public void getAverage() {
+        Log.d(TAG, "Acquiring wake lock");
+        wakeLock.acquire();
         if (isListening) {
             stopListening();
         }
@@ -57,6 +69,8 @@ public class AveragingCallbackSensor extends CallbackSensor implements
 
     @Override
     public void handleOnSensorAverageChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
+        Log.d(TAG, "Releasing wake lock");
+        wakeLock.release();
         stopListening();
         Log.d(TAG, "Average calculated: " + String.format("%.01f", eventValues[0]));
         if (isEventValuesAcceptable(eventValues)) {
