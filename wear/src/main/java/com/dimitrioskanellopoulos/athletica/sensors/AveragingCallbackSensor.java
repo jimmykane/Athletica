@@ -63,8 +63,10 @@ public class AveragingCallbackSensor extends CallbackSensor implements
 
     @Override
     public void stopListening() {
-        Log.d(TAG, "Releasing wake lock");
-        wakeLock.release();
+        if (wakeLock.isHeld()) {
+            Log.d(TAG, "Releasing wake lock");
+            wakeLock.release();
+        }
         sensorManager.unregisterListener(averagingSensorEventListener);
         super.stopListening();
     }
