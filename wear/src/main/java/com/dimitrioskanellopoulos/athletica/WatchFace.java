@@ -35,15 +35,15 @@ class WatchFace {
     private final Typeface fontAwesome;
     private final Typeface materialIconsFont;
     private Typeface defaultTypeface;
-    private boolean isRound;
     private boolean ambientMode = false;
     private boolean isVisible = false;
     private boolean interlace = true;
     private boolean dayNightMode = false;
+    private Boolean invertBlackAndWhite = false;
     private boolean twoColorBackground = false;
 
     private int chinSize;
-    private Boolean invertBlackAndWhite;
+    private boolean isRound = false;
 
     /**
      * The WatchFace. Everything the user sees. No extra init or data manipulation
