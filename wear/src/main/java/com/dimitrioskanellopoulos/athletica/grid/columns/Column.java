@@ -34,8 +34,8 @@ public class Column implements ColumnInterface {
     @Override
     public void setAmbientMode(Boolean ambientMode) {
         //getPaint().setColor();
-        getPaint().setAntiAlias(!ambientMode || shouldAntialiasInAmbientMode);
         this.ambientMode = ambientMode;
+        getPaint().setAntiAlias(!ambientMode || shouldAntialiasInAmbientMode);
     }
 
     @Override
