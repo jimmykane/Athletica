@@ -70,7 +70,7 @@ public final class ConfigurationHelper {
     /**
      * The default interlace
      */
-    public static final Boolean INTERLACE_DEFAULT = true;
+    public static final Boolean INTERLACE_DEFAULT = false;
     /**
      * The default to invert black and white
      */
