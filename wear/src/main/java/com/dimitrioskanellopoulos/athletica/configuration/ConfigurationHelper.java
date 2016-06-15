@@ -36,6 +36,10 @@ public final class ConfigurationHelper {
      */
     public static final String KEY_INTERLACE = "INTERLACE";
     /**
+     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} antialiasing in ambient mode.
+     */
+    public static final String KEY_ANTIALIAS_IN_AMBIENT_MODE = "KEY_ANTIALIAS_IN_AMBIENT_MODE";
+    /**
      * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} invert black and white.
      */
     public static final String KEY_INVERT_BLACK_AND_WHITE = "KEY_INVERT_BLACK_AND_WHITE";
@@ -71,6 +75,10 @@ public final class ConfigurationHelper {
      * The default interlace
      */
     public static final Boolean INTERLACE_DEFAULT = false;
+    /**
+     * The default for antialiasing in ambient mode
+     */
+    public static final Boolean ANTIALIAS_IN_AMBIENT_MODE_DEFAULT = false;
     /**
      * The default to invert black and white
      */
@@ -166,6 +174,7 @@ public final class ConfigurationHelper {
         addBooleanKeyIfMissing(config, KEY_DATE_NAMES, DATE_NAMES_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_SHOW_SUNRISE_SUNSET, SHOW_SUNRISE_SUNSET_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INTERLACE, INTERLACE_DEFAULT);
+        addBooleanKeyIfMissing(config, KEY_ANTIALIAS_IN_AMBIENT_MODE, ANTIALIAS_IN_AMBIENT_MODE_DEFAULT);
         addBooleanKeyIfMissing(config, KEY_INVERT_BLACK_AND_WHITE, INVERT_BLACK_AND_WHITE);
         addBooleanKeyIfMissing(config, KEY_DAY_NIGHT_MODE, DAY_NIGHT_MODE);
         addBooleanKeyIfMissing(config, KEY_TWO_COLOR_BACKGROUND, TWO_COLOR_BACKGROUND);

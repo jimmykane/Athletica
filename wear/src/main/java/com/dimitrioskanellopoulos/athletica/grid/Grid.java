@@ -48,6 +48,19 @@ public class Grid {
     }
 
     /**
+     * Toggles the antialias for ambient mode
+     */
+    public void shouldAntialiasInAmbientMode(boolean shouldAntialiasInAmbientMode) {
+        for (Map.Entry<String, Row> rowEntry : getAllRows().entrySet()) {
+            Row row = rowEntry.getValue();
+            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
+                Column column = columnEntry.getValue();
+                column.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
+            }
+        }
+    }
+
+    /**
      * Toggles the visible or not mode for all the columns
      */
     public void setIsVisible(boolean isVisible) {

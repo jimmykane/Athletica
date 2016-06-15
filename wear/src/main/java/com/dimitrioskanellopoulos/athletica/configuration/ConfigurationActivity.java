@@ -29,6 +29,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
     private Switch switchDateNames;
     private Switch switchShowSunriseSunset;
     private Switch switchInterlace;
+    private Switch switchAntialiasInAmbientMode;
     private Switch switchInvertBlackAndWhite;
     private Switch switchDayNightMode;
     private Switch switchTwoColorBackground;
@@ -59,6 +60,8 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
         switchShowSunriseSunset = (Switch) findViewById(R.id.switch_show_sunrise_sunset);
 
         switchInterlace = (Switch) findViewById(R.id.switch_interlace);
+
+        switchAntialiasInAmbientMode = (Switch) findViewById(R.id.switch_antialias_in_ambient_mode);
 
         switchInvertBlackAndWhite = (Switch) findViewById(R.id.switch_invert_black_and_white);
 
@@ -97,6 +100,14 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 updateConfigDataItemInterlace(isChecked);
+            }
+        });
+
+        switchAntialiasInAmbientMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                updateConfigDataItemAntialiasInAmbient(isChecked);
             }
         });
 
@@ -295,6 +306,13 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
     }
 
+    private void updateConfigDataItemAntialiasInAmbient(boolean antialiasInAmbient) {
+        DataMap configMap = new DataMap();
+        configMap.putBoolean(ConfigurationHelper.KEY_ANTIALIAS_IN_AMBIENT_MODE,
+                antialiasInAmbient);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
+    }
+
     private void updateConfigDataItemInvertBlackAndWhite(boolean invertBlackAndWhite) {
         DataMap configMap = new DataMap();
         configMap.putBoolean(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE,
@@ -364,6 +382,9 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
                     break;
                 case ConfigurationHelper.KEY_INTERLACE:
                     switchInterlace.setChecked(config.getBoolean(key));
+                    break;
+                case ConfigurationHelper.KEY_ANTIALIAS_IN_AMBIENT_MODE:
+                    switchAntialiasInAmbientMode.setChecked(config.getBoolean(key));
                     break;
                 case ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE:
                     switchInvertBlackAndWhite.setChecked(config.getBoolean(key));

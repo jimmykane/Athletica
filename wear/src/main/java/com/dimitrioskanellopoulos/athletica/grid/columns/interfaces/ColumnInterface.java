@@ -11,6 +11,7 @@ public interface ColumnInterface {
     int BASELINE_BOTTOM = 5;
 
     void setAmbientMode(Boolean ambientMode);
+    void shouldAntialiasInAmbientMode(Boolean shouldAntialiasInAmbientMode);
 
     String getText();
 

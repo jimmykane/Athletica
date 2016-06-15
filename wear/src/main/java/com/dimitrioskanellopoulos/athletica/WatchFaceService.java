@@ -329,6 +329,9 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     case ConfigurationHelper.KEY_INTERLACE:
                         watchFace.shouldInterlace(config.getBoolean(key));
                         break;
+                    case ConfigurationHelper.KEY_ANTIALIAS_IN_AMBIENT_MODE:
+                        watchFace.shouldAntialiasInAmbientMode(config.getBoolean(key));
+                        break;
                     case ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE:
                         watchFace.setInvertBlackAndWhite(config.getBoolean(key));
                         setWatchFaceStyle(config.getBoolean(key) ? watchFaceStyleInverted : watchFaceStyleNormal);

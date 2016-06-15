@@ -14,6 +14,7 @@ public class Column implements ColumnInterface {
 
     private final Paint paint = new Paint();
     private Boolean ambientMode;
+    private Boolean shouldAntialiasInAmbientMode = false;
     private Boolean visible;
     private Integer baseline = BASELINE_MIDDLE;
     private String text = "\u21bb";
@@ -27,14 +28,20 @@ public class Column implements ColumnInterface {
         setTextDefaultColor(paintColor);
         this.visible = visible;
         this.ambientMode = ambientMode;
-        getPaint().setAntiAlias(!this.ambientMode);
+        getPaint().setAntiAlias(!this.ambientMode || this.shouldAntialiasInAmbientMode);
     }
 
     @Override
     public void setAmbientMode(Boolean ambientMode) {
         //getPaint().setColor();
-        getPaint().setAntiAlias(!ambientMode);
+        getPaint().setAntiAlias(!ambientMode || shouldAntialiasInAmbientMode);
         this.ambientMode = ambientMode;
+    }
+
+    @Override
+    public void shouldAntialiasInAmbientMode(Boolean shouldAntialiasInAmbientMode) {
+        Log.d(TAG, "shouldAntialiasInAmbientMode"+ shouldAntialiasInAmbientMode.toString());
+        this.shouldAntialiasInAmbientMode = shouldAntialiasInAmbientMode;
     }
 
     @Override
