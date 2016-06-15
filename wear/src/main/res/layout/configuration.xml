@@ -66,28 +66,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="4dp"
-                android:text="@string/configuration_activity_general_settings"
+                android:text="@string/configuration_activity_visual_settings"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
             <Switch
-                android:id="@+id/switch_interlace"
+                android:id="@+id/switch_show_google_fit_steps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:paddingBottom="4dp"
-                android:text="@string/configuration_interlace"
-                android:textAlignment="center"
-                android:textSize="12sp" />
-
-            <Switch
-                android:id="@+id/switch_antialias_in_ambient_mode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:paddingBottom="4dp"
-                android:text="@string/configuration_antialias_in_ambient_mode"
+                android:text="@string/configuration_show_google_fit_steps"
                 android:textAlignment="center"
                 android:textSize="12sp" />
 
@@ -122,13 +112,32 @@
                 android:textAlignment="center"
                 android:textSize="12sp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="4dp"
+                android:text="@string/configuration_activity_battery_settings"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
             <Switch
-                android:id="@+id/switch_show_google_fit_steps"
+                android:id="@+id/switch_interlace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:paddingBottom="4dp"
-                android:text="@string/configuration_show_google_fit_steps"
+                android:text="@string/configuration_interlace"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+            <Switch
+                android:id="@+id/switch_antialias_in_ambient_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingBottom="4dp"
+                android:text="@string/configuration_antialias_in_ambient_mode"
                 android:textAlignment="center"
                 android:textSize="12sp" />
 
