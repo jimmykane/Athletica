@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion "23.0.3"
 
     defaultConfig {
@@ -10,6 +10,16 @@ android {
         targetSdkVersion 23
         versionCode 117
         versionName "3.0.4"
+    }
+    productFlavors {
+        free {
+            applicationId "com.dimitrioskanellopoulos.athletica"
+            resValue "string", "app_name", "Athletica"
+        }
+        pro {
+            applicationId "com.dimitrioskanellopoulos.athletica.pro"
+            resValue "string", "app_name", "Athletica Pro"
+        }
     }
     buildTypes {
         debug {
@@ -25,16 +35,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
-        free {
-            applicationId "com.dimitrioskanellopoulos.athletica"
-            resValue "string", "app_name", "Athletica"
-        }
-        pro {
-            applicationId "com.dimitrioskanellopoulos.athletica.pro"
-            resValue "string", "app_name", "Athletica Pro"
-        }
-    }
 }
 
 configurations {
@@ -47,7 +47,7 @@ configurations {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:support-annotations:23.4.0'
+    compile 'com.android.support:support-annotations:24.0.0'
 
     freeDebugWearApp project(path: ':wear', configuration: 'freeDebug')
     proDebugWearApp project(path: ':wear', configuration: 'proDebug')
