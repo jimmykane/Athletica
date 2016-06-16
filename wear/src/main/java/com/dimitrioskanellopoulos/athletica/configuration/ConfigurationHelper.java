@@ -94,7 +94,7 @@ public final class ConfigurationHelper {
     /**
      * The default to invert black and white
      */
-    public static final Boolean SHOW_GOOGLE_FIT_STEPS = false;
+    public static final Boolean SHOW_GOOGLE_FIT_STEPS = true;
     /**
      * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
      */
