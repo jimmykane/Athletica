@@ -25,12 +25,11 @@ public class TimeColumn extends CalendarColumn {
     public TimeColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
         super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
         initTextSize = paintTextSize;
-        getPaint().setTextSize(initTextSize * 0.8f);
     }
 
     public void setTimeFormat24(Boolean timeFormat24) {
         this.isIn24hourFormat = timeFormat24;
-        getPaint().setTextSize(timeFormat24 ? initTextSize : initTextSize * 0.90f);
+        getPaint().setTextSize(timeFormat24 ? initTextSize : initTextSize * 0.9f);
         setTimeFormat();
     }
 
@@ -49,7 +48,7 @@ public class TimeColumn extends CalendarColumn {
     @Override
     public void setAmbientMode(Boolean ambientMode) {
         super.setAmbientMode(ambientMode);
-        getPaint().setTextSize(ambientMode ? initTextSize : initTextSize * 0.90f);
+        getPaint().setTextSize(ambientMode ? getPaint().getTextSize() / 0.9f : getPaint().getTextSize() * 0.9f);
         setTimeFormat();
     }
 
