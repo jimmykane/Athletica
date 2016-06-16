@@ -49,7 +49,7 @@ public class TimeColumn extends CalendarColumn {
     @Override
     public void setAmbientMode(Boolean ambientMode) {
         super.setAmbientMode(ambientMode);
-        getPaint().setTextSize(isInAmbientMode() ? initTextSize : initTextSize * 0.90f);
+        getPaint().setTextSize(ambientMode ? initTextSize : initTextSize * 0.90f);
         setTimeFormat();
     }
 
