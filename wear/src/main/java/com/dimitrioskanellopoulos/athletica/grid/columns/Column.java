@@ -13,9 +13,9 @@ public class Column implements ColumnInterface {
     protected final Context context;
 
     private final Paint paint = new Paint();
-    private Boolean ambientMode;
+    private Boolean ambientMode = false;
     private Boolean shouldAntialiasInAmbientMode = false;
-    private Boolean visible;
+    private Boolean visible = true;
     private Integer baseline = BASELINE_MIDDLE;
     private String text = "\u21bb";
     private Float horizontalMargin = 0.0f;
@@ -26,9 +26,8 @@ public class Column implements ColumnInterface {
         getPaint().setTypeface(paintTypeface);
         getPaint().setTextSize(paintTextSize);
         setTextDefaultColor(paintColor);
-        this.visible = visible;
         this.ambientMode = ambientMode;
-        getPaint().setAntiAlias(!this.ambientMode || this.shouldAntialiasInAmbientMode);
+        this.visible = visible;
     }
 
     @Override
@@ -105,7 +104,8 @@ public class Column implements ColumnInterface {
     }
 
     @Override
-    public Boolean isInAmbientMode() {
+    public Boolean isInAmbientMode()
+    {
         return ambientMode;
     }
 

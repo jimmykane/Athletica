@@ -178,12 +178,13 @@ class WatchFace {
 
         if (timeFormat24) {
             grid.getRow("1_timeRow").removeColumn("amPmColumn");
-        } else {
-            AmPmColumn amPmColumn = new AmPmColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), grid.getTextColor(), isVisible, ambientMode);
-            amPmColumn.setBaseline(timeColumn.getBaseline());
-            amPmColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
-            grid.getRow("1_timeRow").putColumn("amPmColumn", amPmColumn);
+            return;
         }
+        AmPmColumn amPmColumn = new AmPmColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), grid.getTextColor(), isVisible, ambientMode);
+        amPmColumn.setBaseline(timeColumn.getBaseline());
+        amPmColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
+        grid.getRow("1_timeRow").putColumn("amPmColumn", amPmColumn);
+
     }
 
     void setShowDateNamesFormat(Boolean showDateNamesFormat) {
