@@ -16,7 +16,9 @@ import com.google.android.gms.fitness.FitnessStatusCodes;
 import com.google.android.gms.fitness.data.DataPoint;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
+import com.google.android.gms.fitness.data.Subscription;
 import com.google.android.gms.fitness.result.DailyTotalResult;
+import com.google.android.gms.fitness.result.ListSubscriptionsResult;
 
 import java.util.List;
 import java.util.Locale;
@@ -88,7 +90,11 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
     }
 
     /**
-     * @todo enable it from service and setting
+     * Subscribe to an available {@link DataType}. Subscriptions can exist across application
+     * instances (so data is recorded even after the application closes down).  When creating
+     * a new subscription, it may already exist from a previous invocation of this app.  If
+     * the subscription already exists, the method is a no-op.  However, you can check this with
+     * a special success code.
      */
     private void subscribeToSteps() {
         Fitness.RecordingApi.subscribe(googleApiClient, DataType.TYPE_STEP_COUNT_DELTA)
@@ -109,6 +115,43 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
                 });
     }
 
+    private void dumpStepsSubscriptionsList() {
+        Fitness.RecordingApi.listSubscriptions(googleApiClient, DataType.TYPE_STEP_COUNT_DELTA)
+                // Create the callback to retrieve the list of subscriptions asynchronously.
+                .setResultCallback(new ResultCallback<ListSubscriptionsResult>() {
+                    @Override
+                    public void onResult(@NonNull ListSubscriptionsResult listSubscriptionsResult) {
+                        for (Subscription sc : listSubscriptionsResult.getSubscriptions()) {
+                            DataType dt = sc.getDataType();
+                            Log.d(TAG, "Active subscription for data type: " + dt.getName());
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Cancel the ACTIVITY_SAMPLE subscription by calling unsubscribe on that {@link DataType}.
+     */
+    private void unsubscribeFromSteps() {
+        final String dataTypeStr = DataType.TYPE_STEP_COUNT_DELTA.toString();
+        Log.i(TAG, "Unsubscribing from data type: " + dataTypeStr);
+
+        // Invoke the Recording API to unsubscribe from the data type and specify a callback that
+        // will check the result.
+        Fitness.RecordingApi.unsubscribe(googleApiClient, DataType.TYPE_ACTIVITY_SAMPLE)
+                .setResultCallback(new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        if (status.isSuccess()) {
+                            Log.i(TAG, "Successfully unsubscribed for data type: " + dataTypeStr);
+                        } else {
+                            // Subscription not removed
+                            Log.i(TAG, "Failed to unsubscribe for data type: " + dataTypeStr);
+                        }
+                    }
+                });
+    }
+
     @Override
     public GoogleApiClient getGoogleApiClient() {
         return googleApiClient;
@@ -121,6 +164,8 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
             return;
         }
         Log.d(TAG, "Register pending intent for getTotalSteps()");
+        hasRegisteredReceivers = true;
+        subscribeToSteps();
         stepsResult = Fitness.HistoryApi.readDailyTotal(googleApiClient, DataType.TYPE_STEP_COUNT_DELTA);
         stepsResult.setResultCallback(this);
     }
