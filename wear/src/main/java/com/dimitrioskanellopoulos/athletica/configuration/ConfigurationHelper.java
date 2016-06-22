@@ -66,7 +66,7 @@ public final class ConfigurationHelper {
     /**
      * The default if to show the name
      */
-    public static final Boolean DATE_NAMES_DEFAULT = false;
+    public static final Boolean DATE_NAMES_DEFAULT = true;
     /**
      * The default if to show sunrise sunset
      */
