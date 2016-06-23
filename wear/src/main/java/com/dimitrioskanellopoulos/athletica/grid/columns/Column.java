@@ -21,13 +21,11 @@ public class Column implements ColumnInterface {
     private Float horizontalMargin = 0.0f;
     private Integer textDefaultColor;
 
-    public Column(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+    public Column(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         this.context = context.getApplicationContext();
         getPaint().setTypeface(paintTypeface);
         getPaint().setTextSize(paintTextSize);
         setTextDefaultColor(paintColor);
-        this.ambientMode = ambientMode;
-        this.visible = visible;
     }
 
     @Override

@@ -17,8 +17,8 @@ public abstract class GoogleApiColumn extends Column implements GoogleApiColumnI
         GoogleApiClient.OnConnectionFailedListener {
     private final static String TAG = "GoogleApiColumn";
 
-    public GoogleApiColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
-        super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
+    public GoogleApiColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
+        super(context, paintTypeface, paintTextSize, paintColor);
     }
 
     @Override

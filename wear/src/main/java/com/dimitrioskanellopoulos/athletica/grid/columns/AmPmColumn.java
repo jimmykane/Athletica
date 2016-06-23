@@ -8,7 +8,6 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.abstracts.CalendarColum
 
 import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -17,7 +16,7 @@ public class AmPmColumn extends CalendarColumn {
     private final static FastDateFormat TIME_FORMAT = FastDateFormat.getInstance("a", TimeZone.getDefault(),Locale.getDefault());
 
     public AmPmColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
-        super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
+        super(context, paintTypeface, paintTextSize, paintColor);
     }
 
     @Override

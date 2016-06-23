@@ -29,8 +29,8 @@ public abstract class BatteryColumn extends Column {
     };
     private static boolean isRegisteredBatteryInfoReceiver = false;
 
-    public BatteryColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
-        super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
+    public BatteryColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
+        super(context, paintTypeface, paintTextSize, paintColor);
     }
 
     @Override

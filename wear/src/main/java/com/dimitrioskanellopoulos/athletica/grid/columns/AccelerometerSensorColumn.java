@@ -12,7 +12,7 @@ class AccelerometerSensorColumn extends SensorColumn {
     private final DecimalFormat decimalFormat = new DecimalFormat("##");
 
     AccelerometerSensorColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, int sensorType, Boolean visible, Boolean ambientMode) {
-        super(context, paintTypeface, paintTextSize, paintColor, sensorType, visible, ambientMode);
+        super(context, paintTypeface, paintTextSize, paintColor, sensorType);
     }
 
     @Override

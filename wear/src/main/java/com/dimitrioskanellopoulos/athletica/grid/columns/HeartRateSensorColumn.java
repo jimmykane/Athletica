@@ -15,7 +15,7 @@ class HeartRateSensorColumn extends SensorColumn {
     private final Vibrator vibrator;
 
     HeartRateSensorColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, int sensorType, Boolean visible, Boolean ambientMode) {
-        super(context, paintTypeface, paintTextSize, paintColor, sensorType, visible, ambientMode);
+        super(context, paintTypeface, paintTextSize, paintColor, sensorType);
         vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 

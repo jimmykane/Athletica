@@ -9,7 +9,7 @@ import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 
 public class ColumnFactory {
     public static Column getIconColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
-        Column sensorIconColumn = new Column(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
+        Column sensorIconColumn = new Column(context, paintTypeface, paintTextSize, paintColor);
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
                 sensorIconColumn.setText(context.getResources().getString(R.string.icon_android_sensor_pressure));
@@ -54,14 +54,14 @@ public class ColumnFactory {
                 sensorColumn = new HeartRateSensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType, visible, ambientMode);
                 break;
             default:
-                sensorColumn = new SensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType, visible, ambientMode);
+                sensorColumn = new SensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType);
                 break;
         }
         return sensorColumn;
     }
 
     public static Column getUnitsColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
-        Column sensorUnitsColumn = new Column(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
+        Column sensorUnitsColumn = new Column(context, paintTypeface, paintTextSize, paintColor);
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
                 sensorUnitsColumn.setText(context.getResources().getString(R.string.units_android_sensor_pressure));

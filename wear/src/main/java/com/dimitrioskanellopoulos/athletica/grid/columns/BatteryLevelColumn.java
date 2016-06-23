@@ -11,7 +11,7 @@ public class BatteryLevelColumn extends BatteryColumn {
     private static final String TAG = "BatteryIconColumn";
 
     public BatteryLevelColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
-        super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
+        super(context, paintTypeface, paintTextSize, paintColor);
     }
 
     @Override

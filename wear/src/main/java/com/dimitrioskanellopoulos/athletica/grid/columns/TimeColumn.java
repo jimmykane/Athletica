@@ -8,7 +8,6 @@ import com.dimitrioskanellopoulos.athletica.grid.columns.abstracts.CalendarColum
 
 import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class TimeColumn extends CalendarColumn {
@@ -22,8 +21,8 @@ public class TimeColumn extends CalendarColumn {
 
     private FastDateFormat timeFormat = TIME_FORMAT_24;
 
-    public TimeColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
-        super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
+    public TimeColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
+        super(context, paintTypeface, paintTextSize, paintColor);
         initTextSize = paintTextSize;
     }
 

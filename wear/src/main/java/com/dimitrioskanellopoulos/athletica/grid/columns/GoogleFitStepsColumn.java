@@ -32,7 +32,7 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
     private Boolean hasRegisteredReceivers = false;
 
     public GoogleFitStepsColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
-        super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
+        super(context, paintTypeface, paintTextSize, paintColor);
         googleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)

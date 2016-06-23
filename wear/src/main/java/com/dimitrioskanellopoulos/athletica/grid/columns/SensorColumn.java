@@ -3,7 +3,6 @@ package com.dimitrioskanellopoulos.athletica.grid.columns;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.hardware.Sensor;
-import android.os.Vibrator;
 import android.util.Log;
 
 import com.dimitrioskanellopoulos.athletica.sensors.AveragingCallbackSensor;
@@ -19,8 +18,8 @@ class SensorColumn extends Column implements OnSensorEventCallbackInterface,
     final static DecimalFormat decimalFormat =  new DecimalFormat("#.#");
     private final AveragingCallbackSensor averagingCallbackSensor;
 
-    SensorColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, int sensorType, Boolean visible, Boolean ambientMode) {
-        super(context, paintTypeface, paintTextSize, paintColor, visible, ambientMode);
+    SensorColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, int sensorType) {
+        super(context, paintTypeface, paintTextSize, paintColor);
         averagingCallbackSensor = CallbackSensorFactory.getCallbackSensor(context, sensorType, this, this);
     }
 
