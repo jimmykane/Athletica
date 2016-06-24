@@ -11,12 +11,14 @@ import org.apache.commons.lang3.time.FastDateFormat;
 import java.util.Locale;
 
 public class TimeColumn extends CalendarColumn {
-    private final static String TAG = "SensorColumn";
+    private final static String TAG = "TimeColumn";
     private final static FastDateFormat TIME_FORMAT = FastDateFormat.getInstance("h:mm", Locale.getDefault());
     private final static FastDateFormat TIME_FORMAT_WITH_SECONDS = FastDateFormat.getInstance("h:mm:ss", Locale.getDefault());
     private final static FastDateFormat TIME_FORMAT_24 = FastDateFormat.getInstance("k:mm", Locale.getDefault());
     private final static FastDateFormat TIME_FORMAT_24_WITH_SECONDS = FastDateFormat.getInstance("k:mm:ss", Locale.getDefault());
     private final Float initTextSize;
+    private Float textSize;
+
     private Boolean isIn24hourFormat = true;
 
     private FastDateFormat timeFormat = TIME_FORMAT_24;
@@ -24,30 +26,33 @@ public class TimeColumn extends CalendarColumn {
     public TimeColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
         initTextSize = paintTextSize;
+        textSize = initTextSize;
     }
 
     public void setTimeFormat24(Boolean timeFormat24) {
         this.isIn24hourFormat = timeFormat24;
-        getPaint().setTextSize(timeFormat24 ? initTextSize : initTextSize * 0.9f);
         setTimeFormat();
     }
 
     private void setTimeFormat(){
         if (isInAmbientMode() && isIn24hourFormat) {
             timeFormat = TIME_FORMAT_24;
+            getPaint().setTextSize(initTextSize);
         } else if (isInAmbientMode() && !isIn24hourFormat) {
             timeFormat = TIME_FORMAT;
+            getPaint().setTextSize(initTextSize * 0.9f);
         } else if (!isInAmbientMode() && isIn24hourFormat) {
             timeFormat =  TIME_FORMAT_24_WITH_SECONDS;
+            getPaint().setTextSize(initTextSize * 0.9f);
         }else {
             timeFormat = TIME_FORMAT_WITH_SECONDS;
+            getPaint().setTextSize(initTextSize * 0.8f);
         }
     }
 
     @Override
     public void setAmbientMode(Boolean ambientMode) {
         super.setAmbientMode(ambientMode);
-        getPaint().setTextSize(ambientMode ? getPaint().getTextSize() / 0.9f : getPaint().getTextSize() * 0.9f);
         setTimeFormat();
     }
 
