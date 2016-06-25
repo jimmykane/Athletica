@@ -40,13 +40,13 @@ public class TimeColumn extends CalendarColumn {
             getPaint().setTextSize(initTextSize);
         } else if (isInAmbientMode() && !isIn24hourFormat) {
             timeFormat = TIME_FORMAT;
-            getPaint().setTextSize(initTextSize * 0.9f);
+            getPaint().setTextSize(initTextSize * 0.90f);
         } else if (!isInAmbientMode() && isIn24hourFormat) {
             timeFormat =  TIME_FORMAT_24_WITH_SECONDS;
-            getPaint().setTextSize(initTextSize * 0.9f);
+            getPaint().setTextSize(initTextSize * 0.75f);
         }else {
             timeFormat = TIME_FORMAT_WITH_SECONDS;
-            getPaint().setTextSize(initTextSize * 0.8f);
+            getPaint().setTextSize(initTextSize * 0.75f);
         }
     }
 
