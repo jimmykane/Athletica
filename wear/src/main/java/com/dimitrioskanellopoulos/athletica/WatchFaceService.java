@@ -135,11 +135,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
          * A helper for google api that can be shared within the app
          */
         private GoogleApiClient googleApiClient;
-        /**
-         * Whether the display supports fewer bits for each color in ambient mode. When true, we
-         * disable anti-aliasing in ambient mode.
-         */
-        private boolean mLowBitAmbient;
+
         /**
          * The available sensors. Cross of supported by the app sensors and supported by the device
          */
@@ -211,7 +207,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onPropertiesChanged(Bundle properties) {
             super.onPropertiesChanged(properties);
-            mLowBitAmbient = properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false);
+
+            watchFace.setBurnInProtection(properties.getBoolean(PROPERTY_BURN_IN_PROTECTION, false));
+            watchFace.setLowBitAmbient(properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false));
+
+            Log.d(TAG, "onPropertiesChanged: burn-in protection = " + properties.getBoolean(PROPERTY_BURN_IN_PROTECTION, false)
+                    + ", low-bit ambient = " + properties.getBoolean(PROPERTY_LOW_BIT_AMBIENT, false));
         }
 
         @Override

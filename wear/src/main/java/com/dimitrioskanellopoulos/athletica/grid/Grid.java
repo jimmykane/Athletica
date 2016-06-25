@@ -47,6 +47,33 @@ public class Grid {
         }
     }
 
+
+    /**
+     * Toggles the burnInProtection
+     */
+    public void setBurnInProtection(boolean burnInProtection) {
+        for (Map.Entry<String, Row> rowEntry : getAllRows().entrySet()) {
+            Row row = rowEntry.getValue();
+            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
+                Column column = columnEntry.getValue();
+                column.setBurnInProtection(burnInProtection);
+            }
+        }
+    }
+
+    /**
+     * Toggles the burnInProtection
+     */
+    public void setLowBitAmbient(boolean lowBitAmbient) {
+        for (Map.Entry<String, Row> rowEntry : getAllRows().entrySet()) {
+            Row row = rowEntry.getValue();
+            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
+                Column column = columnEntry.getValue();
+                column.setLowBitAmbient(lowBitAmbient);
+            }
+        }
+    }
+
     /**
      * Toggles the antialias for ambient mode
      */

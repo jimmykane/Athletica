@@ -43,6 +43,8 @@ class WatchFace {
     private Boolean invertBlackAndWhite = false;
     private boolean twoColorBackground = false;
 
+    private boolean lowBitAmbient;
+    private boolean burnInProtection;
     private int chinSize;
     private boolean isRound = false;
 
@@ -337,5 +339,14 @@ class WatchFace {
 
     public void shouldAntialiasInAmbientMode(Boolean shouldAntialiasInAmbientMode) {
         grid.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
+    }
+
+    public void setLowBitAmbient(boolean lowBitAmbient) {
+        this.lowBitAmbient = lowBitAmbient;
+        grid.setLowBitAmbient(lowBitAmbient);
+    }
+
+    public void setBurnInProtection(boolean burnInProtection) {
+        this.burnInProtection = burnInProtection;
     }
 }

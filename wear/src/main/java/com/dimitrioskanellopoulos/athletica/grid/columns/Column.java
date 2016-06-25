@@ -36,6 +36,16 @@ public class Column implements ColumnInterface {
     }
 
     @Override
+    public void setBurnInProtection(Boolean burnInProtection) {
+        Log.d(TAG, "BurnInProtection: " + burnInProtection);
+    }
+
+    @Override
+    public void setLowBitAmbient(Boolean lowBitAmbient) {
+        Log.d(TAG, "LowBitAmbientMode: " + lowBitAmbient);
+    }
+
+    @Override
     public void shouldAntialiasInAmbientMode(Boolean shouldAntialiasInAmbientMode) {
         Log.d(TAG, "shouldAntialiasInAmbientMode"+ shouldAntialiasInAmbientMode.toString());
         this.shouldAntialiasInAmbientMode = shouldAntialiasInAmbientMode;

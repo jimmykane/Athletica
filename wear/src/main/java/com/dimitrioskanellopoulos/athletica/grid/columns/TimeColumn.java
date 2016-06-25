@@ -62,6 +62,15 @@ public class TimeColumn extends CalendarColumn {
         return timeFormat.format(CALENDAR);
     }
 
+    @Override
+    public void setBurnInProtection(Boolean burnInProtection) {
+        super.setBurnInProtection(burnInProtection);
+        Typeface boldTypeface =
+                Typeface.create(getPaint().getTypeface().SANS_SERIF, getPaint().getTypeface().BOLD);
+        Typeface normalTypeface =
+                Typeface.create(getPaint().getTypeface().SANS_SERIF, getPaint().getTypeface().NORMAL);
+        getPaint().setTypeface(burnInProtection ? boldTypeface : normalTypeface);
+    }
 
     @Override
     public void destroy() {
