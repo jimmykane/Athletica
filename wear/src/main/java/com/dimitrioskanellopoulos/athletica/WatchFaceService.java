@@ -304,6 +304,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
         @Override
         public void onNotificationCountChanged(int count) {
             super.onNotificationCountChanged(count);
+            watchFace.updateNotificationsCount(count);
             Log.d(TAG, "Notifications: " + count);
         }
 

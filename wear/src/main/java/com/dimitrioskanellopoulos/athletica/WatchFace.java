@@ -321,6 +321,8 @@ class WatchFace {
 
     }
 
+
+
     void setIsRound(boolean round) {
         isRound = round;
     }
@@ -348,5 +350,9 @@ class WatchFace {
 
     public void setBurnInProtection(boolean burnInProtection) {
         this.burnInProtection = burnInProtection;
+    }
+
+    public void updateNotificationsCount(int count) {
+        
     }
 }
