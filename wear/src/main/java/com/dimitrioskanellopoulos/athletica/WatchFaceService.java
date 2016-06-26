@@ -295,6 +295,18 @@ public class WatchFaceService extends CanvasWatchFaceService {
             }
         }
 
+        @Override
+        public void onUnreadCountChanged(int count) {
+            super.onUnreadCountChanged(count);
+            Log.d(TAG, "Unread notifications: " + count);
+        }
+
+        @Override
+        public void onNotificationCountChanged(int count) {
+            super.onNotificationCountChanged(count);
+            Log.d(TAG, "Notifications: " + count);
+        }
+
         private void updateConfigDataItemAndUiOnStartup() {
             ConfigurationHelper.fetchConfigDataMap(googleApiClient,
                     new ConfigurationHelper.FetchConfigDataMapCallback() {
