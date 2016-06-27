@@ -26,9 +26,19 @@ public class GridRenderer {
         TreeMap<String, Row> rows = grid.getAllRows();
 
         Float totalHeight = bounds.height() - topMargin - bottomMargin;
-        Float rowHeight = ((totalHeight + totalHeight / rows.size())) / rows.size();
-        Float startingOffsetY = topMargin - rowHeight;
 
+
+        Float rowHeight;
+
+        // Check for notif
+        Row notificationsRow = rows.get("7_notificationRow");
+        if (notificationsRow != null){
+            rowHeight = ((totalHeight + totalHeight / (rows.size() -1))) / (rows.size()-1);
+        }else{
+            rowHeight = ((totalHeight + totalHeight / rows.size())) / rows.size();
+        }
+        Float startingOffsetY = topMargin - rowHeight;
+        Float notificationsStartingOffsetY = 0f;
         if (BuildConfig.DEBUG) {
             // Do the setBaseline
             Paint bluePaint = new Paint();
@@ -59,6 +69,10 @@ public class GridRenderer {
                 if (column.getHeight() > maxTextHeight) {
                     maxTextHeight = column.getHeight();
                 }
+            }
+
+            if (rowCount ==0){
+                notificationsStartingOffsetY = maxTextHeight + startingOffsetY;
             }
 
             float previousColumnOffsetY = rowHeight;
@@ -121,7 +135,7 @@ public class GridRenderer {
             canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, greenPaint);
         }
 
-        // Here it should draw the
+        // Here it should draw the notifications
     }
 
     private static void drawBackground(Canvas canvas, Rect bounds, Integer color) {
