@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="icon_sunset">&#xF186;</string>
+    <string name="icon_unread_notification_count">&#xf03a;</string>
     <!--<string name="icon_sunrise">&#xF185;</string>-->
     <!--<string name="icon_sunset">&#xF186;</string>-->
 </resources>

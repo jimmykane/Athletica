@@ -255,6 +255,36 @@ class WatchFace {
         }
     }
 
+    void showUnreadNotificationCount(Boolean showUnreadNotificationCount) {
+        Log.d(TAG, "showUnreadNotificationCount " + showUnreadNotificationCount.toString());
+        if (showUnreadNotificationCount) {
+            if (grid.getRow("7_notificationRow") == null) {
+                Row googleFitRow = new Row();
+
+                // Count
+                Column unreadNotificationCountColumn = new GoogleFitStepsColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor(), isVisible, ambientMode);
+                unreadNotificationCountColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
+                unreadNotificationCountColumn.setAmbientMode(ambientMode);
+                unreadNotificationCountColumn.setIsVisible(isVisible);
+                unreadNotificationCountColumn.setHorizontalMargin(resources.getDimension(R.dimen.units_margin));
+                googleFitRow.putColumn("unreadNotificationCountColumn", unreadNotificationCountColumn);
+
+
+                // Icon
+                Column unreadNotificationCountIcon = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
+                unreadNotificationCountIcon.setText(resources.getString(R.string.icon_unread_notification_count));
+                unreadNotificationCountIcon.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
+                unreadNotificationCountIcon.setAmbientMode(ambientMode);
+                unreadNotificationCountIcon.setIsVisible(isVisible);
+                googleFitRow.putColumn("unreadNotificationCountIcon", unreadNotificationCountIcon);
+
+                grid.putRow("7_notificationRow", googleFitRow);
+            }
+        } else {
+            grid.removeRow("7_notificationRow");
+        }
+    }
+
 
     void showSunriseSunsetTimes(Boolean showSunriseSunsetTimes) {
         Log.d(TAG, "showSunriseSunsetTimes " + showSunriseSunsetTimes.toString());
@@ -353,6 +383,10 @@ class WatchFace {
     }
 
     public void updateNotificationsCount(int count) {
-        
+        if (grid.getRow("7_notificationRow") == null) {
+            Log.d(TAG, "Notification row not found");
+            return;
+        }
+        grid.getRow("7_notificationRow").getColumn("unreadNotificationCountColumn").setText(String.valueOf(count));
     }
 }
