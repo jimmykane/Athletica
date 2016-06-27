@@ -56,6 +56,10 @@ public final class ConfigurationHelper {
      */
     public static final String KEY_SHOW_GOOGLE_FIT_STEPS = "KEY_SHOW_GOOGLE_FIT_STEPS";
     /**
+     * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} Show unread notification count
+     */
+    public static final String KEY_SHOW_UNREAD_NOTIFICATION_COUNT = "KEY_SHOW_UNREAD_NOTIFICATION_COUNT";
+    /**
      * The {@link DataMap} key for {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} sensors.
      */
     public static final String KEY_ENABLED_SENSORS = "KEY_ENABLED_SENSORS";
@@ -95,6 +99,10 @@ public final class ConfigurationHelper {
      * The default to invert black and white
      */
     public static final Boolean SHOW_GOOGLE_FIT_STEPS = true;
+    /**
+     * The default to show daily steps
+     */
+    public static final Boolean SHOW_UNREAD_NOTIFICATION_COUNT = true;
     /**
      * The path for the {@link DataItem} containing {@link com.dimitrioskanellopoulos.athletica.WatchFaceService} configuration.
      */
@@ -179,6 +187,7 @@ public final class ConfigurationHelper {
         addBooleanKeyIfMissing(config, KEY_DAY_NIGHT_MODE, DAY_NIGHT_MODE);
         addBooleanKeyIfMissing(config, KEY_TWO_COLOR_BACKGROUND, TWO_COLOR_BACKGROUND);
         addBooleanKeyIfMissing(config, KEY_SHOW_GOOGLE_FIT_STEPS, SHOW_GOOGLE_FIT_STEPS);
+        addBooleanKeyIfMissing(config, KEY_SHOW_UNREAD_NOTIFICATION_COUNT, SHOW_UNREAD_NOTIFICATION_COUNT);
         addIntegerArrayListKeyIfMissing(config, KEY_ENABLED_SENSORS, SensorHelper.getApplicationDeviceSupportedSensors(context));
     }
 

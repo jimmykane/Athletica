@@ -34,6 +34,7 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
     private Switch switchDayNightMode;
     private Switch switchTwoColorBackground;
     private Switch switchShowGoogleFitSteps;
+    private Switch switchShowUnreadNotificationCount;
     private ArrayList<Integer> sensors;
 
     private PermissionsHelper permissionsHelper;
@@ -70,6 +71,8 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
         switchTwoColorBackground = (Switch) findViewById(R.id.switch_two_color_background);
 
         switchShowGoogleFitSteps = (Switch) findViewById(R.id.switch_show_google_fit_steps);
+
+        switchShowUnreadNotificationCount = (Switch) findViewById(R.id.switch_show_unread_notification_count);
 
         switchTimeFormat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -140,6 +143,14 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 updateConfigDataItemShowGoogleFitSteps(isChecked);
+            }
+        });
+
+        switchShowUnreadNotificationCount.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                updateConfigDataItemShowUnreadNotificationCount(isChecked);
             }
         });
 
@@ -341,6 +352,13 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
         ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
     }
 
+    private void updateConfigDataItemShowUnreadNotificationCount(boolean showUnreadNotificationCount) {
+        DataMap configMap = new DataMap();
+        configMap.putBoolean(ConfigurationHelper.KEY_SHOW_UNREAD_NOTIFICATION_COUNT,
+                showUnreadNotificationCount);
+        ConfigurationHelper.overwriteKeysInConfigDataMap(googleApiClient, configMap);
+    }
+
     private void updateConfigDataItemSensors(ArrayList<Integer> enabledSensors) {
         Log.d(TAG, "Updating config for enabled sensors " + Arrays.toString(enabledSensors.toArray()));
         DataMap configMap = new DataMap();
@@ -397,6 +415,9 @@ public class ConfigurationActivity extends AmbientAwareWearableActivity implemen
                     break;
                 case ConfigurationHelper.KEY_SHOW_GOOGLE_FIT_STEPS:
                     switchShowGoogleFitSteps.setChecked(config.getBoolean(key));
+                    break;
+                case ConfigurationHelper.KEY_SHOW_UNREAD_NOTIFICATION_COUNT:
+                    switchShowUnreadNotificationCount.setChecked(config.getBoolean(key));
                     break;
                 case ConfigurationHelper.KEY_ENABLED_SENSORS:
                     ArrayList<Integer> enabledSensors = config.getIntegerArrayList(key);

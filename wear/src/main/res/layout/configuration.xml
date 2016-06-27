@@ -82,6 +82,16 @@
                 android:textSize="12sp" />
 
             <Switch
+                android:id="@+id/switch_show_unread_notification_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:paddingBottom="4dp"
+                android:text="@string/configuration_show_unread_notification_count"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+            <Switch
                 android:id="@+id/switch_invert_black_and_white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
