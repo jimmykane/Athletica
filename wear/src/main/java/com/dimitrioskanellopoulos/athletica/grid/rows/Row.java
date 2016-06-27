@@ -3,6 +3,7 @@ package com.dimitrioskanellopoulos.athletica.grid.rows;
 import com.dimitrioskanellopoulos.athletica.grid.columns.Column;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Row implements RowInterface {
     private LinkedHashMap<String, Column> columns = new LinkedHashMap<>();
@@ -38,6 +39,28 @@ public class Row implements RowInterface {
 
     public void setMarginBottom(Float marginBottom) {
         this.marginBottom = marginBottom;
+    }
+
+    @Override
+    public Float getColumnsMaxHeight() {
+        float maxTextHeight = 0f;
+        for (Map.Entry<String, Column> columnEntry : getAllColumns().entrySet()) {
+            Column column = columnEntry.getValue();
+            if (column.getHeight() > maxTextHeight) {
+                maxTextHeight = column.getHeight();
+            }
+        }
+        return maxTextHeight;
+    }
+
+    @Override
+    public Float getColumnsTotalWidth() {
+        float totalTextWidth = 0f;
+        for (Map.Entry<String, Column> columnEntry : getAllColumns().entrySet()) {
+            Column column = columnEntry.getValue();
+            totalTextWidth += column.getWidth() + column.getHorizontalMargin();
+        }
+        return totalTextWidth;
     }
 
     public void removeAllColumns() {

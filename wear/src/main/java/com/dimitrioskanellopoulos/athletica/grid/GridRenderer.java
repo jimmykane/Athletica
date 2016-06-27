@@ -60,23 +60,13 @@ public class GridRenderer {
             }
 
             float rowOffsetY = startingOffsetY + rowCount * rowHeight;
-            float totalTextWidth = 0f;
-            float maxTextHeight = 0f;
-
-            for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
-                Column column = columnEntry.getValue();
-                totalTextWidth += column.getWidth() + column.getHorizontalMargin();
-                if (column.getHeight() > maxTextHeight) {
-                    maxTextHeight = column.getHeight();
-                }
-            }
 
             if (rowCount ==0){
-                notificationsStartingOffsetY = maxTextHeight + startingOffsetY;
+                notificationsStartingOffsetY = row.getColumnsMaxHeight() + startingOffsetY;
             }
 
             float previousColumnOffsetY = rowHeight;
-            float cursor = bounds.exactCenterX() - totalTextWidth * 0.5f;
+            float cursor = bounds.exactCenterX() - row.getColumnsTotalWidth() * 0.5f;
             for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
                 Column column = columnEntry.getValue();
                 if (BuildConfig.DEBUG) {

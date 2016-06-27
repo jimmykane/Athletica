@@ -16,4 +16,9 @@ public interface RowInterface {
     Float getMarginBottom();
 
     void setMarginBottom(Float verticalMargin);
+
+    Float getColumnsMaxHeight();
+
+    Float getColumnsTotalWidth();
+
 }
