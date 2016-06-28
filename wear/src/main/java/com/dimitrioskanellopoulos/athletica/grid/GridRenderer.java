@@ -27,7 +27,6 @@ public class GridRenderer {
 
         Float totalHeight = bounds.height() - topMargin - bottomMargin;
 
-
         Float rowHeight;
 
         // Check for notif
@@ -143,7 +142,7 @@ public class GridRenderer {
             Float columnOffsetY;
             switch (column.getBaseline()) {
                 case Column.BASELINE_TOP:
-                    columnOffsetY = 0.0f;
+                    columnOffsetY = row.getColumnsMaxHeight();
                     break;
                 case Column.BASELINE_MIDDLE:
                     columnOffsetY = rowHeight / 2 + column.getHeight() / 2;
