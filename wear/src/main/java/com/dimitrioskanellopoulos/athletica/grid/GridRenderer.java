@@ -148,6 +148,9 @@ public class GridRenderer {
                 case Column.BASELINE_BOTTOM:
                     columnOffsetY = rowOffsetY;
                     break;
+                case Column.BASELINE_OVER_THE_TOP:
+                    columnOffsetY = 0f - column.getHeight();
+                    break;
                 default:
                     columnOffsetY = column.getHeight();
                     break;

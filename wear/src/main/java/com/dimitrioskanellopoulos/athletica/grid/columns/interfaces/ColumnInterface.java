@@ -9,6 +9,7 @@ public interface ColumnInterface {
     int BASELINE_ABSOLUTE_CENTER = 3;
     int BASELINE_PREVIOUS = 4;
     int BASELINE_BOTTOM = 5;
+    int BASELINE_OVER_THE_TOP = 6;
 
     void setAmbientMode(Boolean ambientMode);
     void setBurnInProtection(Boolean burnInProtection);
