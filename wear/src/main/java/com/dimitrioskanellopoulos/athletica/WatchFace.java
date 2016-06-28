@@ -301,7 +301,7 @@ class WatchFace {
                 sunriseIconColumn.setIsVisible(isVisible);
                 sunriseSunsetRow.putColumn("sunriseIconColumn", sunriseIconColumn);
                 // Column
-                SunriseColumn sunriseColumn = new SunriseColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor(), isVisible, ambientMode);
+                SunriseColumn sunriseColumn = new SunriseColumn(context, defaultTypeface, resources.getDimension(R.dimen.sunrise_sunset_times_size), grid.getTextColor(), isVisible, ambientMode);
                 sunriseColumn.setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
                 sunriseColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
                 sunriseColumn.setAmbientMode(ambientMode);
@@ -318,7 +318,7 @@ class WatchFace {
                 sunriseSunsetRow.putColumn("sunsetIconColumn", sunsetIconColumn);
 
                 // Column
-                SunsetColumn sunsetColumn = new SunsetColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor(), isVisible, ambientMode);
+                SunsetColumn sunsetColumn = new SunsetColumn(context, defaultTypeface, resources.getDimension(R.dimen.sunrise_sunset_times_size), grid.getTextColor(), isVisible, ambientMode);
                 sunsetColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
                 sunsetColumn.setAmbientMode(ambientMode);
                 sunsetColumn.setIsVisible(isVisible);
