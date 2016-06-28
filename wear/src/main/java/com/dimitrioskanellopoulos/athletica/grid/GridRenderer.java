@@ -18,18 +18,18 @@ public class GridRenderer {
     /**
      * @todo document more and make it faster
      */
-    public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, Float topMargin, Float bottomMargin) {
+    public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, float topMargin, float bottomMargin) {
 
         drawBackground(canvas, bounds, grid.getBackgroundColor());
 
         // Get all the rows
         TreeMap<String, Row> rows = grid.getAllRows();
 
-        Float totalHeight = bounds.height() - topMargin - bottomMargin;
-        Float rowHeight;
+        float totalHeight = bounds.height() - topMargin - bottomMargin;
+        float rowHeight;
 
         rowHeight = (totalHeight + totalHeight/ (rows.size()-1)) / (rows.size());
-        Float startingOffsetY = topMargin - rowHeight;
+        float startingOffsetY = topMargin - rowHeight;
         if (BuildConfig.DEBUG) {
             // Do the setBaseline
             Paint bluePaint = new Paint();
@@ -66,13 +66,13 @@ public class GridRenderer {
         // Here it should draw the notifications
     }
 
-    private static void drawBackground(Canvas canvas, Rect bounds, Integer color) {
+    private static void drawBackground(Canvas canvas, Rect bounds, int color) {
         Paint backgroundPaint = new Paint();
         backgroundPaint.setColor(color);
         canvas.drawRect(0, 0, bounds.width(), bounds.height(), backgroundPaint);
     }
 
-    public static void drawTicks(Canvas canvas, Rect bounds, Integer color, Float strokeWidth) {
+    public static void drawTicks(Canvas canvas, Rect bounds, int color, float strokeWidth) {
         Paint tickPaing = new Paint();
         tickPaing.setColor(color);
         tickPaing.setStrokeWidth(strokeWidth);
@@ -90,7 +90,7 @@ public class GridRenderer {
         }
     }
 
-    public static void interlaceCanvas(Canvas canvas, Rect bounds, Integer color, Integer alpha) {
+    public static void interlaceCanvas(Canvas canvas, Rect bounds, int color, int alpha) {
         Paint interlacePaint = new Paint();
         interlacePaint.setColor(color);
         interlacePaint.setAlpha(alpha);
@@ -102,7 +102,7 @@ public class GridRenderer {
         }
     }
 
-    private static void drawRow(Canvas canvas, Rect bounds, Row row, Float startingOffsetY, Float rowHeight){
+    private static void drawRow(Canvas canvas, Rect bounds, Row row, float startingOffsetY, float rowHeight){
         if (BuildConfig.DEBUG) {
             Paint greenPaint = new Paint();
             greenPaint.setColor(Color.GREEN);
@@ -125,7 +125,7 @@ public class GridRenderer {
             }
 
 
-            Float columnOffsetY;
+            float columnOffsetY;
             switch (column.getBaseline()) {
                 case Column.BASELINE_TOP:
                     columnOffsetY = row.getColumnsMaxHeight();
