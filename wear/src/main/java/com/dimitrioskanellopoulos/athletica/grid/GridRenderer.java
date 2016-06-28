@@ -26,7 +26,6 @@ public class GridRenderer {
         TreeMap<String, Row> rows = grid.getAllRows();
 
         Float totalHeight = bounds.height() - topMargin - bottomMargin;
-
         Float rowHeight;
 
         // Check for notif
@@ -37,7 +36,6 @@ public class GridRenderer {
             rowHeight = ((totalHeight + totalHeight / rows.size())) / rows.size();
         }
         Float startingOffsetY = topMargin - rowHeight;
-        Float notificationsStartingOffsetY = 0f;
         if (BuildConfig.DEBUG) {
             // Do the setBaseline
             Paint bluePaint = new Paint();
@@ -52,25 +50,19 @@ public class GridRenderer {
         int rowCount = 0;
         for (Map.Entry<String, Row> rowEntry : rows.entrySet()) {
             Row row = rowEntry.getValue();
+            float rowOffsetY =  startingOffsetY + rowCount * rowHeight;
             if (BuildConfig.DEBUG) {
                 Paint greenPaint = new Paint();
                 greenPaint.setColor(Color.GREEN);
-                canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, greenPaint);
+                canvas.drawLine(bounds.left,rowOffsetY, bounds.right, rowOffsetY, greenPaint);
             }
 
-            float rowOffsetY = startingOffsetY + rowCount * rowHeight;
-
-
-            if (rowCount ==0){
-                notificationsStartingOffsetY = row.getColumnsMaxHeight() + startingOffsetY;
-            }
-
-
-            drawRow(canvas, bounds, row, startingOffsetY, rowHeight, rowCount);
+            drawRow(canvas, bounds, row, rowOffsetY, rowHeight);
 
             rowCount++;
             //Log.d(TAG, "Drew row " + rowCount + " offsetY " + rowOffsetY);
         }
+
         if (BuildConfig.DEBUG) {
             Paint greenPaint = new Paint();
             greenPaint.setColor(Color.GREEN);
@@ -116,14 +108,14 @@ public class GridRenderer {
         }
     }
 
-    private static void drawRow(Canvas canvas, Rect bounds, Row row, Float startingOffsetY, Float rowHeight, Integer rowCount){
+    private static void drawRow(Canvas canvas, Rect bounds, Row row, Float startingOffsetY, Float rowHeight){
         if (BuildConfig.DEBUG) {
             Paint greenPaint = new Paint();
             greenPaint.setColor(Color.GREEN);
-            canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, greenPaint);
+            canvas.drawLine(bounds.left, startingOffsetY, bounds.right, startingOffsetY, greenPaint);
         }
 
-        float rowOffsetY = startingOffsetY + rowCount * rowHeight;
+        float rowOffsetY =startingOffsetY;
 
         float previousColumnOffsetY = rowHeight;
         float cursor = bounds.exactCenterX() - row.getColumnsTotalWidth() * 0.5f;
@@ -134,8 +126,8 @@ public class GridRenderer {
                 greenPaint.setColor(Color.GREEN);
                 Paint bluePaint = new Paint();
                 bluePaint.setColor(Color.BLUE);
-                canvas.drawLine(cursor, startingOffsetY + rowCount * rowHeight, cursor, (startingOffsetY + rowCount * rowHeight) + rowHeight, greenPaint);
-                canvas.drawLine(cursor + column.getHorizontalMargin() + column.getWidth(), startingOffsetY + rowCount * rowHeight, cursor + column.getHorizontalMargin() + column.getWidth(), (startingOffsetY + rowCount * rowHeight) + rowHeight, bluePaint);
+                canvas.drawLine(cursor,startingOffsetY, cursor, startingOffsetY + rowHeight, greenPaint);
+                canvas.drawLine(cursor + column.getHorizontalMargin() + column.getWidth(),startingOffsetY, cursor + column.getHorizontalMargin() + column.getWidth(), startingOffsetY + rowHeight, bluePaint);
             }
 
 
@@ -177,4 +169,6 @@ public class GridRenderer {
             //Log.d(TAG, "Drew column cursor " + cursor);
         }
     }
+
+
 }
