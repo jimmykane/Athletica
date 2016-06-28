@@ -90,7 +90,6 @@
                 android:paddingBottom="4dp"
                 android:text="@string/configuration_show_unread_notification_count"
                 android:textAlignment="center"
-                android:visibility="gone"
                 android:textSize="12sp" />
 
             <Switch
