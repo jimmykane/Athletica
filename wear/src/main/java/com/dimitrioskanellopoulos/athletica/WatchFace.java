@@ -87,6 +87,7 @@ class WatchFace {
         dateColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
         dateColumn.setAmbientMode(ambientMode);
         dateColumn.setIsVisible(isVisible);
+        dateColumn.setBaseline(Column.BASELINE_TOP);
         dateRow.putColumn("dateColumn", dateColumn);
         grid.putRow("2_dateRow", dateRow);
     }
