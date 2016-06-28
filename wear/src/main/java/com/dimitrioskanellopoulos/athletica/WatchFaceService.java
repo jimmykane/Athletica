@@ -360,7 +360,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
                         watchFace.showGoogleFitSteps(config.getBoolean(key));
                         break;
                     case ConfigurationHelper.KEY_SHOW_UNREAD_NOTIFICATION_COUNT:
-                        watchFace.showUnreadNotificationCount(config.getBoolean(key));
+                        //watchFace.showUnreadNotificationCount(config.getBoolean(key));
                         break;
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
                         // Save new config

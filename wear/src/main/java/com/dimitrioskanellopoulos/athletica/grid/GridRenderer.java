@@ -28,13 +28,7 @@ public class GridRenderer {
         Float totalHeight = bounds.height() - topMargin - bottomMargin;
         Float rowHeight;
 
-        // Check for notif
-        Row notificationsRow = rows.get("7_notificationRow");
-        if (notificationsRow != null){
-            rowHeight = ((totalHeight + totalHeight / (rows.size() -1))) / (rows.size()-1);
-        }else{
-            rowHeight = ((totalHeight + totalHeight / rows.size())) / rows.size();
-        }
+        rowHeight = (totalHeight + totalHeight/ (rows.size()-1)) / (rows.size());
         Float startingOffsetY = topMargin - rowHeight;
         if (BuildConfig.DEBUG) {
             // Do the setBaseline
