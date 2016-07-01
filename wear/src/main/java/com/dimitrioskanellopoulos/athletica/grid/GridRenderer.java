@@ -59,8 +59,6 @@ public class GridRenderer {
             greenPaint.setColor(Color.GREEN);
             canvas.drawLine(bounds.left, startingOffsetY + rowCount * rowHeight, bounds.right, startingOffsetY + rowCount * rowHeight, greenPaint);
         }
-
-        // Here it should draw the notifications
     }
 
     private static void drawBackground(Canvas canvas, Rect bounds, int color) {

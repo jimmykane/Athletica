@@ -28,6 +28,7 @@ class WatchFace {
     private static final String TAG = "Watchface";
 
     private static final Grid grid = new Grid();
+    private static final Grid notificationsGrid = new Grid();
 
     private final Context context;
     private final Resources resources;
@@ -65,6 +66,7 @@ class WatchFace {
 
     void draw(Canvas canvas, Rect bounds) {
         GridRenderer.renderGrid(canvas, bounds, grid, bounds.height() / 2.0f, chinSize + resources.getDimension(R.dimen.face_bottom_margin));
+        GridRenderer.renderGrid(canvas, bounds, notificationsGrid, bounds.height() / 2.0f, chinSize + resources.getDimension(R.dimen.face_bottom_margin));
         if (interlace) {
             GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, 100);
         }
@@ -279,10 +281,10 @@ class WatchFace {
                 unreadNotificationCountIcon.setIsVisible(isVisible);
                 googleFitRow.putColumn("unreadNotificationCountIcon", unreadNotificationCountIcon);
 
-                grid.putRow("7_notificationRow", googleFitRow);
+                notificationsGrid.putRow("7_notificationRow", googleFitRow);
             }
         } else {
-            grid.removeRow("7_notificationRow");
+            notificationsGrid.removeRow("7_notificationRow");
         }
     }
 
@@ -384,10 +386,10 @@ class WatchFace {
     }
 
     public void updateNotificationsCount(int count) {
-        if (grid.getRow("7_notificationRow") == null) {
+        if (notificationsGrid.getRow("7_notificationRow") == null) {
             Log.d(TAG, "Notification row not found");
             return;
         }
-        grid.getRow("7_notificationRow").getColumn("unreadNotificationCountColumn").setText(String.valueOf(count));
+        notificationsGrid.getRow("7_notificationRow").getColumn("unreadNotificationCountColumn").setText(String.valueOf(count));
     }
 }
