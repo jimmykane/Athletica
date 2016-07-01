@@ -73,8 +73,10 @@ public class AveragingCallbackSensor extends CallbackSensor implements
 
     @Override
     public void handleOnSensorAverageChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
-        Log.d(TAG, "Releasing wake lock");
-        wakeLock.release();
+        if (wakeLock.isHeld()) {
+            Log.d(TAG, "Releasing wake lock");
+            wakeLock.release();
+        }
         stopListening();
         Log.d(TAG, "Average calculated: " + String.format("%.01f", eventValues[0]));
         if (isEventValuesAcceptable(eventValues)) {
