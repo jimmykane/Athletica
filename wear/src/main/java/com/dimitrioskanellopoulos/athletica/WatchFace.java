@@ -66,7 +66,6 @@ class WatchFace {
 
     void draw(Canvas canvas, Rect bounds) {
         GridRenderer.renderGrid(canvas, bounds, grid, bounds.height() / 2.0f, chinSize + resources.getDimension(R.dimen.face_bottom_margin));
-        GridRenderer.renderGrid(canvas, bounds, notificationsGrid, bounds.height() / 2.0f, chinSize + resources.getDimension(R.dimen.face_bottom_margin));
         if (interlace) {
             GridRenderer.interlaceCanvas(canvas, bounds, Color.BLACK, 100);
         }
@@ -258,37 +257,6 @@ class WatchFace {
         }
     }
 
-    void showUnreadNotificationCount(Boolean showUnreadNotificationCount) {
-        Log.d(TAG, "showUnreadNotificationCount " + showUnreadNotificationCount.toString());
-        if (showUnreadNotificationCount) {
-            if (grid.getRow("7_notificationRow") == null) {
-                Row googleFitRow = new Row();
-
-                // Count
-                Column unreadNotificationCountColumn = new GoogleFitStepsColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor(), isVisible, ambientMode);
-                unreadNotificationCountColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
-                unreadNotificationCountColumn.setAmbientMode(ambientMode);
-                unreadNotificationCountColumn.setIsVisible(isVisible);
-                unreadNotificationCountColumn.setHorizontalMargin(resources.getDimension(R.dimen.units_margin));
-                googleFitRow.putColumn("unreadNotificationCountColumn", unreadNotificationCountColumn);
-
-
-                // Icon
-                Column unreadNotificationCountIcon = new Column(context, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
-                unreadNotificationCountIcon.setText(resources.getString(R.string.icon_unread_notification_count));
-                unreadNotificationCountIcon.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
-                unreadNotificationCountIcon.setAmbientMode(ambientMode);
-                unreadNotificationCountIcon.setIsVisible(isVisible);
-                googleFitRow.putColumn("unreadNotificationCountIcon", unreadNotificationCountIcon);
-
-                notificationsGrid.putRow("7_notificationRow", googleFitRow);
-            }
-        } else {
-            notificationsGrid.removeRow("7_notificationRow");
-        }
-    }
-
-
     void showSunriseSunsetTimes(Boolean showSunriseSunsetTimes) {
         Log.d(TAG, "showSunriseSunsetTimes " + showSunriseSunsetTimes.toString());
         if (showSunriseSunsetTimes) {
@@ -354,8 +322,6 @@ class WatchFace {
 
     }
 
-
-
     void setIsRound(boolean round) {
         isRound = round;
     }
@@ -383,13 +349,5 @@ class WatchFace {
 
     public void setBurnInProtection(boolean burnInProtection) {
         this.burnInProtection = burnInProtection;
-    }
-
-    public void updateNotificationsCount(int count) {
-        if (notificationsGrid.getRow("7_notificationRow") == null) {
-            Log.d(TAG, "Notification row not found");
-            return;
-        }
-        notificationsGrid.getRow("7_notificationRow").getColumn("unreadNotificationCountColumn").setText(String.valueOf(count));
     }
 }
