@@ -15,9 +15,6 @@ import java.util.TreeMap;
 public class GridRenderer {
     private static final String TAG = "GridRenderer";
 
-    /**
-     * @todo document more and make it faster
-     */
     public static void renderGrid(Canvas canvas, Rect bounds, Grid grid, float topMargin, float bottomMargin) {
 
         drawBackground(canvas, bounds, grid.getBackgroundColor());
@@ -28,7 +25,7 @@ public class GridRenderer {
         float totalHeight = bounds.height() - topMargin - bottomMargin;
         float rowHeight;
 
-        rowHeight = (totalHeight + totalHeight/ (rows.size()-1)) / (rows.size());
+        rowHeight = (totalHeight + totalHeight / (rows.size() - 1)) / (rows.size());
         float startingOffsetY = topMargin - rowHeight;
         if (BuildConfig.DEBUG) {
             // Do the setBaseline
@@ -44,11 +41,11 @@ public class GridRenderer {
         int rowCount = 0;
         for (Map.Entry<String, Row> rowEntry : rows.entrySet()) {
             Row row = rowEntry.getValue();
-            float rowOffsetY =  startingOffsetY + rowCount * rowHeight;
+            float rowOffsetY = startingOffsetY + rowCount * rowHeight;
             if (BuildConfig.DEBUG) {
                 Paint greenPaint = new Paint();
                 greenPaint.setColor(Color.GREEN);
-                canvas.drawLine(bounds.left,rowOffsetY, bounds.right, rowOffsetY, greenPaint);
+                canvas.drawLine(bounds.left, rowOffsetY, bounds.right, rowOffsetY, greenPaint);
             }
 
             drawRow(canvas, bounds, row, rowOffsetY, rowHeight);
@@ -102,7 +99,7 @@ public class GridRenderer {
         }
     }
 
-    private static void drawRow(Canvas canvas, Rect bounds, Row row, float startingOffsetY, float rowHeight){
+    private static void drawRow(Canvas canvas, Rect bounds, Row row, float startingOffsetY, float rowHeight) {
         if (BuildConfig.DEBUG) {
             Paint greenPaint = new Paint();
             greenPaint.setColor(Color.GREEN);
@@ -118,8 +115,8 @@ public class GridRenderer {
                 greenPaint.setColor(Color.GREEN);
                 Paint bluePaint = new Paint();
                 bluePaint.setColor(Color.BLUE);
-                canvas.drawLine(cursor,startingOffsetY, cursor, startingOffsetY + rowHeight, greenPaint);
-                canvas.drawLine(cursor + column.getHorizontalMargin() + column.getWidth(),startingOffsetY, cursor + column.getHorizontalMargin() + column.getWidth(), startingOffsetY + rowHeight, bluePaint);
+                canvas.drawLine(cursor, startingOffsetY, cursor, startingOffsetY + rowHeight, greenPaint);
+                canvas.drawLine(cursor + column.getHorizontalMargin() + column.getWidth(), startingOffsetY, cursor + column.getHorizontalMargin() + column.getWidth(), startingOffsetY + rowHeight, bluePaint);
             }
 
 
@@ -164,6 +161,4 @@ public class GridRenderer {
             //Log.d(TAG, "Drew column cursor " + cursor);
         }
     }
-
-
 }
