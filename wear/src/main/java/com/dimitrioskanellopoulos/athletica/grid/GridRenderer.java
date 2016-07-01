@@ -109,8 +109,6 @@ public class GridRenderer {
             canvas.drawLine(bounds.left, startingOffsetY, bounds.right, startingOffsetY, greenPaint);
         }
 
-        float rowOffsetY =startingOffsetY;
-
         float previousColumnOffsetY = rowHeight;
         float cursor = bounds.exactCenterX() - row.getColumnsTotalWidth() * 0.5f;
         for (Map.Entry<String, Column> columnEntry : row.getAllColumns().entrySet()) {
@@ -140,7 +138,7 @@ public class GridRenderer {
                     columnOffsetY = previousColumnOffsetY;
                     break;
                 case Column.BASELINE_BOTTOM:
-                    columnOffsetY = rowOffsetY;
+                    columnOffsetY = startingOffsetY;
                     break;
                 case Column.BASELINE_OVER_THE_TOP:
                     columnOffsetY = 0f - column.getHeight();
@@ -156,7 +154,7 @@ public class GridRenderer {
             }
 
             // Draw the column
-            canvas.drawText(column.getText(), cursor, rowOffsetY + columnOffsetY, column.getPaint()); // check if it needs per column height
+            canvas.drawText(column.getText(), cursor, startingOffsetY + columnOffsetY, column.getPaint()); // check if it needs per column height
 
             // canvas.drawText(column.getText(), cursor, rowOffsetY + rowHeight, column.getPaint()); // check if it needs per column height
             cursor += column.getWidth() + column.getHorizontalMargin();
