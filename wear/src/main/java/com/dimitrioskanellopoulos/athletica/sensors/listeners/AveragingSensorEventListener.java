@@ -13,14 +13,9 @@ import java.util.List;
 
 public class AveragingSensorEventListener implements SensorEventListener {
     protected final static String TAG = AveragingSensorEventListener.class.getName();
-
-    private List<Float> averageValues = new ArrayList<>();
-
     private final AveragingCallbackSensor sensor;
-
     private final Integer numberOfSamples;
-
-
+    private List<Float> averageValues = new ArrayList<>();
     private OnSensorAverageEventCallbackInterface changeCallback;
 
     public AveragingSensorEventListener(Integer numberOfSamples, AveragingCallbackSensor sensor, OnSensorAverageEventCallbackInterface changeCallback) {

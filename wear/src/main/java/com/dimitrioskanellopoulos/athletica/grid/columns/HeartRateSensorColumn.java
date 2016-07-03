@@ -25,6 +25,6 @@ class HeartRateSensorColumn extends SensorColumn {
             vibrator.vibrate(new long[]{0, 250, 500, 250, 100, 250, 50, 250, 50}, -1);
         }
         setText(decimalFormat.format(Math.round(eventValues[0])));
-        Log.d(TAG, "Updated value for sensor: " +getText());
+        Log.d(TAG, "Updated value for sensor: " + getText());
     }
 }

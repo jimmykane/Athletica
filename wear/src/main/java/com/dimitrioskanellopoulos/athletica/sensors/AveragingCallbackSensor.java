@@ -2,7 +2,6 @@ package com.dimitrioskanellopoulos.athletica.sensors;
 
 import android.content.Context;
 import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -19,8 +18,8 @@ public class AveragingCallbackSensor extends CallbackSensor implements
     private final static Integer NUMBER_OF_SAMPLES = 10;
 
     // For averages
-    private final static Integer AVERAGE_SAMPLING_PERIOD_US =  5000000; // 1 Sec
-    private final static Integer AVERAGE_MAX_REPORT_LATENCY_US =  5000000; // 1 Sec;
+    private final static Integer AVERAGE_SAMPLING_PERIOD_US = 5000000; // 1 Sec
+    private final static Integer AVERAGE_MAX_REPORT_LATENCY_US = 5000000; // 1 Sec;
 
     private final AveragingSensorEventListener averagingSensorEventListener;
 
@@ -39,7 +38,7 @@ public class AveragingCallbackSensor extends CallbackSensor implements
         super(context, sensorType, changeCallback);
         averagingSensorEventListener = new AveragingSensorEventListener(getNumberOfSamples(), this, this);
         this.averageChangeCallback = averageChangeCallback;
-        powerManager  = (PowerManager) context.getApplicationContext().getSystemService(Context.POWER_SERVICE);
+        powerManager = (PowerManager) context.getApplicationContext().getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
                 this.getClass().getName());
     }

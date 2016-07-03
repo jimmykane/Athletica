@@ -15,6 +15,6 @@ class PressureSensorColumn extends SensorColumn {
     @Override
     public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
         setText(decimalFormat.format(eventValues[0]));
-        Log.d(TAG, "Updated value for sensor: " +getText());
+        Log.d(TAG, "Updated value for sensor: " + getText());
     }
 }

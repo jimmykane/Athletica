@@ -334,12 +334,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     case ConfigurationHelper.KEY_SHOW_UNREAD_NOTIFICATION_COUNT:
                         watchFace.setInvertBlackAndWhite(config.getBoolean(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE));
                         setWatchFaceStyle(
-                            (new WatchFaceStyle.Builder(WatchFaceService.this))
-                            .setShowUnreadCountIndicator(config.getBoolean(ConfigurationHelper.KEY_SHOW_UNREAD_NOTIFICATION_COUNT))
-                            .setViewProtectionMode(config.getBoolean(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE) ?
-                                WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR
-                                : WatchFaceStyle.PROGRESS_MODE_NONE)
-                            .build()
+                                (new WatchFaceStyle.Builder(WatchFaceService.this))
+                                        .setShowUnreadCountIndicator(config.getBoolean(ConfigurationHelper.KEY_SHOW_UNREAD_NOTIFICATION_COUNT))
+                                        .setViewProtectionMode(config.getBoolean(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE) ?
+                                                WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR
+                                                : WatchFaceStyle.PROGRESS_MODE_NONE)
+                                        .build()
                         );
 
                         break;

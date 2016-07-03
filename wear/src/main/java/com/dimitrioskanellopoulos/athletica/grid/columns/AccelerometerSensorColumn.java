@@ -18,6 +18,6 @@ class AccelerometerSensorColumn extends SensorColumn {
     @Override
     public void handleOnSensorChangedEvent(Sensor sensor, Integer sensorType, float[] eventValues) {
         setText(decimalFormat.format(eventValues[0]) + "." + decimalFormat.format(eventValues[1]) + "." + decimalFormat.format(eventValues[2]));
-        Log.d(TAG, "Updated value for sensor: " +getText());
+        Log.d(TAG, "Updated value for sensor: " + getText());
     }
 }

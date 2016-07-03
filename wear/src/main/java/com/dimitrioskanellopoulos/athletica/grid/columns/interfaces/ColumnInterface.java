@@ -12,8 +12,11 @@ public interface ColumnInterface {
     int BASELINE_OVER_THE_TOP = 6;
 
     void setAmbientMode(Boolean ambientMode);
+
     void setBurnInProtection(Boolean burnInProtection);
+
     void setLowBitAmbient(Boolean lowBitAmbient);
+
     void shouldAntialiasInAmbientMode(Boolean shouldAntialiasInAmbientMode);
 
     String getText();

@@ -27,11 +27,7 @@ class SunriseSunsetColumn extends GoogleApiColumn {
             .setInterval(LOCATION_UPDATE_INTERVAL_MS)
             .setFastestInterval(LOCATION_UPDATE_FASTEST_INTERVAL_MS)
             .setPriority(LocationRequest.PRIORITY_LOW_POWER);
-
-    private static boolean hasRegisteredReceivers = false;
-
     static Pair<String, String> sunriseSunset;
-
     private static final LocationListener locationChangedReceiver = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -45,7 +41,7 @@ class SunriseSunsetColumn extends GoogleApiColumn {
             Log.d(TAG, "Successfully updated sunrise");
         }
     };
-
+    private static boolean hasRegisteredReceivers = false;
     private static GoogleApiClient googleApiClient;
 
     private PermissionsHelper permissionsHelper;

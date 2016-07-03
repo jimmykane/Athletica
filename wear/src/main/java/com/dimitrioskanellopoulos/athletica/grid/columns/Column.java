@@ -47,7 +47,7 @@ public class Column implements ColumnInterface {
 
     @Override
     public void shouldAntialiasInAmbientMode(Boolean shouldAntialiasInAmbientMode) {
-        Log.d(TAG, "shouldAntialiasInAmbientMode"+ shouldAntialiasInAmbientMode.toString());
+        Log.d(TAG, "shouldAntialiasInAmbientMode" + shouldAntialiasInAmbientMode.toString());
         this.shouldAntialiasInAmbientMode = shouldAntialiasInAmbientMode;
     }
 
@@ -112,8 +112,7 @@ public class Column implements ColumnInterface {
     }
 
     @Override
-    public Boolean isInAmbientMode()
-    {
+    public Boolean isInAmbientMode() {
         return ambientMode;
     }
 

@@ -13,7 +13,7 @@ import java.util.TimeZone;
 
 public class AmPmColumn extends CalendarColumn {
     private static final String TAG = "AmPmColumn";
-    private final static FastDateFormat TIME_FORMAT = FastDateFormat.getInstance("a", TimeZone.getDefault(),Locale.getDefault());
+    private final static FastDateFormat TIME_FORMAT = FastDateFormat.getInstance("a", TimeZone.getDefault(), Locale.getDefault());
 
     public AmPmColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
         super(context, paintTypeface, paintTextSize, paintColor);

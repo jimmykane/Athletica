@@ -14,8 +14,8 @@ import java.util.TimeZone;
 public class DateColumn extends CalendarColumn {
     private final static String TAG = "DateColumn";
 
-    private static final FastDateFormat DATE_FORMAT = FastDateFormat.getInstance("dd.MM.yyyy", TimeZone.getDefault(),  Locale.getDefault());
-    private static final FastDateFormat DATE_NAMES_FORMAT = FastDateFormat.getInstance("E d MMM yyyy",TimeZone.getDefault(),  Locale.getDefault());
+    private static final FastDateFormat DATE_FORMAT = FastDateFormat.getInstance("dd.MM.yyyy", TimeZone.getDefault(), Locale.getDefault());
+    private static final FastDateFormat DATE_NAMES_FORMAT = FastDateFormat.getInstance("E d MMM yyyy", TimeZone.getDefault(), Locale.getDefault());
 
     private FastDateFormat dateFormat = DATE_FORMAT;
 
@@ -30,9 +30,9 @@ public class DateColumn extends CalendarColumn {
     }
 
     public void setShowDateNamesFormat(Boolean showDateNamesFormat) {
-        if (showDateNamesFormat){
+        if (showDateNamesFormat) {
             dateFormat = DATE_NAMES_FORMAT;
-        }else {
+        } else {
             dateFormat = DATE_FORMAT;
         }
         getPaint().setTextSize(getPaint().getTextSize());

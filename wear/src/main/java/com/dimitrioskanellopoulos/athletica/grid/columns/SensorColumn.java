@@ -14,8 +14,8 @@ import java.text.DecimalFormat;
 
 class SensorColumn extends Column implements OnSensorEventCallbackInterface,
         OnSensorAverageEventCallbackInterface {
+    final static DecimalFormat decimalFormat = new DecimalFormat("#.#");
     private final static String TAG = "SensorColumn";
-    final static DecimalFormat decimalFormat =  new DecimalFormat("#.#");
     private final AveragingCallbackSensor averagingCallbackSensor;
 
     SensorColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, int sensorType) {

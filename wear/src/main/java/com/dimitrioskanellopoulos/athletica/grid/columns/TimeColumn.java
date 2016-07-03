@@ -34,7 +34,7 @@ public class TimeColumn extends CalendarColumn {
         setTimeFormat();
     }
 
-    private void setTimeFormat(){
+    private void setTimeFormat() {
         if (isInAmbientMode() && isIn24hourFormat) {
             timeFormat = TIME_FORMAT_24;
             getPaint().setTextSize(initTextSize);
@@ -42,9 +42,9 @@ public class TimeColumn extends CalendarColumn {
             timeFormat = TIME_FORMAT;
             getPaint().setTextSize(initTextSize * 0.90f);
         } else if (!isInAmbientMode() && isIn24hourFormat) {
-            timeFormat =  TIME_FORMAT_24_WITH_SECONDS;
+            timeFormat = TIME_FORMAT_24_WITH_SECONDS;
             getPaint().setTextSize(initTextSize * 0.75f);
-        }else {
+        } else {
             timeFormat = TIME_FORMAT_WITH_SECONDS;
             getPaint().setTextSize(initTextSize * 0.75f);
         }
