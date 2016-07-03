@@ -82,7 +82,7 @@ public final class ConfigurationHelper {
     /**
      * The default for antialiasing in ambient mode
      */
-    public static final Boolean ANTIALIAS_IN_AMBIENT_MODE_DEFAULT = false;
+    public static final Boolean ANTIALIAS_IN_AMBIENT_MODE_DEFAULT = true;
     /**
      * The default to invert black and white
      */
@@ -90,11 +90,11 @@ public final class ConfigurationHelper {
     /**
      * The default to set if 2 color background consisting of b&w should be shown
      */
-    public static final Boolean INVERT_BLACK_AND_WHITE = false;
+    public static final Boolean INVERT_BLACK_AND_WHITE = true;
     /**
      * The default to invert black and white
      */
-    public static final Boolean DAY_NIGHT_MODE = false;
+    public static final Boolean DAY_NIGHT_MODE = true;
     /**
      * The default to invert black and white
      */
