@@ -103,13 +103,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
         /**
          * The normal watch face style for white on black background
          */
-        private final WatchFaceStyle watchFaceStyle = new WatchFaceStyle.Builder(WatchFaceService.this)
+        private final WatchFaceStyle.Builder watchFaceStyleDefaultBuilder = new WatchFaceStyle.Builder(WatchFaceService.this)
                 .setCardPeekMode(WatchFaceStyle.PEEK_MODE_SHORT)
                 .setAmbientPeekMode(WatchFaceStyle.AMBIENT_PEEK_MODE_HIDDEN)
                 .setBackgroundVisibility(WatchFaceStyle.BACKGROUND_VISIBILITY_INTERRUPTIVE)
                 .setAcceptsTapEvents(true)
-                .setShowSystemUiTime(false)
-                .build();
+                .setShowSystemUiTime(false);
         /**
          * When the onTickActions were run last time in ms
          */
@@ -134,7 +133,7 @@ public class WatchFaceService extends CanvasWatchFaceService {
             super.onCreate(holder);
 
             // Set the style start with normal
-            setWatchFaceStyle(watchFaceStyle);
+            setWatchFaceStyle(watchFaceStyleDefaultBuilder.build());
 
             // Create a watch face and init some rows
             watchFace = new WatchFace(WatchFaceService.this);
@@ -333,14 +332,12 @@ public class WatchFaceService extends CanvasWatchFaceService {
                     case ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE:
                     case ConfigurationHelper.KEY_SHOW_UNREAD_NOTIFICATION_COUNT:
                         watchFace.setInvertBlackAndWhite(config.getBoolean(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE));
-                        setWatchFaceStyle(
-                                (new WatchFaceStyle.Builder(WatchFaceService.this))
-                                        .setShowUnreadCountIndicator(config.getBoolean(ConfigurationHelper.KEY_SHOW_UNREAD_NOTIFICATION_COUNT))
-                                        .setViewProtectionMode(config.getBoolean(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE) ?
-                                                WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR
-                                                : WatchFaceStyle.PROGRESS_MODE_NONE)
-                                        .build()
-                        );
+                        setWatchFaceStyle(watchFaceStyleDefaultBuilder
+                            .setShowUnreadCountIndicator(config.getBoolean(ConfigurationHelper.KEY_SHOW_UNREAD_NOTIFICATION_COUNT))
+                            .setViewProtectionMode(config.getBoolean(ConfigurationHelper.KEY_INVERT_BLACK_AND_WHITE) ?
+                                WatchFaceStyle.PROTECT_STATUS_BAR | WatchFaceStyle.PROTECT_HOTWORD_INDICATOR
+                                : WatchFaceStyle.PROGRESS_MODE_NONE)
+                            .build());
 
                         break;
                     case ConfigurationHelper.KEY_ENABLED_SENSORS:
