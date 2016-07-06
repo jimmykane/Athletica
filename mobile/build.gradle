@@ -8,8 +8,8 @@ android {
         applicationId "com.dimitrioskanellopoulos.athletica"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 134
-        versionName "3.3.2"
+        versionCode 135
+        versionName "3.3.3"
     }
     productFlavors {
         free {
