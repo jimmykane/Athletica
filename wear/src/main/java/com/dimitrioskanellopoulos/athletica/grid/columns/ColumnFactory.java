@@ -8,7 +8,7 @@ import com.dimitrioskanellopoulos.athletica.R;
 import com.dimitrioskanellopoulos.athletica.sensors.CallbackSensor;
 
 public class ColumnFactory {
-    public static Column getIconColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+    public static Column getIconColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         Column sensorIconColumn = new Column(context, paintTypeface, paintTextSize, paintColor);
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:
@@ -41,17 +41,17 @@ public class ColumnFactory {
         return sensorIconColumn;
     }
 
-    public static Column getColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+    public static Column getColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         SensorColumn sensorColumn;
         switch (sensorType) {
             case Sensor.TYPE_ACCELEROMETER:
-                sensorColumn = new AccelerometerSensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType, visible, ambientMode);
+                sensorColumn = new AccelerometerSensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType);
                 break;
             case Sensor.TYPE_PRESSURE:
-                sensorColumn = new PressureSensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType, visible, ambientMode);
+                sensorColumn = new PressureSensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType);
                 break;
             case Sensor.TYPE_HEART_RATE:
-                sensorColumn = new HeartRateSensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType, visible, ambientMode);
+                sensorColumn = new HeartRateSensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType);
                 break;
             default:
                 sensorColumn = new SensorColumn(context, paintTypeface, paintTextSize, paintColor, sensorType);
@@ -60,7 +60,7 @@ public class ColumnFactory {
         return sensorColumn;
     }
 
-    public static Column getUnitsColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+    public static Column getUnitsColumnForSensorType(Context context, Integer sensorType, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         Column sensorUnitsColumn = new Column(context, paintTypeface, paintTextSize, paintColor);
         switch (sensorType) {
             case Sensor.TYPE_PRESSURE:

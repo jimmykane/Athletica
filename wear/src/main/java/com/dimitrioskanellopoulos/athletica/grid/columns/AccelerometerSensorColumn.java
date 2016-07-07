@@ -11,7 +11,7 @@ class AccelerometerSensorColumn extends SensorColumn {
     private final static String TAG = "AccelerometerSensorColumn";
     private final DecimalFormat decimalFormat = new DecimalFormat("##");
 
-    AccelerometerSensorColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, int sensorType, Boolean visible, Boolean ambientMode) {
+    AccelerometerSensorColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, int sensorType) {
         super(context, paintTypeface, paintTextSize, paintColor, sensorType);
     }
 

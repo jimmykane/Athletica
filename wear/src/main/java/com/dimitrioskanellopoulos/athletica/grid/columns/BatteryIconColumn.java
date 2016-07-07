@@ -17,7 +17,7 @@ public class BatteryIconColumn extends BatteryColumn {
     private final String batteryThreeQuartersIcon;
     private final String batteryFullIcon;
 
-    public BatteryIconColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+    public BatteryIconColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
         batteryEmptyIcon = this.context.getResources().getString(R.string.icon_battery_empty);
         batteryQuarterIcon = this.context.getResources().getString(R.string.icon_battery_one_quarter);

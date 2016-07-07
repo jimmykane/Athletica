@@ -31,7 +31,7 @@ public class GoogleFitStepsColumn extends GoogleApiColumn implements GoogleApiCl
     private PendingResult<DailyTotalResult> stepsResult;
     private Boolean hasRegisteredReceivers = false;
 
-    public GoogleFitStepsColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+    public GoogleFitStepsColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
         googleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)

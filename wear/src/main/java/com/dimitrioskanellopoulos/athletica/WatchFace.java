@@ -84,7 +84,7 @@ class WatchFace {
 
     void addRowForDate() {
         Row dateRow = new Row();
-        DateColumn dateColumn = new DateColumn(context, defaultTypeface, resources.getDimension(R.dimen.date_size), grid.getTextColor(), isVisible, ambientMode);
+        DateColumn dateColumn = new DateColumn(context, defaultTypeface, resources.getDimension(R.dimen.date_size), grid.getTextColor());
         dateColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
         dateColumn.setAmbientMode(ambientMode);
         dateColumn.setIsVisible(isVisible);
@@ -108,7 +108,7 @@ class WatchFace {
         if (sensorsRow.getAllColumns().size() >= 3) {
             sensorsRow.getAllColumns().values().toArray(new Column[0])[sensorsRow.getAllColumns().size() - 1].setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
         }
-        Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(context, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor(), isVisible, ambientMode);
+        Column sensorIconColumn = ColumnFactory.getIconColumnForSensorType(context, sensorType, fontAwesome, resources.getDimension(R.dimen.icon_size), grid.getTextColor());
         sensorIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         sensorIconColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
         sensorIconColumn.setAmbientMode(ambientMode);
@@ -121,7 +121,7 @@ class WatchFace {
             sensorColumn = new Column(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
             sensorColumn.setText("21");
         } else {
-            sensorColumn = ColumnFactory.getColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor(), isVisible, ambientMode);
+            sensorColumn = ColumnFactory.getColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
         }
 
         sensorColumn.setHorizontalMargin(resources.getDimension(R.dimen.units_margin));
@@ -131,7 +131,7 @@ class WatchFace {
         sensorsRow.putColumn(sensorType.toString(), sensorColumn);
 
         // Add units
-        Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), grid.getTextColor(), isVisible, ambientMode);
+        Column sensorUnitsColumn = ColumnFactory.getUnitsColumnForSensorType(context, sensorType, defaultTypeface, resources.getDimension(R.dimen.units_size), grid.getTextColor());
         sensorUnitsColumn.setBaseline(Column.BASELINE_PREVIOUS);
         sensorUnitsColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
         sensorUnitsColumn.setAmbientMode(ambientMode);
@@ -146,7 +146,7 @@ class WatchFace {
     void addRowForBattery() {
         Row batteryRow = new Row();
         //Icon
-        BatteryIconColumn batteryIconColumn = new BatteryIconColumn(context, fontAwesome, resources.getDimension(R.dimen.battery_icon_size), grid.getTextColor(), isVisible, ambientMode);
+        BatteryIconColumn batteryIconColumn = new BatteryIconColumn(context, fontAwesome, resources.getDimension(R.dimen.battery_icon_size), grid.getTextColor());
         batteryIconColumn.setHorizontalMargin(resources.getDimension(R.dimen.icon_margin));
         batteryIconColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
         batteryIconColumn.setAmbientMode(ambientMode);
@@ -154,7 +154,7 @@ class WatchFace {
         batteryRow.putColumn("batteryIconColumn", batteryIconColumn);
 
         // Column
-        BatteryLevelColumn batteryLevelColumn = new BatteryLevelColumn(context, defaultTypeface, resources.getDimension(R.dimen.battery_text_size), grid.getTextColor(), isVisible, ambientMode);
+        BatteryLevelColumn batteryLevelColumn = new BatteryLevelColumn(context, defaultTypeface, resources.getDimension(R.dimen.battery_text_size), grid.getTextColor());
         batteryLevelColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
         batteryLevelColumn.setBaseline(Column.BASELINE_PREVIOUS);
         batteryLevelColumn.setAmbientMode(ambientMode);
@@ -197,7 +197,7 @@ class WatchFace {
             grid.getRow("1_timeRow").removeColumn("amPmColumn");
             return;
         }
-        AmPmColumn amPmColumn = new AmPmColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), grid.getTextColor(), isVisible, ambientMode);
+        AmPmColumn amPmColumn = new AmPmColumn(context, defaultTypeface, resources.getDimension(R.dimen.time_am_pm_size), grid.getTextColor());
         amPmColumn.setBaseline(timeColumn.getBaseline());
         amPmColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
         amPmColumn.setAmbientMode(ambientMode);
@@ -235,7 +235,7 @@ class WatchFace {
                 googleFitRow.putColumn("googleFitStepsColumnIcon", googleFitStepsIconColumn);
 
                 // Steps
-                GoogleFitStepsColumn googleFitStepsColumn = new GoogleFitStepsColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor(), isVisible, ambientMode);
+                GoogleFitStepsColumn googleFitStepsColumn = new GoogleFitStepsColumn(context, defaultTypeface, resources.getDimension(R.dimen.text_size), grid.getTextColor());
                 googleFitStepsColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
                 googleFitStepsColumn.setAmbientMode(ambientMode);
                 googleFitStepsColumn.setIsVisible(isVisible);
@@ -271,7 +271,7 @@ class WatchFace {
                 sunriseIconColumn.setIsVisible(isVisible);
                 sunriseSunsetRow.putColumn("sunriseIconColumn", sunriseIconColumn);
                 // Column
-                SunriseColumn sunriseColumn = new SunriseColumn(context, defaultTypeface, resources.getDimension(R.dimen.sunrise_sunset_times_size), grid.getTextColor(), isVisible, ambientMode);
+                SunriseColumn sunriseColumn = new SunriseColumn(context, defaultTypeface, resources.getDimension(R.dimen.sunrise_sunset_times_size), grid.getTextColor());
                 sunriseColumn.setHorizontalMargin(resources.getDimension(R.dimen.column_margin));
                 sunriseColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
                 sunriseColumn.setAmbientMode(ambientMode);
@@ -288,7 +288,7 @@ class WatchFace {
                 sunriseSunsetRow.putColumn("sunsetIconColumn", sunsetIconColumn);
 
                 // Column
-                SunsetColumn sunsetColumn = new SunsetColumn(context, defaultTypeface, resources.getDimension(R.dimen.sunrise_sunset_times_size), grid.getTextColor(), isVisible, ambientMode);
+                SunsetColumn sunsetColumn = new SunsetColumn(context, defaultTypeface, resources.getDimension(R.dimen.sunrise_sunset_times_size), grid.getTextColor());
                 sunsetColumn.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
                 sunsetColumn.setAmbientMode(ambientMode);
                 sunsetColumn.setIsVisible(isVisible);

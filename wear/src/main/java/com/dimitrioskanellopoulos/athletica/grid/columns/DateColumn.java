@@ -19,7 +19,7 @@ public class DateColumn extends CalendarColumn {
 
     private FastDateFormat dateFormat = DATE_FORMAT;
 
-    public DateColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, Boolean visible, Boolean ambientMode) {
+    public DateColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor) {
         super(context, paintTypeface, paintTextSize, paintColor);
     }
 

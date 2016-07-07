@@ -8,7 +8,7 @@ import android.util.Log;
 class PressureSensorColumn extends SensorColumn {
     private final static String TAG = "PressureSensorColumn";
 
-    PressureSensorColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, int sensorType, Boolean visible, Boolean ambientMode) {
+    PressureSensorColumn(Context context, Typeface paintTypeface, Float paintTextSize, int paintColor, int sensorType) {
         super(context, paintTypeface, paintTextSize, paintColor, sensorType);
     }
 
