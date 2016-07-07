@@ -339,6 +339,7 @@ class WatchFace {
     }
 
     public void shouldAntialiasInAmbientMode(Boolean shouldAntialiasInAmbientMode) {
+        this.shouldAntialiasInAmbientMode = shouldAntialiasInAmbientMode;
         grid.shouldAntialiasInAmbientMode(shouldAntialiasInAmbientMode);
     }
 
